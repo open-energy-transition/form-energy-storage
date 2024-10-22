@@ -602,6 +602,8 @@ sector:
   solar_thermal: true
   solar_cf_correction: 0.788457  # =  >>> 1/1.2683
   marginal_cost_storage: 0. #1e-4
+  stores: ["H2", "battery"]
+  storage_units: []
   methanation: true
   coal_cc: false
   dac: true
