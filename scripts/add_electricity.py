@@ -272,10 +272,10 @@ def load_costs(tech_costs, config, max_hours, Nyears=1.0):
             dict(capital_cost=capital_cost, marginal_cost=0.0, co2_emissions=0.0)
         )
 
-    costs.loc["battery"] = costs_for_storage(
+    costs.loc["li-ion battery"] = costs_for_storage(
         costs.loc["battery storage"],
         costs.loc["battery inverter"],
-        max_hours=max_hours["battery"],
+        max_hours=max_hours["li-ion battery"],
     )
     costs.loc["H2"] = costs_for_storage(
         costs.loc["hydrogen storage underground"],
@@ -857,11 +857,11 @@ def attach_storageunits(n, costs, extendable_carriers, max_hours):
 
     buses_i = n.buses.index
 
-    lookup_store = {"H2": "electrolysis", "battery": "battery inverter"}
-    lookup_dispatch = {"H2": "fuel cell", "battery": "battery inverter"}
+    lookup_store = {"H2": "electrolysis", "li-ion battery": "battery inverter"}
+    lookup_dispatch = {"H2": "fuel cell", "li-ion battery": "battery inverter"}
 
     for carrier in carriers:
-        roundtrip_correction = 0.5 if carrier == "battery" else 1
+        roundtrip_correction = 0.5 if carrier == "li-ion battery" else 1
 
         n.add(
             "StorageUnit",
@@ -927,30 +927,30 @@ def attach_stores(n, costs, extendable_carriers):
             marginal_cost=costs.at["fuel cell", "marginal_cost"],
         )
 
-    if "battery" in carriers:
+    if "li-ion battery" in carriers:
         b_buses_i = n.add(
-            "Bus", buses_i + " battery", carrier="battery", location=buses_i
+            "Bus", buses_i + " li-ion battery", carrier="li-ion battery", location=buses_i
         )
 
         n.add(
             "Store",
             b_buses_i,
             bus=b_buses_i,
-            carrier="battery",
+            carrier="li-ion battery",
             e_cyclic=True,
             e_nom_extendable=True,
             capital_cost=costs.at["battery storage", "capital_cost"],
-            marginal_cost=costs.at["battery", "marginal_cost"],
+            marginal_cost=costs.at["li-ion battery", "marginal_cost"],
         )
 
-        n.add("Carrier", ["battery charger", "battery discharger"])
+        n.add("Carrier", ["li-ion battery charger", "li-ion battery discharger"])
 
         n.add(
             "Link",
             b_buses_i + " charger",
             bus0=buses_i,
             bus1=b_buses_i,
-            carrier="battery charger",
+            carrier="li-ion battery charger",
             # the efficiencies are "round trip efficiencies"
             efficiency=costs.at["battery inverter", "efficiency"] ** 0.5,
             capital_cost=costs.at["battery inverter", "capital_cost"],
@@ -963,7 +963,7 @@ def attach_stores(n, costs, extendable_carriers):
             b_buses_i + " discharger",
             bus0=b_buses_i,
             bus1=buses_i,
-            carrier="battery discharger",
+            carrier="li-ion battery discharger",
             efficiency=costs.at["battery inverter", "efficiency"] ** 0.5,
             p_nom_extendable=True,
             marginal_cost=costs.at["battery inverter", "marginal_cost"],

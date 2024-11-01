@@ -100,13 +100,14 @@ electricity:
     contingency: 4000
 
   max_hours:
-    battery: 6
+    li-ion battery: 6
     H2: 168
+    iron-air battery: 100
 
   extendable_carriers:
     Generator: [solar, solar-hsat, onwind, offwind-ac, offwind-dc, offwind-float, OCGT, CCGT]
-    StorageUnit: [] # battery, H2
-    Store: [battery, H2]
+    StorageUnit: [] # li-ion battery, H2
+    Store: [li-ion battery, H2]
     Link: [] # H2 pipeline
 
   powerplants_filter: (DateOut >= 2023 or DateOut != DateOut) and not (Country == 'Germany' and Fueltype == 'Nuclear')
@@ -602,8 +603,8 @@ sector:
   solar_thermal: true
   solar_cf_correction: 0.788457  # =  >>> 1/1.2683
   marginal_cost_storage: 0. #1e-4
-  stores: ["H2", "battery"]
-  storage_units: []
+  stores: ["H2", "li-ion battery"]
+  storage_units: ["iron-air battery"]
   methanation: true
   coal_cc: false
   dac: true
@@ -847,7 +848,7 @@ costs:
     H2: 0.
     electrolysis: 0.
     fuel cell: 0.
-    battery: 0.
+    li-ion battery: 0.
     battery inverter: 0.
   emission_prices:
     enable: false
@@ -1035,7 +1036,9 @@ plotting:
     solar: "Solar"
     PHS: "Pumped Hydro Storage"
     hydro: "Reservoir & Dam"
-    battery: "Battery Storage"
+    li-ion battery: "Li-Ion Battery Storage"
+    li-ion home battery: "Li-Ion Home Battery Storage"
+    iron-air battery: "Iron-Air Battery Storage"
     H2: "Hydrogen Storage"
     lines: "Transmission Lines"
     ror: "Run of River"
@@ -1168,14 +1171,14 @@ plotting:
     industry new electricity: '#2d2a66'
     agriculture electricity: '#494778'
     # battery + EVs
-    battery: '#ace37f'
+    li-ion battery: '#ace37f'
     battery storage: '#ace37f'
-    battery charger: '#88a75b'
-    battery discharger: '#5d4e29'
-    home battery: '#80c944'
+    li-ion battery charger: '#88a75b'
+    li-ion battery discharger: '#5d4e29'
+    li-ion home battery: '#80c944'
     home battery storage: '#80c944'
-    home battery charger: '#5e8032'
-    home battery discharger: '#3c5221'
+    li-ion home battery charger: '#5e8032'
+    li-ion home battery discharger: '#3c5221'
     BEV charger: '#baf238'
     V2G: '#e5ffa8'
     land transport EV: '#baf238'

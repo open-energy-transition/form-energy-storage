@@ -11,6 +11,8 @@ Release Notes
 Upcoming Release
 ================
 
+* Added Iron-Air battery storage technology and changed nomenclature for lithium-ion battery storages from ``battery`` to ``li-ion battery``.
+
 * Added option to reduce central heating forward temperatures by annual percentage (see rule :mod:`build_central_heating_temperature_profiles`). This makes COP profiles and heat pump efficiencies planning-horizon-dependent. Myopic and perfect foresight modes were adjusted accordingly to update COPs of existing heat pumps in preceding years to adjusted temperatures.
 
 * Rearranged workflow to cluster the electricity network before calculating
