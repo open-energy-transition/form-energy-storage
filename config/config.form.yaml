@@ -66,9 +66,9 @@ co2_budget:
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#electricity
 electricity:
   max_hours:
-    li-ion battery: 6
-    H2: 168
-    iron-air battery: 100
+    li-ion battery: [4, 6]
+    H2: [168]
+    iron-air battery: [100]
   custom_powerplants: false # TODO: Custom PP from EEE project
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#atlite

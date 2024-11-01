@@ -100,9 +100,9 @@ electricity:
     contingency: 4000
 
   max_hours:
-    li-ion battery: 6
-    H2: 168
-    iron-air battery: 100
+    li-ion battery: [6]
+    H2: [168]
+    iron-air battery: [100]
 
   extendable_carriers:
     Generator: [solar, solar-hsat, onwind, offwind-ac, offwind-dc, offwind-float, OCGT, CCGT]

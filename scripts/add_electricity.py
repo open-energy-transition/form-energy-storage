@@ -112,6 +112,7 @@ network with **zero** initial capacity:
 
 import logging
 from pathlib import Path
+import warnings
 from typing import Dict, List
 
 import numpy as np
@@ -272,16 +273,32 @@ def load_costs(tech_costs, config, max_hours, Nyears=1.0):
             dict(capital_cost=capital_cost, marginal_cost=0.0, co2_emissions=0.0)
         )
 
-    costs.loc["li-ion battery"] = costs_for_storage(
+    for max_hour in max_hours["li-ion battery"]:
+        costs.loc[f"li-ion battery {max_hour}h"] = costs_for_storage(
+            costs.loc["battery storage"],
+            costs.loc["battery inverter"],
+            max_hours=max_hour,
+        )
+    # cost for default li-ion battery which will be the first max_hour archetype
+    costs.loc[f"li-ion battery"] = costs_for_storage(
         costs.loc["battery storage"],
         costs.loc["battery inverter"],
-        max_hours=max_hours["li-ion battery"],
+        max_hours=max_hours["li-ion battery"][0],
     )
-    costs.loc["H2"] = costs_for_storage(
+
+    for max_hour in max_hours["H2"]:
+        costs.loc[f"H2 {max_hour}h"] = costs_for_storage(
+            costs.loc["hydrogen storage underground"],
+            costs.loc["fuel cell"],
+            costs.loc["electrolysis"],
+            max_hours=max_hour,
+        )
+    # cost for default H2 underground storage which will be the first max_hour archetype
+    costs.loc[f"H2"] = costs_for_storage(
         costs.loc["hydrogen storage underground"],
         costs.loc["fuel cell"],
         costs.loc["electrolysis"],
-        max_hours=max_hours["H2"],
+        max_hours=max_hours["H2"][0],
     )
 
     for attr in ("marginal_cost", "capital_cost"):
@@ -862,23 +879,23 @@ def attach_storageunits(n, costs, extendable_carriers, max_hours):
 
     for carrier in carriers:
         roundtrip_correction = 0.5 if carrier == "li-ion battery" else 1
-
-        n.add(
-            "StorageUnit",
-            buses_i,
-            " " + carrier,
-            bus=buses_i,
-            carrier=carrier,
-            p_nom_extendable=True,
-            capital_cost=costs.at[carrier, "capital_cost"],
-            marginal_cost=costs.at[carrier, "marginal_cost"],
-            efficiency_store=costs.at[lookup_store[carrier], "efficiency"]
-            ** roundtrip_correction,
-            efficiency_dispatch=costs.at[lookup_dispatch[carrier], "efficiency"]
-            ** roundtrip_correction,
-            max_hours=max_hours[carrier],
-            cyclic_state_of_charge=True,
-        )
+        for max_hour in max_hours[carrier]:
+            n.add(
+                "StorageUnit",
+                buses_i,
+                f" {carrier} {max_hour}h",
+                bus=buses_i,
+                carrier=carrier,
+                p_nom_extendable=True,
+                capital_cost=costs.at[f"{carrier} {max_hour}h", "capital_cost"],
+                marginal_cost=costs.at[f"{carrier} {max_hour}h", "marginal_cost"],
+                efficiency_store=costs.at[lookup_store[carrier], "efficiency"]
+                ** roundtrip_correction,
+                efficiency_dispatch=costs.at[lookup_dispatch[carrier], "efficiency"]
+                ** roundtrip_correction,
+                max_hours=max_hour,
+                cyclic_state_of_charge=True,
+            )
 
 
 def attach_stores(n, costs, extendable_carriers):
@@ -980,6 +997,14 @@ if __name__ == "__main__":
 
     params = snakemake.params
     max_hours = params.electricity["max_hours"]
+    # deprecation warning and casting float values to list of float values for max_hours per carrier
+    for carrier in max_hours:
+        if not isinstance(max_hours[carrier], list):
+            warnings.warn(
+                "The 'max_hours' configuration as a float is deprecated and will be removed in future versions. Please use a list instead.",
+                DeprecationWarning,
+            )
+            max_hours[carrier] = [max_hours[carrier]]
     landfall_lengths = {
         tech: settings["landfall_length"]
         for tech, settings in params.renewable.items()

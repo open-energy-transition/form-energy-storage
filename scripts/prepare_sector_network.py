@@ -8,6 +8,7 @@ technologies for the buildings, transport and industry sectors.
 """
 
 import logging
+import warnings
 import os
 from itertools import product
 from types import SimpleNamespace
@@ -1106,32 +1107,36 @@ def prepare_costs(cost_file, params, nyears):
         return pd.Series(dict(fixed=capital_cost, lifetime=store["lifetime"]))
 
     max_hours = params["max_hours"]
-    costs.loc["li-ion battery"] = costs_for_storage(
-        costs.loc["battery storage"],
-        costs.loc["battery inverter"],
-        max_hours=max_hours["li-ion battery"],
-    )
-    costs.loc["li-ion home battery"] = costs_for_storage(
-        costs.loc["home battery storage"],
-        costs.loc["home battery inverter"],
-        max_hours=max_hours["li-ion battery"],
-    )
-    costs.loc["iron-air battery storage"] = costs_for_storage(
-        costs.loc["iron-air battery"],
-        max_hours=max_hours["iron-air battery"],
-    )
-    costs.loc["H2 underground"] = costs_for_storage(
-        costs.loc["hydrogen storage underground"],
-        costs.loc["fuel cell"],
-        costs.loc["electrolysis"],
-        max_hours=max_hours["H2"],
-    )
-    costs.loc["H2 tank"] = costs_for_storage(
-        costs.loc["hydrogen storage tank type 1 including compressor"],
-        costs.loc["fuel cell"],
-        costs.loc["electrolysis"],
-        max_hours=max_hours["H2"],
-    )
+    # TODO: storage capex might have to be adjusted for different max hour archetypes
+    for max_hour in max_hours["li-ion battery"]:
+        costs.loc[f"li-ion battery {max_hour}h"] = costs_for_storage(
+            costs.loc["battery storage"],
+            costs.loc["battery inverter"],
+            max_hours=max_hour,
+        )
+        costs.loc[f"li-ion home battery {max_hour}h"] = costs_for_storage(
+            costs.loc["home battery storage"],
+            costs.loc["home battery inverter"],
+            max_hours=max_hour,
+        )
+    for max_hour in max_hours["iron-air battery"]:
+        costs.loc[f"iron-air battery storage {max_hour}h"] = costs_for_storage(
+            costs.loc["iron-air battery"],
+            max_hours=max_hour,
+        )
+    for max_hour in max_hours["H2"]:
+        costs.loc[f"H2 underground {max_hour}h"] = costs_for_storage(
+            costs.loc["hydrogen storage underground"],
+            costs.loc["fuel cell"],
+            costs.loc["electrolysis"],
+            max_hours=max_hour,
+        )
+        costs.loc[f"H2 tank {max_hour}h"] = costs_for_storage(
+            costs.loc["hydrogen storage tank type 1 including compressor"],
+            costs.loc["fuel cell"],
+            costs.loc["electrolysis"],
+            max_hours=max_hour,
+        )
 
     return costs
 
@@ -1377,22 +1382,22 @@ def insert_electricity_distribution_grid(n, costs):
     elif "battery" in snakemake.params.sector["storage_units"]:
         n.add("Carrier", "li-ion home battery")
         max_hours = snakemake.params.max_hours
-
-        n.add(
-            "StorageUnit",
-            nodes,
-            suffix=" li-ion home battery",
-            bus=nodes + " low voltage",
-            carrier="li-ion home battery",
-            p_nom_extendable=True,
-            capital_cost=costs.at["li-ion home battery", "fixed"],
-            marginal_cost=options["marginal_cost_storage"],
-            efficiency_store=costs.at["home battery inverter", "efficiency"] ** 0.5,
-            efficiency_dispatch=costs.at["home battery inverter", "efficiency"] ** 0.5,
-            max_hours=max_hours["li-ion battery"],
-            cyclic_state_of_charge=True,
-            lifetime=costs.at["home battery storage", "lifetime"],
-        )
+        for max_hour in max_hours["li-ion battery"]:
+            n.add(
+                "StorageUnit",
+                nodes,
+                suffix=f" li-ion home battery {max_hour}h",
+                bus=nodes + " low voltage",
+                carrier="li-ion home battery",
+                p_nom_extendable=True,
+                capital_cost=costs.at[f"li-ion home battery {max_hour}h", "fixed"],
+                marginal_cost=options["marginal_cost_storage"],
+                efficiency_store=costs.at["home battery inverter", "efficiency"] ** 0.5,
+                efficiency_dispatch=costs.at["home battery inverter", "efficiency"] ** 0.5,
+                max_hours=max_hour,
+                cyclic_state_of_charge=True,
+                lifetime=costs.at["home battery storage", "lifetime"],
+            )
 
 
 def insert_gas_distribution_costs(n, costs):
@@ -1455,9 +1460,6 @@ def get_salt_caverns(cavern_types, fn_h2_cavern):
 def add_storageunits(n, costs, carriers, max_hours):
     nodes = pop_layout.index
 
-    missing_carriers = list(set(carriers).difference(n.carriers.index))
-    n.add("Carrier", missing_carriers)
-
     # check for not implemented storage technologies
     implemented = ["H2", "li-ion battery", "iron-air battery"]
     not_implemented = list(set(carriers).difference(implemented))
@@ -1466,78 +1468,80 @@ def add_storageunits(n, costs, carriers, max_hours):
         logger.warning(
             f"{not_implemented} are not yet implemented as Storage technologies in PyPSA-Eur"
         )
+    missing_carriers = list(set(available_carriers).difference(n.carriers.index))
+    n.add("Carrier", missing_carriers)
 
     lookup_store = {"H2": "electrolysis", "li-ion battery": "battery inverter", "iron-air battery": "iron-air battery charge"}
     lookup_dispatch = {"H2": "fuel cell", "li-ion battery": "battery inverter", "iron-air battery": "iron-air battery discharge"}
 
     for carrier in available_carriers:
-        roundtrip_correction = 0.5 if carrier == "li-ion battery" else 1
-        if carrier == "H2":
-            cavern_types = snakemake.params.sector[
-                "hydrogen_underground_storage_locations"
-            ]
-            fn_h2_cavern = snakemake.input.h2_cavern
-            h2_caverns = get_salt_caverns(cavern_types, fn_h2_cavern)
-            # h2_caverns will be empty pd.Series if hydrogen_underground_storage is set to false
+        for max_hour in max_hours[carrier]:
+            roundtrip_correction = 0.5 if carrier == "li-ion battery" else 1
+            if carrier == "H2":
+                cavern_types = snakemake.params.sector[
+                    "hydrogen_underground_storage_locations"
+                ]
+                fn_h2_cavern = snakemake.input.h2_cavern
+                h2_caverns = get_salt_caverns(cavern_types, fn_h2_cavern)
+                # h2_caverns will be empty pd.Series if hydrogen_underground_storage is set to false
+                n.add(
+                    "StorageUnit",
+                    h2_caverns.index,
+                    suffix=f" {carrier} {max_hour}h",
+                    bus=h2_caverns.index,
+                    carrier=carrier,
+                    p_nom_extendable=True,
+                    p_nom_max=h2_caverns.div(max_hour).values,
+                    capital_cost=costs.at[f"H2 underground {max_hour}h", "fixed"],
+                    marginal_cost=options["marginal_cost_storage"],
+                    efficiency_store=costs.at[lookup_store[carrier], "efficiency"]
+                    ** roundtrip_correction,
+                    efficiency_dispatch=costs.at[lookup_dispatch[carrier], "efficiency"]
+                    ** roundtrip_correction,
+                    max_hours=max_hour,
+                    cyclic_state_of_charge=True,
+                    lifetime=costs.at["hydrogen storage underground", "lifetime"],
+                )
+                # hydrogen stored overground (where not already underground)
+                nodes_ = h2_caverns.index.symmetric_difference(nodes)
+
+            else:
+                nodes_ = nodes
+
+            cost_carrier = "H2 tank" if carrier == "H2" else carrier
+            cost_carrier = "iron-air battery storage" if carrier == "iron-air battery" else cost_carrier
             n.add(
                 "StorageUnit",
-                h2_caverns.index,
-                suffix=" " + carrier,
-                bus=h2_caverns.index,
+                nodes_,
+                suffix=f" {carrier} {max_hour}h",
+                bus=nodes_,
                 carrier=carrier,
                 p_nom_extendable=True,
-                p_nom_max=h2_caverns.div(max_hours[carrier]).values,
-                capital_cost=costs.at["H2 underground", "fixed"],
+                capital_cost=costs.at[f"{cost_carrier} {max_hour}h", "fixed"],
                 marginal_cost=options["marginal_cost_storage"],
                 efficiency_store=costs.at[lookup_store[carrier], "efficiency"]
                 ** roundtrip_correction,
                 efficiency_dispatch=costs.at[lookup_dispatch[carrier], "efficiency"]
                 ** roundtrip_correction,
-                max_hours=max_hours[carrier],
+                max_hours=max_hour,
                 cyclic_state_of_charge=True,
-                lifetime=costs.at["hydrogen storage underground", "lifetime"],
+                lifetime=costs.at[f"{cost_carrier} {max_hour}h", "lifetime"],
             )
-            # hydrogen stored overground (where not already underground)
-            nodes_ = h2_caverns.index.symmetric_difference(nodes)
-
-        else:
-            nodes_ = nodes
-
-        cost_carrier = "H2 tank" if carrier == "H2" else carrier
-        cost_carrier = "iron-air battery storage" if carrier == "iron-air battery" else cost_carrier
-
-        n.add(
-            "StorageUnit",
-            nodes_,
-            suffix=" " + carrier,
-            bus=nodes_,
-            carrier=carrier,
-            p_nom_extendable=True,
-            capital_cost=costs.at[cost_carrier, "fixed"],
-            marginal_cost=options["marginal_cost_storage"],
-            efficiency_store=costs.at[lookup_store[carrier], "efficiency"]
-            ** roundtrip_correction,
-            efficiency_dispatch=costs.at[lookup_dispatch[carrier], "efficiency"]
-            ** roundtrip_correction,
-            max_hours=max_hours[carrier],
-            cyclic_state_of_charge=True,
-            lifetime=costs.at[cost_carrier, "lifetime"],
-        )
 
 
 def add_stores(n, costs, carriers):
     nodes = pop_layout.index
 
-    missing_carriers = list(set(carriers).difference(n.carriers.index))
-    n.add("Carrier", missing_carriers)
-
     # check for not implemented storage technologies
     implemented = ["H2", "li-ion battery", "iron-air battery"]
     not_implemented = list(set(carriers).difference(implemented))
+    available_carriers = list(set(carriers).intersection(implemented))
     if len(not_implemented) > 0:
         logger.warning(
             f"{not_implemented} are not yet implemented as Store technologies in PyPSA-Eur"
         )
+    missing_carriers = list(set(available_carriers).difference(n.carriers.index))
+    n.add("Carrier", missing_carriers)
 
     if "H2" in carriers:
         cavern_types = snakemake.params.sector["hydrogen_underground_storage_locations"]
@@ -4733,6 +4737,7 @@ def add_enhanced_geothermal(n, egs_potentials, egs_overlap, costs):
                 cyclic_state_of_charge=True,
             )
 
+
 def get_capacities_from_elec(n, carriers, component):
     """
     Gets capacities and efficiencies for {carrier} in n.{component} that were
@@ -4755,6 +4760,7 @@ def get_capacities_from_elec(n, carriers, component):
         )[eff_col]
 
     return capacity_dict, efficiency_dict
+
 
 # %%
 if __name__ == "__main__":
@@ -4784,7 +4790,14 @@ if __name__ == "__main__":
     pop_layout = pd.read_csv(snakemake.input.clustered_pop_layout, index_col=0)
     nhours = n.snapshot_weightings.generators.sum()
     nyears = nhours / 8760
-
+    # deprecation warning and casting float values to list of float values for max_hours per carrier
+    for carrier in snakemake.params.max_hours:
+        if not isinstance(snakemake.params.max_hours[carrier], list):
+            warnings.warn(
+                "The 'max_hours' configuration as a float is deprecated and will be removed in future versions. Please use a list instead.",
+                DeprecationWarning,
+            )
+            snakemake.params.max_hours[carrier] = [snakemake.params.max_hours[carrier]]
     costs = prepare_costs(
         snakemake.input.costs,
         snakemake.params,
