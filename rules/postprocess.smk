@@ -102,6 +102,32 @@ if config["foresight"] != "perfect":
         script:
             "../scripts/plot_gas_network.py"
 
+rule plot_KPIs:
+    params:
+        plotting=config_provider("plotting"),
+    input:
+        network=RESULTS
+        + "postnetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
+        regions=resources("regions_onshore_base_s_{clusters}.geojson"),
+    output:
+        curtailment_map=RESULTS
+            + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-curtailment_{planning_horizons}.pdf",
+    threads: 2
+    resources:
+        mem_mb=10000,
+    log:
+        RESULTS
+        + "logs/plot_KPIs/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.log",
+    benchmark:
+        (
+                RESULTS
+                + "benchmarks/plot_KPIs/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}"
+        )
+    conda:
+        "../envs/environment.yaml"
+    script:
+        "../scripts/plot_KPIs.py"
+
 
 if config["foresight"] == "perfect":
 
@@ -167,6 +193,12 @@ rule make_summary:
             **config["scenario"],
             allow_missing=True,
         ),
+        kpis=expand(
+        RESULTS
+        + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-curtailment_{planning_horizons}.pdf",
+            **config["scenario"],
+            allow_missing=True,
+            ),
         h2_plot=lambda w: expand(
             (
                 RESULTS
