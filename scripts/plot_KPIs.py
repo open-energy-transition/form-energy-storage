@@ -265,8 +265,6 @@ if __name__ == "__main__":
         "urban decentral solar thermal": "Solar Thermal",
     }
 
-
-
     # define tech colors and update with custom
     tech_colors = snakemake.config["plotting"]["tech_colors"]
     tech_colors.update(tech_colors_custom)
@@ -280,10 +278,6 @@ if __name__ == "__main__":
     regions = gpd.read_file(snakemake.input.regions).set_index("name")
 
     n = pypsa.Network(snakemake.input.network)
-
-    # create save path for figures
-    # save_path = f"data_exchange_pypsa/{'_'.join(run_name.split('_')[:2])}/results/{scenario}"
-    # os.makedirs(save_path, exist_ok=True)
 
     plot_curtailment(n, regions, path=snakemake.output.curtailment_map, focus_de=True, show_fig=False)
 
