@@ -152,7 +152,7 @@ sector:
   reduce_space_heat_exogenously: true
   reduce_space_heat_exogenously_factor: # TODO: check this for Germany (Regulation or Ariadne?)
     2035: 0.11
-  tes: false
+  tes: true
   marginal_cost_storage: 0. #1e-4
   stores: ["H2"]
   storage_units: ["li-ion battery", "iron-air battery"]
