@@ -34,7 +34,7 @@ foresight: myopic
 # Wildcard docs in https://pypsa-eur.readthedocs.io/en/latest/wildcards.html
 scenario:
   ll:
-  - v1.27  # v1.x with x according to NEP and TYNDP (existing_capacities=zero)
+  - v1.11  # v1.x with x according to additional NEP links (existing_capacities=zero)
   clusters:
   - 52
   planning_horizons:
@@ -69,7 +69,10 @@ electricity:
     li-ion battery: [4, 6]
     H2: [168]
     iron-air battery: [100]
-  custom_powerplants: false # TODO: Custom PP from EEE project
+  extendable_carriers:
+    Generator: [solar, solar-hsat, onwind, offwind-ac, offwind-dc, offwind-float]
+  powerplants_filter: DateOut >= 2024 and not Fueltype.isin(['Nuclear', 'Hard Coal', 'Lignite'])
+  custom_powerplants: DateIn <= 2024 and DateOut >= 2024
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#atlite
 atlite:
@@ -100,7 +103,7 @@ lines:
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#transmission_projects
 transmission_projects:
-  enable: false
+  enable: true
   include:
     tyndp2020: false
     nep: true
@@ -167,7 +170,7 @@ sector:
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#costs
 costs:
   year: 2035 # TODO: change to commit with new cost assumptions
-  version: v0.9.2
+  version: 67a5830
   social_discountrate: 0.02
   fill_values:
     FOM: 0
