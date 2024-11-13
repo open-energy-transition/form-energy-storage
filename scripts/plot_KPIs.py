@@ -95,7 +95,7 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True):
     legend_y = 0.57
     sizes = [6, 3, 1]  # GW
 
-    labels = [f"{s} GW" for s in sizes]
+    labels = [f"{s} GWh" for s in sizes]
     sizes = [s * 1e3 / bus_size_factor for s in sizes]
 
     legend_kw = dict(
