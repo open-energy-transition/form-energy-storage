@@ -314,7 +314,7 @@ def plot_time_series(network, start_date, end_date, path, focus_component=["Gene
 
     if show_fig:
         fig.show()
-    fig.savefig(path)
+    fig.savefig(path, bbox_inches="tight")
 
 if __name__ == "__main__":
 
