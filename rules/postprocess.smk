@@ -112,6 +112,12 @@ rule plot_KPIs:
     output:
         curtailment_map=RESULTS
             + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-curtailment_{planning_horizons}.pdf",
+        line_loading_map=RESULTS
+            + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-line_loading_{planning_horizons}.pdf",
+        energy_balance=RESULTS
+            + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-energy_balance_{planning_horizons}.pdf",
+        storage_energy_balance=RESULTS
+            + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-storage_energy_balance_{planning_horizons}.pdf",
     threads: 2
     resources:
         mem_mb=10000,

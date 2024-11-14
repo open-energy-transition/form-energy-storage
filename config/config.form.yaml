@@ -202,3 +202,8 @@ clustering:
     DE: 0.6
   temporal:
     resolution_sector: 100H #2920SEG # TODO: low for development, change this later
+
+plotting:
+  time_series:
+    start_date: '2013-05-01'
+    end_date: '2013-06-01'

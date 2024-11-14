@@ -22,6 +22,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import pypsa
 from matplotlib import rc
+from plot_power_network import load_projection
+from matplotlib.colors import Normalize
+from pypsa.statistics import get_bus_and_carrier
 
 # activate latex text rendering
 rc('text', usetex=True)
@@ -142,6 +145,176 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True):
         fig.show()
     fig.savefig(path, bbox_inches="tight")
 
+def plot_line_loading(network, regions, path, focus_de=True, value="mean", show_fig=True):
+
+    n = network.copy()
+    map_opts = map_opts_params.copy()
+
+    def filter_connections(l, l_t, opt_name, query_func=False):
+        if query_func:
+            hide_connection = l.query(query_func).index
+        else:
+            hide_connection = []
+    
+        p0 = l_t.p0.copy()
+        opt = l[opt_name].copy()
+        alpha = pd.Series(index=l.index)
+        
+        p0.loc[:, hide_connection] = 0
+        opt.loc[hide_connection] = 0
+        alpha.loc[hide_connection] = 0
+
+        alpha = alpha.fillna(1)
+    
+        return p0, opt, alpha
+
+    if focus_de:
+        n.lines["country0"] = [n.buses.country[busname] for busname in n.lines.bus0]
+        n.lines["country1"] = [n.buses.country[busname] for busname in n.lines.bus1]
+        n.links["country0"] = [n.buses.country[busname] for busname in n.links.bus0]
+        n.links["country1"] = [n.buses.country[busname] for busname in n.links.bus1]
+        
+        query_lines = "country0 != 'DE' or country1 != 'DE'"
+        query_links = "country0 != 'DE' or country1 != 'DE' or carrier != 'DC'"
+    else:
+        query_lines = False
+        query_links = "carrier != 'DC'"
+        
+    lines_p0, lines_opt, lines_alpha = filter_connections(n.lines, n.lines_t,"s_nom_opt", query_lines)
+    links_p0, links_opt, links_alpha = filter_connections(n.links, n.links_t,"p_nom_opt", query_links)
+
+    lines_loading = abs(lines_p0)/lines_opt
+    links_loading = abs(links_p0)/links_opt
+    
+    if value == "mean":
+        line_colors = lines_loading.mean() * 100
+        link_colors = links_loading.mean() * 100
+        title = "Average"
+        
+    elif value == "max":
+        line_colors = lines_loading.max() * 100
+        link_colors = links_loading.max() * 100
+        title = "Average max"
+
+    line_weight = pd.DataFrame(index=n.lines.index)
+    line_weight["w"] = [lines_opt[i] * n.lines.length[i] / (lines_opt * n.lines.length).sum() for i in n.lines.index]
+    line_ave = round((line_weight["w"] * line_colors).sum(),1)
+
+    link_weight = pd.DataFrame(index=n.links.index)
+    link_weight["w"] = [links_opt[i] * n.links.length[i] / (links_opt * n.links.length).sum() for i in n.links.index]
+    link_ave = round((link_weight["w"] * link_colors).sum(),1)
+
+    proj = load_projection(snakemake.params.plotting)
+
+    map_opts = snakemake.params.plotting["map"]
+
+    if focus_de:
+        map_opts["boundaries"] = [4, 17, 46, 56]
+
+    if map_opts["boundaries"] is None:
+        map_opts["boundaries"] = regions.total_bounds[[0, 2, 1, 3]] + [-1, 1, -1, 1]
+
+    fig, ax = plt.subplots(subplot_kw={"projection": proj}, figsize=(7, 6))
+    norm = Normalize(vmin=0, vmax=100, clip=True)
+
+    collection = n.plot(
+        ax=ax,
+        line_colors=line_colors,
+        line_cmap=plt.cm.jet,
+        line_norm=norm,
+        line_alpha=lines_alpha,
+        link_colors=link_colors,
+        link_cmap=plt.cm.jet,
+        link_alpha=links_alpha,
+        link_norm=norm,
+        title="Line loading",
+        bus_sizes=1e-3,
+        bus_alpha=0.7,
+        boundaries=map_opts["boundaries"]
+    )
+
+    ax.set_title(f'{title} AC line loading: {line_ave} %\n{title} DC link loading: {link_ave} %', 
+                loc='left', 
+                x=0.02, 
+                y=0.90,
+                fontsize=12
+                )
+
+    plt.colorbar(collection[1], label="line loading [%]", ax=ax)
+
+    if show_fig:
+        fig.show()
+    fig.savefig(path, bbox_inches="tight")
+
+def plot_time_series(network, start_date, end_date, path, focus_component=["Generator","StorageUnit"], focus_de=True, show_fig=True):
+    n = network.copy()
+    
+    optimized = n.statistics.energy_balance(groupby=get_bus_and_carrier, aggregate_time=False).T
+    load_demand = optimized[["Load"]].droplevel(0, axis=1)
+    load_demand = load_demand.rename(columns=n.buses.country, level=0)
+    
+    optimized = optimized[focus_component].droplevel(0, axis=1)
+    optimized = optimized.rename(columns=n.buses.country, level=0)
+    optimized = optimized.rename(columns=pretty_gen, level=1)
+    optimized = optimized.T.groupby(level=[0, 1]).sum().T
+
+    if focus_de:
+        print("DE")
+        df_carrier = optimized["DE"]
+        df_load = abs(load_demand["DE"].T.sum())
+    else:
+        print("All")
+        df_carrier = optimized.T.groupby(optimized.columns.get_level_values(1)).sum().T
+        df_load = abs(load_demand.T.groupby(load_demand.columns.get_level_values(1)).sum().sum())
+
+    #Set color
+    colors = n.carriers.set_index("nice_name").color.where(lambda s: s != "", "green")
+    
+    for c in df_carrier.columns:
+        if (df_carrier[c] < 0).values.any():
+            df_carrier[c + " Discharge"] = df_carrier[c].clip(lower=0)
+            colors[c + " Discharge"] = colors[c]
+            df_carrier[c + " Charge"] = df_carrier[c].clip(upper=0)
+            colors[c + " Charge"] = colors[c]
+            df_carrier = df_carrier.drop(columns=c)
+
+    order = ((df_carrier.diff().abs().sum() / df_carrier.sum()).sort_values().index)
+    df_carrier = df_carrier[order]
+    
+    #cut into the specific timesteps
+    df_carrier = df_carrier[pd.Timestamp(start_date):pd.Timestamp(end_date)]
+    df_load = df_load[pd.Timestamp(start_date):pd.Timestamp(end_date)]
+
+    #kW to MW
+    df_carrier = df_carrier/1e3
+    df_load = df_load/1e3
+
+    #remove if smaller than 1 MWh
+    df_carrier = df_carrier.loc[:,abs(df_carrier.sum()) > 1]
+    
+    fig, axes = plt.subplots(figsize=(12,5))
+    
+    df_carrier.plot.area(ax = axes, legend=False, color = [colors[c] for c in df_carrier.columns])
+    
+    if "Generator" in focus_component:
+        df_load.plot(ax = axes, color = "black", linestyle='dashed')
+
+    df_legend = pd.DataFrame()
+    df_legend["handle"], df_legend["label"] = axes.get_legend_handles_labels()
+    df_legend["label"] = [w.replace(' Charge', '').replace(' Discharge', '') for w in df_legend["label"]]
+    df_legend["label"] = [w.replace(' &', '').replace(' and', '') for w in df_legend["label"]] #NOTE: Latex hates '&' strings because its their seperator
+    df_legend = df_legend.drop_duplicates(subset = ["label"],keep = 'first').iloc[::-1]
+
+    axes.legend(df_legend["handle"], df_legend["label"], loc = "upper center", bbox_to_anchor = (0.5, -0.15), frameon = False, ncol = 4, 
+                title = "Components", title_fontproperties = {'weight':'bold'})
+
+    axes.grid(axis="y")
+    axes.set_ylabel("Energy Balance [MW]")
+    axes.set_xlabel("")
+
+    if show_fig:
+        fig.show()
+    fig.savefig(path)
 
 if __name__ == "__main__":
 
@@ -268,6 +441,7 @@ if __name__ == "__main__":
     # define tech colors and update with custom
     tech_colors = snakemake.config["plotting"]["tech_colors"]
     tech_colors.update(tech_colors_custom)
+    tech_colors = {(pretty_gen[k] if k in pretty_gen else k):v  for (k,v) in tech_colors.items()}
 
     # get threshold capacity
     threshold = snakemake.config["existing_capacities"]["threshold_capacity"]
@@ -276,8 +450,18 @@ if __name__ == "__main__":
 
     map_opts_params = snakemake.params.plotting["map"]
     regions = gpd.read_file(snakemake.input.regions).set_index("name")
+    time_series_params = snakemake.params.plotting["time_series"]
+    start_date = time_series_params["start_date"]
+    end_date = time_series_params["end_date"]
+    print(start_date)
+    print(end_date)
 
     n = pypsa.Network(snakemake.input.network)
 
     plot_curtailment(n, regions, path=snakemake.output.curtailment_map, focus_de=True, show_fig=False)
 
+    plot_line_loading(n, regions, path=snakemake.output.line_loading_map, focus_de=True, value="mean", show_fig=False)
+
+    plot_time_series(n, start_date, end_date, path=snakemake.output.energy_balance, focus_component=["Generator","StorageUnit"], focus_de=True, show_fig=False)
+    
+    plot_time_series(n, start_date, end_date, path=snakemake.output.storage_energy_balance, focus_component=["StorageUnit"], focus_de=True, show_fig=False)
