@@ -6,6 +6,8 @@ rules
 scripts
 config
 config/test
+data
+report
 envs
 matplotlibrc
 Snakefile
