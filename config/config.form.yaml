@@ -200,6 +200,10 @@ costs:
     lignite: 22.11 # https://businessanalytiq.com/procurementanalytics/index/lignite-coal-price-index/
     nuclear: 1.75 # https://markets.businessinsider.com/commodities/uranium-price
     uranium: 1.75
+  efficiency:
+    Compressed-Air-Adiabatic-bicharger: 0.7745
+  investment:
+    iron-air battery: 23.5
   marginal_cost:
     solar: 0.01
     onwind: 0.015
@@ -221,12 +225,6 @@ clustering:
     DE: 0.6
   temporal:
     resolution_sector: 100H #2920SEG # TODO: low for development, change this later
-
-costs:
-  efficiency:
-    Compressed-Air-Adiabatic-bicharger: 0.7745
-  investment:
-    iron-air battery: 23.5
 
 plotting:
   tech_colors:
