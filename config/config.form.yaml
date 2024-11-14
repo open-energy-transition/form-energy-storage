@@ -66,7 +66,10 @@ co2_budget:
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#electricity
 electricity:
   max_hours:
-    li-ion battery: [4, 6]
+    li-ion battery: [1, 2, 4, 8]
+    vanadium: [10]
+    lair: [12]
+    pair: [24]
     H2: [168]
     iron-air battery: [100]
   extendable_carriers:
@@ -91,6 +94,11 @@ atlite:
       dx: 0.3
       dy: 0.3
       time: ['2013', '2013']
+
+# docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#renewable
+renewable:
+  hydro:
+    PHS_max_hours: 10
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#lines
 lines:
@@ -155,7 +163,7 @@ sector:
   tes: true
   marginal_cost_storage: 0. #1e-4
   stores: ["H2"]
-  storage_units: ["li-ion battery", "iron-air battery"]
+  storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
   hydrogen_fuel_cell: true
   hydrogen_turbine: false
   hydrogen_underground_storage: true
@@ -213,3 +221,17 @@ clustering:
     DE: 0.6
   temporal:
     resolution_sector: 100H #2920SEG # TODO: low for development, change this later
+
+costs:
+  efficiency:
+    Compressed-Air-Adiabatic-bicharger: 0.7745
+  investment:
+    iron-air battery: 23.5
+
+plotting:
+  tech_colors:
+    # all battery variation:
+    lfp: '#ace37f'
+    vanadium: '#9B111E'
+    lair: '#87CEEB'
+    pair: '#003366'

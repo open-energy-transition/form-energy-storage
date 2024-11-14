@@ -101,12 +101,16 @@ electricity:
 
   max_hours:
     li-ion battery: [6]
+    lfp: [6]
+    vanadium: [10]
+    lair: [12]
+    pair: [24]
     H2: [168]
     iron-air battery: [100]
 
   extendable_carriers:
     Generator: [solar, solar-hsat, onwind, offwind-ac, offwind-dc, offwind-float, OCGT, CCGT]
-    StorageUnit: [] # li-ion battery, H2
+    StorageUnit: [] # li-ion battery, H2, lfp, vanadium, lair, pair
     Store: [li-ion battery, H2]
     Link: [] # H2 pipeline
 

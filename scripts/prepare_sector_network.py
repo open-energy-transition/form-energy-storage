@@ -1128,6 +1128,36 @@ def prepare_costs(cost_file, params, nyears):
             costs.loc["home battery inverter"],
             max_hours=max_hour,
         )
+
+    for max_hour in max_hours["lfp"]:
+        costs.loc[f"lfp {max_hour}h"] = costs_for_storage(
+            costs.loc["Lithium-Ion-LFP-store"],
+            costs.loc["Lithium-Ion-LFP-bicharger"],
+            max_hours=max_hour,
+        )
+
+    for max_hour in max_hours["vanadium"]:
+        costs.loc[f"vanadium {max_hour}h"] = costs_for_storage(
+            costs.loc["Vanadium-Redox-Flow-store"],
+            costs.loc["Vanadium-Redox-Flow-bicharger"],
+            max_hours=max_hour,
+        )
+
+    for max_hour in max_hours["lair"]:
+        costs.loc[f"lair {max_hour}h"] = costs_for_storage(
+            costs.loc["Liquid-Air-store"],
+            costs.loc["Liquid-Air-charger"],
+            costs.loc["Liquid-Air-discharger"],
+            max_hours=max_hour,
+        )
+
+    for max_hour in max_hours["pair"]:
+        costs.loc[f"pair {max_hour}h"] = costs_for_storage(
+            costs.loc["Compressed-Air-Adiabatic-store"],
+            costs.loc["Compressed-Air-Adiabatic-bicharger"],
+            max_hours=max_hour,
+        )
+
     for max_hour in max_hours["iron-air battery"]:
         costs.loc[f"iron-air battery storage {max_hour}h"] = costs_for_storage(
             costs.loc["iron-air battery"],
@@ -1470,7 +1500,7 @@ def add_storageunits(n, costs, carriers, max_hours):
     nodes = pop_layout.index
 
     # check for not implemented storage technologies
-    implemented = ["H2", "li-ion battery", "iron-air battery"]
+    implemented = ["H2", "li-ion battery", "iron-air battery", "lfp", "vanadium", "lair", "pair"]
     not_implemented = list(set(carriers).difference(implemented))
     available_carriers = list(set(carriers).intersection(implemented))
     if len(not_implemented) > 0:
@@ -1480,8 +1510,10 @@ def add_storageunits(n, costs, carriers, max_hours):
     missing_carriers = list(set(available_carriers).difference(n.carriers.index))
     n.add("Carrier", missing_carriers)
 
-    lookup_store = {"H2": "electrolysis", "li-ion battery": "battery inverter", "iron-air battery": "iron-air battery charge"}
-    lookup_dispatch = {"H2": "fuel cell", "li-ion battery": "battery inverter", "iron-air battery": "iron-air battery discharge"}
+    lookup_store = {"H2": "electrolysis", "li-ion battery": "battery inverter", "iron-air battery": "iron-air battery charge",
+    "lfp": "Lithium-Ion-LFP-bicharger", "vanadium": "Vanadium-Redox-Flow-bicharger", "lair":  "Liquid-Air-charger", "pair": "Compressed-Air-Adiabatic-bicharger"}
+    lookup_dispatch = {"H2": "fuel cell", "li-ion battery": "battery inverter", "iron-air battery": "iron-air battery discharge",
+    "lfp": "Lithium-Ion-LFP-bicharger", "vanadium": "Vanadium-Redox-Flow-bicharger", "lair":  "Liquid-Air-discharger", "pair": "Compressed-Air-Adiabatic-bicharger"}
 
     for carrier in available_carriers:
         for max_hour in max_hours[carrier]:
