@@ -85,8 +85,8 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True):
         cmap="Greens",
         linewidths=0,
         legend=True,
-        vmax=60,
-        vmin=40,
+        vmax=regions.elec_price.max(),
+        vmin=regions.elec_price.min(),
         legend_kwds={
             "label": "Avg. Electricity Price [EUR/MWh]",
             "shrink": 0.7,
