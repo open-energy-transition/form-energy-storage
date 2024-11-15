@@ -246,26 +246,21 @@ def plot_line_loading(network, regions, path, focus_de=True, value="mean", show_
         fig.show()
     fig.savefig(path, bbox_inches="tight")
 
-def plot_time_series(network, start_date, end_date, path, focus_component=["Generator","StorageUnit"], focus_de=True, show_fig=True):
+def plot_power_time_series(network, start_date, end_date, path, focus_component=["Generator","StorageUnit","Link"], focus_de=True, show_fig=True):
     n = network.copy()
     
     optimized = n.statistics.energy_balance(groupby=get_bus_and_carrier, aggregate_time=False).T
-    load_demand = optimized[["Load"]].droplevel(0, axis=1)
-    load_demand = load_demand.rename(columns=n.buses.country, level=0)
-    
-    optimized = optimized[focus_component].droplevel(0, axis=1)
+    optimized = optimized[focus_component].droplevel(0, axis=1).T
+    optimized = optimized.loc[optimized.index.get_level_values('bus').isin(n.buses.query("carrier == 'AC'").index)]
+    optimized = optimized.loc[optimized.index.get_level_values('carrier') != 'DC'].T
     optimized = optimized.rename(columns=n.buses.country, level=0)
     optimized = optimized.rename(columns=pretty_gen, level=1)
     optimized = optimized.T.groupby(level=[0, 1]).sum().T
 
     if focus_de:
-        print("DE")
         df_carrier = optimized["DE"]
-        df_load = abs(load_demand["DE"].T.sum())
     else:
-        print("All")
         df_carrier = optimized.T.groupby(optimized.columns.get_level_values(1)).sum().T
-        df_load = abs(load_demand.T.groupby(load_demand.columns.get_level_values(1)).sum().sum())
 
     #Set color
     colors = n.carriers.set_index("nice_name").color.where(lambda s: s != "", "green")
@@ -283,21 +278,21 @@ def plot_time_series(network, start_date, end_date, path, focus_component=["Gene
     
     #cut into the specific timesteps
     df_carrier = df_carrier[pd.Timestamp(start_date):pd.Timestamp(end_date)]
-    df_load = df_load[pd.Timestamp(start_date):pd.Timestamp(end_date)]
 
     #kW to MW
     df_carrier = df_carrier/1e3
-    df_load = df_load/1e3
 
     #remove if smaller than 1 MWh
     df_carrier = df_carrier.loc[:,abs(df_carrier.sum()) > 1]
     
     fig, axes = plt.subplots(figsize=(12,5))
     
-    df_carrier.plot.area(ax = axes, legend=False, color = [colors[c] for c in df_carrier.columns])
-    
-    if "Generator" in focus_component:
-        df_load.plot(ax = axes, color = "black", linestyle='dashed')
+    if "Link" in focus_component:
+        df_plot = df_carrier.drop('electricity distribution grid Charge', axis=1)
+        df_plot.plot.area(ax = axes, legend=False, color = [colors[c] for c in df_plot.columns])
+        abs(df_carrier['electricity distribution grid Charge']).plot(ax = axes, color = "black", linestyle='dashed')
+    else:
+        df_carrier.plot.area(ax = axes, legend=False, color = [colors[c] for c in df_carrier.columns])
 
     df_legend = pd.DataFrame()
     df_legend["handle"], df_legend["label"] = axes.get_legend_handles_labels()
@@ -311,6 +306,7 @@ def plot_time_series(network, start_date, end_date, path, focus_component=["Gene
     axes.grid(axis="y")
     axes.set_ylabel("Energy Balance [MW]")
     axes.set_xlabel("")
+    axes.set_facecolor("white")
 
     if show_fig:
         fig.show()
@@ -453,8 +449,6 @@ if __name__ == "__main__":
     time_series_params = snakemake.params.plotting["time_series"]
     start_date = time_series_params["start_date"]
     end_date = time_series_params["end_date"]
-    print(start_date)
-    print(end_date)
 
     n = pypsa.Network(snakemake.input.network)
 
@@ -462,6 +456,6 @@ if __name__ == "__main__":
 
     plot_line_loading(n, regions, path=snakemake.output.line_loading_map, focus_de=True, value="mean", show_fig=False)
 
-    plot_time_series(n, start_date, end_date, path=snakemake.output.energy_balance, focus_component=["Generator","StorageUnit"], focus_de=True, show_fig=False)
+    plot_power_time_series(n, start_date, end_date, path=snakemake.output.energy_balance, focus_component=["Generator","StorageUnit","Link"], focus_de=True, show_fig=False)
     
-    plot_time_series(n, start_date, end_date, path=snakemake.output.storage_energy_balance, focus_component=["StorageUnit"], focus_de=True, show_fig=False)
+    plot_power_time_series(n, start_date, end_date, path=snakemake.output.storage_energy_balance, focus_component=["StorageUnit"], focus_de=True, show_fig=False)
