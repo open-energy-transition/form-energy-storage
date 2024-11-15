@@ -135,6 +135,7 @@ rule make_summary:
     params:
         foresight=config_provider("foresight"),
         costs=config_provider("costs"),
+        max_hours=config_provider("electricity", "max_hours"),
         snapshots=config_provider("snapshots"),
         drop_leap_day=config_provider("enable", "drop_leap_day"),
         scenario=config_provider("scenario"),

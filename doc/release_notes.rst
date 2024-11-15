@@ -11,6 +11,8 @@ Release Notes
 Upcoming Release
 ================
 
+* Added Iron-Air battery storage technology and changed nomenclature for lithium-ion battery storages from ``battery`` to ``li-ion battery``.
+
 * Feature: Allow CHPs to use different fuel sources such as gas, oil, coal, and methanol. Note that the cost assumptions are based on a gas CHP.
 
 * Improve `sanitize_carrier`` function by filling in colors of missing carriers with colors mapped after using the function `rename_techs`.

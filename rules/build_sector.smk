@@ -1013,6 +1013,7 @@ rule prepare_sector_network:
         ),
         foresight=config_provider("foresight"),
         costs=config_provider("costs"),
+        max_hours=config_provider("electricity", "max_hours"),
         sector=config_provider("sector"),
         industry=config_provider("industry"),
         renewable=config_provider("renewable"),
