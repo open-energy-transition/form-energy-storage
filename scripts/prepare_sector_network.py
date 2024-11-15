@@ -1077,6 +1077,14 @@ def cycling_shift(df, steps=1):
 
 
 def prepare_costs(cost_file, params, nyears):
+    # deprecation warning and casting float values to list of float values for max_hours per carrier
+    for carrier in params.max_hours:
+        if not isinstance(params.max_hours[carrier], list):
+            warnings.warn(
+                "The 'max_hours' configuration as a float is deprecated and will be removed in future versions. Please use a list instead.",
+                DeprecationWarning,
+            )
+            params.max_hours[carrier] = [params.max_hours[carrier]]
     # set all asset costs and other parameters
     costs = pd.read_csv(cost_file, index_col=[0, 1]).sort_index()
 
@@ -4831,14 +4839,6 @@ if __name__ == "__main__":
     pop_layout = pd.read_csv(snakemake.input.clustered_pop_layout, index_col=0)
     nhours = n.snapshot_weightings.generators.sum()
     nyears = nhours / 8760
-    # deprecation warning and casting float values to list of float values for max_hours per carrier
-    for carrier in snakemake.params.max_hours:
-        if not isinstance(snakemake.params.max_hours[carrier], list):
-            warnings.warn(
-                "The 'max_hours' configuration as a float is deprecated and will be removed in future versions. Please use a list instead.",
-                DeprecationWarning,
-            )
-            snakemake.params.max_hours[carrier] = [snakemake.params.max_hours[carrier]]
     costs = prepare_costs(
         snakemake.input.costs,
         snakemake.params,
