@@ -25,6 +25,8 @@ from matplotlib import rc
 from plot_power_network import load_projection
 from matplotlib.colors import Normalize
 from pypsa.statistics import get_bus_and_carrier
+from plot_summary import preferred_order
+from pypsa.statistics import get_bus_and_carrier_and_bus_carrier
 
 # activate latex text rendering
 rc('text', usetex=True)
@@ -312,6 +314,100 @@ def plot_power_time_series(network, start_date, end_date, path, focus_component=
         fig.show()
     fig.savefig(path, bbox_inches="tight")
 
+def find_electricity_carrier(n):
+    df = pd.DataFrame(n.statistics.energy_balance(groupby=get_bus_and_carrier_and_bus_carrier))
+    df = df.groupby(["carrier","bus_carrier"]).sum().reset_index().drop(columns=0)
+    df = df[df["bus_carrier"].isin(["AC"])]
+    return df["carrier"].unique()
+
+def plot_system_cost(network, nodal_costs, path, focus_component=["Generator","StorageUnit","Link","Store"], focus_de=True, electricity_only=True, show_fig=False):
+    n = network.copy()
+
+    component_nice_name = {"Generator":'generators',
+                           "StorageUnit":'storage_units',
+                           "Link":'links',
+                           "Store":'stores'
+                          }
+
+    cost_df = pd.read_csv(nodal_costs, index_col=list(range(3)), header=list(range(4)))
+    cost_df = cost_df.set_axis(['carrier', 'costs'], axis=1)
+    cost_df = cost_df.rename(index=n.buses.country, level=2)
+
+    cost_df = cost_df[cost_df.index.get_level_values(0).isin(component_nice_name[comp] for comp in focus_component)]
+
+    if focus_de:
+        cost_df = cost_df[cost_df.index.get_level_values(2) == 'DE']
+
+    df = cost_df.groupby(["carrier"]).sum()
+
+    # convert to billions
+    df = df / 1e9
+
+    df["nice_name"] = list(pd.Series(df.index).replace(n.carriers.nice_name))
+    df = df.set_index("nice_name")
+
+    if electricity_only:
+        elec_carrier = find_electricity_carrier(n)
+        df = df[df.index.isin(elec_carrier)]
+
+        electricity_title = "electricity only "
+    else:
+        electricity_title = ""
+
+    to_drop = df.index[df.max(axis=1) < snakemake.config["plotting"]["costs_threshold"]] #snakemake.params.plotting["costs_threshold"]]
+
+    logger.info(
+        f"Dropping technology with costs below {snakemake.params['plotting']['costs_threshold']} EUR billion per year"
+    )
+    logger.debug(df.loc[to_drop])
+
+    df = df.drop(to_drop)
+
+    logger.info(f"Total {electricity_title}system cost of {round(df.sum().iloc[0])} EUR billion per year")
+
+    new_index = preferred_order.intersection(df.index).append(
+        df.index.difference(preferred_order)
+    )
+
+    #Set color
+    colors = n.carriers.set_index("nice_name").color.where(lambda s: s != "", "green")
+
+    fig, ax = plt.subplots(figsize=(8, 8))
+
+    df.loc[new_index].T.plot(
+        kind="bar",
+        ax=ax,
+        stacked=True,
+        color=[colors[i] for i in new_index],
+    )
+
+    handles, labels = ax.get_legend_handles_labels()
+
+    handles.reverse()
+    labels.reverse()
+
+    ax.set_ylim([0, snakemake.params.plotting["costs_max"]])
+
+    ax.set_ylabel("System Cost [EUR billion per year]")
+
+    ax.set_xlabel("")
+
+    ax.grid(axis="x")
+
+    labels = [label + ": \n " + str(round(df.loc[label,"costs"],2)) for label in labels]
+    labels = [label.replace(' &', '').replace(' and', '') for label in labels] #NOTE: Latex hates '&' strings because its their seperator
+
+    ax.legend(
+        handles, labels, ncol=1, loc="center left", bbox_to_anchor=[1, 0.5], frameon=False, 
+        title = f"{electricity_title}system cost: \n{round(df.sum().iloc[0],2)}", alignment="left"
+    )
+
+    ax.set_facecolor("white")
+
+    if show_fig:
+        fig.show()
+    fig.savefig(path, bbox_inches="tight")
+
 if __name__ == "__main__":
 
     if "snakemake" not in globals():
@@ -459,3 +555,7 @@ if __name__ == "__main__":
     plot_power_time_series(n, start_date, end_date, path=snakemake.output.energy_balance, focus_component=["Generator","StorageUnit","Link"], focus_de=True, show_fig=False)
     
     plot_power_time_series(n, start_date, end_date, path=snakemake.output.storage_energy_balance, focus_component=["StorageUnit"], focus_de=True, show_fig=False)
+
+    plot_system_cost(n, snakemake.input.nodal_costs, path=snakemake.output.system_cost, focus_component=["Generator","StorageUnit","Link","Store"], focus_de=True, electricity_only=True, show_fig=False)
+
+    plot_system_cost(n, snakemake.input.nodal_costs, path=snakemake.output.storage_system_cost, focus_component=["StorageUnit"], focus_de=True, electricity_only=True, show_fig=False)
