@@ -44,13 +44,13 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True):
     curtailment_elec = curtailment_elec.rename(index=curtailment_elec.bus.map(n.buses.location))
     curtailment_elec["bus"] = curtailment_elec.index
     curtailment_elec = curtailment_elec.groupby(["bus", "carrier"]).sum()
-    curtailment_elec = curtailment_elec.loc[regions.index, 0].div(1e3)  # GW
+    curtailment_elec = curtailment_elec.loc[regions.index, 0].div(1e3)  # GWh
     electricity_price = n.buses_t.marginal_price.loc[:, regions.index].mean(axis=0)
     regions["elec_price"] = (
         electricity_price
     )
 
-    bus_size_factor = 3e5
+    bus_size_factor = 3e3
 
     n.buses.drop(n.buses.index[n.buses.carrier != "AC"], inplace=True)
 
@@ -60,7 +60,11 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True):
         for c in n.iterate_components(n.branch_components):
             c.df.drop(c.df.index[~((c.df.bus0.str.startswith("DE")) | (c.df.bus1.str.startswith("DE")))], inplace=True)
         map_opts["boundaries"] = [4, 17, 46, 56]
-        bus_size_factor = 2e5
+        bus_size_factor = 1e4
+
+    # calculate total curtailment
+    total_curtailment = curtailment_elec.groupby(level=0).sum().sum()
+    logger.info(f"Total annual curtailment of: {total_curtailment} GWh")
 
     bus_sizes = curtailment_elec / bus_size_factor
 
@@ -85,8 +89,8 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True):
         cmap="Greens",
         linewidths=0,
         legend=True,
-        vmax=regions.elec_price.max(),
-        vmin=regions.elec_price.min(),
+        vmax=65,
+        vmin=45,
         legend_kwds={
             "label": "Avg. Electricity Price [EUR/MWh]",
             "shrink": 0.7,
@@ -96,9 +100,9 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True):
 
     legend_x = -0.37
     legend_y = 0.57
-    sizes = [6, 3, 1]  # GW
+    sizes = [2, 1, 0.5]  # TWh
 
-    labels = [f"{s} GWh" for s in sizes]
+    labels = [f"{s} TWh" for s in sizes]
     sizes = [s * 1e3 / bus_size_factor for s in sizes]
 
     legend_kw = dict(
@@ -451,6 +455,9 @@ if __name__ == "__main__":
     end_date = time_series_params["end_date"]
 
     n = pypsa.Network(snakemake.input.network)
+    # calculate and print emissions
+    co2_emissions = n.stores_t.e.filter(like="co2 atmosphere", axis=1).iloc[-1].div(1e6)[0]  # in MtCO2
+    logger.info(f"Total annual CO2 emissions of {co2_emissions} MtCO2.")
 
     plot_curtailment(n, regions, path=snakemake.output.curtailment_map, focus_de=True, show_fig=False)
 
