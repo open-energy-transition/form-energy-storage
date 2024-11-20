@@ -34,7 +34,7 @@ foresight: myopic
 # Wildcard docs in https://pypsa-eur.readthedocs.io/en/latest/wildcards.html
 scenario:
   ll:
-  - v1.27  # v1.x with x according to NEP and TYNDP (existing_capacities=zero)
+  - v1.11  # v1.x with x according to NEP and TYNDP (existing_capacities=zero)
   clusters:
   - 52
   planning_horizons:
@@ -207,3 +207,5 @@ plotting:
   time_series:
     start_date: '2013-05-01'
     end_date: '2013-06-01'
+  costs_max: 40
+  costs_threshold: 0.01
