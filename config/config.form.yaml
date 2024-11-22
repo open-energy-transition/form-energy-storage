@@ -16,11 +16,11 @@ remote:
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: ""
-  name: "test_scenarios"
+  prefix: "initial_main_scenarios"
+  name: "all"
   scenarios:
-    enable: false
-    file: config/scenarios.yaml
+    enable: true
+    file: config/scenarios.form.yaml
   disable_progressbar: false
   shared_resources:
     policy: false
@@ -149,7 +149,7 @@ sector:
   agriculture: false
   fossil_fuels: true
   bev_dsm: true
-  bev_availability: 0.2 # FE input
+  bev_dsm_availability: 0.2 # FE input
   v2g: true
   land_transport_fuel_cell_share:
     2035: 0
@@ -177,7 +177,7 @@ sector:
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#costs
 costs:
-  year: 2035 # TODO: change to commit with new cost assumptions
+  year: 2035
   version: 67a5830
   social_discountrate: 0.02
   fill_values:
@@ -203,7 +203,7 @@ costs:
   efficiency:
     Compressed-Air-Adiabatic-bicharger: 0.7745
   investment:
-    iron-air battery: 23.5
+    iron-air battery: 23500  # in EUR/MWh
   marginal_cost:
     solar: 0.01
     onwind: 0.015
@@ -224,7 +224,7 @@ clustering:
   focus_weights:
     DE: 0.6
   temporal:
-    resolution_sector: 100H #2920SEG # TODO: low for development, change this later
+    resolution_sector: 1H #2920SEG
 
 plotting:
   tech_colors:
@@ -233,3 +233,11 @@ plotting:
     vanadium: '#9B111E'
     lair: '#87CEEB'
     pair: '#003366'
+    iron-air battery: '#edba1c'
+    Iron-Air battery storage: '#edba1c'
+    Li-Ion battery storage: '#ace37f'
+    other battery storage: '#80c944'
+
+solving:
+  mem_mb: 150000 #memory in MB; 20 GB enough for 50+B+I+H2; 100 GB for 181+B+I+H2
+  runtime: 24h #runtime in humanfriendly style https://humanfriendly.readthedocs.io/en/latest/
