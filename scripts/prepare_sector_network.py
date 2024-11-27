@@ -1193,6 +1193,9 @@ def add_generation(n, costs, existing_capacities=0, existing_efficiencies=None):
 
     nodes = pop_layout.index
 
+    ramp_limit_up = options.get("ramp_limit_up",{})
+    ramp_limit_down = options.get("ramp_limit_down",{})
+
     fallback = {"OCGT": "gas"}
     conventionals = options.get("conventional_generation", fallback)
 
@@ -1200,9 +1203,6 @@ def add_generation(n, costs, existing_capacities=0, existing_efficiencies=None):
         carrier_nodes = vars(spatial)[carrier].nodes
 
         add_carrier_buses(n, carrier, carrier_nodes)
-
-        ramp_limit_up = options.get("ramp_limit_up",{})
-        ramp_limit_down = options.get("ramp_limit_down",{})
 
         n.add(
             "Link",
