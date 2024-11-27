@@ -1201,6 +1201,9 @@ def add_generation(n, costs, existing_capacities=0, existing_efficiencies=None):
 
         add_carrier_buses(n, carrier, carrier_nodes)
 
+        ramp_limit_up = options.get("ramp_limit_up",{})
+        ramp_limit_down = options.get("ramp_limit_down",{})
+
         n.add(
             "Link",
             nodes + " " + generator,
@@ -1235,6 +1238,8 @@ def add_generation(n, costs, existing_capacities=0, existing_efficiencies=None):
             ),
             efficiency2=costs.at[carrier, "CO2 intensity"],
             lifetime=costs.at[generator, "lifetime"],
+            ramp_limit_up= ramp_limit_up[generator] if generator in ramp_limit_up else np.nan,
+            ramp_limit_down= ramp_limit_down[generator] if generator in ramp_limit_down else np.nan,
         )
 
 

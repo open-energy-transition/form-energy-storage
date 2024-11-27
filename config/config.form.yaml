@@ -52,7 +52,7 @@ snapshots:
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#enable
 enable:
   retrieve: auto
-  retrieve_databundle: true
+  retrieve_databundle: false
   retrieve_cost_data: true
   build_cutout: false
   retrieve_cutout: false
@@ -174,6 +174,10 @@ sector:
   H2_network: false
   gas_network: false
   H2_retrofit: false
+  ramp_limit_up:
+    nuclear: 0.5
+  ramp_limit_down:
+    nuclear: 0.5
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#costs
 costs:
