@@ -235,6 +235,8 @@ def add_power_capacities_installed_before_baseyear(n, grouping_years, costs, bas
         "urban central solid biomass CHP": "biomass",
     }
 
+    cf_conventional = snakemake.params.conventional
+
     for grouping_year, generator in df.index:
         # capacity is the capacity in MW at each node for this
         capacity = df.loc[grouping_year, generator]
@@ -334,6 +336,9 @@ def add_power_capacities_installed_before_baseyear(n, grouping_years, costs, bas
                         efficiency2=costs.at[carrier[generator], "CO2 intensity"],
                         build_year=grouping_year,
                         lifetime=lifetime_assets.loc[new_capacity.index],
+                        p_min_pu=cf_conventional[generator]["p_min_pu"] if "p_min_pu" in cf_conventional.get(generator,{}).keys() else 0,
+                        ramp_limit_up=cf_conventional[generator]["ramp_limit_up"] if "ramp_limit_up" in cf_conventional.get(generator,{}).keys() else np.nan,
+                        ramp_limit_down=cf_conventional[generator]["ramp_limit_down"] if "ramp_limit_down" in cf_conventional.get(generator,{}).keys() else np.nan,
                     )
                 else:
                     key = "central solid biomass CHP"

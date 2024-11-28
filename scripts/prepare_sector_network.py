@@ -1193,9 +1193,6 @@ def add_generation(n, costs, existing_capacities=0, existing_efficiencies=None):
 
     nodes = pop_layout.index
 
-    ramp_limit_up = options.get("ramp_limit_up",{})
-    ramp_limit_down = options.get("ramp_limit_down",{})
-
     fallback = {"OCGT": "gas"}
     conventionals = options.get("conventional_generation", fallback)
 
@@ -1238,8 +1235,9 @@ def add_generation(n, costs, existing_capacities=0, existing_efficiencies=None):
             ),
             efficiency2=costs.at[carrier, "CO2 intensity"],
             lifetime=costs.at[generator, "lifetime"],
-            ramp_limit_up= ramp_limit_up[generator] if generator in ramp_limit_up else np.nan,
-            ramp_limit_down= ramp_limit_down[generator] if generator in ramp_limit_down else np.nan,
+            p_min_pu=cf_conventional[generator]["p_min_pu"] if "p_min_pu" in cf_conventional.get(generator,{}).keys() else 0,
+            ramp_limit_up=cf_conventional[generator]["ramp_limit_up"] if "ramp_limit_up" in cf_conventional.get(generator,{}).keys() else np.nan,
+            ramp_limit_down=cf_conventional[generator]["ramp_limit_down"] if "ramp_limit_down" in cf_conventional.get(generator,{}).keys() else np.nan,
         )
 
 
@@ -4836,6 +4834,7 @@ if __name__ == "__main__":
 
     options = snakemake.params.sector
     cf_industry = snakemake.params.industry
+    cf_conventional = snakemake.params.conventional
 
     investment_year = int(snakemake.wildcards.planning_horizons)
 
