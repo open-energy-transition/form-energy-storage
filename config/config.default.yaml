@@ -1045,6 +1045,9 @@ plotting:
     li-ion battery: "Li-Ion Battery Storage"
     li-ion home battery: "Li-Ion Home Battery Storage"
     iron-air battery: "Iron-Air Battery Storage"
+    pair: "Adiabatic CAES",
+    lair: "Liquid Air Energy Etorage",
+    vanadium: "Vanadium Redox Flow Battery Storage",
     H2: "Hydrogen Storage"
     lines: "Transmission Lines"
     ror: "Run of River"
