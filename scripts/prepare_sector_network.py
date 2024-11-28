@@ -1201,6 +1201,18 @@ def add_generation(n, costs, existing_capacities=0, existing_efficiencies=None):
 
         add_carrier_buses(n, carrier, carrier_nodes)
 
+        capacities_gen = (
+            ((existing_capacities[generator] / existing_efficiencies[generator])
+             .reindex(nodes + " " + generator)
+             .fillna(0)
+             ) if not existing_capacities == 0 else 0)  # NB: existing capacities are MWel
+        efficiencies_gen = (
+            (existing_efficiencies[generator]
+             .reindex(nodes + " " + generator)
+             .fillna(costs.at[generator, "efficiency"])
+             ) if existing_efficiencies is not None else costs.at[generator, "efficiency"]
+            )
+
         n.add(
             "Link",
             nodes + " " + generator,
@@ -1219,20 +1231,11 @@ def add_generation(n, costs, existing_capacities=0, existing_efficiencies=None):
                 )
                 else False
             ),    
-            p_nom=(
-                existing_capacities[generator] / existing_efficiencies[generator]
-                if not existing_capacities == 0 else 0
-            ), # NB: existing capacities are MWel     
-            p_max_pu = 0.7 if carrier == "uranium" else 1, # be conservative for nuclear (maintance or unplanned shut downs)
-            p_nom_min=(
-                existing_capacities[generator] if not existing_capacities == 0 else 0
-            ),   
+            p_nom=capacities_gen,
+            p_max_pu=0.7 if carrier == "uranium" else 1,  # be conservative for nuclear (maintance or unplanned shut downs)
+            p_nom_min=capacities_gen,
             carrier=generator,
-            efficiency=(
-                existing_efficiencies[generator]
-                if existing_efficiencies is not None
-                else costs.at[generator, "efficiency"]
-            ),
+            efficiency=efficiencies_gen,
             efficiency2=costs.at[carrier, "CO2 intensity"],
             lifetime=costs.at[generator, "lifetime"],
         )
