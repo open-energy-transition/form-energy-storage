@@ -61,7 +61,7 @@ enable:
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#co2-budget
 co2_budget:
-  2035: 0.392 # derived from individual countries carbon emission targets
+  2035: 0.195 # derived from individual countries carbon emission targets
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#electricity
 electricity:
