@@ -61,7 +61,7 @@ enable:
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#co2-budget
 co2_budget:
-  2035: 0.392 # derived from individual countries carbon emission targets
+  2035: 0.195 # derived from individual countries carbon emission targets for included sectors
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#electricity
 electricity:
@@ -102,6 +102,7 @@ renewable:
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#lines
 lines:
+  s_max_pu: 0.5
   dynamic_line_rating:
     activate: false
     cutout: europe-2013-sarah3-era5
@@ -160,7 +161,7 @@ sector:
   reduce_space_heat_exogenously: true
   reduce_space_heat_exogenously_factor: # TODO: check this for Germany (Regulation or Ariadne?)
     2035: 0.11
-  tes: true
+  tes: false
   marginal_cost_storage: 0. #1e-4
   stores: ["H2"]
   storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
