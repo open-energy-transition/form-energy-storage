@@ -36,3 +36,17 @@ main-mds:
   sector:
     stores: ["H2"]
     storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+
+main-mds-no-methanation:
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      vanadium: [10]
+      lair: [12]
+      pair: [24]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    methanation: false
