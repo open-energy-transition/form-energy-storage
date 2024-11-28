@@ -4856,7 +4856,7 @@ if __name__ == "__main__":
     )
     pop_weighted_energy_totals.update(pop_weighted_heat_totals)
 
-    if options.get("keep_existing_capacities", False):
+    if options.get("keep_existing_capacities", False) and snakemake.params.foresight not in ["myopic", "perfect"]:
         existing_capacities, existing_efficiencies = get_capacities_from_elec(
             n,
             carriers=options.get("conventional_generation").keys(),
