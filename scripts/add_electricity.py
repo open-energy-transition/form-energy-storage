@@ -123,6 +123,7 @@ import xarray as xr
 from _helpers import (
     configure_logging,
     get_snapshots,
+    rename_techs,
     set_scenario_config,
     update_p_nom_max,
 )
@@ -203,7 +204,12 @@ def sanitize_carriers(n, config):
     n.carriers["nice_name"] = n.carriers.nice_name.where(
         n.carriers.nice_name != "", nice_names
     )
-    colors = pd.Series(config["plotting"]["tech_colors"]).reindex(carrier_i)
+
+    tech_colors = config["plotting"]["tech_colors"]
+    colors = pd.Series(tech_colors).reindex(carrier_i)
+    # try to fill missing colors with tech_colors after renaming
+    missing_colors_i = colors[colors.isna()].index
+    colors[missing_colors_i] = missing_colors_i.map(rename_techs).map(tech_colors)
     if colors.isna().any():
         missing_i = list(colors.index[colors.isna()])
         logger.warning(f"tech_colors for carriers {missing_i} not defined in config.")
@@ -229,6 +235,14 @@ def add_co2_emissions(n, costs, carriers):
 
 
 def load_costs(tech_costs, config, max_hours, Nyears=1.0):
+    # deprecation warning and casting float values to list of float values for max_hours per carrier
+    for carrier in max_hours:
+        if not isinstance(max_hours[carrier], list):
+            warnings.warn(
+                "The 'max_hours' configuration as a float is deprecated and will be removed in future versions. Please use a list instead.",
+                DeprecationWarning,
+            )
+            max_hours[carrier] = [max_hours[carrier]]
     # set all asset costs and other parameters
     costs = pd.read_csv(tech_costs, index_col=[0, 1]).sort_index()
 
@@ -242,6 +256,15 @@ def load_costs(tech_costs, config, max_hours, Nyears=1.0):
 
     fill_values = config["fill_values"]
     costs = costs.value.unstack().fillna(fill_values)
+
+    for attr in ("investment", "lifetime", "FOM", "VOM", "efficiency", "fuel"):
+        overwrites = config.get(attr)
+        if overwrites is not None:
+            overwrites = pd.Series(overwrites)
+            costs.loc[overwrites.index, attr] = overwrites
+            logger.info(
+                f"Overwriting {attr} of {overwrites.index} to {overwrites.values}"
+            )
 
     costs["capital_cost"] = (
         (
@@ -280,10 +303,83 @@ def load_costs(tech_costs, config, max_hours, Nyears=1.0):
             max_hours=max_hour,
         )
     # cost for default li-ion battery which will be the first max_hour archetype
-    costs.loc[f"li-ion battery"] = costs_for_storage(
+    costs.loc["li-ion battery"] = costs_for_storage(
         costs.loc["battery storage"],
         costs.loc["battery inverter"],
         max_hours=max_hours["li-ion battery"][0],
+    )
+
+    for max_hour in max_hours["iron-air battery"]:
+        costs.loc[f"iron-air battery {max_hour}h"] = costs_for_storage(
+            costs.loc["iron-air battery"],
+            costs.loc["iron-air battery charge"],
+            costs.loc["iron-air battery discharge"],
+            max_hours=max_hour,
+        )
+
+    # cost for default iron-air battery which will be the first max_hour archetype
+    costs.loc["iron-air battery"] = costs_for_storage(
+        costs.loc["iron-air battery"],
+        costs.loc["iron-air battery charge"],
+        costs.loc["iron-air battery discharge"],
+        max_hours=max_hours["iron-air battery"][0],
+    )
+
+    for max_hour in max_hours["lfp"]:
+        costs.loc[f"lfp {max_hour}h"] = costs_for_storage(
+            costs.loc["Lithium-Ion-LFP-store"],
+            costs.loc["Lithium-Ion-LFP-bicharger"],
+            max_hours=max_hour,
+        )
+    # cost for default li-ion battery which will be the first max_hour archetype
+    costs.loc["lfp"] = costs_for_storage(
+        costs.loc["Lithium-Ion-LFP-store"],
+        costs.loc["Lithium-Ion-LFP-bicharger"],
+        max_hours=max_hours["lfp"][0],
+    )
+
+    for max_hour in max_hours["vanadium"]:
+        costs.loc[f"vanadium {max_hour}h"] = costs_for_storage(
+            costs.loc["Vanadium-Redox-Flow-store"],
+            costs.loc["Vanadium-Redox-Flow-bicharger"],
+            max_hours=max_hour,
+        )
+    
+    # cost for default vanadium which will be the first max_hour archetype
+    costs.loc["vanadium"] = costs_for_storage(
+        costs.loc["Vanadium-Redox-Flow-store"],
+        costs.loc["Vanadium-Redox-Flow-bicharger"],
+        max_hours=max_hours["vanadium"][0],
+    )
+
+    for max_hour in max_hours["lair"]:
+        costs.loc[f"lair {max_hour}h"] = costs_for_storage(
+            costs.loc["Liquid-Air-store"],
+            costs.loc["Liquid-Air-charger"],
+            costs.loc["Liquid-Air-discharger"],
+            max_hours=max_hour,
+        )
+
+    # cost for default liquid air which will be the first max_hour archetype
+    costs.loc["lair"] = costs_for_storage(
+        costs.loc["Liquid-Air-store"],
+        costs.loc["Liquid-Air-charger"],
+        costs.loc["Liquid-Air-discharger"],
+        max_hours=max_hours["lair"][0],
+    )
+
+    for max_hour in max_hours["pair"]:
+        costs.loc[f"pair {max_hour}h"] = costs_for_storage(
+            costs.loc["Compressed-Air-Adiabatic-store"],
+            costs.loc["Compressed-Air-Adiabatic-bicharger"],
+            max_hours=max_hour,
+        )
+
+    # cost for default CAES which will be the first max_hour archetype
+    costs.loc["pair"] = costs_for_storage(
+        costs.loc["Compressed-Air-Adiabatic-store"],
+        costs.loc["Compressed-Air-Adiabatic-bicharger"],
+        max_hours=max_hours["pair"][0],
     )
 
     for max_hour in max_hours["H2"]:
@@ -294,7 +390,7 @@ def load_costs(tech_costs, config, max_hours, Nyears=1.0):
             max_hours=max_hour,
         )
     # cost for default H2 underground storage which will be the first max_hour archetype
-    costs.loc[f"H2"] = costs_for_storage(
+    costs.loc["H2"] = costs_for_storage(
         costs.loc["hydrogen storage underground"],
         costs.loc["fuel cell"],
         costs.loc["electrolysis"],
@@ -874,8 +970,10 @@ def attach_storageunits(n, costs, extendable_carriers, max_hours):
 
     buses_i = n.buses.index
 
-    lookup_store = {"H2": "electrolysis", "li-ion battery": "battery inverter"}
-    lookup_dispatch = {"H2": "fuel cell", "li-ion battery": "battery inverter"}
+    lookup_store = {"H2": "electrolysis", "li-ion battery": "battery inverter", "iron-air battery": "iron-air battery charge", "lfp": "Lithium-Ion-LFP-bicharger", 
+    "vanadium": "Vanadium-Redox-Flow-bicharger", "lair":  "Liquid-Air-charger", "pair": "Compressed-Air-Adiabatic-bicharger"}
+    lookup_dispatch = {"H2": "fuel cell", "li-ion battery": "battery inverter", "iron-air battery": "iron-air battery discharge", "lfp": "Lithium-Ion-LFP-bicharger", 
+    "vanadium": "Vanadium-Redox-Flow-bicharger", "lair":  "Liquid-Air-discharger", "pair": "Compressed-Air-Adiabatic-bicharger"}
 
     for carrier in carriers:
         roundtrip_correction = 0.5 if carrier == "li-ion battery" else 1
@@ -985,7 +1083,7 @@ def attach_stores(n, costs, extendable_carriers):
             p_nom_extendable=True,
             marginal_cost=costs.at["battery inverter", "marginal_cost"],
         )
-
+        
 
 if __name__ == "__main__":
     if "snakemake" not in globals():
@@ -996,15 +1094,6 @@ if __name__ == "__main__":
     set_scenario_config(snakemake)
 
     params = snakemake.params
-    max_hours = params.electricity["max_hours"]
-    # deprecation warning and casting float values to list of float values for max_hours per carrier
-    for carrier in max_hours:
-        if not isinstance(max_hours[carrier], list):
-            warnings.warn(
-                "The 'max_hours' configuration as a float is deprecated and will be removed in future versions. Please use a list instead.",
-                DeprecationWarning,
-            )
-            max_hours[carrier] = [max_hours[carrier]]
     landfall_lengths = {
         tech: settings["landfall_length"]
         for tech, settings in params.renewable.items()
@@ -1021,9 +1110,10 @@ if __name__ == "__main__":
     costs = load_costs(
         snakemake.input.tech_costs,
         params.costs,
-        max_hours,
+        params.electricity["max_hours"],
         Nyears,
     )
+    max_hours = params.electricity["max_hours"]
 
     ppl = load_and_aggregate_powerplants(
         snakemake.input.powerplants,

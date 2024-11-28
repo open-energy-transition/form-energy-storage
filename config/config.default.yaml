@@ -101,12 +101,16 @@ electricity:
 
   max_hours:
     li-ion battery: [6]
+    lfp: [6]
+    vanadium: [10]
+    lair: [12]
+    pair: [24]
     H2: [168]
     iron-air battery: [100]
 
   extendable_carriers:
     Generator: [solar, solar-hsat, onwind, offwind-ac, offwind-dc, offwind-float, OCGT, CCGT]
-    StorageUnit: [] # li-ion battery, H2
+    StorageUnit: [] # li-ion battery, H2, lfp, vanadium, lair, pair
     Store: [li-ion battery, H2]
     Link: [] # H2 pipeline
 
@@ -499,7 +503,7 @@ sector:
   EV_lower_degree_factor: 0.98
   EV_upper_degree_factor: 0.63
   bev_dsm: true
-  bev_availability: 0.5
+  bev_dsm_availability: 0.5
   bev_energy: 0.05
   bev_charge_efficiency: 0.9
   bev_charge_rate: 0.011
@@ -598,7 +602,9 @@ sector:
   overdimension_heat_generators:
     decentral: 1.1  #to cover demand peaks bigger than data
     central: 1.0
-  chp: true
+  chp:
+    enable: true
+    fuel: gas # for all fuels the same techno economic data from gas CHP is taken
   micro_chp: false
   solar_thermal: true
   solar_cf_correction: 0.788457  # =  >>> 1/1.2683
