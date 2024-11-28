@@ -6,6 +6,8 @@ rules
 scripts
 config
 config/test
+data
+resources/initial_main_scenarios
 envs
 matplotlibrc
 Snakefile
