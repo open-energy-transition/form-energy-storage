@@ -330,6 +330,7 @@ def add_power_capacities_installed_before_baseyear(n, grouping_years, costs, bas
                         capital_cost=costs.at[generator, "efficiency"]
                         * costs.at[generator, "fixed"],  # NB: fixed cost is per MWel
                         p_nom=new_capacity / costs.at[generator, "efficiency"],
+                        p_max_pu=0.7 if generator == "nuclear" else 1,  # be conservative for nuclear (maintance or unplanned shut downs)
                         efficiency=costs.at[generator, "efficiency"],
                         efficiency2=costs.at[carrier[generator], "CO2 intensity"],
                         build_year=grouping_year,
