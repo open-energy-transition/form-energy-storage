@@ -10,10 +10,6 @@ logging:
   level: INFO
   format: '%(levelname)s:%(name)s:%(message)s'
 
-remote:
-  ssh: ""
-  path: ""
-
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
   prefix: "initial_main_scenarios"
@@ -127,6 +123,16 @@ transmission_projects:
     #- planned_not_yet_permitted
     #- under_consideration
   new_link_capacity: zero #keep or zero
+
+pypsa_eur:
+  Generator:
+  - onwind
+  - offwind-ac
+  - offwind-dc
+  - offwind-float
+  - solar-hsat
+  - solar
+  - ror
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#existing-capacities
 # TODO: add option for manual phase out of conventional power plants
