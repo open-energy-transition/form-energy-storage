@@ -234,6 +234,11 @@ clustering:
     resolution_sector: 1H #2920SEG
 
 plotting:
+  time_series:
+    start_date: '2013-05-01'
+    end_date: '2013-06-01'
+  costs_max: 40
+  costs_threshold: 0.01
   tech_colors:
     # all battery variation:
     lfp: '#ace37f'
