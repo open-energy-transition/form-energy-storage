@@ -1235,6 +1235,9 @@ def add_generation(n, costs, existing_capacities=0, existing_efficiencies=None):
             ),
             efficiency2=costs.at[carrier, "CO2 intensity"],
             lifetime=costs.at[generator, "lifetime"],
+            p_min_pu=cf_conventional.get(generator,{}).get("p_min_pu",0),
+            ramp_limit_up=cf_conventional.get(generator,{}).get("ramp_limit_up",np.nan),
+            ramp_limit_down=cf_conventional.get(generator,{}).get("ramp_limit_down",np.nan),
         )
 
 
@@ -4831,6 +4834,7 @@ if __name__ == "__main__":
 
     options = snakemake.params.sector
     cf_industry = snakemake.params.industry
+    cf_conventional = snakemake.params.conventional
 
     investment_year = int(snakemake.wildcards.planning_horizons)
 
