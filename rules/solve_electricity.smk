@@ -8,6 +8,7 @@ if config["enable"].get("final_adjustment",False) == True:
     rule final_adjustment:
         input:
             network=resources("networks/base_s_{clusters}_elec_l{ll}_{opts}.nc"),
+            NEP="data/TYNDP_NEP.csv",
         output:
             network=resources("networks-adjusted/base_s_{clusters}_elec_l{ll}_{opts}.nc"),
         conda:

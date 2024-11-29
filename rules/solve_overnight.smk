@@ -9,6 +9,7 @@ if config["enable"].get("final_adjustment",False) == True:
         input:
             network=RESULTS
             + "prenetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
+            NEP="data/TYNDP_NEP.csv",
         output:
             network=RESULTS
             + "prenetworks-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",

@@ -95,6 +95,7 @@ if config["enable"].get("final_adjustment",False) == True:
         input:
             network=RESULTS
             + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
+            NEP="data/TYNDP_NEP.csv",
         output:
             network=RESULTS
             + "prenetworks-brownfield-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
