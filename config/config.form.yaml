@@ -47,6 +47,7 @@ snapshots:
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#enable
 enable:
+  final_adjustment: true
   retrieve: auto
   retrieve_databundle: true
   retrieve_cost_data: true
