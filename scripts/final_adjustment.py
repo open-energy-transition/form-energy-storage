@@ -15,8 +15,8 @@ from _helpers import (
     update_config_from_wildcards,
 )
 
-def connection_limit_nep(n,fn,year="2035"):
-    df_nep = pd.read_csv(fn, index_col=["country1","country2"])
+def connection_limit_ntc(n,fn,year="2035"):
+    df_ntc = pd.read_csv(fn, index_col=["country1","country2"])
 
     n.lines["country0"] = n.lines.bus0.map(n.buses.country)
     n.lines["country1"] = n.lines.bus1.map(n.buses.country)
@@ -27,7 +27,7 @@ def connection_limit_nep(n,fn,year="2035"):
     n.links["country1"] = n.links.bus1.map(n.buses.country)
     df_link = pd.DataFrame(round(n.links.query("carrier == 'DC'").groupby(["country0","country1"]).p_nom.sum()))
     
-    df = pd.concat([df_nep[year],df_line, df_link],axis=1).loc[df_nep.index,:]
+    df = pd.concat([df_ntc[year],df_line, df_link],axis=1).loc[df_ntc.index,:]
     df = df.fillna(0)
     
     df["nom_sum"] = df["s_nom"] + df["p_nom"]
@@ -80,6 +80,6 @@ if __name__ == "__main__":
 
     n = pypsa.Network(snakemake.input.network)
 
-    n = connection_limit_nep(n,snakemake.input.NEP,year="2035")
+    n = connection_limit_ntc(n,snakemake.input.NTC,year="2035")
 
     n.export_to_netcdf(snakemake.output.network)
