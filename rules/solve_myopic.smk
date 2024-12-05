@@ -105,13 +105,13 @@ rule add_brownfield:
 ruleorder: add_existing_baseyear > add_brownfield
 
 
-if config["enable"].get("final_adjustment",False) == True:
+if config["enable"].get("final_adjustment",False):
 
     rule final_adjustment_myopic:
         input:
             network=RESULTS
             + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
-            NTC="data/TYNDP_NTC.csv",
+            ntc="data/TYNDP_NTC.csv",
         output:
             network=RESULTS
             + "prenetworks-brownfield-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
@@ -133,7 +133,7 @@ rule solve_sector_network_myopic:
         network=lambda w: ( 
             RESULTS
             + "prenetworks-brownfield-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc"
-            if (config["enable"].get("final_adjustment",False) == True)
+            if config["enable"].get("final_adjustment",False)
             else RESULTS
             + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc"
         ),

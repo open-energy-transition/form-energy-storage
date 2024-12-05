@@ -89,13 +89,13 @@ rule prepare_perfect_foresight:
     script:
         "../scripts/prepare_perfect_foresight.py"
 
-if config["enable"].get("final_adjustment",False) == True:
+if config["enable"].get("final_adjustment",False):
 
     rule final_adjustment_perfect:
         input:
             network=RESULTS
             + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
-            NTC="data/TYNDP_NTC.csv",
+            ntc="data/TYNDP_NTC.csv",
         output:
             network=RESULTS
             + "prenetworks-brownfield-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
@@ -118,7 +118,7 @@ rule solve_sector_network_perfect:
         network=lambda w: ( 
             RESULTS
             + "prenetworks-brownfield-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
-            if (config["enable"].get("final_adjustment",False) == True)
+            if config["enable"].get("final_adjustment",False)
             else RESULTS
             + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
         ),

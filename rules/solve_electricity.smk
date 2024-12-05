@@ -3,12 +3,12 @@
 # SPDX-License-Identifier: MIT
 
 
-if config["enable"].get("final_adjustment",False) == True:
+if config["enable"].get("final_adjustment",False):
 
     rule final_adjustment:
         input:
             network=resources("networks/base_s_{clusters}_elec_l{ll}_{opts}.nc"),
-            NTC="data/TYNDP_NTC.csv",
+            ntc="data/TYNDP_NTC.csv",
         output:
             network=resources("networks-adjusted/base_s_{clusters}_elec_l{ll}_{opts}.nc"),
         conda:
@@ -28,7 +28,7 @@ rule solve_network:
     input:
         network=lambda w: (
             resources("networks-adjusted/base_s_{clusters}_elec_l{ll}_{opts}.nc")
-            if (config["enable"].get("final_adjustment",False) == True) 
+            if config["enable"].get("final_adjustment",False)
             else resources("networks/base_s_{clusters}_elec_l{ll}_{opts}.nc")
         ),
     output:

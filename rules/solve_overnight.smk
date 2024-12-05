@@ -3,13 +3,13 @@
 # SPDX-License-Identifier: MIT
 
 
-if config["enable"].get("final_adjustment",False) == True:
+if config["enable"].get("final_adjustment",False):
 
     rule final_adjustment_overnight:
         input:
             network=RESULTS
             + "prenetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
-            NTC="data/TYNDP_NTC.csv",
+            ntc="data/TYNDP_NTC.csv",
         output:
             network=RESULTS
             + "prenetworks-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
@@ -31,7 +31,7 @@ rule solve_sector_network:
         network=lambda w: ( 
             RESULTS
             + "prenetworks-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc"
-            if (config["enable"].get("final_adjustment",False) == True)
+            if config["enable"].get("final_adjustment",False)
             else RESULTS
             + "prenetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc"
         ),
