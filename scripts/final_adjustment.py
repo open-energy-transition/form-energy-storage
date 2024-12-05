@@ -49,12 +49,12 @@ def connection_limit_ntc(n,fn,year="2035"):
         value = df.loc[(country0,country1),"p_nom_share"]
         if value == 0:
             continue
-        links = n.lines.query("country0 == @country0 & country1 == @country1 & carrier == 'DC'")
+        links = n.links.query("country0 == @country0 & country1 == @country1 & carrier == 'DC'")
         proportion = (n.links.loc[links.index,"p_nom"]/n.links.loc[links.index,"p_nom"].sum())
         n.links.loc[links.index,"p_nom_max"] = value * proportion / n.links.loc[links.index,"p_max_pu"]
         n.links.loc[links.index,"p_nom"] = n.links.loc[links.index,["p_nom","p_nom_max"]].T.min()
     
-        links_rev = n.lines.query("country0 == @country1 & country1 == @country0 & carrier == 'DC'")
+        links_rev = n.links.query("country0 == @country1 & country1 == @country0 & carrier == 'DC'")
         proportion = (n.links.loc[links_rev.index,"p_nom"]/n.links.loc[links_rev.index,"p_nom"].sum())
         n.links.loc[links_rev.index,"p_nom_max"] = value * proportion / n.links.loc[links_rev.index,"p_max_pu"]
         n.links.loc[links_rev.index,"p_nom"] = n.links.loc[links_rev.index,["p_nom","p_nom_max"]].T.min()
@@ -80,6 +80,6 @@ if __name__ == "__main__":
 
     n = pypsa.Network(snakemake.input.network)
 
-    n = connection_limit_ntc(n,snakemake.input.NTC,year="2035")
+    n = connection_limit_ntc(n,snakemake.input.ntc,year="2035")
 
     n.export_to_netcdf(snakemake.output.network)

@@ -54,6 +54,7 @@ rule solve_network:
     script:
         "../scripts/solve_network.py"
 
+
 rule solve_operations_network:
     params:
         options=config_provider("solving", "options"),
