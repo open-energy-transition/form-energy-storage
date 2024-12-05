@@ -95,7 +95,7 @@ if config["enable"].get("final_adjustment",False) == True:
         input:
             network=RESULTS
             + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
-            NEP="data/TYNDP_NEP.csv",
+            NTC="data/TYNDP_NTC.csv",
         output:
             network=RESULTS
             + "prenetworks-brownfield-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
@@ -104,90 +104,51 @@ if config["enable"].get("final_adjustment",False) == True:
         script:
             "../scripts/final_adjustment.py"
 
-    rule solve_sector_network_perfect:
-        params:
-            solving=config_provider("solving"),
-            foresight=config_provider("foresight"),
-            sector=config_provider("sector"),
-            planning_horizons=config_provider("scenario", "planning_horizons"),
-            co2_sequestration_potential=config_provider(
-                "sector", "co2_sequestration_potential", default=200
-            ),
-            custom_extra_functionality=input_custom_extra_functionality,
-        input:
-            network=RESULTS
+rule solve_sector_network_perfect:
+    params:
+        solving=config_provider("solving"),
+        foresight=config_provider("foresight"),
+        sector=config_provider("sector"),
+        planning_horizons=config_provider("scenario", "planning_horizons"),
+        co2_sequestration_potential=config_provider(
+            "sector", "co2_sequestration_potential", default=200
+        ),
+        custom_extra_functionality=input_custom_extra_functionality,
+    input:
+        network=lambda w: ( 
+            RESULTS
             + "prenetworks-brownfield-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
-            costs=resources("costs_2030.csv"),
-        output:
-            network=RESULTS
-            + "postnetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
-            config=RESULTS
-            + "configs/config.base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.yaml",
-        threads: solver_threads
-        resources:
-            mem_mb=config_provider("solving", "mem"),
-        shadow:
-            "shallow"
-        log:
-            solver=RESULTS
-            + "logs/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years_solver.log",
-            python=RESULTS
-            + "logs/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years_python.log",
-            memory=RESULTS
-            + "logs/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years_memory.log",
-        benchmark:
-            (
-                RESULTS
-                + "benchmarks/solve_sector_network/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years}"
-            )
-        conda:
-            "../envs/environment.yaml"
-        script:
-            "../scripts/solve_network.py"
-
-if config["enable"].get("final_adjustment",False) == False:
-
-    rule solve_sector_network_perfect:
-        params:
-            solving=config_provider("solving"),
-            foresight=config_provider("foresight"),
-            sector=config_provider("sector"),
-            planning_horizons=config_provider("scenario", "planning_horizons"),
-            co2_sequestration_potential=config_provider(
-                "sector", "co2_sequestration_potential", default=200
-            ),
-            custom_extra_functionality=input_custom_extra_functionality,
-        input:
-            network=RESULTS
+            if (config["enable"].get("final_adjustment",False) == True)
+            else RESULTS
             + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
-            costs=resources("costs_2030.csv"),
-        output:
-            network=RESULTS
-            + "postnetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
-            config=RESULTS
-            + "configs/config.base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.yaml",
-        threads: solver_threads
-        resources:
-            mem_mb=config_provider("solving", "mem"),
-        shadow:
-            "shallow"
-        log:
-            solver=RESULTS
-            + "logs/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years_solver.log",
-            python=RESULTS
-            + "logs/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years_python.log",
-            memory=RESULTS
-            + "logs/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years_memory.log",
-        benchmark:
-            (
-                RESULTS
-                + "benchmarks/solve_sector_network/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years}"
-            )
-        conda:
-            "../envs/environment.yaml"
-        script:
+        ),
+        costs=resources("costs_2030.csv"),
+    output:
+        network=RESULTS
+        + "postnetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
+        config=RESULTS
+        + "configs/config.base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.yaml",
+    threads: solver_threads
+    resources:
+        mem_mb=config_provider("solving", "mem"),
+    shadow:
+        "shallow"
+    log:
+        solver=RESULTS
+        + "logs/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years_solver.log",
+        python=RESULTS
+        + "logs/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years_python.log",
+        memory=RESULTS
+        + "logs/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years_memory.log",
+    benchmark:
+        (
+            RESULTS
+            + "benchmarks/solve_sector_network/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years}"
+        )
+    conda:
+        "../envs/environment.yaml"
+    script:
             "../scripts/solve_network.py"
-
 
 def input_networks_make_summary_perfect(w):
     return {
