@@ -37,6 +37,19 @@ main-mds:
     stores: ["H2"]
     storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
 
+main-mds-h2-storage:
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      vanadium: [10]
+      lair: [12]
+      pair: [24]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    stores: []
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery", "H2"]
+
 main-mds-no-methanation:
   electricity:
     max_hours:
@@ -50,3 +63,59 @@ main-mds-no-methanation:
     stores: ["H2"]
     storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
     methanation: false
+
+main-mds-vanilla:
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      vanadium: [10]
+      lair: [12]
+      pair: [24]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "iron-air battery"]
+
+main-no-mds-vanilla:
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      vanadium: [10]
+      lair: [12]
+      pair: [24]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    stores: []
+    storage_units: ["li-ion battery"]
+
+main-mds-vanilla-no-methanation:
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      vanadium: [10]
+      lair: [12]
+      pair: [24]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "iron-air battery"]
+    methanation: false
+
+main-mds-vanilla-with-grids:
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      vanadium: [10]
+      lair: [12]
+      pair: [24]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "iron-air battery"]
+    H2_network: true
+    gas_network: true
+    H2_retrofit: true

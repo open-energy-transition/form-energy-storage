@@ -12,8 +12,8 @@ logging:
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: "initial_main_scenarios"
-  name: "all"
+  prefix: "updated_initial_main_scenarios"
+  name: "main-mds-vanilla-no-methanation"
   scenarios:
     enable: true
     file: config/scenarios.form.yaml
@@ -163,6 +163,10 @@ sector:
   industry: false
   agriculture: false
   fossil_fuels: true
+  district_heating:
+    potential: 0.6
+    progress:
+      2035: 0.45
   bev_dsm: true
   bev_dsm_availability: 0.2 # FE input
   v2g: true
@@ -239,7 +243,7 @@ clustering:
   focus_weights:
     DE: 0.6
   temporal:
-    resolution_sector: 1H #2920SEG
+    resolution_sector: 2920SEG
 
 plotting:
   tech_colors:
