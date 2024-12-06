@@ -11,6 +11,9 @@ if config["enable"].get("final_adjustment",False):
             ntc="data/TYNDP_NTC.csv",
         output:
             network=resources("networks-adjusted/base_s_{clusters}_elec_l{ll}_{opts}.nc"),
+        log:
+            logs(RESULTS
+            + "logs/final_adjustment_electricity_base_s_{clusters}_elec_l{ll}_{opts}.log")
         conda:
             "../envs/environment.yaml"
         script:

@@ -99,6 +99,9 @@ if config["enable"].get("final_adjustment",False):
         output:
             network=RESULTS
             + "prenetworks-brownfield-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
+        log:
+            logs(RESULTS
+            + "logs/final_adjustment_perfect_base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.log")
         conda:
             "../envs/environment.yaml"
         script:
