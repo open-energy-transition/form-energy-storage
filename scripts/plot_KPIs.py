@@ -252,165 +252,594 @@ def plot_line_loading(network, regions, path, focus_de=True, value="mean", show_
         fig.show()
     fig.savefig(path, bbox_inches="tight")
 
-def plot_power_time_series(network, start_date, end_date, path, focus_component=["Generator","StorageUnit","Link"], focus_de=True, show_fig=True):
-    n = network.copy()
+# def plot_power_time_series(network, start_date, end_date, path, focus_component=["Generator","StorageUnit","Link"], focus_de=True, show_fig=True):
+#     n = network.copy()
     
-    optimized = n.statistics.energy_balance(groupby=get_bus_and_carrier, aggregate_time=False).T
-    optimized = optimized[focus_component].droplevel(0, axis=1).T
-    optimized = optimized.loc[optimized.index.get_level_values('bus').isin(n.buses.query("carrier == 'AC'").index)]
-    optimized = optimized.loc[optimized.index.get_level_values('carrier') != 'DC'].T
-    optimized = optimized.rename(columns=n.buses.country, level=0)
-    optimized = optimized.rename(columns=pretty_gen, level=1)
-    optimized = optimized.T.groupby(level=[0, 1]).sum().T
+#     optimized = n.statistics.energy_balance(groupby=get_bus_and_carrier, aggregate_time=False).T
+#     optimized = optimized[focus_component].droplevel(0, axis=1).T
+#     optimized = optimized.loc[optimized.index.get_level_values('bus').isin(n.buses.query("carrier == 'AC'").index)]
+#     optimized = optimized.loc[optimized.index.get_level_values('carrier') != 'DC'].T
+#     optimized = optimized.rename(columns=n.buses.country, level=0)
+#     optimized = optimized.rename(columns=pretty_gen, level=1)
+#     optimized = optimized.T.groupby(level=[0, 1]).sum().T
 
-    if focus_de:
-        df_carrier = optimized["DE"]
-    else:
-        df_carrier = optimized.T.groupby(optimized.columns.get_level_values(1)).sum().T
+#     if focus_de:
+#         df_carrier = optimized["DE"]
+#     else:
+#         df_carrier = optimized.T.groupby(optimized.columns.get_level_values(1)).sum().T
 
+#     #Set color
+#     colors = n.carriers.set_index("nice_name").color.where(lambda s: s != "", "green")
+    
+#     for c in df_carrier.columns:
+#         if (df_carrier[c] < 0).values.any():
+#             df_carrier[c + " Discharge"] = df_carrier[c].clip(lower=0)
+#             colors[c + " Discharge"] = colors[c]
+#             df_carrier[c + " Charge"] = df_carrier[c].clip(upper=0)
+#             colors[c + " Charge"] = colors[c]
+#             df_carrier = df_carrier.drop(columns=c)
+
+#     order = ((df_carrier.diff().abs().sum() / df_carrier.sum()).sort_values().index)
+#     df_carrier = df_carrier[order]
+    
+#     #cut into the specific timesteps
+#     df_carrier = df_carrier[pd.Timestamp(start_date):pd.Timestamp(end_date)]
+
+#     #kW to MW
+#     df_carrier = df_carrier/1e3
+
+#     #remove if smaller than 1 MWh
+#     df_carrier = df_carrier.loc[:,abs(df_carrier.sum()) > 1]
+    
+#     fig, axes = plt.subplots(figsize=(12,5))
+    
+#     if "Link" in focus_component:
+#         df_plot = df_carrier.drop('electricity distribution grid Charge', axis=1)
+#         df_plot.plot.area(ax = axes, legend=False, color = [colors[c] for c in df_plot.columns])
+#         abs(df_carrier['electricity distribution grid Charge']).plot(ax = axes, color = "black", linestyle='dashed')
+#     else:
+#         df_carrier.plot.area(ax = axes, legend=False, color = [colors[c] for c in df_carrier.columns])
+
+#     df_legend = pd.DataFrame()
+#     df_legend["handle"], df_legend["label"] = axes.get_legend_handles_labels()
+#     df_legend["label"] = [w.replace(' Charge', '').replace(' Discharge', '') for w in df_legend["label"]]
+#     df_legend["label"] = [w.replace(' &', '').replace(' and', '') for w in df_legend["label"]] #NOTE: Latex hates '&' strings because its their seperator
+#     df_legend = df_legend.drop_duplicates(subset = ["label"],keep = 'first').iloc[::-1]
+
+#     axes.legend(df_legend["handle"], df_legend["label"], loc = "upper center", bbox_to_anchor = (0.5, -0.15), frameon = False, ncol = 4, 
+#                 title = "Components", title_fontproperties = {'weight':'bold'})
+
+#     axes.grid(axis="y")
+#     axes.set_ylabel("Energy Balance [MW]")
+#     axes.set_xlabel("")
+#     axes.set_facecolor("white")
+
+#     if show_fig:
+#         fig.show()
+#     fig.savefig(path, bbox_inches="tight")
+
+# def find_electricity_carrier(n):
+#     df = pd.DataFrame(n.statistics.energy_balance(groupby=get_bus_and_carrier_and_bus_carrier))
+#     df = df.groupby(["carrier","bus_carrier"]).sum().reset_index().drop(columns=0)
+#     df = df[df["bus_carrier"].isin(["AC"])]
+#     return df["carrier"].unique()
+
+# def plot_system_cost(network, nodal_costs, path, focus_component=["Generator","StorageUnit","Link","Store"], focus_de=True, electricity_only=True, show_fig=False):
+#     n = network.copy()
+
+#     component_nice_name = {"Generator":'generators',
+#                            "StorageUnit":'storage_units',
+#                            "Link":'links',
+#                            "Store":'stores'
+#                           }
+
+#     cost_df = pd.read_csv(nodal_costs, index_col=list(range(3)), header=list(range(4)))
+#     cost_df = cost_df.set_axis(['carrier', 'costs'], axis=1)
+#     cost_df = cost_df.rename(index=n.buses.country, level=2)
+
+#     cost_df = cost_df[cost_df.index.get_level_values(0).isin(component_nice_name[comp] for comp in focus_component)]
+
+#     if focus_de:
+#         cost_df = cost_df[cost_df.index.get_level_values(2) == 'DE']
+
+#     df = cost_df.groupby(["carrier"]).sum()
+
+#     # convert to billions
+#     df = df / 1e9
+
+#     df["nice_name"] = list(pd.Series(df.index).replace(n.carriers.nice_name))
+#     df = df.set_index("nice_name")
+
+#     if electricity_only:
+#         elec_carrier = find_electricity_carrier(n)
+#         df = df[df.index.isin(elec_carrier)]
+
+#         electricity_title = "electricity only "
+#     else:
+#         electricity_title = ""
+
+#     to_drop = df.index[df.max(axis=1) < snakemake.config["plotting"]["costs_threshold"]] #snakemake.params.plotting["costs_threshold"]]
+
+#     logger.info(
+#         f"Dropping technology with costs below {snakemake.params['plotting']['costs_threshold']} EUR billion per year"
+#     )
+#     logger.debug(df.loc[to_drop])
+
+#     df = df.drop(to_drop)
+
+#     logger.info(f"Total {electricity_title}system cost of {round(df.sum().iloc[0])} EUR billion per year")
+
+#     new_index = preferred_order.intersection(df.index).append(
+#         df.index.difference(preferred_order)
+#     )
+
+#     #Set color
+#     colors = n.carriers.set_index("nice_name").color.where(lambda s: s != "", "green")
+
+#     fig, ax = plt.subplots(figsize=(8, 8))
+
+#     df.loc[new_index].T.plot(
+#         kind="bar",
+#         ax=ax,
+#         stacked=True,
+#         color=[colors[i] for i in new_index],
+#     )
+
+#     handles, labels = ax.get_legend_handles_labels()
+
+#     handles.reverse()
+#     labels.reverse()
+
+#     ax.set_ylim([0, snakemake.params.plotting["costs_max"]])
+
+#     ax.set_ylabel("System Cost [EUR billion per year]")
+
+#     ax.set_xlabel("")
+
+#     ax.grid(axis="x")
+
+#     labels = [label + ": \n " + str(round(df.loc[label,"costs"],2)) for label in labels]
+#     labels = [label.replace(' &', '').replace(' and', '') for label in labels] #NOTE: Latex hates '&' strings because its their seperator
+
+#     ax.legend(
+#         handles, labels, ncol=1, loc="center left", bbox_to_anchor=[1, 0.5], frameon=False, 
+#         title = f"{electricity_title}system cost: \n{round(df.sum().iloc[0],2)}", alignment="left"
+#     )
+
+#     ax.set_facecolor("white")
+
+#     if show_fig:
+#         fig.show()
+#     fig.savefig(path, bbox_inches="tight")
+
+def prepare_energy_balance(n):
+    df = n.statistics.energy_balance(groupby=get_bus_and_carrier_and_bus_carrier, aggregate_time=False)
+    df = df.rename(index=n.buses.country, level="bus")
+
+    return df
+
+def plot_time_series(network, dataframe, kpi_param, path):
+
+    include = kpi_param.get("include", False)
+    exclude = kpi_param.get("exclude", False)
+    carrier_filter = kpi_param.get("carrier_filter", "electricity")
+    group_carrier = kpi_param.get("group_carrier", None)
+    start_date = kpi_param.get("start_date", None)
+    end_date = kpi_param.get("end_date", None)
+    plot_kw = kpi_param.get("plot_kw", {})
+    
+    n = network.copy()
+    df = dataframe.copy()
+
+    if include:
+        print(f"include only {include}")
+        df = df[df.index.get_level_values("bus").isin(include)]
+    if exclude:
+        print(f"exclude {exclude}")
+        df = df[~df.index.get_level_values("bus").isin(exclude)]
+    
+    # Model 1: Electricity system with generators and batteries out
+    if carrier_filter == "electricity+":
+        extract_carrier = ["solar rooftop",'BEV charger', 'V2G']
+        df = df.query('index.get_level_values("bus_carrier").isin(["AC","DC"]) or index.get_level_values("carrier").isin(@extract_carrier)', engine="python")
+        df = df.rename(index={i:'Electricity trade' for i in ["AC","DC"]}, level="carrier")
+        df_low = df[df.index.get_level_values("carrier").isin(["solar rooftop",'BEV charger', 'V2G'])]
+        df_low = df_low[df_low.index.get_level_values("bus_carrier").isin(["low voltage"])] * -1
+        df_low = df_low.rename(index={i:'electricity distribution grid' for i in extract_carrier}, level="carrier")
+        
+        df = pd.concat([df,df_low])
+        df = df.groupby(["bus","carrier"]).sum()
+        df.loc[df.index.get_level_values("carrier").isin(['electricity distribution grid']),:] *= -1
+    
+        line_carrier = "electricity distribution grid"
+    
+    # Model 2: Just electricty system
+    if carrier_filter == "electricity":
+        df = df[df.index.get_level_values("bus_carrier").isin(["AC","DC"])]
+        df = df.rename(index={i:'Electricity trade' for i in ["AC","DC"]}, level="carrier")
+        df = df.groupby(["bus","carrier"]).sum()
+        df.loc[df.index.get_level_values("carrier").isin(['electricity distribution grid']),:] *= -1
+    
+        line_carrier = "electricity distribution grid"
+    
+    # Model 3: Just low voltage system
+    if carrier_filter == "low voltage":
+        df = df[df.index.get_level_values("bus_carrier").isin(["low voltage"])]
+        df = df.groupby(["bus","carrier"]).sum()
+        df.loc[df.index.get_level_values("carrier").isin(['electricity distribution grid']),:] *= -1
+    
+        line_carrier = "electricity distribution grid"
+    
+    # Model 4: Just the heating system
+    if carrier_filter == "heat":
+        extract_carrier = ['residential rural heat', 'urban central heat','residential urban decentral heat']
+        df = df[df.index.get_level_values("bus_carrier").isin(extract_carrier)]
+        df = df.rename(index={i:'heat' for i in extract_carrier}, level="carrier")
+        df = df.groupby(["bus","carrier"]).sum()
+        df.loc[df.index.get_level_values("carrier").isin(['heat']),:] *= -1
+        
+        line_carrier = "heat"
+
+    # Model 5: Hydrogen input and output
+    if carrier_filter == "hydrogen":
+        df = n.statistics.energy_balance(groupby=get_bus_and_carrier_and_bus_carrier, aggregate_time=False)
+        df = df.rename(index=n.buses.country, level="bus")
+        
+        df = df[df.index.get_level_values("bus_carrier").isin(['Hydrogen Storage'])]
+        df = df.groupby(["bus","carrier"]).sum()
+        df = df[~df.index.get_level_values("carrier").isin(['H2 Store'])]
+
+        line_carrier = 'H2 Store'
+    
+    df = df.groupby(["carrier"]).sum()
+    
     #Set color
     colors = n.carriers.set_index("nice_name").color.where(lambda s: s != "", "green")
-    
-    for c in df_carrier.columns:
-        if (df_carrier[c] < 0).values.any():
-            df_carrier[c + " Discharge"] = df_carrier[c].clip(lower=0)
-            colors[c + " Discharge"] = colors[c]
-            df_carrier[c + " Charge"] = df_carrier[c].clip(upper=0)
-            colors[c + " Charge"] = colors[c]
-            df_carrier = df_carrier.drop(columns=c)
+    if group_carrier == "pretty":
+        line_carrier = pretty_names[line_carrier] if line_carrier in pretty_names else line_carrier
+        df = df.rename(index=pretty_names).groupby(["carrier"]).sum()
+        colors = colors.rename(index=pretty_names)
+        colors = colors[~colors.index.duplicated(keep='first')]
+        
+    elif group_carrier == "sector": 
+        line_carrier = sector_colors[line_carrier] if line_carrier in sector_colors else line_carrier
+        df = df.rename(index=sector_names).groupby(["carrier"]).sum()
+        colors = sector_colors
+        
+    df = df.T
 
-    order = ((df_carrier.diff().abs().sum() / df_carrier.sum()).sort_values().index)
-    df_carrier = df_carrier[order]
+    colors['Electricity trade'] = 'lightgrey'
+    
+    for c in df.columns:
+        if c in line_carrier:
+            continue
+        
+        if (df[c] < 0).values.any():
+            df[c + " Discharge"] = df[c].clip(lower=0)
+            colors[c + " Discharge"] = colors[c]
+            df[c + " Charge"] = df[c].clip(upper=0)
+            colors[c + " Charge"] = colors[c]
+            df = df.drop(columns=c)
     
     #cut into the specific timesteps
-    df_carrier = df_carrier[pd.Timestamp(start_date):pd.Timestamp(end_date)]
-
+    df = df[pd.Timestamp(start_date):pd.Timestamp(end_date)]
+    
     #kW to MW
-    df_carrier = df_carrier/1e3
-
+    df = df/1e3
+    
     #remove if smaller than 1 MWh
-    df_carrier = df_carrier.loc[:,abs(df_carrier.sum()) > 1]
+    to_drop = abs(df.sum()) < 1
+    df = df.loc[:,~to_drop]
     
-    fig, axes = plt.subplots(figsize=(12,5))
+    fig, ax = plt.subplots(figsize=(12,5))
     
-    if "Link" in focus_component:
-        df_plot = df_carrier.drop('electricity distribution grid Charge', axis=1)
-        df_plot.plot.area(ax = axes, legend=False, color = [colors[c] for c in df_plot.columns])
-        abs(df_carrier['electricity distribution grid Charge']).plot(ax = axes, color = "black", linestyle='dashed')
-    else:
-        df_carrier.plot.area(ax = axes, legend=False, color = [colors[c] for c in df_carrier.columns])
-
+    df_plot = df[df.columns.difference([line_carrier])]
+    
+    order = ((df_plot.diff().abs().sum() / df_plot.sum()).sort_values().index)
+    df_plot = df_plot[order]
+    df_plot.plot.area(ax = ax, legend=False, color = [colors[c] for c in df_plot.columns], **plot_kw)
+    
+    df_demand = df.columns.intersection([line_carrier])
+    if df_demand.any():
+        df[df_demand].plot(ax = ax, color = "black", linestyle='dashed', **plot_kw)
+    
+    ax.grid(axis="y")
+    ax.set_xlabel("")
+    
     df_legend = pd.DataFrame()
-    df_legend["handle"], df_legend["label"] = axes.get_legend_handles_labels()
+    df_legend["handle"], df_legend["label"] = ax.get_legend_handles_labels()
     df_legend["label"] = [w.replace(' Charge', '').replace(' Discharge', '') for w in df_legend["label"]]
-    df_legend["label"] = [w.replace(' &', '').replace(' and', '') for w in df_legend["label"]] #NOTE: Latex hates '&' strings because its their seperator
+    #df_legend["label"] = [w.replace('Electricity distribution grid', 'Electricity demand') for w in df_legend["label"]]
     df_legend = df_legend.drop_duplicates(subset = ["label"],keep = 'first').iloc[::-1]
-
-    axes.legend(df_legend["handle"], df_legend["label"], loc = "upper center", bbox_to_anchor = (0.5, -0.15), frameon = False, ncol = 4, 
+    
+    ax.legend(df_legend["handle"], df_legend["label"], loc = "upper center", bbox_to_anchor = (0.5, -0.15), frameon = False, ncol = 3, 
                 title = "Components", title_fontproperties = {'weight':'bold'})
 
-    axes.grid(axis="y")
-    axes.set_ylabel("Energy Balance [MW]")
-    axes.set_xlabel("")
-    axes.set_facecolor("white")
-
-    if show_fig:
-        fig.show()
     fig.savefig(path, bbox_inches="tight")
 
-def find_electricity_carrier(n):
-    df = pd.DataFrame(n.statistics.energy_balance(groupby=get_bus_and_carrier_and_bus_carrier))
-    df = df.groupby(["carrier","bus_carrier"]).sum().reset_index().drop(columns=0)
-    df = df[df["bus_carrier"].isin(["AC"])]
-    return df["carrier"].unique()
-
-def plot_system_cost(network, nodal_costs, path, focus_component=["Generator","StorageUnit","Link","Store"], focus_de=True, electricity_only=True, show_fig=False):
+def calculate_emission(network):
     n = network.copy()
+    
+    index_with_emission = (n.links == 'co2 atmosphere').T.any()
+    df_links = n.links
+    
+    for num in [0,1,2,3,4]:
+        index_with_co2 = (df_links[f"bus{num}"] == 'co2 atmosphere')
+        df_links.loc[index_with_co2,"co2_num"] = str(num)
+    
+        df_links[f"p{num}"] =  n.snapshot_weightings.stores @ n.links_t[f"p{num}"]
+        df_links[f"country{num}"] = df_links[f"bus{num}"].map(n.buses.country)
+    
+    df_links["p_co2"] = [-df_links.loc[i,f"p{df_links.loc[i,"co2_num"]}"] if not pd.isna(df_links.loc[i,"co2_num"]) else np.nan for i in df_links.index]
+    #[df_links[f"p{num}"] if not pd.isna(num) else np.nan for num in df_links["co2_num"]]
+    
+    for country in n.buses.country.unique():
+        if country == "":
+            continue
+        index_with_country = (df_links[[f"country{num}" for num in [0,1,2,3,4]]] == country).T.any()
+        df_links.loc[index_with_country,"country"] = country
+    
+    df_links.loc[~df_links.country.isin(config["countries"]),"country"] = "EU"
+    
+    df = pd.DataFrame(df_links.groupby(["country","carrier"])["p_co2"].sum()).unstack("country")
+    df.columns = df.columns.get_level_values("country")
+    df = df.replace(0, np.nan)
+    df = df.dropna(axis = 0, how = "all")
 
-    component_nice_name = {"Generator":'generators',
-                           "StorageUnit":'storage_units',
-                           "Link":'links',
-                           "Store":'stores'
-                          }
+    # convert tCO2 to MtCO2
+    df = df/1e6
 
-    cost_df = pd.read_csv(nodal_costs, index_col=list(range(3)), header=list(range(4)))
-    cost_df = cost_df.set_axis(['carrier', 'costs'], axis=1)
-    cost_df = cost_df.rename(index=n.buses.country, level=2)
+    return df
 
-    cost_df = cost_df[cost_df.index.get_level_values(0).isin(component_nice_name[comp] for comp in focus_component)]
-
-    if focus_de:
-        cost_df = cost_df[cost_df.index.get_level_values(2) == 'DE']
-
-    df = cost_df.groupby(["carrier"]).sum()
-
+def calculate_system_cost_csv(network, csv_path):
+    n = network.copy()
+    
+    df = pd.read_csv(csv_path, index_col=list(range(3)), header=list(range(4)))
+    df = df.set_axis(['carrier', 'cost'], axis=1)
+    df.index = df.index.rename(["country"], level=[2])
+    df = df.rename(index=n.buses.country, level=2)
+    df = df.reset_index(["country"])
+    df.loc[~df.country.isin(config["countries"]),"country"] = "EU"
+    
+    df = pd.DataFrame(df.groupby(["country","carrier"])["cost"].sum()).unstack("country")
+    df.columns = df.columns.get_level_values("country")
+    
     # convert to billions
     df = df / 1e9
 
+    return df
+
+def calculate_capacity_csv(network, csv_path):
+    n = network.copy()
+    
+    df = pd.read_csv(csv_path, index_col=list(range(2)), header=list(range(3)))
+    df = df.set_axis(['carrier', 'capacity'], axis=1)
+    df.index = df.index.rename(["component","country"], level=[0,1])
+    df = df.rename(index=n.buses.country, level=1)
+    df = df.reset_index(["country","component"])
+    df.loc[~df.country.isin(config["countries"]),"country"] = "EU"
+    
+    # convert links power gen techs capacity from MWth to MWel by multiplying by efficiency
+    df = df.set_index(["carrier"])
+    links_i = df.query("component == 'links' and carrier in @power_generation_tech").index
+    power_ge_links_eff = n.links.query("carrier in @links_i").groupby("carrier").first().efficiency
+    df["efficiency"] = df.index.map(power_ge_links_eff)
+    df.loc[links_i, "capacity"] *= df.loc[links_i].efficiency
+
+    df = pd.DataFrame(df.groupby(["country","carrier"])["capacity"].sum()).unstack("country")
+    df.columns = df.columns.get_level_values("country")
+
+    # convert from MW to GW
+    df = df / 1e3
+    
+    return df
+
+def calculate_capacity(network, stats = "optimal", storage = False):
+    
+    n = network.copy()
+    
+    if stats == "install":
+        df = pd.DataFrame(n.statistics.installed_capacity(groupby=get_country_and_carrier, storage = storage))
+    elif stats == "optimal":
+        df = pd.DataFrame(n.statistics.optimal_capacity(groupby=get_country_and_carrier, storage = storage))
+    elif stats == "expand" and storage == True:
+        df = pd.DataFrame(n.statistics.optimal_capacity(groupby=get_country_and_carrier, storage = True)).subtract(pd.DataFrame(n.statistics.installed_capacity(groupby=get_country_and_carrier, storage = True)), fill_value=0)
+    elif stats == "expand" and storage == False:
+        df = pd.DataFrame(n.statistics.expanded_capacity(groupby=get_country_and_carrier))
+    df = df.reset_index(["country","component"])
+        
+    # convert links power gen techs capacity from MWth to MWel by multiplying by efficiency
+    links_i = df.query("component == 'links' and carrier in @power_generation_tech").index
+    power_ge_links_eff = n.links.query("carrier in @links_i").groupby("carrier").first().efficiency
+    df["efficiency"] = df.index.map(power_ge_links_eff)
+    df.loc[links_i, 0] *= df.loc[links_i].efficiency
+    
+    df.loc[~df.country.isin(config["countries"]),"country"] = "EU"
+    
+    df = pd.DataFrame(df.groupby(["country","carrier"])[0].sum()).unstack("country")
+    df.columns = df.columns.get_level_values("country")
+
+    # convert from MW to GW
+    df = df / 1e3
+
+    return df
+
+def calculate_generation(network):
+    n = network.copy()
+    
+    df = pd.DataFrame(n.statistics.energy_balance(groupby=get_country_and_carrier))
+    df = df.reset_index(["country","component"])
+    df.loc[~df.country.isin(config["countries"]),"country"] = "EU"
+
+    df = pd.DataFrame(df.groupby(["country","carrier"])[0].sum()).unstack("country")
+    df.columns = df.columns.get_level_values("country")
+
+    # convert from MW to GW
+    df = df / 1e3
+    
+    return df
+
+def filter_and_rename(network, df, carrier_filter = None, group_carrier = None):
+    n = network.copy()
+
+    # Replace countries with short country names
+    short_name = cc.convert(names = df.columns, src = 'ISO2', to = 'name_short', not_found=None)
+    if len(df.columns) == 1:
+        df.columns = [short_name]
+    else:
+        df.columns = short_name
+
+    # convert to nice name
     df["nice_name"] = list(pd.Series(df.index).replace(n.carriers.nice_name))
     df = df.set_index("nice_name")
 
-    if electricity_only:
-        elec_carrier = find_electricity_carrier(n)
-        df = df[df.index.isin(elec_carrier)]
+    # Create your own filter
+    stats = pd.DataFrame(n.statistics.energy_balance(groupby=get_bus_and_carrier_and_bus_carrier))
 
-        electricity_title = "electricity only "
-    else:
-        electricity_title = ""
+    if carrier_filter == "electricity":
+        carrier = stats[stats.index.get_level_values("bus_carrier").isin(["AC"])].index.get_level_values("carrier").unique()
+        df = df.loc[df.index.isin(carrier),:]
 
-    to_drop = df.index[df.max(axis=1) < snakemake.config["plotting"]["costs_threshold"]] #snakemake.params.plotting["costs_threshold"]]
+    elif carrier_filter == "electricity+":
+        carrier = stats[stats.index.get_level_values("bus_carrier").isin(["AC"])].index.get_level_values("carrier").unique()
+        carrier = carrier.append(stats.filter(like="water tanks",axis=0).index.get_level_values("carrier").unique())
+        carrier = carrier.append(stats.filter(like="EV battery",axis=0).index.get_level_values("carrier").unique())
+        df = df.loc[df.index.isin(carrier),:]
 
-    logger.info(
-        f"Dropping technology with costs below {snakemake.params['plotting']['costs_threshold']} EUR billion per year"
-    )
-    logger.debug(df.loc[to_drop])
+    elif carrier_filter == "storage":
+        carrier = pd.Index([
+            "Iron-Air Battery Storage","Li-Ion Battery Storage","lair","vanadium","pair",
+            "H2 Fuel Cell","H2 Store","H2 Electrolysis","Pumped Hydro Storage",
+            "BEV charger","EV battery","V2G",'residential rural water tanks',
+            'urban central water tanks','residential urban decentral water tanks',
+        ])
+        df = df.loc[df.index.isin(carrier),:]
 
+    elif carrier_filter == "storage-cap":
+        carrier = pd.Index([
+            "Iron-Air Battery Storage","Li-Ion Battery Storage","lair","vanadium","pair",
+            "H2 Store","Pumped Hydro Storage","V2G",'residential rural water tanks',
+            'urban central water tanks','residential urban decentral water tanks',
+        ])
+        df = df.loc[df.index.isin(carrier),:]
+
+    elif carrier_filter == "power":
+        carrier = pd.Index([
+            "solar rooftop","Solar","solar-hsat","Onshore Wind","Offshore Wind (DC)",
+            "Offshore Wind (AC)","Offshore Wind (Floating)","Run of River","Reservoir & Dam",
+            "Open-Cycle Gas","Combined-Cycle Gas","nuclear","oil","lignite","coal"
+        ])
+        df = df.loc[df.index.isin(carrier),:]
+
+    # Group carrier
+    if group_carrier == "pretty":
+        df = df.rename(index=pretty_names).groupby(["nice_name"]).sum()
+    elif group_carrier == "sector": 
+        df = df.rename(index=sector_names).groupby(["nice_name"]).sum()
+
+    to_drop = df.loc[abs(df.T.sum()) < 1,:].index
+    # An exception if Iron Air Battery Storage is still in
+    if 'Iron-Air Battery Storage' in to_drop:
+        to_drop = to_drop.drop('Iron-Air Battery Storage')
+
+    #logger.info(
+    #    f"Dropping technology with costs below {config["plotting"]['costs_threshold']} EUR billion per year"
+    #)
+    #logger.debug(df.loc[to_drop])
     df = df.drop(to_drop)
 
-    logger.info(f"Total {electricity_title}system cost of {round(df.sum().iloc[0])} EUR billion per year")
+    
+    # Sort the index by preferred order and set color
+    colors = n.carriers.set_index("nice_name").color.where(lambda s: s != "", "green")
+    
+    if group_carrier == "pretty":
+        new_index = preferred_order_pretty_names_reversed.intersection(df.index).append(
+            df.index.difference(preferred_order_pretty_names)
+        )
+        colors = colors.rename(index=pretty_names)
+        colors = colors[~colors.index.duplicated(keep='first')]
+        
+    elif group_carrier == "sector": 
+        new_index = preferred_order_sector_names_reversed.intersection(df.index).append(
+            df.index.difference(preferred_order_sector_names)
+        )
+        colors = sector_colors
+    else:
+        new_index = preferred_order_reversed.intersection(df.index).append(
+            df.index.difference(preferred_order)
+        )
 
-    new_index = preferred_order.intersection(df.index).append(
-        df.index.difference(preferred_order)
+    df["color"] = [colors[i] for i in df.index]
+
+    return df.loc[new_index,:]
+        
+def plot_by_country(df, plot_kw, path):
+
+    fig, ax = plt.subplots(figsize=(12, 7))
+    
+    df.drop(columns={"color"}).T.plot(
+        kind="bar",
+        width = 0.9,
+        ax=ax,
+        stacked=True,
+        color=df["color"],
+        rot=90,
+        legend=False,
+        **plot_kw,
     )
 
-    #Set color
-    colors = n.carriers.set_index("nice_name").color.where(lambda s: s != "", "green")
+    ax.grid(axis="y")
+    ax.set_xlabel("")
+    ax.set_facecolor("white")
 
-    fig, ax = plt.subplots(figsize=(8, 8))
+    handles, labels = ax.get_legend_handles_labels()
+    
+    handles.reverse()
+    labels.reverse()
+    
+    ax.legend(handles, labels, loc = "upper center", bbox_to_anchor = (0.5, -0.20), frameon = False, ncol = 3, 
+                title = "Components", title_fontproperties = {'weight':'bold'})
 
-    df.loc[new_index].T.plot(
+    fig.savefig(path, bbox_inches="tight")
+
+def plot_in_detail(df, plot_kw, path):
+    
+    c = df.columns.difference(["color"])
+    df = df[["color"]].assign(Total=df[c].sum(axis=1))
+
+    fig, ax = plt.subplots(figsize=(6, 8))
+
+    df.drop(columns={"color"}).T.plot(
         kind="bar",
         ax=ax,
         stacked=True,
-        color=[colors[i] for i in new_index],
+        color=df["color"],
+        **plot_kw,
     )
-
+    
     handles, labels = ax.get_legend_handles_labels()
 
     handles.reverse()
     labels.reverse()
 
-    ax.set_ylim([0, snakemake.params.plotting["costs_max"]])
+    ax.grid(axis="y")
 
-    ax.set_ylabel("System Cost [EUR billion per year]")
-
-    ax.set_xlabel("")
-
-    ax.grid(axis="x")
-
-    labels = [label + ": \n " + str(round(df.loc[label,"costs"],2)) for label in labels]
+    labels = [label + ": \n " + str(round(df.loc[label,"Total"],2)) for label in labels]
     labels = [label.replace(' &', '').replace(' and', '') for label in labels] #NOTE: Latex hates '&' strings because its their seperator
 
     ax.legend(
         handles, labels, ncol=1, loc="center left", bbox_to_anchor=[1, 0.5], frameon=False, 
-        title = f"{electricity_title}system cost: \n{round(df.sum().iloc[0],2)}", alignment="left"
+        title = f"Total: \n{round(df.drop(columns={"color"}).sum().iloc[0],2)}", alignment="left"
     )
 
     ax.set_facecolor("white")
-
-    if show_fig:
-        fig.show()
+    fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")
+
+
+def kpi_path(fn):
+    #return [i for i in snakemake.output.kpi_plot if fn in i][0]
+    return f"{fn}.svg"
 
 if __name__ == "__main__":
 
@@ -426,6 +855,12 @@ if __name__ == "__main__":
             planning_horizons="2035",
             configfiles="config/config.form.yaml",
         )
+
+    power_generation_tech = pd.Index([
+        "solar rooftop","Solar","solar-hsat","Onshore Wind","Offshore Wind (DC)",
+        "Offshore Wind (AC)","Offshore Wind (Floating)","Run of River","Reservoir & Dam",
+        "Open-Cycle Gas","Combined-Cycle Gas","nuclear","oil","lignite","coal"
+    ])
 
     tech_colors_custom = {
         "H2 Electrolysis": "#ff29d9",
@@ -457,6 +892,9 @@ if __name__ == "__main__":
 
     # choose pretty names
     pretty_names = {
+        "lair": "Liquid Air Battery Storage",
+        "pair": "Compressed Air Battery Storage",
+        "vanadium": "Vanadium-Redox Battery Storage",
         "H2 Electrolysis": "H2 electrolysis",
         "H2 pipeline": "H2 pipeline constructed",
         "H2 pipeline retrofitted": "H2 pipeline retrofitted",
@@ -523,7 +961,7 @@ if __name__ == "__main__":
         "ground heat pump": "Heat pump (ground)",
         "electricity distribution grid": "Electricity distribution grid",
         "transmission lines": "Transmission lines",
-        "Reservoir & Dam": "Reservoir \& Dam",
+        "Reservoir & Dam": "Reservoir & Dam", # Note, revert this back to /&
         "ror": "Run of River",
         "offwind-float": "Offshore Wind (Floating)",
         "solar-hsat": "Solar (HSAT)",
@@ -532,7 +970,180 @@ if __name__ == "__main__":
         "rural solar thermal": "Solar Thermal",
         "residential urban decentral solar thermal": "Solar Thermal",
         "urban decentral solar thermal": "Solar Thermal",
+        "urban central water tanks": "Water Tanks",
+        "residential rural water tanks": "Water Tanks",
+        "residential urban decentral water tanks": "Water Tanks",
+        "V2G":"Vehicle-to-Grid",
     }
+
+    sector_colors = {
+        "Power Sector": '#ffbf2b',
+        "Transport Sector": '#baf238',
+        "Heating Sector": '#db6a25',
+        "CCUS": '#d2d2d2',
+        "Primary Fuel": '#692e0a'
+    }
+
+    sector_names = {
+        "Iron-Air Battery Storage": "Power Sector",
+        "Li-Ion Battery Storage": "Power Sector",
+        "lair": "Power Sector",
+        "vanadium": "Power Sector",
+        "pair": "Power Sector",
+        "H2 Fuel Cell": "Power Sector",
+        "H2 Store": "Power Sector",
+        "H2 Electrolysis": "Power Sector",
+        "Pumped Hydro Storage": "Power Sector",
+        "solar rooftop": "Power Sector",
+        "Solar": "Power Sector",
+        "solar-hsat": "Power Sector",
+        "Onshore Wind": "Power Sector",
+        "Offshore Wind (DC)": "Power Sector",
+        "Offshore Wind (AC)": "Power Sector",
+        "Offshore Wind (Floating)": "Power Sector",
+        "Run of River": "Power Sector",
+        "Reservoir & Dam": "Power Sector",
+        "Open-Cycle Gas": "Power Sector",
+        "Combined-Cycle Gas": "Power Sector",
+        "nuclear": "Power Sector",
+        "AC": "Power Sector",
+        "DC": "Power Sector",
+        "electricity distribution grid": "Power Sector",
+        "BEV charger": "Transport Sector",
+        "EV battery": "Transport Sector",
+        "V2G": "Transport Sector",
+        "land transport oil": "Transport Sector",
+        "residential rural gas boiler": "Heating Sector",
+        'residential rural ground heat pump': "Heating Sector",
+        "residential rural resistive heater": "Heating Sector",
+        "residential rural solar thermal": "Heating Sector",
+        "residential rural water tanks": "Heating Sector",
+        "residential rural water tanks discharger": "Heating Sector",
+        "residential rural water tanks discharger": "Heating Sector",
+        "residential urban decentral air heat pump": "Heating Sector",
+        'residential urban decentral gas boiler': "Heating Sector",
+        "residential urban decentral resistive heater": "Heating Sector",
+        "residential urban decentral solar thermal": "Heating Sector",
+        "residential urban decentral water tanks": "Heating Sector",
+        "residential urban decentral water tanks charger": "Heating Sector",
+        "rural oil boiler": "Heating Sector",
+        "services rural gas boiler": "Heating Sector",
+        "services rural air heat pump": "Heating Sector",
+        "services rural ground heat pump": "Heating Sector",
+        "services rural resistive heater": "Heating Sector",
+        "services rural water tanks charger": "Heating Sector",
+        "services urban decentral gas boiler": "Heating Sector",
+        "services urban decentral water tanks discharger": "Heating Sector",
+        "urban central CHP": "Heating Sector",
+        "urban central CHP CC": "Heating Sector",
+        "urban central air heat pump": "Heating Sector",
+        "urban central gas boiler": "Heating Sector",
+        "urban central resistive heater": "Heating Sector",
+        "urban central solar thermal": "Heating Sector",
+        "urban central solid biomass CHP": "Heating Sector",
+        "urban central water tanks": "Heating Sector",
+        "urban central water tanks charger": "Heating Sector",
+        "urban central water tanks discharger": "Heating Sector",
+        "urban decentral oil boiler": "Heating Sector",
+        "co2": "Primary Fuel",
+        "co2 stored": "CCUS",
+        "co2 sequestered": "CCUS",
+        "DAC": "CCUS",
+        "SMR CC": "Primary Fuel",
+        "SMR": "Primary Fuel",
+        "Sabatier": "Primary Fuel",
+        "oil refining": "Primary Fuel",
+        "oil primary": "Primary Fuel",
+        "oil": "Primary Fuel",
+        "methanol": "Primary Fuel",
+        "gas": "Primary Fuel",
+        "lignite": "Primary Fuel",
+        "coal": "Primary Fuel",
+        "uranium": "Primary Fuel",
+    }
+
+        preferred_order = pd.Index([
+        "Iron-Air Battery Storage",
+        "Li-Ion Battery Storage",
+        "lair",
+        "vanadium",
+        "pair",
+        "H2 Fuel Cell",
+        "H2 Store",
+        "H2 Electrolysis",
+        "Pumped Hydro Storage",
+        "solar rooftop",
+        "Solar",
+        "solar-hsat",
+        "Onshore Wind",
+        "Offshore Wind (DC)",
+        "Offshore Wind (AC)",
+        "Offshore Wind (Floating)",
+        "Run of River",
+        "Reservoir & Dam",
+        "Open-Cycle Gas",
+        "Combined-Cycle Gas",
+        "nuclear",
+        "AC",
+        "DC",
+        "electricity distribution grid",
+        "BEV charger",
+        "EV battery",
+        "V2G",
+        "land transport oil",
+        "residential rural gas boiler",
+        "residential rural resistive heater",
+        "residential rural solar thermal",
+        "residential rural water tanks",
+        "residential rural water tanks discharger",
+        "residential urban decentral air heat pump",
+        "residential urban decentral resistive heater",
+        "residential urban decentral solar thermal",
+        "residential urban decentral water tanks",
+        "residential urban decentral water tanks charger",
+        "rural oil boiler",
+        "services rural gas boiler",
+        "services rural air heat pump",
+        "services rural ground heat pump",
+        "services rural resistive heater",
+        "services rural water tanks charger",
+        "services urban decentral gas boiler",
+        "services urban decentral water tanks discharger",
+        "urban central CHP",
+        "urban central CHP CC",
+        "urban central air heat pump",
+        "urban central gas boiler",
+        "urban central resistive heater",
+        "urban central solar thermal",
+        "urban central solid biomass CHP",
+        "urban central water tanks",
+        "urban central water tanks charger",
+        "urban central water tanks discharger",
+        "urban decentral oil boiler",
+        "co2",
+        "co2 stored",
+        "co2 sequestered",
+        "DAC",
+        "SMR CC",
+        "SMR",
+        "Sabatier",
+        "oil refining",
+        "oil primary",
+        "oil",
+        "methanol",
+        "gas",
+        "lignite",
+        "coal",
+        "uranium"
+    ])
+
+    # defined preferred order under all naming schemes
+    preferred_order_reversed = preferred_order[::-1]
+    preferred_order_pretty_names = pd.Index(pd.Series(preferred_order).apply(lambda x: pretty_names[x] if x in pretty_names.keys() else x).drop_duplicates(keep = 'first'))
+    preferred_order_pretty_names_reversed = preferred_order_pretty_names[::-1]
+
+    preferred_order_sector_names = pd.Index(pd.Series(preferred_order).apply(lambda x: sector_names[x] if x in sector_names.keys() else x).drop_duplicates(keep = 'first'))
+    preferred_order_sector_names_reversed = preferred_order_sector_names[::-1]
 
     # define tech colors and update with custom
     tech_colors = snakemake.config["plotting"]["tech_colors"]
@@ -559,10 +1170,59 @@ if __name__ == "__main__":
 
     plot_line_loading(n, regions, path=snakemake.output.line_loading_map, focus_de=True, value="mean", show_fig=False)
 
-    plot_power_time_series(n, start_date, end_date, path=snakemake.output.energy_balance, focus_component=["Generator","StorageUnit","Link"], focus_de=True, show_fig=False)
-    
-    plot_power_time_series(n, start_date, end_date, path=snakemake.output.storage_energy_balance, focus_component=["StorageUnit"], focus_de=True, show_fig=False)
+    #plot_power_time_series(n, start_date, end_date, path=snakemake.output.energy_balance, focus_component=["Generator","StorageUnit","Link"], focus_de=True, show_fig=False)
+    #plot_power_time_series(n, start_date, end_date, path=snakemake.output.storage_energy_balance, focus_component=["StorageUnit"], focus_de=True, show_fig=False)
+    #plot_system_cost(n, snakemake.input.nodal_costs, path=snakemake.output.system_cost, focus_component=["Generator","StorageUnit","Link","Store"], focus_de=True, electricity_only=True, show_fig=False)
+    #plot_system_cost(n, snakemake.input.nodal_costs, path=snakemake.output.storage_system_cost, focus_component=["StorageUnit"], focus_de=True, electricity_only=True, show_fig=False)
 
-    plot_system_cost(n, snakemake.input.nodal_costs, path=snakemake.output.system_cost, focus_component=["Generator","StorageUnit","Link","Store"], focus_de=True, electricity_only=True, show_fig=False)
+    # extract all the nessesary statistics
+    df_cost = calculate_system_cost_csv(n, snakemake.input.nodal_costs)
+    df_capacity_csv = calculate_capacity_csv(n, snakemake.input.nodal_capacity)
+    df_gen = calculate_generation(n)
+    df_co2 = calculate_emission(n)
+    df_eql = prepare_energy_balance(n)
 
-    plot_system_cost(n, snakemake.input.nodal_costs, path=snakemake.output.storage_system_cost, focus_component=["StorageUnit"], focus_de=True, electricity_only=True, show_fig=False)
+    config_kpi = snakemake.params.kpi
+    if config_kpi:
+        for fn, kpi_param in config_kpi.items():
+            logger.info(f"Preparing plot {fn}")
+            extract_param = kpi_param.get("extract",None)
+            if extract_param == "time series":
+                df = df_eql.copy(deep=True)
+                plot_time_series(n, df, kpi_param, kpi_path(fn))
+                continue
+            elif extract_param == "system cost":
+                logger.info("extracting system cost")
+                df = df_cost.copy(deep=True)
+            elif extract_param == "capacity":
+                logger.info("extracting capacity")
+                df = df_capacity_csv.copy(deep=True)
+            elif extract_param == "capacity stats":
+                stats = kpi_param.get("stats","optimal")
+                storage = kpi_param.get("storage",None)
+                df = calculate_capacity(n, stats = stats, storage = storage)
+            elif extract_param == "generation":
+                logger.info("extracting generation")
+                df = df_gen.copy(deep=True)
+            elif extract_param == "emission":
+                logger.info("extracting emission")
+                df = df_co2.copy(deep=True)
+
+            include = kpi_param.get("include",False)
+            if include:
+                logger.info(f"include only {include}")
+                df = df[include]
+            exclude = kpi_param.get("exclude",False)
+            if exclude:
+                logger.info(f"exclude {exclude}")
+                df = df.loc[:,df.columns.difference(exclude)]
+            
+            df = filter_and_rename(n, df, carrier_filter = kpi_param.get("carrier_filter",None), group_carrier = kpi_param.get("group_carrier",None))
+            
+            plot_param = kpi_param.get("plot",None)
+            plot_kw = kpi_param.get("plot_kw",{})
+            if plot_param == "detail":
+                plot_in_detail(df, plot_kw, kpi_path(fn))
+            elif plot_param == "overview":
+                plot_by_country(df, plot_kw, kpi_path(fn))
+
