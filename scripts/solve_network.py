@@ -931,6 +931,13 @@ def add_co2_atmosphere_constraint(n, snapshots):
             n.model.add_constraints(lhs <= rhs, name=f"GlobalConstraint-{name}")
 
 
+def add_dac_limit(n):
+    dac=n.links.query("Link.str.contains('DAC')")
+    lhs=(n.model["Link-p"].loc[:, dac.index] * n.snapshot_weightings.generators).sum()
+    rhs=20*1e6 / dac.efficiency2.mean() * -1
+    n.model.add_constraints(lhs <= rhs, name="DAC limit")
+
+
 def extra_functionality(n, snapshots):
     """
     Collects supplementary constraints which will be passed to
@@ -966,6 +973,7 @@ def extra_functionality(n, snapshots):
     add_battery_constraints(n)
     add_lossy_bidirectional_link_constraints(n)
     add_pipe_retrofit_constraint(n)
+    add_dac_limit(n)
     if n._multi_invest:
         add_carbon_constraint(n, snapshots)
         add_carbon_budget_constraint(n, snapshots)
