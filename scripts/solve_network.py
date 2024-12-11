@@ -932,9 +932,12 @@ def add_co2_atmosphere_constraint(n, snapshots):
 
 
 def add_dac_limit(n):
+    """
+    Limit the amount of CO2 captured using DAC. The constraint is formulated tCO2.
+    """
     dac=n.links.query("Link.str.contains('DAC')")
-    lhs=(n.model["Link-p"].loc[:, dac.index] * n.snapshot_weightings.generators).sum()
-    rhs=20*1e6 / dac.efficiency2.mean() * -1
+    lhs=(n.model["Link-p"].loc[:, dac.index] * n.snapshot_weightings.generators * dac.efficiency2 * -1).sum()
+    rhs=20*1e6  #  ToDo Add a configuration
     n.model.add_constraints(lhs <= rhs, name="DAC limit")
 
 
