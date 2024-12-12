@@ -38,7 +38,14 @@ if __name__ == "__main__":
     if len(historic.index) > len(n.snapshots):
         historic = historic.resample(n.snapshots.inferred_freq).mean().loc[n.snapshots]
 
-    optimized = n.buses_t.marginal_price.groupby(n.buses.country, axis=1).mean()
+    optimized = n.buses_t.marginal_price.T.groupby(n.buses.country).mean().T
+
+    # Remove all carriers originated not from a country
+    optimized = optimized.loc[:, optimized.columns != '']
+
+        # Set the historic date based on the snapshot year
+    if historic.index.year.unique()[0] != n.snapshots.year.unique()[0]:
+        optimized.index = optimized.index.map(lambda x: x.replace(year=historic.index.year.unique()[0]))
 
     data = pd.concat([historic, optimized], keys=["Historic", "Optimized"], axis=1)
     data.columns.names = ["Kind", "Country"]
