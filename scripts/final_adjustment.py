@@ -44,7 +44,7 @@ def connection_limit_ntc(n,fn,year="2035"):
         value = df.loc[(country0,country1),"s_nom_share"]
         if value == 0:
             continue
-        logger.info(f"Set AC transmission limit between {country0} - {country1} from {original} MW to {value} MW")
+        logger.info(f"Set AC transmission limit between {country0} - {country1} from {original} MW to NTC of {value} MW")
         lines = n.lines.query("country0 == @country0 & country1 == @country1")
         proportion = (n.lines.loc[lines.index,"s_nom"]/n.lines.loc[lines.index,"s_nom"].sum())
         n.lines.loc[lines.index,"s_nom_max"] = value * proportion / n.lines.loc[lines.index,"s_max_pu"]
