@@ -170,6 +170,7 @@ sector:
       2035: 0.45
   bev_dsm: true
   bev_dsm_availability: 0.2 # FE input
+  bev_charge_rate: 0.007  # FE input
   v2g: true
   land_transport_fuel_cell_share:
     2035: 0
