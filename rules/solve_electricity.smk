@@ -3,6 +3,22 @@
 # SPDX-License-Identifier: MIT
 
 
+if config["enable"].get("final_adjustment",False):
+
+    rule final_adjustment:
+        input:
+            network=resources("networks/base_s_{clusters}_elec_l{ll}_{opts}.nc"),
+            ntc="data/TYNDP_NTC.csv",
+        output:
+            network=resources("networks-adjusted/base_s_{clusters}_elec_l{ll}_{opts}.nc"),
+        log:
+            logs(RESULTS
+            + "logs/final_adjustment_electricity_base_s_{clusters}_elec_l{ll}_{opts}.log")
+        conda:
+            "../envs/environment.yaml"
+        script:
+            "../scripts/final_adjustment.py"
+
 rule solve_network:
     params:
         solving=config_provider("solving"),
@@ -13,7 +29,11 @@ rule solve_network:
         ),
         custom_extra_functionality=input_custom_extra_functionality,
     input:
-        network=resources("networks/base_s_{clusters}_elec_l{ll}_{opts}.nc"),
+        network=lambda w: (
+            resources("networks-adjusted/base_s_{clusters}_elec_l{ll}_{opts}.nc")
+            if config["enable"].get("final_adjustment",False)
+            else resources("networks/base_s_{clusters}_elec_l{ll}_{opts}.nc")
+        ),
     output:
         network=RESULTS + "networks/base_s_{clusters}_elec_l{ll}_{opts}.nc",
         config=RESULTS + "configs/config.base_s_{clusters}_elec_l{ll}_{opts}.yaml",
