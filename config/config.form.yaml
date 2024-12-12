@@ -181,7 +181,9 @@ sector:
     2035: 0.11
   tes: false
   dac: true
-  dac_limit: false  # False or limit in MtCO2
+  dac_limit:
+      enable: False
+      2035: 20  # limit in MtCO2
   marginal_cost_storage: 0. #1e-4
   stores: ["H2"]
   storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
