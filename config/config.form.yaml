@@ -13,7 +13,7 @@ logging:
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
   prefix: "updated_initial_main_scenarios"
-  name: "main-mds-vanilla-no-methanation"
+  name: "main-mds-vanilla-dac-limit-ev40"
   scenarios:
     enable: true
     file: config/scenarios.form.yaml
@@ -180,6 +180,8 @@ sector:
   reduce_space_heat_exogenously_factor: # TODO: check this for Germany (Regulation or Ariadne?)
     2035: 0.11
   tes: false
+  dac: true
+  dac_limit: false  # False or limit in MtCO2
   marginal_cost_storage: 0. #1e-4
   stores: ["H2"]
   storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
