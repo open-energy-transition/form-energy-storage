@@ -54,7 +54,7 @@ enable:
   retrieve_cutout: false
   custom_busmap: false
   drop_leap_day: true
-  final_adjustment: true
+  final_adjustment: false
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#co2-budget
 co2_budget:

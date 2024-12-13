@@ -106,23 +106,21 @@ rule add_brownfield:
 ruleorder: add_existing_baseyear > add_brownfield
 
 
-if config["enable"].get("final_adjustment",False):
-
-    rule final_adjustment_myopic:
-        input:
-            network=RESULTS
-            + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
-            ntc="data/TYNDP_NTC.csv",
-        output:
-            network=RESULTS
-            + "prenetworks-brownfield-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
-        log:
-            logs(RESULTS
-            + "logs/final_adjustment_myopic_base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.log")
-        conda:
-            "../envs/environment.yaml"
-        script:
-            "../scripts/final_adjustment.py"
+rule final_adjustment_myopic:
+    input:
+        network=RESULTS
+        + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
+        ntc="data/TYNDP_NTC.csv",
+    output:
+        network=RESULTS
+        + "prenetworks-brownfield-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
+    log:
+        RESULTS
+        + "logs/final_adjustment_myopic_base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.log"
+    conda:
+        "../envs/environment.yaml"
+    script:
+        "../scripts/final_adjustment.py"
 
 rule solve_sector_network_myopic:
     params:
@@ -137,7 +135,7 @@ rule solve_sector_network_myopic:
         network=lambda w: ( 
             RESULTS
             + "prenetworks-brownfield-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc"
-            if config["enable"].get("final_adjustment",False)
+            if config_provider("enable", "final_adjustment")(w)
             else RESULTS
             + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc"
         ),
