@@ -57,7 +57,7 @@ def connection_limit_ntc(n,fn,year="2035"):
         if value == 0:
             continue
         logger.info(f"Set DC transmission limit between {country0} - {country1} from {original} to {value}")
-        links = n.lines.query("country0 == @country0 & country1 == @country1 & carrier == 'DC'")
+        links = n.links.query("country0 == @country0 & country1 == @country1 & carrier == 'DC'")
         proportion = (n.links.loc[links.index,"p_nom"]/n.links.loc[links.index,"p_nom"].sum())
         n.links.loc[links.index,"p_nom_max"] = value * proportion / n.links.loc[links.index,"p_max_pu"]
         n.links.loc[links.index,["p_nom_min","p_nom"]] = n.links.loc[links.index,["p_nom","p_nom_max"]].T.min()
