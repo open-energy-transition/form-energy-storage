@@ -2,17 +2,18 @@ name: Update pinned envs
 
 on:
   push:
-    branches:
-    - master
     paths:
-    - 'envs/environment.yaml'
+    - envs/environment.yaml
   schedule:
-  - cron: "0 5 * * 0"
+  - cron: "0 8 1,16 * *" # Bi-weekly
   workflow_dispatch:
 
+env:
+  BASE_ENV: envs/environment.yaml
 
 jobs:
   update-pinned-environment:
+    if: ${{ github.ref == 'refs/heads/master' }}
     name: Update pinned envs
     runs-on: ${{ matrix.os }}-latest
     strategy:

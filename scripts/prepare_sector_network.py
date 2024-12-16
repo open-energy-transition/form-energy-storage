@@ -122,7 +122,7 @@ def define_spatial(nodes, options):
             spatial.gas.biogas_to_gas_cc = nodes + " biogas to gas CC"
         else:
             spatial.gas.biogas_to_gas_cc = ["EU biogas to gas CC"]
-        if options.get("co2_spatial", options["co2network"]):
+        if options.get("co2_spatial", options["co2_network"]):
             spatial.gas.industry_cc = nodes + " gas for industry CC"
         else:
             spatial.gas.industry_cc = ["gas for industry CC"]
@@ -1851,25 +1851,11 @@ def add_EVs(
         efficiency=options["bev_charge_efficiency"],
     )
 
-    if options["v2g"]:
-        n.add(
-            "Link",
-            spatial.nodes,
-            suffix=" V2G",
-            bus1=spatial.nodes,
-            bus0=spatial.nodes + " EV battery",
-            p_nom=p_nom,
-            carrier="V2G",
-            p_max_pu=avail_profile.loc[n.snapshots, spatial.nodes],
-            lifetime=1,
-            efficiency=options["bev_charge_efficiency"],
-        )
-
     if options["bev_dsm"]:
         e_nom = (
             number_cars
             * options["bev_energy"]
-            * options["bev_availability"]
+            * options["bev_dsm_availability"]
             * electric_share
         )
 
@@ -1884,6 +1870,20 @@ def add_EVs(
             e_max_pu=1,
             e_min_pu=dsm_profile.loc[n.snapshots, spatial.nodes],
         )
+
+        if options["v2g"]:
+            n.add(
+                "Link",
+                spatial.nodes,
+                suffix=" V2G",
+                bus1=spatial.nodes,
+                bus0=spatial.nodes + " EV battery",
+                p_nom=p_nom * options["bev_dsm_availability"],
+                carrier="V2G",
+                p_max_pu=avail_profile.loc[n.snapshots, spatial.nodes],
+                lifetime=1,
+                efficiency=options["bev_charge_efficiency"],
+            )
 
 
 def add_fuel_cell_cars(n, p_set, fuel_cell_share, temperature):
@@ -1907,7 +1907,7 @@ def add_fuel_cell_cars(n, p_set, fuel_cell_share, temperature):
         suffix=" land transport fuel cell",
         bus=spatial.h2.nodes,
         carrier="land transport fuel cell",
-        p_set=profile,
+        p_set=profile.loc[n.snapshots],
     )
 
 
@@ -1946,7 +1946,7 @@ def add_ice_cars(n, p_set, ice_share, temperature):
         spatial.oil.land_transport,
         bus=spatial.oil.land_transport,
         carrier="land transport oil",
-        p_set=profile,
+        p_set=profile.loc[n.snapshots],
     )
 
     n.add(
@@ -2050,7 +2050,12 @@ def build_heat_demand(n):
     return heat_demand
 
 
-def add_heat(n: pypsa.Network, costs: pd.DataFrame, cop: xr.DataArray):
+def add_heat(
+    n: pypsa.Network,
+    costs: pd.DataFrame,
+    cop: xr.DataArray,
+    direct_heat_source_utilisation_profile: xr.DataArray,
+):
     """
     Add heat sector to the network.
 
@@ -2167,8 +2172,8 @@ def add_heat(n: pypsa.Network, costs: pd.DataFrame, cop: xr.DataArray):
         for heat_source in snakemake.params.heat_pump_sources[
             heat_system.system_type.value
         ]:
-            costs_name = heat_system.heat_pump_costs_name(heat_source)
-            efficiency = (
+            costs_name_heat_pump = heat_system.heat_pump_costs_name(heat_source)
+            cop_heat_pump = (
                 cop.sel(
                     heat_system=heat_system.system_type.value,
                     heat_source=heat_source,
@@ -2177,23 +2182,106 @@ def add_heat(n: pypsa.Network, costs: pd.DataFrame, cop: xr.DataArray):
                 .to_pandas()
                 .reindex(index=n.snapshots)
                 if options["time_dep_hp_cop"]
-                else costs.at[costs_name, "efficiency"]
+                else costs.at[costs_name_heat_pump, "efficiency"]
             )
 
-            n.add(
-                "Link",
-                nodes,
-                suffix=f" {heat_system} {heat_source} heat pump",
-                bus0=nodes,
-                bus1=nodes + f" {heat_system} heat",
-                carrier=f"{heat_system} {heat_source} heat pump",
-                efficiency=efficiency,
-                capital_cost=costs.at[costs_name, "efficiency"]
-                * costs.at[costs_name, "fixed"]
-                * overdim_factor,
-                p_nom_extendable=True,
-                lifetime=costs.at[costs_name, "lifetime"],
-            )
+            if heat_source in snakemake.params.heat_utilisation_potentials:
+                # get potential
+                p_max_source = pd.read_csv(
+                    snakemake.input[heat_source],
+                    index_col=0,
+                ).squeeze()[nodes]
+
+                # add resource
+                heat_carrier = f"{heat_system} {heat_source} heat"
+                n.add("Carrier", heat_carrier)
+                n.madd(
+                    "Bus",
+                    nodes,
+                    suffix=f" {heat_carrier}",
+                    carrier=heat_carrier,
+                )
+
+                costs_name_heat_source = heat_system.heat_source_costs_name(heat_source)
+                if heat_source in snakemake.params.direct_utilisation_heat_sources:
+                    capital_cost = (
+                        costs.at[
+                            heat_system.heat_source_costs_name(heat_source), "fixed"
+                        ]
+                        * overdim_factor
+                    )
+                    lifetime = costs.at[
+                        heat_system.heat_source_costs_name(heat_source), "lifetime"
+                    ]
+                else:
+                    capital_cost = 0.0
+                    lifetime = np.inf
+                n.madd(
+                    "Generator",
+                    nodes,
+                    suffix=f" {heat_carrier}",
+                    bus=nodes + f" {heat_carrier}",
+                    carrier=heat_carrier,
+                    p_nom_extendable=True,
+                    capital_cost=capital_cost,
+                    lifetime=lifetime,
+                    p_nom_max=p_max_source,
+                )
+
+                # add heat pump converting source heat + electricity to urban central heat
+                n.madd(
+                    "Link",
+                    nodes,
+                    suffix=f" {heat_system} {heat_source} heat pump",
+                    bus0=nodes,
+                    bus1=nodes + f" {heat_carrier}",
+                    bus2=nodes + f" {heat_system} heat",
+                    carrier=f"{heat_system} {heat_source} heat pump",
+                    efficiency=-(cop_heat_pump - 1),
+                    efficiency2=cop_heat_pump,
+                    capital_cost=costs.at[costs_name_heat_pump, "efficiency"]
+                    * costs.at[costs_name_heat_pump, "fixed"]
+                    * overdim_factor,
+                    p_nom_extendable=True,
+                    lifetime=costs.at[costs_name_heat_pump, "lifetime"],
+                )
+
+                if heat_source in snakemake.params.direct_utilisation_heat_sources:
+                    # 1 if source temperature exceeds forward temperature, 0 otherwise:
+                    efficiency_direct_utilisation = (
+                        direct_heat_source_utilisation_profile.sel(
+                            heat_source=heat_source,
+                            name=nodes,
+                        )
+                        .to_pandas()
+                        .reindex(index=n.snapshots)
+                    )
+                    # add link for direct usage of heat source when source temperature exceeds forward temperature
+                    n.madd(
+                        "Link",
+                        nodes,
+                        suffix=f" {heat_system} {heat_source} heat direct utilisation",
+                        bus0=nodes + f" {heat_carrier}",
+                        bus1=nodes + f" {heat_system} heat",
+                        efficiency=efficiency_direct_utilisation,
+                        carrier=f"{heat_system} {heat_source} heat direct utilisation",
+                        p_nom_extendable=True,
+                    )
+            else:
+                n.madd(
+                    "Link",
+                    nodes,
+                    suffix=f" {heat_system} {heat_source} heat pump",
+                    bus0=nodes,
+                    bus1=nodes + f" {heat_system} heat",
+                    carrier=f"{heat_system} {heat_source} heat pump",
+                    efficiency=cop_heat_pump,
+                    capital_cost=costs.at[costs_name_heat_pump, "efficiency"]
+                    * costs.at[costs_name_heat_pump, "fixed"]
+                    * overdim_factor,
+                    p_nom_extendable=True,
+                    lifetime=costs.at[costs_name_heat_pump, "lifetime"],
+                )
 
         if options["tes"]:
             n.add("Carrier", f"{heat_system} water tanks")
@@ -2303,10 +2391,11 @@ def add_heat(n: pypsa.Network, costs: pd.DataFrame, cop: xr.DataArray):
             )
 
         if options["chp"]["enable"] and heat_system == HeatSystem.URBAN_CENTRAL:
-            # add gas CHP; biomass CHP is added in biomass section
-            fuels = options["chp"]["fuel"]
-            fuels = np.atleast_1d(fuels)
-            for fuel in fuels:
+            # add non-biomass CHP; biomass CHP is added in biomass section
+            for fuel in options["chp"]["fuel"]:
+                if fuel == "solid biomass":
+                    # Solid biomass CHP is added in add_biomass
+                    continue
                 fuel_nodes = getattr(spatial, fuel).df
                 n.add(
                     "Link",
@@ -2366,8 +2455,8 @@ def add_heat(n: pypsa.Network, costs: pd.DataFrame, cop: xr.DataArray):
                 )
 
         if (
-            options["chp"]
-            and options["micro_chp"]
+            options["chp"]["enable"]
+            and options["chp"]["micro_chp"]
             and heat_system.value != "urban central"
         ):
             n.add(
@@ -2929,7 +3018,11 @@ def add_biomass(n, costs):
 
     # AC buses with district heating
     urban_central = n.buses.index[n.buses.carrier == "urban central heat"]
-    if not urban_central.empty and options["chp"]:
+    if (
+        not urban_central.empty
+        and options["chp"]["enable"]
+        and ("solid biomass" in options["chp"]["fuel"])
+    ):
         urban_central = urban_central.str[: -len(" urban central heat")]
 
         key = "central solid biomass CHP"
@@ -3811,7 +3904,7 @@ def add_industry(n, costs):
         unit="t_co2",
     )
 
-    if options["co2_spatial"] or options["co2network"]:
+    if options["co2_spatial"] or options["co2_network"]:
         p_set = (
             -industrial_demand.loc[nodes, "process emission"].rename(
                 index=lambda x: x + " process emissions"
@@ -4502,10 +4595,6 @@ def add_enhanced_geothermal(n, egs_potentials, egs_overlap, costs):
                 p_nom_extendable=True,
                 lifetime=costs.at["geothermal", "lifetime"],
             )
-        elif as_chp and not bus + " urban central heat" in n.buses.index:
-            n.links.at[bus + " geothermal organic rankine cycle", "efficiency"] = (
-                efficiency_orc
-            )
 
         if egs_config["flexible"]:
             # this StorageUnit represents flexible operation using the geothermal reservoir.
@@ -4633,7 +4722,14 @@ if __name__ == "__main__":
         add_land_transport(n, costs)
 
     if options["heating"]:
-        add_heat(n=n, costs=costs, cop=xr.open_dataarray(snakemake.input.cop_profiles))
+        add_heat(
+            n=n,
+            costs=costs,
+            cop=xr.open_dataarray(snakemake.input.cop_profiles),
+            direct_heat_source_utilisation_profile=xr.open_dataarray(
+                snakemake.input.direct_heat_source_utilisation_profiles
+            ),
+        )
 
     if options["biomass"]:
         add_biomass(n, costs)
@@ -4662,7 +4758,7 @@ if __name__ == "__main__":
     if not options["H2_network"]:
         remove_h2_network(n)
 
-    if options["co2network"]:
+    if options["co2_network"]:
         add_co2_network(n, costs)
 
     if options["allam_cycle_gas"]:
