@@ -225,6 +225,11 @@ costs:
     Compressed-Air-Adiabatic-bicharger: 0.7745
   investment:
     iron-air battery: 23500  # in EUR/MWh
+    Compressed-Air-Adiabatic-store: 30000  # in EUR/MWh (2022)
+    Compressed-Air-Adiabatic-bicharger: 1725000  # in EUR/MW (2022)
+  lifetime:
+    Compressed-Air-Adiabatic-store: 40  # years
+    Compressed-Air-Adiabatic-bicharger: 40  # years
   marginal_cost:
     solar: 0.01
     onwind: 0.015
