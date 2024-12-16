@@ -15,7 +15,7 @@ import numpy as np
 logger = logging.getLogger(__name__)
 
 from matplotlib.ticker import FormatStrFormatter, StrMethodFormatter
-from pypsa.plot import add_legend_circles, add_legend_lines, add_legend_patches
+from pypsa.plot import add_legend_circles, add_legend_patches
 import cartopy.crs as ccrs
 import geopandas as gpd
 import matplotlib.pyplot as plt
@@ -24,9 +24,11 @@ import pypsa
 from matplotlib import rc
 from plot_power_network import load_projection
 from matplotlib.colors import Normalize
-from pypsa.statistics import get_bus_and_carrier
 from plot_summary import preferred_order
-from pypsa.statistics import get_bus_and_carrier_and_bus_carrier
+from pypsa.statistics import get_bus_and_carrier_and_bus_carrier, get_country_and_carrier
+import country_converter as coco
+
+cc = coco.CountryConverter()
 
 # activate latex text rendering
 rc('text', usetex=True)
@@ -252,166 +254,6 @@ def plot_line_loading(network, regions, path, focus_de=True, value="mean", show_
         fig.show()
     fig.savefig(path, bbox_inches="tight")
 
-# def plot_power_time_series(network, start_date, end_date, path, focus_component=["Generator","StorageUnit","Link"], focus_de=True, show_fig=True):
-#     n = network.copy()
-    
-#     optimized = n.statistics.energy_balance(groupby=get_bus_and_carrier, aggregate_time=False).T
-#     optimized = optimized[focus_component].droplevel(0, axis=1).T
-#     optimized = optimized.loc[optimized.index.get_level_values('bus').isin(n.buses.query("carrier == 'AC'").index)]
-#     optimized = optimized.loc[optimized.index.get_level_values('carrier') != 'DC'].T
-#     optimized = optimized.rename(columns=n.buses.country, level=0)
-#     optimized = optimized.rename(columns=pretty_gen, level=1)
-#     optimized = optimized.T.groupby(level=[0, 1]).sum().T
-
-#     if focus_de:
-#         df_carrier = optimized["DE"]
-#     else:
-#         df_carrier = optimized.T.groupby(optimized.columns.get_level_values(1)).sum().T
-
-#     #Set color
-#     colors = n.carriers.set_index("nice_name").color.where(lambda s: s != "", "green")
-    
-#     for c in df_carrier.columns:
-#         if (df_carrier[c] < 0).values.any():
-#             df_carrier[c + " Discharge"] = df_carrier[c].clip(lower=0)
-#             colors[c + " Discharge"] = colors[c]
-#             df_carrier[c + " Charge"] = df_carrier[c].clip(upper=0)
-#             colors[c + " Charge"] = colors[c]
-#             df_carrier = df_carrier.drop(columns=c)
-
-#     order = ((df_carrier.diff().abs().sum() / df_carrier.sum()).sort_values().index)
-#     df_carrier = df_carrier[order]
-    
-#     #cut into the specific timesteps
-#     df_carrier = df_carrier[pd.Timestamp(start_date):pd.Timestamp(end_date)]
-
-#     #kW to MW
-#     df_carrier = df_carrier/1e3
-
-#     #remove if smaller than 1 MWh
-#     df_carrier = df_carrier.loc[:,abs(df_carrier.sum()) > 1]
-    
-#     fig, axes = plt.subplots(figsize=(12,5))
-    
-#     if "Link" in focus_component:
-#         df_plot = df_carrier.drop('electricity distribution grid Charge', axis=1)
-#         df_plot.plot.area(ax = axes, legend=False, color = [colors[c] for c in df_plot.columns])
-#         abs(df_carrier['electricity distribution grid Charge']).plot(ax = axes, color = "black", linestyle='dashed')
-#     else:
-#         df_carrier.plot.area(ax = axes, legend=False, color = [colors[c] for c in df_carrier.columns])
-
-#     df_legend = pd.DataFrame()
-#     df_legend["handle"], df_legend["label"] = axes.get_legend_handles_labels()
-#     df_legend["label"] = [w.replace(' Charge', '').replace(' Discharge', '') for w in df_legend["label"]]
-#     df_legend["label"] = [w.replace(' &', '').replace(' and', '') for w in df_legend["label"]] #NOTE: Latex hates '&' strings because its their seperator
-#     df_legend = df_legend.drop_duplicates(subset = ["label"],keep = 'first').iloc[::-1]
-
-#     axes.legend(df_legend["handle"], df_legend["label"], loc = "upper center", bbox_to_anchor = (0.5, -0.15), frameon = False, ncol = 4, 
-#                 title = "Components", title_fontproperties = {'weight':'bold'})
-
-#     axes.grid(axis="y")
-#     axes.set_ylabel("Energy Balance [MW]")
-#     axes.set_xlabel("")
-#     axes.set_facecolor("white")
-
-#     if show_fig:
-#         fig.show()
-#     fig.savefig(path, bbox_inches="tight")
-
-# def find_electricity_carrier(n):
-#     df = pd.DataFrame(n.statistics.energy_balance(groupby=get_bus_and_carrier_and_bus_carrier))
-#     df = df.groupby(["carrier","bus_carrier"]).sum().reset_index().drop(columns=0)
-#     df = df[df["bus_carrier"].isin(["AC"])]
-#     return df["carrier"].unique()
-
-# def plot_system_cost(network, nodal_costs, path, focus_component=["Generator","StorageUnit","Link","Store"], focus_de=True, electricity_only=True, show_fig=False):
-#     n = network.copy()
-
-#     component_nice_name = {"Generator":'generators',
-#                            "StorageUnit":'storage_units',
-#                            "Link":'links',
-#                            "Store":'stores'
-#                           }
-
-#     cost_df = pd.read_csv(nodal_costs, index_col=list(range(3)), header=list(range(4)))
-#     cost_df = cost_df.set_axis(['carrier', 'costs'], axis=1)
-#     cost_df = cost_df.rename(index=n.buses.country, level=2)
-
-#     cost_df = cost_df[cost_df.index.get_level_values(0).isin(component_nice_name[comp] for comp in focus_component)]
-
-#     if focus_de:
-#         cost_df = cost_df[cost_df.index.get_level_values(2) == 'DE']
-
-#     df = cost_df.groupby(["carrier"]).sum()
-
-#     # convert to billions
-#     df = df / 1e9
-
-#     df["nice_name"] = list(pd.Series(df.index).replace(n.carriers.nice_name))
-#     df = df.set_index("nice_name")
-
-#     if electricity_only:
-#         elec_carrier = find_electricity_carrier(n)
-#         df = df[df.index.isin(elec_carrier)]
-
-#         electricity_title = "electricity only "
-#     else:
-#         electricity_title = ""
-
-#     to_drop = df.index[df.max(axis=1) < snakemake.config["plotting"]["costs_threshold"]] #snakemake.params.plotting["costs_threshold"]]
-
-#     logger.info(
-#         f"Dropping technology with costs below {snakemake.params['plotting']['costs_threshold']} EUR billion per year"
-#     )
-#     logger.debug(df.loc[to_drop])
-
-#     df = df.drop(to_drop)
-
-#     logger.info(f"Total {electricity_title}system cost of {round(df.sum().iloc[0])} EUR billion per year")
-
-#     new_index = preferred_order.intersection(df.index).append(
-#         df.index.difference(preferred_order)
-#     )
-
-#     #Set color
-#     colors = n.carriers.set_index("nice_name").color.where(lambda s: s != "", "green")
-
-#     fig, ax = plt.subplots(figsize=(8, 8))
-
-#     df.loc[new_index].T.plot(
-#         kind="bar",
-#         ax=ax,
-#         stacked=True,
-#         color=[colors[i] for i in new_index],
-#     )
-
-#     handles, labels = ax.get_legend_handles_labels()
-
-#     handles.reverse()
-#     labels.reverse()
-
-#     ax.set_ylim([0, snakemake.params.plotting["costs_max"]])
-
-#     ax.set_ylabel("System Cost [EUR billion per year]")
-
-#     ax.set_xlabel("")
-
-#     ax.grid(axis="x")
-
-#     labels = [label + ": \n " + str(round(df.loc[label,"costs"],2)) for label in labels]
-#     labels = [label.replace(' &', '').replace(' and', '') for label in labels] #NOTE: Latex hates '&' strings because its their seperator
-
-#     ax.legend(
-#         handles, labels, ncol=1, loc="center left", bbox_to_anchor=[1, 0.5], frameon=False, 
-#         title = f"{electricity_title}system cost: \n{round(df.sum().iloc[0],2)}", alignment="left"
-#     )
-
-#     ax.set_facecolor("white")
-
-#     if show_fig:
-#         fig.show()
-#     fig.savefig(path, bbox_inches="tight")
-
 def prepare_energy_balance(n):
     df = n.statistics.energy_balance(groupby=get_bus_and_carrier_and_bus_carrier, aggregate_time=False)
     df = df.rename(index=n.buses.country, level="bus")
@@ -420,24 +262,13 @@ def prepare_energy_balance(n):
 
 def plot_time_series(network, dataframe, kpi_param, path):
 
-    include = kpi_param.get("include", False)
-    exclude = kpi_param.get("exclude", False)
     carrier_filter = kpi_param.get("carrier_filter", "electricity")
     group_carrier = kpi_param.get("group_carrier", None)
-    start_date = kpi_param.get("start_date", None)
-    end_date = kpi_param.get("end_date", None)
     plot_kw = kpi_param.get("plot_kw", {})
     
     n = network.copy()
     df = dataframe.copy()
 
-    if include:
-        print(f"include only {include}")
-        df = df[df.index.get_level_values("bus").isin(include)]
-    if exclude:
-        print(f"exclude {exclude}")
-        df = df[~df.index.get_level_values("bus").isin(exclude)]
-    
     # Model 1: Electricity system with generators and batteries out
     if carrier_filter == "electricity+":
         extract_carrier = ["solar rooftop",'BEV charger', 'V2G']
@@ -482,9 +313,6 @@ def plot_time_series(network, dataframe, kpi_param, path):
 
     # Model 5: Hydrogen input and output
     if carrier_filter == "hydrogen":
-        df = n.statistics.energy_balance(groupby=get_bus_and_carrier_and_bus_carrier, aggregate_time=False)
-        df = df.rename(index=n.buses.country, level="bus")
-        
         df = df[df.index.get_level_values("bus_carrier").isin(['Hydrogen Storage'])]
         df = df.groupby(["bus","carrier"]).sum()
         df = df[~df.index.get_level_values("carrier").isin(['H2 Store'])]
@@ -522,6 +350,8 @@ def plot_time_series(network, dataframe, kpi_param, path):
             df = df.drop(columns=c)
     
     #cut into the specific timesteps
+    start_date = kpi_param.get("start_date", df.index[0])
+    end_date = kpi_param.get("end_date", df.index[-1])
     df = df[pd.Timestamp(start_date):pd.Timestamp(end_date)]
     
     #kW to MW
@@ -557,7 +387,68 @@ def plot_time_series(network, dataframe, kpi_param, path):
 
     fig.savefig(path, bbox_inches="tight")
 
-def calculate_emission(network):
+def filter_plot_SOC(network, dataframe, kpi_param, path):
+
+    carrier_filter = kpi_param.get("carrier_filter", "Li-Ion Battery Storage")
+    group_carrier = kpi_param.get("group_carrier", None)
+    plot_kw = kpi_param.get("plot_kw", {})
+    
+    n = network.copy()
+    df = dataframe.copy()
+
+    if isinstance(carrier_filter, list):
+        df = df[df.index.get_level_values("carrier").isin(carrier_filter)]
+    elif isinstance(carrier_filter, str):
+        df = df[df.index.get_level_values("carrier").isin([carrier_filter])]
+
+    # readjust charge and discharge efficiency in storage units
+    n_storage_units = n.storage_units
+    n_storage_units["carrier"] = n_storage_units["carrier"].map(n.carriers.nice_name)
+    efficiency_store = n_storage_units.groupby(["carrier"]).efficiency_store.mean()
+    efficiency_dispatch = n_storage_units.groupby(["carrier"]).efficiency_dispatch.mean()
+    roundtrip_efficiency = efficiency_store * efficiency_dispatch
+
+    df_charge = df.copy(deep=True).clip(upper=0)
+    df_discharge = df.copy(deep=True).clip(lower=0)
+
+    for c in efficiency_store.index:
+        df_charge[df_charge.index.get_level_values("carrier").isin([c])] *= roundtrip_efficiency[c]
+
+    df = df_charge + df_discharge
+
+    df = df.groupby(["carrier"]).sum()
+
+    # Accumulate energy based on the value of the previous energy level
+    for i in range(len(df.columns)):
+        if i == 0:
+            continue
+        df.iloc[:,i] = df.iloc[:,i] + df.iloc[:,i-1]
+
+    # Set the minimum value to zero and maximum value to 100
+    df = (df.T - df.T.min()).T
+    df = (df.T/df.T.max() * 100).T
+
+    #Set color
+    colors = n.carriers.set_index("nice_name").color.where(lambda s: s != "", "green")
+    if group_carrier == "pretty":
+        df = df.rename(index=pretty_names).groupby(["carrier"]).sum()
+        colors = colors.rename(index=pretty_names)
+        colors = colors[~colors.index.duplicated(keep='first')]
+
+    df = df.T
+
+    #cut into the specific timesteps
+    start_date = kpi_param.get("start_date", df.index[0])
+    end_date = kpi_param.get("end_date", df.index[-1])
+    df = df[pd.Timestamp(start_date):pd.Timestamp(end_date)]
+
+    fig, ax = plt.subplots(figsize=(12,5))
+
+    df.plot(ax = ax, color = [colors[c] for c in df.columns], **plot_kw)
+
+    fig.savefig(path, bbox_inches="tight")
+
+def calculate_emission(network, countries):
     n = network.copy()
     
     index_with_emission = (n.links == 'co2 atmosphere').T.any()
@@ -579,7 +470,7 @@ def calculate_emission(network):
         index_with_country = (df_links[[f"country{num}" for num in [0,1,2,3,4]]] == country).T.any()
         df_links.loc[index_with_country,"country"] = country
     
-    df_links.loc[~df_links.country.isin(config["countries"]),"country"] = "EU"
+    df_links.loc[~df_links.country.isin(countries),"country"] = "EU"
     
     df = pd.DataFrame(df_links.groupby(["country","carrier"])["p_co2"].sum()).unstack("country")
     df.columns = df.columns.get_level_values("country")
@@ -591,7 +482,7 @@ def calculate_emission(network):
 
     return df
 
-def calculate_system_cost_csv(network, csv_path):
+def calculate_system_cost_csv(network, csv_path, countries):
     n = network.copy()
     
     df = pd.read_csv(csv_path, index_col=list(range(3)), header=list(range(4)))
@@ -599,7 +490,7 @@ def calculate_system_cost_csv(network, csv_path):
     df.index = df.index.rename(["country"], level=[2])
     df = df.rename(index=n.buses.country, level=2)
     df = df.reset_index(["country"])
-    df.loc[~df.country.isin(config["countries"]),"country"] = "EU"
+    df.loc[~df.country.isin(countries),"country"] = "EU"
     
     df = pd.DataFrame(df.groupby(["country","carrier"])["cost"].sum()).unstack("country")
     df.columns = df.columns.get_level_values("country")
@@ -609,7 +500,7 @@ def calculate_system_cost_csv(network, csv_path):
 
     return df
 
-def calculate_capacity_csv(network, csv_path):
+def calculate_capacity_csv(network, csv_path, countries):
     n = network.copy()
     
     df = pd.read_csv(csv_path, index_col=list(range(2)), header=list(range(3)))
@@ -617,7 +508,7 @@ def calculate_capacity_csv(network, csv_path):
     df.index = df.index.rename(["component","country"], level=[0,1])
     df = df.rename(index=n.buses.country, level=1)
     df = df.reset_index(["country","component"])
-    df.loc[~df.country.isin(config["countries"]),"country"] = "EU"
+    df.loc[~df.country.isin(countries),"country"] = "EU"
     
     # convert links power gen techs capacity from MWth to MWel by multiplying by efficiency
     df = df.set_index(["carrier"])
@@ -634,7 +525,7 @@ def calculate_capacity_csv(network, csv_path):
     
     return df
 
-def calculate_capacity(network, stats = "optimal", storage = False):
+def calculate_capacity(network, countries, stats = "optimal", storage = False):
     
     n = network.copy()
     
@@ -654,7 +545,7 @@ def calculate_capacity(network, stats = "optimal", storage = False):
     df["efficiency"] = df.index.map(power_ge_links_eff)
     df.loc[links_i, 0] *= df.loc[links_i].efficiency
     
-    df.loc[~df.country.isin(config["countries"]),"country"] = "EU"
+    df.loc[~df.country.isin(countries),"country"] = "EU"
     
     df = pd.DataFrame(df.groupby(["country","carrier"])[0].sum()).unstack("country")
     df.columns = df.columns.get_level_values("country")
@@ -664,12 +555,12 @@ def calculate_capacity(network, stats = "optimal", storage = False):
 
     return df
 
-def calculate_generation(network):
+def calculate_generation(network, countries):
     n = network.copy()
     
     df = pd.DataFrame(n.statistics.energy_balance(groupby=get_country_and_carrier))
     df = df.reset_index(["country","component"])
-    df.loc[~df.country.isin(config["countries"]),"country"] = "EU"
+    df.loc[~df.country.isin(countries),"country"] = "EU"
 
     df = pd.DataFrame(df.groupby(["country","carrier"])[0].sum()).unstack("country")
     df.columns = df.columns.get_level_values("country")
@@ -835,11 +726,6 @@ def plot_in_detail(df, plot_kw, path):
     ax.set_facecolor("white")
     fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")
-
-
-def kpi_path(fn):
-    #return [i for i in snakemake.output.kpi_plot if fn in i][0]
-    return f"{fn}.svg"
 
 if __name__ == "__main__":
 
@@ -1062,7 +948,7 @@ if __name__ == "__main__":
         "uranium": "Primary Fuel",
     }
 
-        preferred_order = pd.Index([
+    preferred_order = pd.Index([
         "Iron-Air Battery Storage",
         "Li-Ion Battery Storage",
         "lair",
@@ -1170,28 +1056,25 @@ if __name__ == "__main__":
 
     plot_line_loading(n, regions, path=snakemake.output.line_loading_map, focus_de=True, value="mean", show_fig=False)
 
-    #plot_power_time_series(n, start_date, end_date, path=snakemake.output.energy_balance, focus_component=["Generator","StorageUnit","Link"], focus_de=True, show_fig=False)
-    #plot_power_time_series(n, start_date, end_date, path=snakemake.output.storage_energy_balance, focus_component=["StorageUnit"], focus_de=True, show_fig=False)
-    #plot_system_cost(n, snakemake.input.nodal_costs, path=snakemake.output.system_cost, focus_component=["Generator","StorageUnit","Link","Store"], focus_de=True, electricity_only=True, show_fig=False)
-    #plot_system_cost(n, snakemake.input.nodal_costs, path=snakemake.output.storage_system_cost, focus_component=["StorageUnit"], focus_de=True, electricity_only=True, show_fig=False)
-
     # extract all the nessesary statistics
-    df_cost = calculate_system_cost_csv(n, snakemake.input.nodal_costs)
-    df_capacity_csv = calculate_capacity_csv(n, snakemake.input.nodal_capacity)
-    df_gen = calculate_generation(n)
-    df_co2 = calculate_emission(n)
-    df_eql = prepare_energy_balance(n)
+    countries = snakemake.params.countries
+
+    df_cost = calculate_system_cost_csv(n, snakemake.input.nodal_costs, countries)
+    df_capacity_csv = calculate_capacity_csv(n, snakemake.input.nodal_capacity, countries)
+    df_gen = calculate_generation(n, countries)
+    df_co2 = calculate_emission(n, countries)
+    df_eql = prepare_energy_balance(n, countries)
 
     config_kpi = snakemake.params.kpi
     if config_kpi:
         for fn, kpi_param in config_kpi.items():
             logger.info(f"Preparing plot {fn}")
+
             extract_param = kpi_param.get("extract",None)
-            if extract_param == "time series":
-                df = df_eql.copy(deep=True)
-                plot_time_series(n, df, kpi_param, kpi_path(fn))
-                continue
-            elif extract_param == "system cost":
+            include = kpi_param.get("include",False)
+            exclude = kpi_param.get("exclude",False)
+
+            if extract_param == "system cost":
                 logger.info("extracting system cost")
                 df = df_cost.copy(deep=True)
             elif extract_param == "capacity":
@@ -1200,7 +1083,7 @@ if __name__ == "__main__":
             elif extract_param == "capacity stats":
                 stats = kpi_param.get("stats","optimal")
                 storage = kpi_param.get("storage",None)
-                df = calculate_capacity(n, stats = stats, storage = storage)
+                df = calculate_capacity(n, countries, stats = stats, storage = storage)
             elif extract_param == "generation":
                 logger.info("extracting generation")
                 df = df_gen.copy(deep=True)
@@ -1208,21 +1091,38 @@ if __name__ == "__main__":
                 logger.info("extracting emission")
                 df = df_co2.copy(deep=True)
 
-            include = kpi_param.get("include",False)
+            #time series plots have their own route
+            elif extract_param == "energy balance" or extract_param == "SOC":
+                df = df_eql.copy(deep=True)
+
+                if include:
+                    print(f"include only {include}")
+                    df = df[df.index.get_level_values("bus").isin(include)]
+                if exclude:
+                    print(f"exclude {exclude}")
+                    df = df[~df.index.get_level_values("bus").isin(exclude)]
+
+                if extract_param == "energy balance":
+                    filter_plot_energy_balance(n, df, kpi_param, snakemake.output[fn])
+                elif extract_param == "SOC":
+                    filter_plot_SOC(n, df, kpi_param, snakemake.output[fn])
+                continue
+
             if include:
                 logger.info(f"include only {include}")
                 df = df[include]
-            exclude = kpi_param.get("exclude",False)
             if exclude:
                 logger.info(f"exclude {exclude}")
                 df = df.loc[:,df.columns.difference(exclude)]
             
-            df = filter_and_rename(n, df, carrier_filter = kpi_param.get("carrier_filter",None), group_carrier = kpi_param.get("group_carrier",None))
+            carrier_filter = kpi_param.get("carrier_filter",None)
+            group_carrier = kpi_param.get("group_carrier",None)
+            df = filter_and_rename(n, df, carrier_filter = carrier_filter, group_carrier = group_carrier)
             
             plot_param = kpi_param.get("plot",None)
             plot_kw = kpi_param.get("plot_kw",{})
             if plot_param == "detail":
-                plot_in_detail(df, plot_kw, kpi_path(fn))
+                plot_in_detail(df, plot_kw, snakemake.output[fn])
             elif plot_param == "overview":
-                plot_by_country(df, plot_kw, kpi_path(fn))
+                plot_by_country(df, plot_kw, snakemake.output[fn])
 

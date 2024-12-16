@@ -120,7 +120,8 @@ KPIS = {
 rule plot_KPIs:
     params:
         plotting=config_provider("plotting"),
-        kpi=config_provider("plotting"),
+        kpi=config_provider("kpi"),
+        countries=config_provider("countries"),
     input:
         network=RESULTS
         + "postnetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",

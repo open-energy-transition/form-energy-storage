@@ -13,7 +13,7 @@ logging:
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
   prefix: "initial_main_scenarios"
-  name: "all"
+  name: "main-mds"
   scenarios:
     enable: true
     file: config/scenarios.form.yaml
@@ -426,9 +426,9 @@ kpi:
       title: Country emission
       ylim: [-100,400]
       ylabel: MtCO2
-# Electricity Time Series
+# Electricity energy balance
   EU_electricity_summer_energy_balance:
-    extract: time series
+    extract: energy balance
     start_date: '2013-08-01'
     end_date: '2013-09-01'
     carrier_filter: electricity
@@ -438,7 +438,7 @@ kpi:
       ylim: [-150,600]
       ylabel: MW
   EU_electricity_winter_energy_balance:
-    extract: time series
+    extract: energy balance
     start_date: '2013-02-01'
     end_date: '2013-03-01'
     carrier_filter: electricity
@@ -448,7 +448,7 @@ kpi:
       ylim: [-150,600]
       ylabel: MW
   DE_electricity_summer_energy_balance:
-    extract: time series
+    extract: energy balance
     start_date: '2013-08-01'
     end_date: '2013-09-01'
     include: ["DE"]
@@ -459,7 +459,7 @@ kpi:
       #ylim: 
       ylabel: MW
   DE_electricity_winter_energy_balance:
-    extract: time series
+    extract: energy balance
     start_date: '2013-02-01'
     end_date: '2013-03-01'
     include: ["DE"]
@@ -469,9 +469,9 @@ kpi:
       title: Germany winter high voltage energy balance
       ylim: [-50,150]
       ylabel: MW
-# Electricity (with some low voltage tech) Time Series
+# Electricity (with some low voltage tech) energy balance
   EU_electricity_plus_summer_energy_balance:
-    extract: time series
+    extract: energy balance
     start_date: '2013-08-01'
     end_date: '2013-09-01'
     carrier_filter: electricity+
@@ -481,7 +481,7 @@ kpi:
       ylim: [-150,800]
       ylabel: MW
   EU_electricity_plus_winter_energy_balance:
-    extract: time series
+    extract: energy balance
     start_date: '2013-02-01'
     end_date: '2013-03-01'
     carrier_filter: electricity+
@@ -491,7 +491,7 @@ kpi:
       ylim: [-150,800]
       ylabel: MW
   DE_electricity_plus_summer_energy_balance:
-    extract: time series
+    extract: energy balance
     start_date: '2013-08-01'
     end_date: '2013-09-01'
     include: ["DE"]
@@ -502,7 +502,7 @@ kpi:
       ylim: [-50,200]
       ylabel: MW
   DE_electricity_plus_winter_energy_balance:
-    extract: time series
+    extract: energy balance
     start_date: '2013-02-01'
     end_date: '2013-03-01'
     include: ["DE"]
@@ -512,9 +512,9 @@ kpi:
       title: Germany winter high and low voltage energy balance
       ylim: [-50,200]
       ylabel: MW
-# Low Voltage Time Series
+# Low Voltage energy balance
   EU_low_voltage_summer_energy_balance:
-    extract: time series
+    extract: energy balance
     start_date: '2013-08-01'
     end_date: '2013-09-01'
     carrier_filter: low voltage
@@ -524,7 +524,7 @@ kpi:
       ylim: [-600,300]
       ylabel: MW
   EU_low_voltage_winter_energy_balance:
-    extract: time series
+    extract: energy balance
     start_date: '2013-02-01'
     end_date: '2013-03-01'
     carrier_filter: low voltage
@@ -534,7 +534,7 @@ kpi:
       ylim: [-600,300]
       ylabel: MW
   DE_low_voltage_summer_energy_balance:
-    extract: time series
+    extract: energy balance
     start_date: '2013-08-01'
     end_date: '2013-09-01'
     include: ["DE"]
@@ -545,7 +545,7 @@ kpi:
       ylim: [-150,100]
       ylabel: MW
   DE_low_voltage_winter_energy_balance:
-    extract: time series
+    extract: energy balance
     start_date: '2013-02-01'
     end_date: '2013-03-01'
     include: ["DE"]
@@ -555,9 +555,9 @@ kpi:
       title: Germany winter low voltage energy balance
       ylim: [-150,100]
       ylabel: MW
-# Heat time series
+# Heat energy balance
   EU_heat_summer_energy_balance:
-    extract: time series
+    extract: energy balance
     start_date: '2013-08-01'
     end_date: '2013-09-01'
     carrier_filter: heat
@@ -567,7 +567,7 @@ kpi:
       ylim: [-500,1000]
       ylabel: MW
   EU_heat_winter_energy_balance:
-    extract: time series
+    extract: energy balance
     start_date: '2013-02-01'
     end_date: '2013-03-01'
     carrier_filter: heat
@@ -577,7 +577,7 @@ kpi:
       ylim: [-500,1000]
       ylabel: MW
   DE_heat_summer_energy_balance:
-    extract: time series
+    extract: energy balance
     start_date: '2013-08-01'
     end_date: '2013-09-01'
     include: ["DE"]
@@ -588,7 +588,7 @@ kpi:
       ylim: [-150,300]
       ylabel: MW
   DE_heat_winter_energy_balance:
-    extract: time series
+    extract: energy balance
     start_date: '2013-02-01'
     end_date: '2013-03-01'
     include: ["DE"]
@@ -598,6 +598,65 @@ kpi:
       title: Germany winter heat energy balance
       ylim: [-150,300]
       ylabel: MW
+# short duration SOC
+  EU_li-ion_winter_SOC:
+    extract: SOC
+    start_date: '2013-02-01'
+    end_date: '2013-03-01'
+    carrier_filter: Li-Ion Battery Storage
+    group_carrier: pretty
+    plot_kw:
+      title: Li-Ion Battery Storage winter SOC
+      ylabel: "%"
+  EU_short_duration_storage_winter_SOC:
+    extract: SOC
+    start_date: '2013-02-01'
+    end_date: '2013-03-01'
+    carrier_filter: [Li-Ion Battery Storage, lair, pair, vanadium]
+    group_carrier: pretty
+    plot_kw:
+      title: Short duration storage winter SOC
+      ylabel: "%"
+  EU_li-ion_summer_SOC:
+    extract: SOC
+    start_date: '2013-08-01'
+    end_date: '2013-09-01'
+    carrier_filter: Li-Ion Battery Storage
+    group_carrier: pretty
+    plot_kw:
+      title: Li-Ion Battery Storage summer SOC
+      ylabel: "%"
+  EU_short_duration_storage_summer_SOC:
+    extract: SOC
+    start_date: '2013-08-01'
+    end_date: '2013-09-01'
+    carrier_filter: [Li-Ion Battery Storage, lair, pair, vanadium]
+    group_carrier: pretty
+    plot_kw:
+      title: Short duration storage summer SOC
+      ylabel: "%"
+# medium duration SOC
+  EU_H2_SOC:
+    extract: SOC
+    carrier_filter: H2 Store
+    group_carrier: pretty
+    plot_kw:
+      title: H2 Store SOC
+      ylabel: "%"
+  EU_iron-air_SOC:
+    extract: SOC
+    carrier_filter: Iron-Air Battery Storage
+    group_carrier: pretty
+    plot_kw:
+      title: Iron-Air Battery Storage SOC
+      ylabel: "%"
+  EU_medium_duration_storage_SOC:
+    extract: SOC
+    carrier_filter: [H2 Store, Iron-Air Battery Storage]
+    group_carrier: pretty
+    plot_kw:
+      title: Medium duration storage SOC
+      ylabel: "%"
 
 plotting:
   time_series:
