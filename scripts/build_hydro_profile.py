@@ -207,9 +207,9 @@ if __name__ == "__main__":
     norm_year = config_hydro.get("eia_norm_year")
     missing_years = contained_years.difference(eia_stats.index)
     if norm_year:
-        eia_stats.loc[contained_years] = eia_stats.loc[norm_year]
+        eia_stats.loc[contained_years[0]] = eia_stats.loc[norm_year]
     elif missing_years.any():
-        eia_stats.loc[missing_years] = eia_stats.median()
+        eia_stats.loc[missing_years[0]] = eia_stats.median()
 
     inflow = cutout.runoff(
         shapes=country_shapes,

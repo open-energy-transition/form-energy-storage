@@ -121,13 +121,14 @@ main-mds-vanilla-with-grids:
     H2_retrofit: true
 
 main-calibration-run:
-  enable:
-    final_adjustment: false
+  foresight: overnight
   scenario:
     ll:
     - v1.0
     planning_horizons:
     - 2023
+  enable:
+    final_adjustment: false
   snapshots:
     start: "2023-01-01"
     end: "2024-01-01"
@@ -151,6 +152,7 @@ main-calibration-run:
   renewable:
     onwind:
       cutout: europe-2023-sarah3-era5
+      #correction_factor: 0.93
     offwind-ac:
       cutout: europe-2023-sarah3-era5
     offwind-dc:
@@ -159,12 +161,18 @@ main-calibration-run:
       cutout: europe-2023-sarah3-era5
     solar:
       cutout: europe-2023-sarah3-era5
+      correction_factor: 0.854337 #Using ERA5 data requires correction factor for solar.
     solar-hsat:
       cutout: europe-2023-sarah3-era5
     hydro:
       cutout: europe-2023-sarah3-era5
+      #eia_norm_year: 2021 #The last year available from EIA for hydro is 2021. If not activated, the median value is chosen
   biomass:
     year: 2020
+    share_unsustainable_use_retained:
+      2023: 0.8
+    share_sustainable_potential_available:
+      2023: 0.2
   sector:
     district_heating:
       progress:
