@@ -260,7 +260,7 @@ def prepare_energy_balance(n):
 
     return df
 
-def plot_time_series(network, dataframe, kpi_param, path):
+def filter_plot_energy_balance(network, dataframe, kpi_param, path):
 
     carrier_filter = kpi_param.get("carrier_filter", "electricity")
     group_carrier = kpi_param.get("group_carrier", None)
@@ -375,6 +375,7 @@ def plot_time_series(network, dataframe, kpi_param, path):
     
     ax.grid(axis="y")
     ax.set_xlabel("")
+    ax.set_facecolor("white")
     
     df_legend = pd.DataFrame()
     df_legend["handle"], df_legend["label"] = ax.get_legend_handles_labels()
@@ -445,6 +446,16 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
     fig, ax = plt.subplots(figsize=(12,5))
 
     df.plot(ax = ax, color = [colors[c] for c in df.columns], **plot_kw)
+
+    ax.grid(axis="y")
+    ax.set_xlabel("")
+    ax.set_facecolor("white")
+    ax.set_ylim(0,100)
+    
+    df_legend = pd.DataFrame()
+    df_legend["handle"], df_legend["label"] = ax.get_legend_handles_labels()
+    ax.legend(df_legend["handle"], df_legend["label"], loc = "upper center", bbox_to_anchor = (0.5, -0.15), frameon = False, ncol = 3, 
+                title = "Components", title_fontproperties = {'weight':'bold'})
 
     fig.savefig(path, bbox_inches="tight")
 
@@ -687,6 +698,7 @@ def plot_by_country(df, plot_kw, path):
     
     handles.reverse()
     labels.reverse()
+    labels = [label.replace(' &', '').replace(' and', '') for label in labels] #NOTE: Latex hates '&' strings because its their seperator
     
     ax.legend(handles, labels, loc = "upper center", bbox_to_anchor = (0.5, -0.20), frameon = False, ncol = 3, 
                 title = "Components", title_fontproperties = {'weight':'bold'})
@@ -913,6 +925,8 @@ if __name__ == "__main__":
         "residential urban decentral water tanks": "Heating Sector",
         "residential urban decentral water tanks charger": "Heating Sector",
         "rural oil boiler": "Heating Sector",
+        "rural gas boiler": "Heating Sector",
+        "rural ground heat pump": "Heating Sector",
         "services rural gas boiler": "Heating Sector",
         "services rural air heat pump": "Heating Sector",
         "services rural ground heat pump": "Heating Sector",
@@ -920,6 +934,7 @@ if __name__ == "__main__":
         "services rural water tanks charger": "Heating Sector",
         "services urban decentral gas boiler": "Heating Sector",
         "services urban decentral water tanks discharger": "Heating Sector",
+        "services urban decentral resistive heater": "Heating Sector",
         "urban central CHP": "Heating Sector",
         "urban central CHP CC": "Heating Sector",
         "urban central air heat pump": "Heating Sector",
@@ -931,6 +946,8 @@ if __name__ == "__main__":
         "urban central water tanks charger": "Heating Sector",
         "urban central water tanks discharger": "Heating Sector",
         "urban decentral oil boiler": "Heating Sector",
+        "urban decentral air heat pump": "Heating Sector",
+        "urban decentral gas boiler": "Heating Sector",
         "co2": "Primary Fuel",
         "co2 stored": "CCUS",
         "co2 sequestered": "CCUS",
@@ -1063,66 +1080,76 @@ if __name__ == "__main__":
     df_capacity_csv = calculate_capacity_csv(n, snakemake.input.nodal_capacity, countries)
     df_gen = calculate_generation(n, countries)
     df_co2 = calculate_emission(n, countries)
-    df_eql = prepare_energy_balance(n, countries)
+    df_eql = prepare_energy_balance(n)
 
     config_kpi = snakemake.params.kpi
     if config_kpi:
         for fn, kpi_param in config_kpi.items():
-            logger.info(f"Preparing plot {fn}")
+            try:
+                logger.info(f"Preparing plot {fn}")
 
-            extract_param = kpi_param.get("extract",None)
-            include = kpi_param.get("include",False)
-            exclude = kpi_param.get("exclude",False)
+                extract_param = kpi_param.get("extract",None)
+                include = kpi_param.get("include",False)
+                exclude = kpi_param.get("exclude",False)
 
-            if extract_param == "system cost":
-                logger.info("extracting system cost")
-                df = df_cost.copy(deep=True)
-            elif extract_param == "capacity":
-                logger.info("extracting capacity")
-                df = df_capacity_csv.copy(deep=True)
-            elif extract_param == "capacity stats":
-                stats = kpi_param.get("stats","optimal")
-                storage = kpi_param.get("storage",None)
-                df = calculate_capacity(n, countries, stats = stats, storage = storage)
-            elif extract_param == "generation":
-                logger.info("extracting generation")
-                df = df_gen.copy(deep=True)
-            elif extract_param == "emission":
-                logger.info("extracting emission")
-                df = df_co2.copy(deep=True)
+                if extract_param == "system cost":
+                    logger.info("extracting system cost")
+                    df = df_cost.copy(deep=True)
+                elif extract_param == "capacity":
+                    logger.info("extracting capacity")
+                    df = df_capacity_csv.copy(deep=True)
+                elif extract_param == "capacity stats":
+                    stats = kpi_param.get("stats","optimal")
+                    storage = kpi_param.get("storage",None)
+                    df = calculate_capacity(n, countries, stats = stats, storage = storage)
+                elif extract_param == "generation":
+                    logger.info("extracting generation")
+                    df = df_gen.copy(deep=True)
+                elif extract_param == "emission":
+                    logger.info("extracting emission")
+                    df = df_co2.copy(deep=True)
 
-            #time series plots have their own route
-            elif extract_param == "energy balance" or extract_param == "SOC":
-                df = df_eql.copy(deep=True)
+                #time series plots have their own route
+                elif extract_param == "energy balance" or extract_param == "SOC":
+                    df = df_eql.copy(deep=True)
+
+                    if include:
+                        print(f"include only {include}")
+                        df = df[df.index.get_level_values("bus").isin(include)]
+                    if exclude:
+                        print(f"exclude {exclude}")
+                        df = df[~df.index.get_level_values("bus").isin(exclude)]
+
+                    if extract_param == "energy balance":
+                        filter_plot_energy_balance(n, df, kpi_param, snakemake.output[fn])
+                    elif extract_param == "SOC":
+                        filter_plot_SOC(n, df, kpi_param, snakemake.output[fn])
+                    continue
 
                 if include:
-                    print(f"include only {include}")
-                    df = df[df.index.get_level_values("bus").isin(include)]
+                    logger.info(f"include only {include}")
+                    df = df[include]
                 if exclude:
-                    print(f"exclude {exclude}")
-                    df = df[~df.index.get_level_values("bus").isin(exclude)]
+                    logger.info(f"exclude {exclude}")
+                    df = df.loc[:,df.columns.difference(exclude)]
+                
+                carrier_filter = kpi_param.get("carrier_filter",None)
+                group_carrier = kpi_param.get("group_carrier",None)
+                df = filter_and_rename(n, df, carrier_filter = carrier_filter, group_carrier = group_carrier)
+                
+                plot_param = kpi_param.get("plot",None)
+                plot_kw = kpi_param.get("plot_kw",{})
+                if plot_param == "detail":
+                    plot_in_detail(df, plot_kw, snakemake.output[fn])
+                elif plot_param == "overview":
+                    plot_by_country(df, plot_kw, snakemake.output[fn])
 
-                if extract_param == "energy balance":
-                    filter_plot_energy_balance(n, df, kpi_param, snakemake.output[fn])
-                elif extract_param == "SOC":
-                    filter_plot_SOC(n, df, kpi_param, snakemake.output[fn])
+            except (TypeError):
+                logger.warning(f"Unable to plot {fn} because the datasets is empty after applying the filters")
+
+                fig, ax = plt.subplots(figsize=(8,8))
+                ax.set_axis_off()
+                fig.text(4,4,f"Unable to plot {fn} because the datasets is empty after applying the filters")
+                fig.savefig(snakemake.output[fn])
                 continue
-
-            if include:
-                logger.info(f"include only {include}")
-                df = df[include]
-            if exclude:
-                logger.info(f"exclude {exclude}")
-                df = df.loc[:,df.columns.difference(exclude)]
-            
-            carrier_filter = kpi_param.get("carrier_filter",None)
-            group_carrier = kpi_param.get("group_carrier",None)
-            df = filter_and_rename(n, df, carrier_filter = carrier_filter, group_carrier = group_carrier)
-            
-            plot_param = kpi_param.get("plot",None)
-            plot_kw = kpi_param.get("plot_kw",{})
-            if plot_param == "detail":
-                plot_in_detail(df, plot_kw, snakemake.output[fn])
-            elif plot_param == "overview":
-                plot_by_country(df, plot_kw, snakemake.output[fn])
 

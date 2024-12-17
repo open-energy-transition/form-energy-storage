@@ -435,7 +435,7 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: Total summer high voltage energy balance
-      ylim: [-150,600]
+      #ylim: [-150,600]
       ylabel: MW
   EU_electricity_winter_energy_balance:
     extract: energy balance
@@ -445,7 +445,7 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: Total winter high voltage energy balance
-      ylim: [-150,600]
+      #ylim: [-150,600]
       ylabel: MW
   DE_electricity_summer_energy_balance:
     extract: energy balance
@@ -456,7 +456,7 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: Germany summer high voltage energy balance
-      #ylim: 
+      #ylim: [-50,150]
       ylabel: MW
   DE_electricity_winter_energy_balance:
     extract: energy balance
@@ -467,7 +467,7 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: Germany winter high voltage energy balance
-      ylim: [-50,150]
+      #ylim: [-50,150]
       ylabel: MW
 # Electricity (with some low voltage tech) energy balance
   EU_electricity_plus_summer_energy_balance:
@@ -478,7 +478,7 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: Total summer high and low voltage energy balance
-      ylim: [-150,800]
+      #ylim: [-150,800]
       ylabel: MW
   EU_electricity_plus_winter_energy_balance:
     extract: energy balance
@@ -488,7 +488,7 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: Total winter high and low voltage energy balance
-      ylim: [-150,800]
+      #ylim: [-150,800]
       ylabel: MW
   DE_electricity_plus_summer_energy_balance:
     extract: energy balance
@@ -499,7 +499,7 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: Germany summer high and low voltage energy balance
-      ylim: [-50,200]
+      #ylim: [-50,200]
       ylabel: MW
   DE_electricity_plus_winter_energy_balance:
     extract: energy balance
@@ -510,7 +510,7 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: Germany winter high and low voltage energy balance
-      ylim: [-50,200]
+      #ylim: [-50,200]
       ylabel: MW
 # Low Voltage energy balance
   EU_low_voltage_summer_energy_balance:
@@ -521,7 +521,7 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: Total summer low voltage energy balance
-      ylim: [-600,300]
+      #ylim: [-600,300]
       ylabel: MW
   EU_low_voltage_winter_energy_balance:
     extract: energy balance
@@ -531,7 +531,7 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: Total winter low voltage energy balance
-      ylim: [-600,300]
+      #ylim: [-600,300]
       ylabel: MW
   DE_low_voltage_summer_energy_balance:
     extract: energy balance
@@ -542,7 +542,7 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: Germany summer low voltage energy balance
-      ylim: [-150,100]
+      #ylim: [-150,100]
       ylabel: MW
   DE_low_voltage_winter_energy_balance:
     extract: energy balance
@@ -553,7 +553,7 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: Germany winter low voltage energy balance
-      ylim: [-150,100]
+      #ylim: [-150,100]
       ylabel: MW
 # Heat energy balance
   EU_heat_summer_energy_balance:
@@ -564,7 +564,7 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: Total summer heat energy balance
-      ylim: [-500,1000]
+      #ylim: [-500,1000]
       ylabel: MW
   EU_heat_winter_energy_balance:
     extract: energy balance
@@ -574,7 +574,7 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: Total winter heat energy balance
-      ylim: [-500,1000]
+      #ylim: [-500,1000]
       ylabel: MW
   DE_heat_summer_energy_balance:
     extract: energy balance
@@ -585,7 +585,7 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: Germany summer heat energy balance
-      ylim: [-150,300]
+      #ylim: [-150,300]
       ylabel: MW
   DE_heat_winter_energy_balance:
     extract: energy balance
@@ -596,7 +596,7 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: Germany winter heat energy balance
-      ylim: [-150,300]
+      #ylim: [-150,300]
       ylabel: MW
 # short duration SOC
   EU_li-ion_winter_SOC:
