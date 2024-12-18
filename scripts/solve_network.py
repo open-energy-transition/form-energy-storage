@@ -931,6 +931,16 @@ def add_co2_atmosphere_constraint(n, snapshots):
             n.model.add_constraints(lhs <= rhs, name=f"GlobalConstraint-{name}")
 
 
+def add_dac_limit(n):
+    """
+    Limit the amount of CO2 captured using DAC. The constraint is formulated in tCO2.
+    """
+    dac = n.links.query("Link.str.contains('DAC')")
+    lhs = (n.model["Link-p"].loc[:, dac.index] * n.snapshot_weightings.generators * dac.efficiency2 * -1).sum()
+    rhs = n.config["sector"]["dac_limit"] * 1e6  # DAC limit specified in config in MtCO2
+    n.model.add_constraints(lhs <= rhs, name="DAC limit")
+
+
 def extra_functionality(n, snapshots):
     """
     Collects supplementary constraints which will be passed to
@@ -966,6 +976,8 @@ def extra_functionality(n, snapshots):
     add_battery_constraints(n)
     add_lossy_bidirectional_link_constraints(n)
     add_pipe_retrofit_constraint(n)
+    if config["sector"]["dac"] and config["sector"]["dac_limit"]:
+        add_dac_limit(n)
     if n._multi_invest:
         add_carbon_constraint(n, snapshots)
         add_carbon_budget_constraint(n, snapshots)
