@@ -182,7 +182,7 @@ sector:
   tes: false
   dac: true
   dac_limit:
-      enable: False
+      enable: false
       2035: 20  # limit in MtCO2
   marginal_cost_storage: 0. #1e-4
   stores: ["H2"]
