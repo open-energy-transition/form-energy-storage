@@ -937,7 +937,8 @@ def add_dac_limit(n):
     """
     dac = n.links.query("Link.str.contains('DAC')")
     lhs = (n.model["Link-p"].loc[:, dac.index] * n.snapshot_weightings.generators * dac.efficiency2 * -1).sum()
-    rhs = n.config["sector"]["dac_limit"] * 1e6  # DAC limit specified in config in MtCO2
+    optimization_year = int(snakemake.wildcards.planning_horizons)
+    rhs = n.config["sector"]["dac_limit"][optimization_year] * 1e6  # DAC limit specified in config in MtCO2
     n.model.add_constraints(lhs <= rhs, name="DAC limit")
 
 
@@ -976,7 +977,7 @@ def extra_functionality(n, snapshots):
     add_battery_constraints(n)
     add_lossy_bidirectional_link_constraints(n)
     add_pipe_retrofit_constraint(n)
-    if config["sector"]["dac"] and config["sector"]["dac_limit"]:
+    if config["sector"]["dac"] and config["sector"]["dac_limit"]["enable"]:
         add_dac_limit(n)
     if n._multi_invest:
         add_carbon_constraint(n, snapshots)

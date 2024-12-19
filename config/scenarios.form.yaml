@@ -94,7 +94,9 @@ main-mds-vanilla-dac-limit-ev35:
     stores: ["H2"]
     storage_units: ["li-ion battery", "iron-air battery"]
     dac: true
-    dac_limit: 20  # False or limit in MtCO2
+    dac_limit:
+        enable: true
+        2035: 20  # limit in MtCO2
 
 main-mds-vanilla-dac-limit-ev40:
   electricity:
@@ -113,7 +115,9 @@ main-mds-vanilla-dac-limit-ev40:
     stores: ["H2"]
     storage_units: ["li-ion battery", "iron-air battery"]
     dac: true
-    dac_limit: 20  # False or limit in MtCO2
+    dac_limit:
+        enable: true
+        2035: 20  # limit in MtCO2
 
 main-mds-vanilla-dac-limit-ev45:
   electricity:
@@ -132,7 +136,9 @@ main-mds-vanilla-dac-limit-ev45:
     stores: ["H2"]
     storage_units: ["li-ion battery", "iron-air battery"]
     dac: true
-    dac_limit: 20  # False or limit in MtCO2
+    dac_limit:
+        enable: true
+        2035: 20  # limit in MtCO2
 
 main-mds-vanilla-dac-limit-ev45-nuc80:
   electricity:
@@ -151,7 +157,9 @@ main-mds-vanilla-dac-limit-ev45-nuc80:
     stores: ["H2"]
     storage_units: ["li-ion battery", "iron-air battery"]
     dac: true
-    dac_limit: 20  # False or limit in MtCO2
+    dac_limit:
+        enable: true
+        2035: 20  # limit in MtCO2
   conventional:
     nuclear:
       p_min_pu: 0.8
