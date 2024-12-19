@@ -615,7 +615,9 @@ sector:
   methanation: true
   coal_cc: false
   dac: true
-  dac_limit: false  # false or limit in MtCO2
+  dac_limit:
+    enable: false
+    2035: 20  # limit in MtCO2
   co2_vent: false
   central_heat_vent: false
   allam_cycle_gas: false
