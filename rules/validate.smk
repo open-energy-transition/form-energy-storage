@@ -11,6 +11,16 @@ CROSS_BORDER_PLOTS = ["trade_time_series", "cross_border_bar"]
 PRICES_PLOTS = ["price_bar", "price_line"]
 
 
+if config["foresight"] == "myopic" or config["foresight"] == "overnight":
+    NETWORK_VALIDATE_INPUT = RESULTS + "postnetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
+    NETWORK_VALIDATE_OUTPUT = "base_s_{clusters}_elec_l{ll}_{opts}_{sector_opts}_{planning_horizons}"
+elif config["foresight"] == "perfect":
+    NETWORK_VALIDATE_INPUT = RESULTS + "postnetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
+    NETWORK_VALIDATE_OUTPUT = "base_s_{{clusters}}_elec_l{ll}_{opts}_{sector_opts}_brownfield_all_years"
+else:
+    NETWORK_VALIDATE_INPUT = RESULTS + "networks/base_s_{clusters}_elec_l{ll}_{opts}.nc"
+    NETWORK_VALIDATE_OUTPUT = "base_s_{clusters}_elec_l{ll}_{opts}"
+    
 rule build_electricity_production:
     """
     This rule builds the electricity production for each country and technology from ENTSO-E data.
@@ -69,16 +79,16 @@ rule build_electricity_prices:
 
 rule plot_validation_electricity_production:
     input:
-        network=RESULTS + "networks/base_s_{clusters}_elec_l{ll}_{opts}.nc",
+        network=NETWORK_VALIDATE_INPUT,
         electricity_production=resources("historical_electricity_production.csv"),
     output:
         **{
             plot: RESULTS
-            + f"figures/validation_{plot}_base_s_{{clusters}}_elec_l{{ll}}_{{opts}}.pdf"
+            + f"figures/validation_{plot}_" + NETWORK_VALIDATE_OUTPUT + ".pdf"
             for plot in PRODUCTION_PLOTS
         },
         plots_touch=RESULTS
-        + "figures/.validation_production_plots_base_s_{clusters}_elec_l{ll}_{opts}",
+        + "figures/.validation_production_plots_"+ NETWORK_VALIDATE_OUTPUT,
     script:
         "../scripts/plot_validation_electricity_production.py"
 
@@ -87,31 +97,31 @@ rule plot_validation_cross_border_flows:
     params:
         countries=config_provider("countries"),
     input:
-        network=RESULTS + "networks/base_s_{clusters}_elec_l{ll}_{opts}.nc",
+        network=NETWORK_VALIDATE_INPUT,
         cross_border_flows=resources("historical_cross_border_flows.csv"),
     output:
         **{
             plot: RESULTS
-            + f"figures/validation_{plot}_base_s_{{clusters}}_elec_l{{ll}}_{{opts}}.pdf"
+            + f"figures/validation_{plot}_" + NETWORK_VALIDATE_OUTPUT + ".pdf"
             for plot in CROSS_BORDER_PLOTS
         },
         plots_touch=RESULTS
-        + "figures/.validation_cross_border_plots_base_s_{clusters}_elec_l{ll}_{opts}",
+        + "figures/.validation_cross_border_plots_" + NETWORK_VALIDATE_OUTPUT,
     script:
         "../scripts/plot_validation_cross_border_flows.py"
 
 
 rule plot_validation_electricity_prices:
     input:
-        network=RESULTS + "networks/base_s_{clusters}_elec_l{ll}_{opts}.nc",
+        network=NETWORK_VALIDATE_INPUT,
         electricity_prices=resources("historical_electricity_prices.csv"),
     output:
         **{
             plot: RESULTS
-            + f"figures/validation_{plot}_base_s_{{clusters}}_elec_l{{ll}}_{{opts}}.pdf"
+            + f"figures/validation_{plot}_" + NETWORK_VALIDATE_OUTPUT + ".pdf"
             for plot in PRICES_PLOTS
         },
         plots_touch=RESULTS
-        + "figures/.validation_prices_plots_base_s_{clusters}_elec_l{ll}_{opts}",
+        + "figures/.validation_prices_plots_" + NETWORK_VALIDATE_OUTPUT,
     script:
         "../scripts/plot_validation_electricity_prices.py"
