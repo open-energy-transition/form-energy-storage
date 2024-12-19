@@ -179,7 +179,7 @@ sector:
   land_transport_ice_share:
     2035: 0.70
   reduce_space_heat_exogenously: true
-  reduce_space_heat_exogenously_factor: # TODO: check this for Germany (Regulation or Ariadne?)
+  reduce_space_heat_exogenously_factor:
     2035: 0.21
   tes: false
   marginal_cost_storage: 0. #1e-4
