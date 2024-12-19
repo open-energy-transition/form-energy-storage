@@ -227,7 +227,9 @@ baseline-mds-chocolate-daclimit-ev30-dh30:
     land_transport_ice_share:
       2035: 0
     dac: true
-    dac_limit: 20  # False or limit in MtCO2
+    dac_limit:
+        enable: true
+        2035: 20  # limit in MtCO2
     co2_sequestration_potential:
       2035: 40
     residential_heat_dsm: true
@@ -256,7 +258,9 @@ baseline-mds-chocolate-daclimit20-ev30-dh30-seq60:
     land_transport_ice_share:
       2035: 0
     dac: true
-    dac_limit: 20  # False or limit in MtCO2
+    dac_limit:
+        enable: true
+        2035: 20  # limit in MtCO2
     co2_sequestration_potential:
       2035: 60
     residential_heat_dsm: true
@@ -285,7 +289,9 @@ baseline-mds-chocolate-daclimit12-ev30-dh30-seq37:
     land_transport_ice_share:
       2035: 0
     dac: true
-    dac_limit: 12.4  # False or limit in MtCO2
+    dac_limit:
+        enable: true
+        2035: 12.4  # limit in MtCO2
     co2_sequestration_potential:
       2035: 37.2
     residential_heat_dsm: true
@@ -314,7 +320,9 @@ baseline-mds-chocolate-daclimit20-ev30-dh30-seq40-nomethanation:
     land_transport_ice_share:
       2035: 0
     dac: true
-    dac_limit: 20  # False or limit in MtCO2
+    dac_limit:
+        enable: true
+        2035: 20  # limit in MtCO2
     methanation: false
     co2_sequestration_potential:
       2035: 40
@@ -344,7 +352,9 @@ baseline-mds-chocolate-daclimit20-ev30-dh30-seq60-1H:
     land_transport_ice_share:
       2035: 0
     dac: true
-    dac_limit: 20  # False or limit in MtCO2
+    dac_limit:
+        enable: true
+        2035: 20  # limit in MtCO2
     co2_sequestration_potential:
       2035: 60
     residential_heat_dsm: true
@@ -376,7 +386,9 @@ baseline-mds-strawberry-daclimit20-seq60:
     land_transport_ice_share:
       2035: 0
     dac: true
-    dac_limit: 20  # False or limit in MtCO2
+    dac_limit:
+        enable: true
+        2035: 20  # limit in MtCO2
     co2_sequestration_potential:
       2035: 60
     residential_heat_dsm: true
@@ -405,7 +417,9 @@ baseline-mds-strawberry-daclimit12-seq37:
     land_transport_ice_share:
       2035: 0
     dac: true
-    dac_limit: 12.4  # False or limit in MtCO2
+    dac_limit:
+        enable: true
+        2035: 12.4  # limit in MtCO2
     co2_sequestration_potential:
       2035: 37.2
     residential_heat_dsm: true
@@ -434,7 +448,9 @@ baseline-mds-strawberry-daclimit20-seq40-nomethanation:
     land_transport_ice_share:
       2035: 0
     dac: true
-    dac_limit: 20  # False or limit in MtCO2
+    dac_limit:
+        enable: true
+        2035: 20  # limit in MtCO2
     methanation: false
     co2_sequestration_potential:
       2035: 40
