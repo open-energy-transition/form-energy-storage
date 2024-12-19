@@ -459,3 +459,35 @@ baseline-mds-strawberry-daclimit20-seq40-nomethanation:
     residential_heat_restriction_time: [10, 22] # 9am and 9pm
   load:
     scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+
+baseline-mds-strawberry-daclimit12-seq37-nometh:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.084 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    district_heating:
+      potential: 0.3
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    land_transport_electric_share:
+      2035: 0.30 # Compromise: FE input & IEA Global EV data explorer EU (STEPS scenario)
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 12.4  # limit in MtCO2
+    methanation: false
+    co2_sequestration_potential:
+      2035: 37.2
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: [10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
