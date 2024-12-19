@@ -103,7 +103,7 @@ conventional:
   dynamic_fuel_price: false
   nuclear:
     p_max_pu: "data/nuclear_p_max_pu.csv" # float of file name
-    p_min_pu: 0.2
+    p_min_pu: 0.5
     
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#lines
 lines:
