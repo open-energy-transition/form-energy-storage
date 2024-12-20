@@ -615,9 +615,13 @@ sector:
   methanation: true
   coal_cc: false
   dac: true
-  dac_limit:
+  dac_limit:  # limit in MtCO2, default pathway is based on EC Industrial Carbon Management (COM/2024/62) https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52024DC0062
     enable: false
-    2035: 20  # limit in MtCO2
+    2030: 0
+    2035: 20  # interpolated value for DAC share and total captured carbon
+    2040: 70
+    2045: 137  # interpolated value for DAC share and total captured carbon
+    2050: 180
   co2_vent: false
   central_heat_vent: false
   allam_cycle_gas: false
