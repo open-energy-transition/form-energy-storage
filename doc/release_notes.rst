@@ -11,6 +11,8 @@ Release Notes
 Upcoming Release
 ================
 
+* Added option to include an exogenous DAC yearly limit specified via the configuration file (in MtCO2)
+
 * Added Iron-Air battery storage technology and changed nomenclature for lithium-ion battery storages from ``battery`` to ``li-ion battery``.
 
 * Feature: Allow CHPs to use different fuel sources such as gas, oil, coal, and methanol. Note that the cost assumptions are based on a gas CHP.
