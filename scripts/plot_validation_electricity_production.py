@@ -20,6 +20,9 @@ carrier_groups = {
     "Combined-Cycle Gas": "Gas",
     "Reservoir & Dam": "Hydro",
     "Pumped Hydro Storage": "Hydro",
+    "Solar":"Solar",
+    "solar-hsat":"Solar",
+    "solar rooftop":"Solar",
 }
 
 
@@ -37,7 +40,7 @@ if __name__ == "__main__":
     set_scenario_config(snakemake)
 
     n = pypsa.Network(snakemake.input.network)
-    n.loads.carrier = "load"
+    #n.loads.carrier = "load"
 
     historic = pd.read_csv(
         snakemake.input.electricity_production,
@@ -58,22 +61,38 @@ if __name__ == "__main__":
     colors["Offshore Wind"] = colors["Offshore Wind (AC)"]
     colors["Gas"] = colors["Combined-Cycle Gas"]
     colors["Hydro"] = colors["Reservoir & Dam"]
+    colors["geothermal"] = '#ba91b1'
+    colors["biomass"] = '#baa741'
     colors["Other"] = "lightgray"
 
     if len(historic.index) > len(n.snapshots):
         historic = historic.resample(n.snapshots.inferred_freq).mean().loc[n.snapshots]
 
-    optimized = n.statistics.dispatch(
+    # Set the historic date based on the snapshot year
+    historic_year = historic.index.year.unique()[0]
+    if historic_year != n.snapshots.year.unique()[0]:
+        historic.index = historic.index.map(lambda x: x.replace(year=n.snapshots.year.unique()[0]))
+
+    optimized = n.statistics.energy_balance(
         groupby=get_bus_and_carrier, aggregate_time=False
     ).T
-    optimized = optimized[["Generator", "StorageUnit"]].droplevel(0, axis=1)
+    optimized = optimized[["Generator","StorageUnit","Link"]].droplevel(0, axis=1)
     optimized = optimized.rename(columns=n.buses.country, level=0)
     optimized = optimized.rename(columns=carrier_groups, level=1)
     optimized = optimized.T.groupby(level=[0, 1]).sum().T
 
+    # Remove all carriers originated not from a country
+    optimized = optimized.loc[:, optimized.columns.get_level_values(0) != '']
+
+    # Compare carrier where historical data are available
+    optimized = optimized.loc[:, optimized.columns.get_level_values(1).isin(historic.columns.get_level_values(1))]
+
     data = pd.concat([historic, optimized], keys=["Historic", "Optimized"], axis=1)
     data.columns.names = ["Kind", "Country", "Carrier"]
     data = data.mul(n.snapshot_weightings.generators, axis=0)
+
+    # revert back datetime according to historical year
+    data.index = data.index.map(lambda x: x.replace(year=historic_year))
 
     # total production per carrier
     fig, ax = plt.subplots(figsize=(6, 6))

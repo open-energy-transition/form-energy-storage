@@ -205,6 +205,10 @@ if __name__ == "__main__":
     if len(historic.index) > len(n.snapshots):
         historic = historic.resample(n.snapshots.inferred_freq).mean().loc[n.snapshots]
 
+    # Set the historic date based on the snapshot year
+    if historic.index.year.unique()[0] != n.snapshots.year.unique()[0]:
+        historic.index = historic.index.map(lambda x: x.replace(year=n.snapshots.year.unique()[0]))
+
     # Preparing network data to be shaped similar to ENTSOE datastructure
     optimized_links = n.links_t.p0.rename(
         columns=dict(n.links.bus0.str[:2] + " - " + n.links.bus1.str[:2])
