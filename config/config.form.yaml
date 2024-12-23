@@ -13,7 +13,7 @@ logging:
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
   prefix: "updated_initial_main_scenarios"
-  name: "main-mds-vanilla-dac-limit-ev40"
+  name: "baseline-mds-strawberry-daclimit12-seq22"
   scenarios:
     enable: true
     file: config/scenarios.form.yaml
