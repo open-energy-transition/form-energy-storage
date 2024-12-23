@@ -121,30 +121,27 @@ main-mds-vanilla-with-grids:
     H2_retrofit: true
 
 main-calibration-run:
-  foresight: overnight
+  #foresight: overnight # Needs to be myopic to include existing power plants
   scenario:
     ll:
     - v1.0
     planning_horizons:
-    - 2023
+    - 2023 # TODO : Extracting the cost in prepare_sector_network leads to the model asking for cost_2023.csv, which doesn't exist
   enable:
     final_adjustment: false
   snapshots:
     start: "2023-01-01"
     end: "2024-01-01"
   co2_budget:
-    2023: 0.378 
+    2023: 1 #0.378 
     # 63% from https://commission.europa.eu/news/climate-report-shows-largest-annual-drop-eu-greenhouse-gas-emissions-decades-2024-11-05_en
     # 60% factored in emission included sector from co2_totals_sector.csv (interpolation between 2015, 2030)
     # 0.63 * 0.6 = 0.378
   electricity:
     max_hours:
       li-ion battery: [1, 2, 4, 8]
-      vanadium: [10]
-      lair: [12]
-      pair: [24]
-      H2: [168]
-      iron-air battery: [100]
+    extendable_carriers:
+      Generator: [] # remove extendability for all carrier except gas
     powerplants_filter: DateOut >= 2023 and not Fueltype.isin(['Nuclear', 'Hard Coal', 'Lignite'])
     custom_powerplants: DateIn <= 2023 and DateOut >= 2023
   atlite:
@@ -152,7 +149,7 @@ main-calibration-run:
   renewable:
     onwind:
       cutout: europe-2023-sarah3-era5
-      #correction_factor: 0.93
+      correction_factor: 0.93
     offwind-ac:
       cutout: europe-2023-sarah3-era5
     offwind-dc:
@@ -188,5 +185,9 @@ main-calibration-run:
     stores: []
     storage_units: ["li-ion battery"]
     methanation: false
+    bev_dsm: false 
+    tes: false 
+    v2g: false
+    SMR_cc: false
   costs:
     year: 2020

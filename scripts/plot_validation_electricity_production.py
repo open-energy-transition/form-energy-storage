@@ -39,7 +39,9 @@ if __name__ == "__main__":
     configure_logging(snakemake)
     set_scenario_config(snakemake)
 
-    n = pypsa.Network(snakemake.input.network)
+    print(snakemake.input.network)
+
+    n = pypsa.Network(str(snakemake.input.network))
     #n.loads.carrier = "load"
 
     historic = pd.read_csv(
@@ -59,7 +61,8 @@ if __name__ == "__main__":
         lambda s: s != "", "lightgrey"
     )
     colors["Offshore Wind"] = colors["Offshore Wind (AC)"]
-    colors["Gas"] = colors["Combined-Cycle Gas"]
+    colors["Gas"] = '#a85522'
+    colors["nuclear"] = '#ff8c00'
     colors["Hydro"] = colors["Reservoir & Dam"]
     colors["geothermal"] = '#ba91b1'
     colors["biomass"] = '#baa741'
@@ -150,7 +153,7 @@ if __name__ == "__main__":
     diff.clip(lower=0).plot.area(
         ax=axes[2], **kwargs, title="$\Delta$ (Optimized - Historic)"
     )
-    lim = axes[2].get_ylim()[1]
+    lim = axes[1].get_ylim()[1]/2
     diff.clip(upper=0).plot.area(ax=axes[2], **kwargs)
     axes[2].set_ylim(bottom=-lim, top=lim)
 

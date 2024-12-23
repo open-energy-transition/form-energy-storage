@@ -68,18 +68,38 @@ rule solve_sector_networks_perfect:
             run=config["run"]["name"],
         ),
 
-
-rule validate_elec_networks:
-    input:
-        expand(
-            RESULTS + "figures/.statistics_plots_base_s_{clusters}_elec_l{ll}_{opts}",
-            **config["scenario"],
-            run=config["run"]["name"],
-        ),
-        expand(
-            RESULTS
-            + "figures/.validation_{kind}_plots_base_s_{clusters}_elec_l{ll}_{opts}",
-            **config["scenario"],
-            run=config["run"]["name"],
-            kind=["production", "prices", "cross_border"],
-        ),
+if config["foresight"] in ["myopic","overnight"]:
+    rule validate_elec_networks:
+        input:
+            expand(
+                RESULTS
+                + "figures/.validation_{kind}_plots_base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}",
+                **config["scenario"],
+                run=config["run"]["name"],
+                kind=["production","cross_border"],
+            ),
+elif config["foresight"] == "perfect":
+    rule validate_elec_networks:
+        input:
+            expand(
+                RESULTS
+                + "figures/.validation_{kind}_plots_base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years",
+                **config["scenario"],
+                run=config["run"]["name"],
+                kind=["production", "prices", "cross_border"],
+            ),
+else:
+    rule validate_elec_networks:
+        input:
+            expand(
+                RESULTS + "figures/.statistics_plots_base_s_{clusters}_elec_l{ll}_{opts}",
+                **config["scenario"],
+                run=config["run"]["name"],
+            ),
+            expand(
+                RESULTS
+                + "figures/.validation_{kind}_plots_base_s_{clusters}_elec_l{ll}_{opts}",
+                **config["scenario"],
+                run=config["run"]["name"],
+                kind=["production", "prices", "cross_border"],
+            ),

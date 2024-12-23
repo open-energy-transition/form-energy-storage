@@ -25,7 +25,7 @@ if __name__ == "__main__":
     configure_logging(snakemake)
     set_scenario_config(snakemake)
 
-    n = pypsa.Network(snakemake.input.network)
+    n = pypsa.Network(str(snakemake.input.network))
     n.loads.carrier = "load"
 
     historic = pd.read_csv(

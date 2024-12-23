@@ -1367,13 +1367,16 @@ def insert_electricity_distribution_grid(n, costs):
     # i.e. 2 kW/person (population data is in thousands of people) so we get MW
     potential = 0.1 * 20 * pop_solar
 
+    extendable_generators = snakemake.params.electricity["extendable_carriers"]["Generator"]
+    solar_extendable = True if "solar" in extendable_generators or "solar rooftop" in extendable_generators else False
+
     n.add(
         "Generator",
         solar,
         suffix=" rooftop",
         bus=n.generators.loc[solar, "bus"] + " low voltage",
         carrier="solar rooftop",
-        p_nom_extendable=True,
+        p_nom_extendable=solar_extendable,
         p_nom_max=potential.loc[solar],
         marginal_cost=n.generators.loc[solar, "marginal_cost"],
         capital_cost=costs.at["solar-rooftop", "fixed"],

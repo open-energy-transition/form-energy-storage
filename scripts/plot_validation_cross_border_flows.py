@@ -49,6 +49,8 @@ color_country = {
     "SE": "#8a0000",
     "SI": "#6f0000",
     "SK": "#550000",
+
+    "EU": "blue",
 }
 
 
@@ -192,7 +194,8 @@ if __name__ == "__main__":
 
     countries = snakemake.params.countries
 
-    n = pypsa.Network(snakemake.input.network)
+    network = pypsa.Network(str(snakemake.input.network))
+    n = network.copy()
     n.loads.carrier = "load"
 
     historic = pd.read_csv(
@@ -208,6 +211,10 @@ if __name__ == "__main__":
     # Set the historic date based on the snapshot year
     if historic.index.year.unique()[0] != n.snapshots.year.unique()[0]:
         historic.index = historic.index.map(lambda x: x.replace(year=n.snapshots.year.unique()[0]))
+
+    # Remove EU bus before starting
+    to_drop_links=n.links[(n.links.bus0.str[:2] == "EU") | (n.links.bus1.str[:2] == "EU")].index
+    n.remove("Link",to_drop_links)
 
     # Preparing network data to be shaped similar to ENTSOE datastructure
     optimized_links = n.links_t.p0.rename(
