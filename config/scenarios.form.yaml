@@ -120,7 +120,7 @@ main-mds-vanilla-with-grids:
     gas_network: true
     H2_retrofit: true
 
-main-calibration-run:
+main-calibration-run-2920SEG:
   #foresight: overnight # Needs to be myopic to include existing power plants
   scenario:
     ll:
@@ -128,6 +128,7 @@ main-calibration-run:
     planning_horizons:
     - 2023 # TODO : Extracting the cost in prepare_sector_network leads to the model asking for cost_2023.csv, which doesn't exist
   enable:
+    retrieve_cutout: true
     final_adjustment: false
   snapshots:
     start: "2023-01-01"
@@ -144,6 +145,10 @@ main-calibration-run:
       Generator: [] # remove extendability for all carrier except gas
     powerplants_filter: DateOut >= 2023 and not Fueltype.isin(['Nuclear', 'Hard Coal', 'Lignite'])
     custom_powerplants: DateIn <= 2023 and DateOut >= 2023
+  transmission_projects:
+    enable: false
+    include:
+      nep: false
   atlite:
     default_cutout: europe-2023-sarah3-era5
   renewable:
@@ -183,7 +188,7 @@ main-calibration-run:
     co2_sequestration_potential:
       2023: 0
     stores: []
-    storage_units: ["li-ion battery"]
+    storage_units: []
     methanation: false
     bev_dsm: false 
     tes: false 
@@ -191,3 +196,6 @@ main-calibration-run:
     SMR_cc: false
   costs:
     year: 2020
+  clustering:
+    temporal:
+      resolution_sector: 2920SEG
