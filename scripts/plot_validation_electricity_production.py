@@ -5,7 +5,9 @@
 # SPDX-License-Identifier: MIT
 
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 import pandas as pd
+import numpy as np
 import pypsa
 import seaborn as sns
 from _helpers import configure_logging, set_scenario_config
@@ -24,6 +26,69 @@ carrier_groups = {
     "solar-hsat":"Solar",
     "solar rooftop":"Solar",
 }
+
+elec_array = [["nuclear", "None", "None", "None", "None", "None", "None"],
+            ["Onshore Wind", "Offshore Wind", "Hydro", "Run of River", "Solar", "biomass", "geothermal"],
+            ["coal", "lignite", "Gas", "oil","Other", "None", "None"]]
+
+def autopct_format_inner(value, threshold=1):
+    return f'{value:.1f}%' if value >= threshold else ''
+
+
+def autopct_format_outer(value, threshold=3):
+    return f'{value:.1f}%' if value >= threshold else ''
+
+
+def filter_labels(labels, autopct_values):
+    return [label if autopct_values[i] else None for i, label in enumerate(labels)]
+
+
+def plot_pies(ax, elec_mix_array, colors):
+    size = 0.4
+    vals = np.array(elec_mix_array)
+
+    cmap = plt.colormaps["tab20c"]
+    inner_colors = cmap([1, 2, 5, 6, 9, 10])
+    inner_colors = [colors[i] if i != "None" else "black" for i in list(np.array(elec_array).flatten())]
+
+    outer_labels = ["nuclear", "VRES", "Fossil"]
+    outer_colors = [colors[i] for i in outer_labels]
+
+    # threshold to show outer label
+    threshold = 2.0
+    # get percentage of outer layer  
+    autopct_values = [100*value/vals.sum(axis=1).sum() for value in vals.sum(axis=1)]
+    # filter out percentages lower than threshold
+    autopct_values = [value if value >= threshold else None for value in autopct_values]
+    # outer labels that has value >= threshold 
+    valid_outer_labels = filter_labels(outer_labels, autopct_values)
+
+    _, texts, autotexts = ax.pie(vals.sum(axis=1), radius=1, colors=outer_colors,
+        wedgeprops=dict(width=size, edgecolor='w', linewidth=0.2), 
+        autopct=autopct_format_outer,  pctdistance=1.5, #textprops={'fontsize': 15},
+        labels=valid_outer_labels)
+    
+    # Adjust the position of autopct labels
+    for autotext, label in zip(autotexts, texts):
+        x, y = label.get_position()  # Get position of corresponding wedge label
+        autotext.set_position((x , y - 0.11))  # Set position of autopct label below the wedge label
+        #autotext.set_fontsize(14)
+        align = "right" if x < 0 else "left"
+        autotext.set_horizontalalignment(align)
+
+    all_vals = vals.flatten()
+    ax.pie(
+        all_vals[all_vals!=0], radius=1.15-size,
+        colors=[inner_colors[i] for i in range(len(inner_colors)) if all_vals[i] != 0],
+        wedgeprops=dict(width=size, edgecolor='w', linewidth=0.2),
+        autopct=autopct_format_inner, pctdistance=0.7 #textprops={'fontsize': 14}
+    )
+    
+    # Calculate total generated electricity
+    total_electricity = np.sum(vals)
+    # Add total generated electricity to the center of the pie chart
+    ax.text(0, 0, f"{total_electricity:.2f}"+"\nTWh", ha='center', va='center') #fontsize=14.5
+    ax.set(aspect="equal")
 
 
 if __name__ == "__main__":
@@ -60,13 +125,13 @@ if __name__ == "__main__":
     colors = n.carriers.set_index("nice_name").color.where(
         lambda s: s != "", "lightgrey"
     )
+    colors = colors.combine_first(pd.Series(snakemake.config["plotting"]["tech_colors"]))
     colors["Offshore Wind"] = colors["Offshore Wind (AC)"]
     colors["Gas"] = '#a85522'
-    colors["nuclear"] = '#ff8c00'
     colors["Hydro"] = colors["Reservoir & Dam"]
-    colors["geothermal"] = '#ba91b1'
-    colors["biomass"] = '#baa741'
     colors["Other"] = "lightgray"
+    colors["Fossil"] = "#A18181"
+    colors["VRES"] = "#0fa101"
 
     if len(historic.index) > len(n.snapshots):
         historic = historic.resample(n.snapshots.inferred_freq).mean().loc[n.snapshots]
@@ -100,11 +165,39 @@ if __name__ == "__main__":
     # total production per carrier
     fig, ax = plt.subplots(figsize=(6, 6))
 
-    df = data.groupby(level=["Kind", "Carrier"], axis=1).sum().sum().unstack().T
+    df = data.T.groupby(level=["Kind", "Carrier"]).sum().T.sum().unstack().T
     df = df / 1e6  # TWh
     df.plot.barh(ax=ax, xlabel="Electricity Production [TWh]", ylabel="")
     ax.grid(axis="y")
     fig.savefig(snakemake.output.production_bar, bbox_inches="tight")
+    plt.close(fig)
+
+    # total production per carrier in pie form
+    fig, ax = plt.subplots(1, 2, figsize=(10,5))
+
+    df = data.T.groupby(level=["Kind", "Carrier"]).sum().T.sum().unstack().T
+    df = df / 1e6  # TWh
+    df = df.fillna(0)
+    df.loc["None",:] = 0
+
+    row = 0
+    for col in ["Historic", "Optimized"]:
+        elec_mix_array = [[df.loc[i,col] for i in elec_array[r]] for r in [0,1,2]]
+        if col == "Optimized":
+            row = 1
+        plot_pies(ax[row], elec_mix_array, colors)
+
+        ax[row].set(aspect="equal")
+        ax[row].set_title(col)
+        
+    elec_array_flat = list(np.unique(np.array(elec_array).flatten()))
+    elec_array_flat.remove("None")
+
+    fig.legend(
+        handles=[mpatches.Patch(color=colors[c], label=c) for c in ["VRES","Fossil"] + elec_array_flat],
+        loc="lower center", ncol=5, bbox_to_anchor=(0.5, -0.19)
+    )
+    fig.savefig(snakemake.output.production_pie, bbox_inches="tight")
     plt.close(fig)
 
     # highest diffs

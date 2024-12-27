@@ -4,6 +4,7 @@
 
 PRODUCTION_PLOTS = [
     "production_bar",
+    "production_pie",
     "production_deviation_bar",
     "seasonal_operation_area",
 ]
