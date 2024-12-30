@@ -134,7 +134,22 @@ if __name__ == "__main__":
     colors["VRES"] = "#0fa101"
 
     if len(historic.index) > len(n.snapshots):
-        historic = historic.resample(n.snapshots.inferred_freq).mean().loc[n.snapshots]
+        if n.snapshots.inferred_freq:
+            historic = historic.resample(n.snapshots.inferred_freq).sum().loc[n.snapshots]
+        else:
+            # if frequency is inconsistent due to segmentation
+            snapshots_interval = pd.Series({n.snapshots[x]:(n.snapshots[x+1] - n.snapshots[x])/np.timedelta64(1,'h') for x in range(0,len(n.snapshots)-1)})
+            snapshots_interval_last = pd.Series({n.snapshots[-1]:(pd.Timestamp(snakemake.config["snapshots"]["end"]) - n.snapshots[-1])/np.timedelta64(1,'h')})
+            snapshots_interval = pd.concat([snapshots_interval, snapshots_interval_last])
+
+            first_bin = [n.snapshots[0]]
+            mid_bins = [x + pd.DateOffset(hours=snapshots_interval[x]/2) for x in n.snapshots[:-1]]
+            last_bin = [n.snapshots[-1] + pd.DateOffset(hours=snapshots_interval[-1])]
+            bins = pd.DatetimeIndex(first_bin + mid_bins + last_bin)
+
+            interval_labels = pd.cut(historic.index, bins=bins, right=False)
+            historic = historic.groupby(interval_labels).sum()
+            historic.index = pd.to_datetime(n.snapshots)
 
     # Set the historic date based on the snapshot year
     historic_year = historic.index.year.unique()[0]
@@ -154,10 +169,10 @@ if __name__ == "__main__":
 
     # Compare carrier where historical data are available
     optimized = optimized.loc[:, optimized.columns.get_level_values(1).isin(historic.columns.get_level_values(1))]
+    optimized = optimized.mul(n.snapshot_weightings.generators, axis=0)
 
     data = pd.concat([historic, optimized], keys=["Historic", "Optimized"], axis=1)
     data.columns.names = ["Kind", "Country", "Carrier"]
-    data = data.mul(n.snapshot_weightings.generators, axis=0)
 
     # revert back datetime according to historical year
     data.index = data.index.map(lambda x: x.replace(year=historic_year))
@@ -222,9 +237,10 @@ if __name__ == "__main__":
     fig, axes = plt.subplots(3, 1, figsize=(9, 9))
 
     df = (
-        data.groupby(level=["Kind", "Carrier"], axis=1)
+        data.div(n.snapshot_weightings.generators, axis=0)
+        .groupby(level=["Kind", "Carrier"], axis=1)
         .sum()
-        .resample("1W")
+        .resample("1D")
         .mean()
         .clip(lower=0)
     )
@@ -246,9 +262,12 @@ if __name__ == "__main__":
     diff.clip(lower=0).plot.area(
         ax=axes[2], **kwargs, title="$\Delta$ (Optimized - Historic)"
     )
-    lim = axes[1].get_ylim()[1]/2
     diff.clip(upper=0).plot.area(ax=axes[2], **kwargs)
-    axes[2].set_ylim(bottom=-lim, top=lim)
+
+    ylim = max(axes[0].get_ylim()[1],axes[1].get_ylim()[1])
+    axes[0].set_ylim(top=ylim)
+    axes[1].set_ylim(top=ylim)
+    axes[2].set_ylim(bottom=-ylim/2, top=ylim/2)
 
     h, l = axes[0].get_legend_handles_labels()
     fig.legend(

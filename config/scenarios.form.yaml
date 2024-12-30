@@ -169,6 +169,8 @@ main-calibration-run-2920SEG:
     hydro:
       cutout: europe-2023-sarah3-era5
       #eia_norm_year: 2021 #The last year available from EIA for hydro is 2021. If not activated, the median value is chosen
+  load:
+    supplement_entsoe: true
   biomass:
     year: 2020
     share_unsustainable_use_retained:

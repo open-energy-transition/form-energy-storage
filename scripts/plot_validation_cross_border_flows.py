@@ -7,6 +7,7 @@
 import country_converter as coco
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 import pypsa
 import seaborn as sns
 from _helpers import configure_logging, set_scenario_config
@@ -113,13 +114,13 @@ def cross_border_time_series(countries, data):
                 ymin = neg_min
 
             pos_max = df_pos.sum(axis=1).max() * 1.2
-            if pos_max < ymax:
+            if pos_max > ymax:
                 ymax = pos_max
 
             axis = axis + 1
 
         for x in range(axis - 2, axis):
-            ax[x].set_ylim([neg_min, pos_max])
+            ax[x].set_ylim([ymin, ymax])
 
     fig.savefig(snakemake.output.trade_time_series, bbox_inches="tight")
     plt.close(fig)
@@ -206,7 +207,22 @@ if __name__ == "__main__":
     )
 
     if len(historic.index) > len(n.snapshots):
-        historic = historic.resample(n.snapshots.inferred_freq).mean().loc[n.snapshots]
+        if n.snapshots.inferred_freq:
+            historic = historic.resample(n.snapshots.inferred_freq).sum().loc[n.snapshots]
+        else:
+            # if frequency is inconsistent due to segmentation
+            snapshots_interval = pd.Series({n.snapshots[x]:(n.snapshots[x+1] - n.snapshots[x])/np.timedelta64(1,'h') for x in range(0,len(n.snapshots)-1)})
+            snapshots_interval_last = pd.Series({n.snapshots[-1]:(pd.Timestamp(snakemake.config["snapshots"]["end"]) - n.snapshots[-1])/np.timedelta64(1,'h')})
+            snapshots_interval = pd.concat([snapshots_interval, snapshots_interval_last])
+
+            first_bin = [n.snapshots[0]]
+            mid_bins = [x + pd.DateOffset(hours=snapshots_interval[x]/2) for x in n.snapshots[:-1]]
+            last_bin = [n.snapshots[-1] + pd.DateOffset(hours=snapshots_interval[-1])]
+            bins = pd.DatetimeIndex(first_bin + mid_bins + last_bin)
+
+            interval_labels = pd.cut(historic.index, bins=bins, right=False)
+            historic = historic.groupby(interval_labels).sum()
+            historic.index = pd.to_datetime(n.snapshots)
 
     # Set the historic date based on the snapshot year
     if historic.index.year.unique()[0] != n.snapshots.year.unique()[0]:
@@ -237,8 +253,12 @@ if __name__ == "__main__":
                 optimized = optimized.rename(columns={c1: c2})
 
     optimized = optimized.groupby(lambda x: x, axis=1).sum()
+    optimized = optimized.mul(n.snapshot_weightings.generators, axis=0)
 
     cross_border_bar(countries, [historic, optimized])
+
+    optimized = optimized.div(n.snapshot_weightings.generators, axis=0)
+    historic = historic.div(n.snapshot_weightings.generators, axis=0)
 
     cross_border_time_series(countries, [historic, optimized])
 
