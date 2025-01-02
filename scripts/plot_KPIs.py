@@ -26,6 +26,7 @@ from plot_power_network import load_projection
 from matplotlib.colors import Normalize
 from plot_summary import preferred_order
 from pypsa.statistics import get_bus_and_carrier_and_bus_carrier, get_country_and_carrier
+from plot_validation_cross_border_flows import sort_one_country, color_country
 import country_converter as coco
 
 cc = coco.CountryConverter()
@@ -253,6 +254,55 @@ def plot_line_loading(network, regions, path, focus_de=True, value="mean", show_
     if show_fig:
         fig.show()
     fig.savefig(path, bbox_inches="tight")
+
+def plot_energy_trade(network, countries, path):
+    n = network.copy()
+
+    # Remove EU bus before starting
+    to_drop_links=n.links[(n.links.bus0.str[:2] == "EU") | (n.links.bus1.str[:2] == "EU")].index
+    n.remove("Link",to_drop_links)
+
+    # Preparing network data to be shaped similar to ENTSOE datastructure
+    df_links = n.links_t.p0.rename(
+        columns=dict(n.links.bus0.str[:2] + " - " + n.links.bus1.str[:2])
+    )
+    df_lines = n.lines_t.p0.rename(
+        columns=dict(n.lines.bus0.str[:2] + " - " + n.lines.bus1.str[:2])
+    )
+    df = pd.concat([df_links, df_lines], axis=1)
+
+    # Drop internal country connection
+    df.drop(
+        [c for c in df.columns if c[:2] == c[5:]], axis=1, inplace=True
+    )
+
+    # align columns name
+    for c1 in df.columns:
+        for c2 in df.columns:
+            if c1[:2] == c2[5:] and c2[:2] == c1[5:]:
+                df = df.rename(columns={c1: c2})
+
+    df = df.T.groupby(lambda x: x).sum().T
+
+    df_new = pd.DataFrame()
+
+    for country in countries:
+        df_country = sort_one_country(country, df)
+        df_country_new = pd.DataFrame(data=df_country.sum()).T.rename(index={0:cc.convert(country, to="name_short")})
+        df_new = pd.concat([df_country_new, df_new])
+
+    # MWh to GWh
+    df_new = df_new/1e3
+    
+    df_new = df_new.T
+    df_new = df_new.rename(index={link:link[5:] for link in df_new.index})
+    df_new = df_new.groupby(lambda x: x).sum()
+    print(df)
+    df_new["color"] = [color_country[i] for i in df_new.index]
+
+    plot_kw = {"title": "Total Energy Trade", "ylabel": "Import (-)/Export (+) [GWh]"}
+
+    plot_by_country(df_new, plot_kw, path)
 
 def prepare_energy_balance(n):
     df = n.statistics.energy_balance(groupby=get_bus_and_carrier_and_bus_carrier, aggregate_time=False)
@@ -1075,6 +1125,8 @@ if __name__ == "__main__":
 
     # extract all the nessesary statistics
     countries = snakemake.params.countries
+
+    plot_energy_trade(n, countries, path=snakemake.output.energy_trade)
 
     df_cost = calculate_system_cost_csv(n, snakemake.input.nodal_costs, countries)
     df_capacity_csv = calculate_capacity_csv(n, snakemake.input.nodal_capacity, countries)
