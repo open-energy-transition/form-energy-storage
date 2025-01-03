@@ -77,6 +77,93 @@ main-mds-vanilla:
     stores: ["H2"]
     storage_units: ["li-ion battery", "iron-air battery"]
 
+main-mds-vanilla-dac-limit-ev35:
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      vanadium: [10]
+      lair: [12]
+      pair: [24]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    land_transport_electric_share:
+      2035: 0.35 # default assumptions
+    land_transport_ice_share:
+      2035: 0.65
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "iron-air battery"]
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 20  # limit in MtCO2
+
+main-mds-vanilla-dac-limit-ev40:
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      vanadium: [10]
+      lair: [12]
+      pair: [24]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    land_transport_electric_share:
+      2035: 0.40 # default assumptions
+    land_transport_ice_share:
+      2035: 0.60
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "iron-air battery"]
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 20  # limit in MtCO2
+
+main-mds-vanilla-dac-limit-ev45:
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      vanadium: [10]
+      lair: [12]
+      pair: [24]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    land_transport_electric_share:
+      2035: 0.45 # default assumptions
+    land_transport_ice_share:
+      2035: 0.55
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "iron-air battery"]
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 20  # limit in MtCO2
+
+main-mds-vanilla-dac-limit-ev45-nuc80:
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      vanadium: [10]
+      lair: [12]
+      pair: [24]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    land_transport_electric_share:
+      2035: 0.45 # default assumptions
+    land_transport_ice_share:
+      2035: 0.55
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "iron-air battery"]
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 20  # limit in MtCO2
+  conventional:
+    nuclear:
+      p_min_pu: 0.8
+
 main-no-mds-vanilla:
   electricity:
     max_hours:
