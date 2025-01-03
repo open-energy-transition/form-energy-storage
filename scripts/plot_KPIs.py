@@ -298,7 +298,8 @@ def plot_energy_trade(network, countries, path):
     df_new = df_new.T
     df_new = df_new.rename(index={link:link[5:] for link in df_new.index})
     df_new = df_new.groupby(lambda x: x).sum()
-    df_new["color"] = [color_country[i] for i in df_new.index]
+    df_new["color"] = [color_country[country] for country in df_new.index]
+    df_new = df_new.rename(index={country:cc.convert(country, to="name_short") for country in df_new.index})
 
     plot_kw = {"title": "Total Energy Trade", "ylabel": "Import (-)/Export (+) [GWh]"}
 
@@ -470,6 +471,9 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
 
     df = df.groupby(["carrier"]).sum()
 
+    # Factor in snapshot weightings
+    df = df.mul(n.snapshot_weightings.stores, axis=1)
+
     # Accumulate energy based on the value of the previous energy level
     for i in range(len(df.columns)):
         if i == 0:
@@ -485,6 +489,13 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
 
     df = df.T
 
+    #MWh to GWh
+    df = df/1e3
+
+    #remove if smaller than 1 MWh
+    to_drop = abs(df.max()) < 1
+    df = df.loc[:,~to_drop]
+
     # Set the minimum value to zero
     df = (df - df.min())
 
@@ -495,9 +506,6 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
         if not plot_kw.get("ylim", False):
             plot_kw["ylim"] = [0, 100]
     else:
-        #kW to MW
-        df = df/1e3
-
         if not plot_kw.get("ylim", False):
             plot_kw["ylim"] = [0, None]
 
@@ -623,7 +631,7 @@ def calculate_capacity(network, countries, stats = "optimal", storage = False):
     df = pd.DataFrame(df.groupby(["country","carrier"])[0].sum()).unstack("country")
     df.columns = df.columns.get_level_values("country")
 
-    # convert from MW to GW
+    # convert from MWh to GWh
     df = df / 1e3
 
     return df

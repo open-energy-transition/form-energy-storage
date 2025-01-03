@@ -442,7 +442,7 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: Li-Ion Battery Storage winter SOC Total
-      ylabel: MW
+      ylabel: GWh
   EU_short_duration_storage_winter_SOC_total:
     extract: SOC
     start_date: '2013-02-01'
@@ -451,7 +451,7 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: Short duration storage winter SOC Total
-      ylabel: MW
+      ylabel: GWh
   EU_li-ion_summer_SOC_total:
     extract: SOC
     start_date: '2013-08-01'
@@ -460,7 +460,7 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: Li-Ion Battery Storage summer SOC Total
-      ylabel: MW
+      ylabel: GWh
   EU_short_duration_storage_summer_SOC_total:
     extract: SOC
     start_date: '2013-08-01'
@@ -469,7 +469,7 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: Short duration storage summer SOC Total
-      ylabel: MW
+      ylabel: GWh
 # medium duration SOC total
   EU_H2_SOC_total:
     extract: SOC
@@ -477,18 +477,18 @@ kpi:
     group_carrier: pretty
     plot_kw:
       title: H2 Store SOC Total
-      ylabel: MW
+      ylabel: GWh
   EU_iron-air_SOC_total:
     extract: SOC
     carrier_filter: Iron-Air Battery Storage
     group_carrier: pretty
     plot_kw:
       title: Iron-Air Battery Storage SOC Total
-      ylabel: MW
+      ylabel: GWh
   EU_medium_duration_storage_SOC_total:
     extract: SOC
     carrier_filter: [H2 Store, Iron-Air Battery Storage]
     group_carrier: pretty
     plot_kw:
       title: Medium duration storage SOC Total
-      ylabel: MW
+      ylabel: GWh
