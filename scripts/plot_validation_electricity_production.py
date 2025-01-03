@@ -27,6 +27,22 @@ carrier_groups = {
     "solar rooftop":"Solar",
 }
 
+carrier_aggregated = {
+    "nuclear": "nuclear",
+    "Onshore Wind": "VRES",
+    "Offshore Wind": "VRES",
+    "Hydro": "VRES",
+    "Run of River": "VRES",
+    "Solar": "VRES",
+    "biomass": "VRES",
+    "geothermal": "VRES",
+    "coal": "Fossil",
+    "lignite": "Fossil",
+    "Gas": "Fossil",
+    "oil": "Fossil",
+    "Other": "Fossil",
+}
+
 elec_array = [["nuclear", "None", "None", "None", "None", "None", "None"],
             ["Onshore Wind", "Offshore Wind", "Hydro", "Run of River", "Solar", "biomass", "geothermal"],
             ["coal", "lignite", "Gas", "oil","Other", "None", "None"]]
@@ -90,6 +106,61 @@ def plot_pies(ax, elec_mix_array, colors):
     ax.text(0, 0, f"{total_electricity:.2f}"+"\nTWh", ha='center', va='center') #fontsize=14.5
     ax.set(aspect="equal")
 
+
+def plot_seasonal_operation(data, path, aggregated=False):
+
+    fig, axes = plt.subplots(3, 1, figsize=(9, 9))
+
+    df = (
+        data.div(n.snapshot_weightings.generators, axis=0)
+        .groupby(level=["Kind", "Carrier"], axis=1)
+        .sum()
+        .resample("1D")
+        .mean()
+        .clip(lower=0)
+    )
+    df = df / 1e3
+
+    if aggregated:
+        df = df.T.assign(Carrier_agg=df.columns.get_level_values("Carrier").map(carrier_aggregated))
+        df = df.set_index("Carrier_agg", append=True)
+        df = df.groupby(level=["Kind", "Carrier_agg"]).sum().T
+
+    order = (
+        (df["Historic"].diff().abs().sum() / df["Historic"].sum()).sort_values().index
+    )
+    c = colors[order]
+    optimized = df["Optimized"].reindex(order, axis=1, level=1)
+    historical = df["Historic"].reindex(order, axis=1, level=1)
+
+    kwargs = dict(color=c, legend=False, ylabel="Production [GW]", xlabel="")
+
+    optimized.plot.area(ax=axes[0], **kwargs, title="Optimized")
+    historical.plot.area(ax=axes[1], **kwargs, title="Historic")
+
+    diff = optimized - historical
+    diff.clip(lower=0).plot.area(
+        ax=axes[2], **kwargs, title="$\Delta$ (Optimized - Historic)"
+    )
+    diff.clip(upper=0).plot.area(ax=axes[2], **kwargs)
+
+    ylim = max(axes[0].get_ylim()[1],axes[1].get_ylim()[1])
+    axes[0].set_ylim(top=ylim)
+    axes[1].set_ylim(top=ylim)
+    axes[2].set_ylim(bottom=-ylim/2, top=ylim/2)
+
+    h, l = axes[0].get_legend_handles_labels()
+    fig.legend(
+        h[::-1],
+        l[::-1],
+        loc="center left",
+        bbox_to_anchor=(1, 0.5),
+        ncol=1,
+        frameon=False,
+        labelspacing=1,
+    )
+    fig.savefig(path, bbox_inches="tight")
+    plt.close(fig)
 
 if __name__ == "__main__":
     if "snakemake" not in globals():
@@ -234,53 +305,8 @@ if __name__ == "__main__":
 
     # seasonal operation
 
-    fig, axes = plt.subplots(3, 1, figsize=(9, 9))
-
-    df = (
-        data.div(n.snapshot_weightings.generators, axis=0)
-        .groupby(level=["Kind", "Carrier"], axis=1)
-        .sum()
-        .resample("1D")
-        .mean()
-        .clip(lower=0)
-    )
-    df = df / 1e3
-
-    order = (
-        (df["Historic"].diff().abs().sum() / df["Historic"].sum()).sort_values().index
-    )
-    c = colors[order]
-    optimized = df["Optimized"].reindex(order, axis=1, level=1)
-    historical = df["Historic"].reindex(order, axis=1, level=1)
-
-    kwargs = dict(color=c, legend=False, ylabel="Production [GW]", xlabel="")
-
-    optimized.plot.area(ax=axes[0], **kwargs, title="Optimized")
-    historical.plot.area(ax=axes[1], **kwargs, title="Historic")
-
-    diff = optimized - historical
-    diff.clip(lower=0).plot.area(
-        ax=axes[2], **kwargs, title="$\Delta$ (Optimized - Historic)"
-    )
-    diff.clip(upper=0).plot.area(ax=axes[2], **kwargs)
-
-    ylim = max(axes[0].get_ylim()[1],axes[1].get_ylim()[1])
-    axes[0].set_ylim(top=ylim)
-    axes[1].set_ylim(top=ylim)
-    axes[2].set_ylim(bottom=-ylim/2, top=ylim/2)
-
-    h, l = axes[0].get_legend_handles_labels()
-    fig.legend(
-        h[::-1],
-        l[::-1],
-        loc="center left",
-        bbox_to_anchor=(1, 0.5),
-        ncol=1,
-        frameon=False,
-        labelspacing=1,
-    )
-    fig.savefig(snakemake.output.seasonal_operation_area, bbox_inches="tight")
-    plt.close(fig)
+    plot_seasonal_operation(data, snakemake.output.seasonal_operation_area, aggregated=False)
+    plot_seasonal_operation(data, snakemake.output.seasonal_operation_area_agg, aggregated=True)
 
     # touch file
     with open(snakemake.output.plots_touch, "a"):

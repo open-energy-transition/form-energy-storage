@@ -76,6 +76,10 @@ def cross_border_time_series(countries, data):
         ymax = 0
         for df in data:
             df_country = sort_one_country(country, df)
+
+            #MW to GW
+            df_country = df_country / 1e3
+
             df_neg, df_pos = df_country.clip(upper=0), df_country.clip(lower=0)
 
             color = [color_country[link[5:]] for link in df_country.columns]
@@ -121,6 +125,8 @@ def cross_border_time_series(countries, data):
 
         for x in range(axis - 2, axis):
             ax[x].set_ylim([ymin, ymax])
+            ax[x].set_ylabel("Import (-)/Export (+) [GW]")
+            ax[x].set_xlabel("")
 
     fig.savefig(snakemake.output.trade_time_series, bbox_inches="tight")
     plt.close(fig)
@@ -135,6 +141,10 @@ def cross_border_bar(countries, data):
         order = 0
         for df in data:
             df_country = sort_one_country(country, df)
+
+            #MWh to TWh
+            df_country = df_country / 1e6
+
             df_neg, df_pos = df_country.clip(upper=0), df_country.clip(lower=0)
 
             title = "Historic" if (order % 2) == 0 else "Optimized"
@@ -157,6 +167,10 @@ def cross_border_bar(countries, data):
     df_positive.plot.barh(ax=ax, stacked=True, color=color, zorder=2)
     df_negative.plot.barh(ax=ax, stacked=True, color=color, zorder=2)
 
+    xmin, xmax = ax.get_xlim()
+    margin = abs(xmax - xmin) * 0.1
+    ax.set_xlim(xmin - margin, xmax + margin)
+    ax.set_xlabel("Import (-)/Export (+) [TWh]")
     plt.grid(axis="x", zorder=0)
     plt.grid(axis="y", zorder=0)
 
