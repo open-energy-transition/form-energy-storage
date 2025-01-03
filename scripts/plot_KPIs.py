@@ -288,7 +288,8 @@ def plot_energy_trade(network, countries, path):
 
     for country in countries:
         df_country = sort_one_country(country, df)
-        df_country_new = pd.DataFrame(data=df_country.sum()).T.rename(index={0:cc.convert(country, to="name_short")})
+        df_country_new = pd.DataFrame(data= n.snapshot_weightings.objective @ df_country)
+        df_country_new = df_country_new.T.rename(index={"objective":cc.convert(country, to="name_short")})
         df_new = pd.concat([df_country_new, df_new])
 
     # MWh to GWh
@@ -297,7 +298,6 @@ def plot_energy_trade(network, countries, path):
     df_new = df_new.T
     df_new = df_new.rename(index={link:link[5:] for link in df_new.index})
     df_new = df_new.groupby(lambda x: x).sum()
-    print(df)
     df_new["color"] = [color_country[i] for i in df_new.index]
 
     plot_kw = {"title": "Total Energy Trade", "ylabel": "Import (-)/Export (+) [GWh]"}
@@ -398,18 +398,18 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, path):
             df[c + " Charge"] = df[c].clip(upper=0)
             colors[c + " Charge"] = colors[c]
             df = df.drop(columns=c)
+
+    #kW to MW
+    df = df/1e3
+    
+    #remove if smaller than 1 MWh
+    to_drop = abs(n.snapshot_weightings.objective @ df) < 1
+    df = df.loc[:,~to_drop]
     
     #cut into the specific timesteps
     start_date = kpi_param.get("start_date", df.index[0])
     end_date = kpi_param.get("end_date", df.index[-1])
     df = df[pd.Timestamp(start_date):pd.Timestamp(end_date)]
-    
-    #kW to MW
-    df = df/1e3
-    
-    #remove if smaller than 1 MWh
-    to_drop = abs(df.sum()) < 1
-    df = df.loc[:,~to_drop]
     
     fig, ax = plt.subplots(figsize=(12,5))
     
@@ -442,6 +442,7 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
 
     carrier_filter = kpi_param.get("carrier_filter", "Li-Ion Battery Storage")
     group_carrier = kpi_param.get("group_carrier", None)
+    plot = kpi_param.get("plot", None)
     plot_kw = kpi_param.get("plot_kw", {})
     
     n = network.copy()
@@ -475,10 +476,6 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
             continue
         df.iloc[:,i] = df.iloc[:,i] + df.iloc[:,i-1]
 
-    # Set the minimum value to zero and maximum value to 100
-    df = (df.T - df.T.min()).T
-    df = (df.T/df.T.max() * 100).T
-
     #Set color
     colors = n.carriers.set_index("nice_name").color.where(lambda s: s != "", "green")
     if group_carrier == "pretty":
@@ -487,6 +484,22 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
         colors = colors[~colors.index.duplicated(keep='first')]
 
     df = df.T
+
+    # Set the minimum value to zero
+    df = (df - df.min())
+
+    if plot == "share":
+        # Set the maximum value to 100
+        df = (df/df.max() * 100)
+
+        if not plot_kw.get("ylim", False):
+            plot_kw["ylim"] = [0, 100]
+    else:
+        #kW to MW
+        df = df/1e3
+
+        if not plot_kw.get("ylim", False):
+            plot_kw["ylim"] = [0, None]
 
     #cut into the specific timesteps
     start_date = kpi_param.get("start_date", df.index[0])
@@ -500,7 +513,6 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
     ax.grid(axis="y")
     ax.set_xlabel("")
     ax.set_facecolor("white")
-    ax.set_ylim(0,100)
     
     df_legend = pd.DataFrame()
     df_legend["handle"], df_legend["label"] = ax.get_legend_handles_labels()
@@ -693,13 +705,7 @@ def filter_and_rename(network, df, carrier_filter = None, group_carrier = None):
     # An exception if Iron Air Battery Storage is still in
     if 'Iron-Air Battery Storage' in to_drop:
         to_drop = to_drop.drop('Iron-Air Battery Storage')
-
-    #logger.info(
-    #    f"Dropping technology with costs below {config["plotting"]['costs_threshold']} EUR billion per year"
-    #)
-    #logger.debug(df.loc[to_drop])
     df = df.drop(to_drop)
-
     
     # Sort the index by preferred order and set color
     colors = n.carriers.set_index("nice_name").color.where(lambda s: s != "", "green")
@@ -740,9 +746,16 @@ def plot_by_country(df, plot_kw, path):
         **plot_kw,
     )
 
-    ax.grid(axis="y")
+    ax.grid(axis="x")
     ax.set_xlabel("")
     ax.set_facecolor("white")
+
+    if not plot_kw.get("ylim", False):
+        ymin, ymax = ax.get_ylim()
+        margin = abs(ymax - ymin) * 0.1
+        if ymin == 0:
+            ymin = margin
+        ax.set_ylim(ymin - margin, ymax + margin)
 
     handles, labels = ax.get_legend_handles_labels()
     
@@ -769,13 +782,20 @@ def plot_in_detail(df, plot_kw, path):
         color=df["color"],
         **plot_kw,
     )
+
+    if not plot_kw.get("ylim", False):
+        ymin, ymax = ax.get_ylim()
+        margin = abs(ymax - ymin) * 0.1
+        if ymin == 0:
+            ymin = margin
+        ax.set_ylim(ymin - margin, ymax + margin)
     
     handles, labels = ax.get_legend_handles_labels()
 
     handles.reverse()
     labels.reverse()
 
-    ax.grid(axis="y")
+    ax.grid(axis="x")
 
     labels = [label + ": \n " + str(round(df.loc[label,"Total"],2)) for label in labels]
     labels = [label.replace(' &', '').replace(' and', '') for label in labels] #NOTE: Latex hates '&' strings because its their seperator

@@ -1,0 +1,494 @@
+# SPDX-FileCopyrightText: : 2017-2024 The PyPSA-Eur Authors
+#
+# SPDX-License-Identifier: CC0-1.0
+
+kpi:
+# Total System Cost
+  EU_system_cost:
+    extract: system cost
+    carrier_filter: 
+    group_carrier: sector
+    plot: detail
+    plot_kw:
+      title: Total system cost
+      #ylim: [0,600]
+      ylabel: Billion EUR/a
+  DE_system_cost:
+    extract: system cost
+    include: ["DE"]
+    carrier_filter:
+    group_carrier: sector
+    plot: detail
+    plot_kw:
+      title: Germany system cost
+      #ylim: [0,70]
+      ylabel: Billion EUR/a
+  country_system_cost:
+    extract: system cost
+    exclude: ["EU"]
+    carrier_filter:
+    group_carrier: sector
+    plot: overview
+    plot_kw:
+      title: Country system cost
+      #ylim: [0,150]
+      ylabel: Billion EUR/a
+# Electricity System Cost
+  EU_electricity_system_cost:
+    extract: system cost
+    carrier_filter: electricity
+    group_carrier: pretty
+    plot: detail
+    plot_kw:
+      title: Total electricity system cost
+      #ylim: [0,350]
+      ylabel: Billion EUR/a
+  DE_electricity_system_cost:
+    extract: system cost
+    include: ["DE"]
+    carrier_filter: electricity
+    group_carrier: pretty
+    plot: detail
+    plot_kw:
+      title: Germany electricity system cost
+      #ylim: [0,40]
+      ylabel: Billion EUR/a
+  country_electricity_system_cost:
+    extract: system cost
+    exclude: ["EU"]
+    carrier_filter: electricity
+    group_carrier: pretty
+    plot: overview
+    plot_kw:
+      title: Country electricity system cost
+      #ylim: [0,150]
+      ylabel: Billion EUR/a
+# Storage System Cost
+  EU_storage_system_cost:
+    extract: system cost
+    carrier_filter: storage
+    group_carrier: pretty
+    plot: detail
+    plot_kw:
+      title: Total storage system cost
+      #ylim: [0,25]
+      ylabel: Billion EUR/a
+  DE_storage_system_cost:
+    extract: system cost
+    include: ["DE"]
+    carrier_filter: storage
+    group_carrier: pretty
+    plot: detail
+    plot_kw:
+      title: Germany storage system cost
+      #ylim: [0,4]
+      ylabel: Billion EUR/a
+  country_storage_system_cost:
+    extract: system cost
+    exclude: ["EU"]
+    carrier_filter: storage
+    group_carrier: pretty
+    plot: overview
+    plot_kw:
+      title: Country storage system cost
+      #ylim: [0,5]
+      ylabel: Billion EUR/a
+# Power Capacity
+  EU_power_capacity:
+    extract: capacity
+    exclude: ["EU"]
+    carrier_filter: power
+    group_carrier: pretty
+    plot: detail
+    plot_kw:
+      title: Total power capacity
+      #ylim: [0,1800]
+      ylabel: GW
+  DE_power_capacity:
+    extract: capacity
+    include: ["DE"]
+    carrier_filter: power
+    group_carrier: pretty
+    plot: detail
+    plot_kw:
+      title: Germany power capacity
+      #ylim: [0,400]
+      ylabel: GW
+  country_power_capacity:
+    extract: capacity
+    exclude: ["EU"]
+    carrier_filter: power
+    group_carrier: pretty
+    plot: overview
+    plot_kw:
+      title: Country power capacity
+      #ylim: [0,400]
+      ylabel: GW
+# Storage Capacity
+  EU_storage_energy_capacity:
+    extract: capacity stats
+    storage: true
+    carrier_filter: storage
+    group_carrier: pretty
+    plot: detail
+    plot_kw:
+      title: Total storage energy capacity
+      #ylim: [0,18000]
+      ylabel: GWh
+  DE_storage_energy_capacity:
+    extract: capacity stats
+    storage: true
+    include: ["DE"]
+    carrier_filter: storage
+    group_carrier: pretty
+    plot: detail
+    plot_kw:
+      title: Germany storage energy capacity
+      #ylim: [0,5000]
+      ylabel: GWh
+  country_storage_energy_capacity:
+    extract: capacity stats
+    storage: true
+    exclude: ["EU"]
+    carrier_filter: storage
+    group_carrier: pretty
+    plot: overview
+    plot_kw:
+      title: Country storage energy capacity
+      #ylim: [0,5000]
+      ylabel: GWh
+# Power Generation
+  DE_power_generation:
+    extract: generation
+    include: ["DE"]
+    carrier_filter: power
+    group_carrier: pretty
+    plot: detail
+    plot_kw:
+      title: Germany power generation
+      #ylim: [0,800000]
+      ylabel: GW
+  country_power_generation:
+    extract: generation
+    exclude: ["EU"]
+    carrier_filter: power
+    group_carrier: pretty
+    plot: overview
+    plot_kw:
+      title: Country power generation
+      #ylim: [0,800000]
+      ylabel: GWh
+# Total Emission
+  EU_emission:
+    extract: emission
+    group_carrier: pretty
+    plot: detail
+    plot_kw:
+      title: Total emission
+      #ylim: [-200,600]
+      ylabel: MtCO2
+  country_emission:
+    extract: emission
+    group_carrier: pretty
+    plot: overview
+    plot_kw:
+      title: Country emission
+      #ylim: [-100,400]
+      ylabel: MtCO2
+# Electricity energy balance
+  EU_electricity_summer_energy_balance:
+    extract: energy balance
+    start_date: '2013-08-01'
+    end_date: '2013-09-01'
+    carrier_filter: electricity
+    group_carrier: pretty
+    plot_kw:
+      title: Total summer high voltage energy balance
+      #ylim: [-150,600]
+      ylabel: MW
+  EU_electricity_winter_energy_balance:
+    extract: energy balance
+    start_date: '2013-02-01'
+    end_date: '2013-03-01'
+    carrier_filter: electricity
+    group_carrier: pretty
+    plot_kw:
+      title: Total winter high voltage energy balance
+      #ylim: [-150,600]
+      ylabel: MW
+  DE_electricity_summer_energy_balance:
+    extract: energy balance
+    start_date: '2013-08-01'
+    end_date: '2013-09-01'
+    include: ["DE"]
+    carrier_filter: electricity
+    group_carrier: pretty
+    plot_kw:
+      title: Germany summer high voltage energy balance
+      #ylim: [-50,150]
+      ylabel: MW
+  DE_electricity_winter_energy_balance:
+    extract: energy balance
+    start_date: '2013-02-01'
+    end_date: '2013-03-01'
+    include: ["DE"]
+    carrier_filter: electricity
+    group_carrier: pretty
+    plot_kw:
+      title: Germany winter high voltage energy balance
+      #ylim: [-50,150]
+      ylabel: MW
+# Electricity (with some low voltage tech) energy balance
+  EU_electricity_plus_summer_energy_balance:
+    extract: energy balance
+    start_date: '2013-08-01'
+    end_date: '2013-09-01'
+    carrier_filter: electricity+
+    group_carrier: pretty
+    plot_kw:
+      title: Total summer high and low voltage energy balance
+      #ylim: [-150,800]
+      ylabel: MW
+  EU_electricity_plus_winter_energy_balance:
+    extract: energy balance
+    start_date: '2013-02-01'
+    end_date: '2013-03-01'
+    carrier_filter: electricity+
+    group_carrier: pretty
+    plot_kw:
+      title: Total winter high and low voltage energy balance
+      #ylim: [-150,800]
+      ylabel: MW
+  DE_electricity_plus_summer_energy_balance:
+    extract: energy balance
+    start_date: '2013-08-01'
+    end_date: '2013-09-01'
+    include: ["DE"]
+    carrier_filter: electricity+
+    group_carrier: pretty
+    plot_kw:
+      title: Germany summer high and low voltage energy balance
+      #ylim: [-50,200]
+      ylabel: MW
+  DE_electricity_plus_winter_energy_balance:
+    extract: energy balance
+    start_date: '2013-02-01'
+    end_date: '2013-03-01'
+    include: ["DE"]
+    carrier_filter: electricity+
+    group_carrier: pretty
+    plot_kw:
+      title: Germany winter high and low voltage energy balance
+      #ylim: [-50,200]
+      ylabel: MW
+# Low Voltage energy balance
+  EU_low_voltage_summer_energy_balance:
+    extract: energy balance
+    start_date: '2013-08-01'
+    end_date: '2013-09-01'
+    carrier_filter: low voltage
+    group_carrier: pretty
+    plot_kw:
+      title: Total summer low voltage energy balance
+      #ylim: [-600,300]
+      ylabel: MW
+  EU_low_voltage_winter_energy_balance:
+    extract: energy balance
+    start_date: '2013-02-01'
+    end_date: '2013-03-01'
+    carrier_filter: low voltage
+    group_carrier: pretty
+    plot_kw:
+      title: Total winter low voltage energy balance
+      #ylim: [-600,300]
+      ylabel: MW
+  DE_low_voltage_summer_energy_balance:
+    extract: energy balance
+    start_date: '2013-08-01'
+    end_date: '2013-09-01'
+    include: ["DE"]
+    carrier_filter: low voltage
+    group_carrier: pretty
+    plot_kw:
+      title: Germany summer low voltage energy balance
+      #ylim: [-150,100]
+      ylabel: MW
+  DE_low_voltage_winter_energy_balance:
+    extract: energy balance
+    start_date: '2013-02-01'
+    end_date: '2013-03-01'
+    include: ["DE"]
+    carrier_filter: low voltage
+    group_carrier: pretty
+    plot_kw:
+      title: Germany winter low voltage energy balance
+      #ylim: [-150,100]
+      ylabel: MW
+# Heat energy balance
+  EU_heat_summer_energy_balance:
+    extract: energy balance
+    start_date: '2013-08-01'
+    end_date: '2013-09-01'
+    carrier_filter: heat
+    group_carrier: pretty
+    plot_kw:
+      title: Total summer heat energy balance
+      #ylim: [-500,1000]
+      ylabel: MW
+  EU_heat_winter_energy_balance:
+    extract: energy balance
+    start_date: '2013-02-01'
+    end_date: '2013-03-01'
+    carrier_filter: heat
+    group_carrier: pretty
+    plot_kw:
+      title: Total winter heat energy balance
+      #ylim: [-500,1000]
+      ylabel: MW
+  DE_heat_summer_energy_balance:
+    extract: energy balance
+    start_date: '2013-08-01'
+    end_date: '2013-09-01'
+    include: ["DE"]
+    carrier_filter: heat
+    group_carrier: pretty
+    plot_kw:
+      title: Germany summer heat energy balance
+      #ylim: [-150,300]
+      ylabel: MW
+  DE_heat_winter_energy_balance:
+    extract: energy balance
+    start_date: '2013-02-01'
+    end_date: '2013-03-01'
+    include: ["DE"]
+    carrier_filter: heat
+    group_carrier: pretty
+    plot_kw:
+      title: Germany winter heat energy balance
+      #ylim: [-150,300]
+      ylabel: MW
+# short duration SOC Share
+  EU_li-ion_winter_SOC_share:
+    extract: SOC
+    start_date: '2013-02-01'
+    end_date: '2013-03-01'
+    carrier_filter: Li-Ion Battery Storage
+    group_carrier: pretty
+    plot: share
+    plot_kw:
+      title: Li-Ion Battery Storage winter SOC Share
+      ylabel: "%"
+  EU_short_duration_storage_winter_SOC_share:
+    extract: SOC
+    start_date: '2013-02-01'
+    end_date: '2013-03-01'
+    carrier_filter: [Li-Ion Battery Storage, lair, pair, vanadium]
+    group_carrier: pretty
+    plot: share
+    plot_kw:
+      title: Short duration storage winter SOC Share
+      ylabel: "%"
+  EU_li-ion_summer_SOC_share:
+    extract: SOC
+    start_date: '2013-08-01'
+    end_date: '2013-09-01'
+    carrier_filter: Li-Ion Battery Storage
+    group_carrier: pretty
+    plot: share
+    plot_kw:
+      title: Li-Ion Battery Storage summer SOC Share
+      ylabel: "%"
+  EU_short_duration_storage_summer_SOC_share:
+    extract: SOC
+    start_date: '2013-08-01'
+    end_date: '2013-09-01'
+    carrier_filter: [Li-Ion Battery Storage, lair, pair, vanadium]
+    group_carrier: pretty
+    plot: share
+    plot_kw:
+      title: Short duration storage summer SOC Share
+      ylabel: "%"
+# medium duration SOC Share
+  EU_H2_SOC_share:
+    extract: SOC
+    carrier_filter: H2 Store
+    group_carrier: pretty
+    plot: share
+    plot_kw:
+      title: H2 Store SOC Share
+      ylabel: "%"
+  EU_iron-air_SOC_share:
+    extract: SOC
+    carrier_filter: Iron-Air Battery Storage
+    group_carrier: pretty
+    plot: share
+    plot_kw:
+      title: Iron-Air Battery Storage SOC Share
+      ylabel: "%"
+  EU_medium_duration_storage_SOC_share:
+    extract: SOC
+    carrier_filter: [H2 Store, Iron-Air Battery Storage]
+    group_carrier: pretty
+    plot: share
+    plot_kw:
+      title: Medium duration storage SOC Share
+      ylabel: "%"
+# short duration SOC total
+  EU_li-ion_winter_SOC_total:
+    extract: SOC
+    start_date: '2013-02-01'
+    end_date: '2013-03-01'
+    carrier_filter: Li-Ion Battery Storage
+    group_carrier: pretty
+    plot_kw:
+      title: Li-Ion Battery Storage winter SOC Total
+      ylabel: MW
+  EU_short_duration_storage_winter_SOC_total:
+    extract: SOC
+    start_date: '2013-02-01'
+    end_date: '2013-03-01'
+    carrier_filter: [Li-Ion Battery Storage, lair, pair, vanadium]
+    group_carrier: pretty
+    plot_kw:
+      title: Short duration storage winter SOC Total
+      ylabel: MW
+  EU_li-ion_summer_SOC_total:
+    extract: SOC
+    start_date: '2013-08-01'
+    end_date: '2013-09-01'
+    carrier_filter: Li-Ion Battery Storage
+    group_carrier: pretty
+    plot_kw:
+      title: Li-Ion Battery Storage summer SOC Total
+      ylabel: MW
+  EU_short_duration_storage_summer_SOC_total:
+    extract: SOC
+    start_date: '2013-08-01'
+    end_date: '2013-09-01'
+    carrier_filter: [Li-Ion Battery Storage, lair, pair, vanadium]
+    group_carrier: pretty
+    plot_kw:
+      title: Short duration storage summer SOC Total
+      ylabel: MW
+# medium duration SOC total
+  EU_H2_SOC_total:
+    extract: SOC
+    carrier_filter: H2 Store
+    group_carrier: pretty
+    plot_kw:
+      title: H2 Store SOC Total
+      ylabel: MW
+  EU_iron-air_SOC_total:
+    extract: SOC
+    carrier_filter: Iron-Air Battery Storage
+    group_carrier: pretty
+    plot_kw:
+      title: Iron-Air Battery Storage SOC Total
+      ylabel: MW
+  EU_medium_duration_storage_SOC_total:
+    extract: SOC
+    carrier_filter: [H2 Store, Iron-Air Battery Storage]
+    group_carrier: pretty
+    plot_kw:
+      title: Medium duration storage SOC Total
+      ylabel: MW
