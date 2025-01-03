@@ -88,6 +88,7 @@ if __name__ == "__main__":
 
     n = pypsa.Network(snakemake.input.network)
 
-    n = connection_limit_ntc(n,snakemake.input.ntc,year="2035")
+    ntc_year = snakemake.params.transmission_projects.get("ntc_year",2035)
+    n = connection_limit_ntc(n,snakemake.input.ntc,year=str(ntc_year))
 
     n.export_to_netcdf(snakemake.output.network)

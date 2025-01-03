@@ -90,23 +90,24 @@ rule prepare_perfect_foresight:
     script:
         "../scripts/prepare_perfect_foresight.py"
 
-if config["enable"].get("final_adjustment",False):
 
-    rule final_adjustment_perfect:
-        input:
-            network=RESULTS
-            + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
-            ntc="data/TYNDP_NTC.csv",
-        output:
-            network=RESULTS
-            + "prenetworks-brownfield-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
-        log:
-            logs(RESULTS
-            + "logs/final_adjustment_perfect_base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.log")
-        conda:
-            "../envs/environment.yaml"
-        script:
-            "../scripts/final_adjustment.py"
+rule final_adjustment_perfect:
+    params:
+        transmission_projects=config_provider("transmission_projects"),
+    input:
+        network=RESULTS
+        + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
+        ntc="data/TYNDP_NTC.csv",
+    output:
+        network=RESULTS
+        + "prenetworks-brownfield-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
+    log:
+        logs(RESULTS
+        + "logs/final_adjustment_perfect_base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.log")
+    conda:
+        "../envs/environment.yaml"
+    script:
+        "../scripts/final_adjustment.py"
 
 rule solve_sector_network_perfect:
     params:

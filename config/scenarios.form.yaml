@@ -213,10 +213,10 @@ main-calibration-run-2920SEG:
     ll:
     - v1.0
     planning_horizons:
-    - 2023 # TODO : Extracting the cost in prepare_sector_network leads to the model asking for cost_2023.csv, which doesn't exist
+    - 2023
   enable:
     retrieve_cutout: true
-    final_adjustment: false
+    final_adjustment: true
   snapshots:
     start: "2023-01-01"
     end: "2024-01-01"
@@ -236,6 +236,7 @@ main-calibration-run-2920SEG:
     enable: false
     include:
       nep: false
+    ntc_year: 2025
   atlite:
     default_cutout: europe-2023-sarah3-era5
   renewable:
