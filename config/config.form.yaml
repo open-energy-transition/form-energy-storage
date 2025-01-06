@@ -247,9 +247,10 @@ plotting:
     lair: '#87CEEB'
     Liquid Air energy storage: '#87CEEB'
     pair: '#003366'
-    Adiabatic CAES: '#003366'
-    iron-air battery: '#edba1c'
-    Iron-Air battery storage: '#edba1c'
+    Adiabatic CAES: '#edba1c'
+    iron-air battery: '#1c404c'
+    Iron-Air battery storage: '#1c404c'
+    Iron-Air Battery Storage: '#1c404c'
     Li-Ion battery storage: '#ace37f'
     other battery storage: '#80c944'
 
