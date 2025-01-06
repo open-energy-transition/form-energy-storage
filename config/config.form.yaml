@@ -12,8 +12,8 @@ logging:
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: "updated_initial_main_scenarios"
-  name: "main-mds-vanilla-dac-limit-ev40"
+  prefix: "validation_runs"
+  name: "2023-validation-run-1H"
   scenarios:
     enable: true
     file: config/scenarios.form.yaml
@@ -34,15 +34,15 @@ scenario:
   clusters:
   - 52
   planning_horizons:
-  - 2035
+  - 2023
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#countries
 countries: ['AT', 'BE', 'CH', 'CZ', 'DE', 'DK', 'FR', 'IT', 'LU', 'NL', 'PL', 'SE']
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#snapshots
 snapshots:
-  start: "2013-01-01"
-  end: "2014-01-01"
+  start: "2023-01-01"
+  end: "2024-01-01"
   inclusive: 'left'
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#enable
@@ -178,7 +178,7 @@ sector:
     2035: 0.30 # FE input
   land_transport_ice_share:
     2035: 0.70
-  include_transport_emissions: false
+  include_transport_emissions: true
   reduce_space_heat_exogenously: true
   reduce_space_heat_exogenously_factor:
     2035: 0.21
@@ -203,7 +203,7 @@ sector:
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#costs
 costs:
-  year: 2035
+  year: 2020
   version: 67a5830
   social_discountrate: 0.02
   fill_values:
