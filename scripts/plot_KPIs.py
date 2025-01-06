@@ -871,9 +871,27 @@ if __name__ == "__main__":
         )
 
     power_generation_tech = pd.Index([
-        "solar rooftop","Solar","solar-hsat","Onshore Wind","Offshore Wind (DC)",
-        "Offshore Wind (AC)","Offshore Wind (Floating)","Run of River","Reservoir & Dam",
-        "Open-Cycle Gas","Combined-Cycle Gas","nuclear","oil","lignite","coal"
+        "solar rooftop",
+        "Solar",
+        "solar-hsat",
+        "Onshore Wind",
+        "Offshore Wind (DC)",
+        "Offshore Wind (AC)",
+        "Offshore Wind (Floating)",
+        "Run of River",
+        "Reservoir & Dam",
+        "Open-Cycle Gas",
+        "OCGT",
+        "Combined-Cycle Gas",
+        "CCGT",
+        "nuclear",
+        "oil",
+        "lignite",
+        "coal",
+        "urban central CHP",
+        "urban central CHP CC",
+        "urban central solid biomass CHP",
+        "urban central solid biomass CHP CC",
     ])
 
     tech_colors_custom = {
@@ -884,13 +902,8 @@ if __name__ == "__main__":
         "H2 Fuel Cell": "#2d8077",
         "H2 for industry": "#cd4f41",
         "H2 for shipping": "#238fc4",
-        "OCGT H2 retrofitted": "#1c404c",
         "Sabatier": "#de9e46",
         "methanation": "#de9e46",
-        "land transport fuel cell": "#c6dfa2",
-        "methanolisation": "#edba1c",
-        "Iron-Air Battery Storage": "#edba1c",
-        "Li-Ion Battery Storage": "#1c404c",
         "Reservoir \& Dam": '#298c81',
         "Solar Thermal": '#d7b24c',
         "Solar (HSAT)": "#fdb915",
@@ -907,7 +920,7 @@ if __name__ == "__main__":
     # choose pretty names
     pretty_names = {
         "lair": "Liquid Air Battery Storage",
-        "pair": "Compressed Air Battery Storage",
+        "pair": "Adiabatic CAES",
         "vanadium": "Vanadium-Redox Battery Storage",
         "H2 Electrolysis": "H2 electrolysis",
         "H2 pipeline": "H2 pipeline constructed",
@@ -975,7 +988,7 @@ if __name__ == "__main__":
         "ground heat pump": "Heat pump (ground)",
         "electricity distribution grid": "Electricity distribution grid",
         "transmission lines": "Transmission lines",
-        "Reservoir & Dam": "Reservoir & Dam", # Note, revert this back to /&
+        "Reservoir & Dam": "Reservoir \& Dam",  # Note, revert this back to /&
         "ror": "Run of River",
         "offwind-float": "Offshore Wind (Floating)",
         "solar-hsat": "Solar (HSAT)",
@@ -987,7 +1000,7 @@ if __name__ == "__main__":
         "urban central water tanks": "Water Tanks",
         "residential rural water tanks": "Water Tanks",
         "residential urban decentral water tanks": "Water Tanks",
-        "V2G":"Vehicle-to-Grid",
+        "V2G": "Vehicle-to-Grid",
     }
 
     sector_colors = {
@@ -1001,6 +1014,9 @@ if __name__ == "__main__":
     sector_names = {
         "Iron-Air Battery Storage": "Power Sector",
         "Li-Ion Battery Storage": "Power Sector",
+        "Vanadium Redox Flow battery storage": "Power Sector",
+        "Liquid Air energy storage": "Power Sector",
+        "Adiabatic CAES": "Power Sector",
         "lair": "Power Sector",
         "vanadium": "Power Sector",
         "pair": "Power Sector",
@@ -1023,23 +1039,26 @@ if __name__ == "__main__":
         "AC": "Power Sector",
         "DC": "Power Sector",
         "electricity distribution grid": "Power Sector",
+        "H2 pipeline": "Pipeline Infrastructure",
+        "H2 pipeline retrofitted": "Pipeline Infrastructure",
+        "gas pipeline": "Pipeline Infrastructure",
+        "gas pipeline new": "Pipeline Infrastructure",
         "BEV charger": "Transport Sector",
         "EV battery": "Transport Sector",
         "V2G": "Transport Sector",
         "land transport oil": "Transport Sector",
         "residential rural gas boiler": "Heating Sector",
-        'residential rural ground heat pump': "Heating Sector",
         "residential rural resistive heater": "Heating Sector",
+        'residential rural ground heat pump': "Heating Sector",
         "residential rural solar thermal": "Heating Sector",
         "residential rural water tanks": "Heating Sector",
         "residential rural water tanks discharger": "Heating Sector",
-        "residential rural water tanks discharger": "Heating Sector",
         "residential urban decentral air heat pump": "Heating Sector",
-        'residential urban decentral gas boiler': "Heating Sector",
         "residential urban decentral resistive heater": "Heating Sector",
         "residential urban decentral solar thermal": "Heating Sector",
         "residential urban decentral water tanks": "Heating Sector",
         "residential urban decentral water tanks charger": "Heating Sector",
+        "residential urban decentral gas boiler": "Heating Sector",
         "rural oil boiler": "Heating Sector",
         "rural gas boiler": "Heating Sector",
         "rural ground heat pump": "Heating Sector",
@@ -1050,7 +1069,9 @@ if __name__ == "__main__":
         "services rural water tanks charger": "Heating Sector",
         "services urban decentral gas boiler": "Heating Sector",
         "services urban decentral water tanks discharger": "Heating Sector",
+        "services urban decentral air heat pump": "Heating Sector",
         "services urban decentral resistive heater": "Heating Sector",
+        "services rural biomass boiler": "Heating Sector",
         "urban central CHP": "Heating Sector",
         "urban central CHP CC": "Heating Sector",
         "urban central air heat pump": "Heating Sector",
@@ -1062,8 +1083,9 @@ if __name__ == "__main__":
         "urban central water tanks charger": "Heating Sector",
         "urban central water tanks discharger": "Heating Sector",
         "urban decentral oil boiler": "Heating Sector",
-        "urban decentral air heat pump": "Heating Sector",
-        "urban decentral gas boiler": "Heating Sector",
+        "residential rural biomass boiler": "Heating Sector",
+        "services urban decentral biomass boiler": "Heating Sector",
+        "urban central solid biomass CHP CC": "Heating Sector",
         "co2": "Primary Fuel",
         "co2 stored": "CCUS",
         "co2 sequestered": "CCUS",
@@ -1079,6 +1101,9 @@ if __name__ == "__main__":
         "lignite": "Primary Fuel",
         "coal": "Primary Fuel",
         "uranium": "Primary Fuel",
+        "biogas": "Primary Fuel",
+        "biogas to gas": "Primary Fuel",
+        "solid biomass": "Primary Fuel",
     }
 
     preferred_order = pd.Index([
@@ -1274,10 +1299,14 @@ if __name__ == "__main__":
                 
                 carrier_filter = kpi_param.get("carrier_filter",None)
                 group_carrier = kpi_param.get("group_carrier",None)
+                if "TW" in kpi_param.get("plot_kw",{}).get("ylabel", ""):
+                    df *= 1e-3
                 df = filter_and_rename(n, df, carrier_filter = carrier_filter, group_carrier = group_carrier)
-                
+
                 plot_param = kpi_param.get("plot",None)
                 plot_kw = kpi_param.get("plot_kw",{})
+                if plot_kw["ylabel"] == "%":
+                    plot_kw["ylabel"] = "\%"
                 if plot_param == "detail":
                     plot_in_detail(df, plot_kw, snakemake.output[fn])
                 elif plot_param == "overview":
