@@ -36,8 +36,7 @@ rc('text', usetex=True)
 rc('font', **{'family': 'serif', 'serif': ['Computer Modern Roman'], 'sans-serif': ['Computer Modern Sans serif']})
 plt.style.use(["ggplot"])
 
-
-def plot_curtailment(network, regions, path, show_fig=True, focus_de=True):
+def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legend_circles=[5, 3, 1], bus_size_factor_ = 1e4, vmax_price=105, vmin_price=45):
     n = network.copy()
     map_opts = map_opts_params.copy()
 
@@ -55,7 +54,7 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True):
         electricity_price
     )
 
-    bus_size_factor = 3e3
+    bus_size_factor = bus_size_factor_
 
     n.buses.drop(n.buses.index[n.buses.carrier != "AC"], inplace=True)
 
@@ -65,7 +64,7 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True):
         for c in n.iterate_components(n.branch_components):
             c.df.drop(c.df.index[~((c.df.bus0.str.startswith("DE")) | (c.df.bus1.str.startswith("DE")))], inplace=True)
         map_opts["boundaries"] = [4, 17, 46, 56]
-        bus_size_factor = 1e4
+        bus_size_factor = bus_size_factor_
 
     # calculate total curtailment
     total_curtailment = curtailment_elec.groupby(level=0).sum().sum()
@@ -94,8 +93,8 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True):
         cmap="Greens",
         linewidths=0,
         legend=True,
-        vmax=65,
-        vmin=45,
+        vmax=vmax_price,
+        vmin=vmin_price,
         legend_kwds={
             "label": "Avg. Electricity Price [EUR/MWh]",
             "shrink": 0.7,
@@ -103,9 +102,9 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True):
         },
     )
 
-    legend_x = -0.37
+    legend_x = -0.47
     legend_y = 0.57
-    sizes = [2, 1, 0.5]  # TWh
+    sizes = legend_circles  # TWh
 
     labels = [f"{s} TWh" for s in sizes]
     sizes = [s * 1e3 / bus_size_factor for s in sizes]
@@ -127,6 +126,13 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True):
         legend_kw=legend_kw,
     )
 
+    ax.set_title(f'Total annual curtailment: \n {round(total_curtailment/1e3, 3)} TWh',
+                loc='left',
+                x=legend_x + 0.03,
+                y=legend_y + 0.05,
+                fontsize=12
+                )
+
     carriers = curtailment_elec.index.get_level_values(1).unique()
     colors = [tech_colors[c] for c in carriers]
     labels = list(carriers)
@@ -135,7 +141,7 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True):
 
     legend_kw = dict(
         loc="upper left",
-        bbox_to_anchor=(legend_x, legend_y + 0.21),
+        bbox_to_anchor=(legend_x, legend_y),
         frameon=False,
         title=r"\textbf{Curtailment}",
         alignment="left",
@@ -1156,7 +1162,10 @@ if __name__ == "__main__":
     co2_emissions = n.stores_t.e.filter(like="co2 atmosphere", axis=1).iloc[-1].div(1e6)[0]  # in MtCO2
     logger.info(f"Total annual CO2 emissions of {co2_emissions} MtCO2.")
 
-    plot_curtailment(n, regions, path=snakemake.output.curtailment_map, focus_de=True, show_fig=False)
+    plot_curtailment(n, regions, path=snakemake.output.curtailment_map, focus_de=True,
+                     show_fig=False, legend_circles=[12, 6, 3], bus_size_factor_=8e4, vmax_price=105, vmin_price=45)
+    plot_curtailment(n, regions, path=snakemake.output.curtailment_map_EU, focus_de=False,
+                     show_fig=False, legend_circles=[20, 10, 5], bus_size_factor_=4e4, vmax_price=105, vmin_price=45)
 
     plot_line_loading(n, regions, path=snakemake.output.line_loading_map, focus_de=True, value="mean", show_fig=False)
 

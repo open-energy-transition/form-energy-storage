@@ -113,6 +113,8 @@ KPIS = {
     **{
         "curtailment_map": RESULTS
                            + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-curtailment_{planning_horizons}.pdf",
+        "curtailment_map_EU": RESULTS
+                           + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-curtailment_EU_{planning_horizons}.pdf",
         "line_loading_map": RESULTS
                             + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-line_loading_{planning_horizons}.pdf",
         "energy_trade": RESULTS
