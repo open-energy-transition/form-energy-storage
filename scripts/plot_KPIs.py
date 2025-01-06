@@ -255,14 +255,14 @@ def plot_line_loading(network, regions, path, focus_de=True, value="mean", show_
         boundaries=map_opts["boundaries"]
     )
 
-    ax.set_title(f'{title} AC line loading: {line_ave} %\n{title} DC link loading: {link_ave} %', 
-                loc='left', 
-                x=0.02, 
-                y=0.90,
+    ax.set_title(f'{title} AC line loading: {line_ave} \%\n{title} DC link loading: {link_ave} \%',
+                loc='left',
+                x=0.28,
+                y=-0.12,
                 fontsize=12
                 )
 
-    plt.colorbar(collection[1], label="line loading [%]", ax=ax)
+    plt.colorbar(collection[1], label="line loading [\%]", ax=ax)
 
     if show_fig:
         fig.show()
