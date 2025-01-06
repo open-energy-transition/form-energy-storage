@@ -119,6 +119,8 @@ KPIS = {
                             + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-line_loading_{planning_horizons}.pdf",
         "energy_trade": RESULTS
                             + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-electricity_trade_{planning_horizons}.pdf",
+        "storage_capacities": RESULTS
+                            + "csvs/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-storage_capacities_GW_{planning_horizons}.csv",
     }
 }
 rule plot_KPIs:

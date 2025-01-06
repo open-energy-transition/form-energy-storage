@@ -1203,6 +1203,24 @@ if __name__ == "__main__":
     df_co2 = calculate_emission(n, countries)
     df_eql = prepare_energy_balance(n)
 
+    df_storages = (
+        n.statistics.optimal_capacity(
+            bus_carrier=["AC", "low voltage"],
+            groupby=n.statistics.groupers.get_country_and_carrier,
+            nice_names=False
+        ).div(1e3)  # GW
+        .sort_values(ascending=False)
+        .to_frame(name="p_nom_opt")
+        .query("p_nom_opt>1e-5")
+        .query("carrier.str.contains('battery|lair|pair|vanadium|Fuel|PHS')")
+        .pivot_table(index="country", columns="carrier", values="p_nom_opt")
+        .fillna(0)
+        .assign(sum=lambda x: x.sum(axis=1))
+        .sort_values(by=["sum"], ascending=False)
+    )
+    pd.concat([df_storages, df_storages.sum().to_frame(name="sum").T]).round(3).to_csv(
+        snakemake.output.storage_capacities, decimal=".", sep=",")
+
     config_kpi = snakemake.params.kpi
     if config_kpi:
         for fn, kpi_param in config_kpi.items():
