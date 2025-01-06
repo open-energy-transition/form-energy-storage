@@ -690,7 +690,16 @@ def filter_and_rename(network, df, carrier_filter = None, group_carrier = None):
     elif carrier_filter == "storage-cap":
         carrier = pd.Index([
             "Iron-Air Battery Storage","Li-Ion Battery Storage","lair","vanadium","pair",
-            "H2 Store","Pumped Hydro Storage","V2G",'residential rural water tanks',
+            "Adiabatic CAES","H2 Fuel Cell","H2 Electrolysis","Pumped Hydro Storage",
+            "V2G",'residential rural water tanks',
+            'urban central water tanks','residential urban decentral water tanks',
+        ])
+        df = df.loc[df.index.isin(carrier),:]
+
+    elif carrier_filter == "storage-energy":
+        carrier = pd.Index([
+            "Iron-Air Battery Storage","Li-Ion Battery Storage","lair","vanadium","pair",
+            "Adiabatic CAES","H2 Store","Pumped Hydro Storage","EV battery",'residential rural water tanks',
             'urban central water tanks','residential urban decentral water tanks',
         ])
         df = df.loc[df.index.isin(carrier),:]
