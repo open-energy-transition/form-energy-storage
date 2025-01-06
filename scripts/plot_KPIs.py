@@ -34,7 +34,14 @@ cc = coco.CountryConverter()
 # activate latex text rendering
 rc('text', usetex=True)
 rc('font', **{'family': 'serif', 'serif': ['Computer Modern Roman'], 'sans-serif': ['Computer Modern Sans serif']})
-plt.style.use(["ggplot"])
+rc('axes', **{'edgecolor': 'None', 'titlesize': 18,'titleweight': 'bold', "labelsize": 14})
+rc('figure', **{'edgecolor': 'None'})
+rc('patch', **{'edgecolor': 'None'})
+rc('savefig', **{'edgecolor': 'None'})
+rc('legend', **{'fontsize': 12, 'title_fontsize': 12})
+rc('xtick', **{'labelsize': 12})
+rc('ytick', **{'labelsize': 12})
+# plt.style.use(["ggplot"])
 
 def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legend_circles=[5, 3, 1], bus_size_factor_ = 1e4, vmax_price=105, vmin_price=45):
     n = network.copy()
