@@ -382,6 +382,20 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, path):
         df = df[~df.index.get_level_values("carrier").isin(['H2 Store'])]
 
         line_carrier = 'H2 Store'
+
+    # Model 6: Storage
+    if carrier_filter == "storage":
+        storage_cap = [
+            "Iron-Air Battery Storage","Li-Ion Battery Storage","lair","vanadium","pair",
+            "Adiabatic CAES","H2 Fuel Cell","H2 Electrolysis","Pumped Hydro Storage",
+            "V2G",'residential rural water tanks',
+            'urban central water tanks','residential urban decentral water tanks',
+        ]
+        df = df[df.index.get_level_values("carrier").isin(storage_cap)]
+        df = df.query("not (carrier.str.contains('V2G') and bus_carrier.str.contains('EV battery'))")
+        df = df.groupby(["bus","carrier"]).sum()
+
+        line_carrier = ""
     
     df = df.groupby(["carrier"]).sum()
     
@@ -391,6 +405,7 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, path):
         line_carrier = pretty_names[line_carrier] if line_carrier in pretty_names else line_carrier
         df = df.rename(index=pretty_names).groupby(["carrier"]).sum()
         colors = colors.rename(index=pretty_names)
+        colors.update(tech_colors)
         colors = colors[~colors.index.duplicated(keep='first')]
         
     elif group_carrier == "sector": 
@@ -413,10 +428,10 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, path):
             colors[c + " Charge"] = colors[c]
             df = df.drop(columns=c)
 
-    #kW to MW
+    #MW to GW
     df = df/1e3
     
-    #remove if smaller than 1 MWh
+    #remove if smaller than 1 GWh
     to_drop = abs(n.snapshot_weightings.objective @ df) < 1
     df = df.loc[:,~to_drop]
     
@@ -436,8 +451,7 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, path):
     df_demand = df.columns.intersection([line_carrier])
     if df_demand.any():
         df[df_demand].plot(ax = ax, color = "black", linestyle='dashed', **plot_kw)
-    
-    ax.grid(axis="y")
+
     ax.set_xlabel("")
     ax.set_facecolor("white")
     
@@ -498,6 +512,7 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
     if group_carrier == "pretty":
         df = df.rename(index=pretty_names).groupby(["carrier"]).sum()
         colors = colors.rename(index=pretty_names)
+        colors.update(tech_colors)
         colors = colors[~colors.index.duplicated(keep='first')]
 
     df = df.T
@@ -555,7 +570,7 @@ def calculate_emission(network, countries):
         df_links[f"p{num}"] =  n.snapshot_weightings.stores @ n.links_t[f"p{num}"]
         df_links[f"country{num}"] = df_links[f"bus{num}"].map(n.buses.country)
     
-    df_links["p_co2"] = [-df_links.loc[i,f"p{df_links.loc[i,"co2_num"]}"] if not pd.isna(df_links.loc[i,"co2_num"]) else np.nan for i in df_links.index]
+    df_links["p_co2"] = [-df_links.loc[i,f"p{df_links.loc[i,'co2_num']}"] if not pd.isna(df_links.loc[i,"co2_num"]) else np.nan for i in df_links.index]
     #[df_links[f"p{num}"] if not pd.isna(num) else np.nan for num in df_links["co2_num"]]
     
     for country in n.buses.country.unique():
@@ -745,6 +760,7 @@ def filter_and_rename(network, df, carrier_filter = None, group_carrier = None):
             df.index.difference(preferred_order_pretty_names)
         )
         colors = colors.rename(index=pretty_names)
+        colors.update(tech_colors)
         colors = colors[~colors.index.duplicated(keep='first')]
         
     elif group_carrier == "sector": 
@@ -831,8 +847,8 @@ def plot_in_detail(df, plot_kw, path):
     labels = [label.replace(' &', '').replace(' and', '') for label in labels] #NOTE: Latex hates '&' strings because its their seperator
 
     ax.legend(
-        handles, labels, ncol=1, loc="center left", bbox_to_anchor=[1, 0.5], frameon=False, 
-        title = f"Total: \n{round(df.drop(columns={"color"}).sum().iloc[0],2)}", alignment="left"
+        handles, labels, ncol=1, loc="center left", bbox_to_anchor=[1, 0.5], frameon=False,
+        title=f"Total: \n{round(df.drop(columns={'color'}).sum().iloc[0],2)}", alignment="left"
     )
 
     ax.set_facecolor("white")
