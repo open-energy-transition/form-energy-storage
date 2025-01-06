@@ -103,7 +103,7 @@ kpi:
     plot_kw:
       title: Total power capacity
       #ylim: [0,1800]
-      ylabel: GW
+      ylabel: GWe
   DE_power_capacity:
     extract: capacity
     include: ["DE"]
@@ -113,7 +113,7 @@ kpi:
     plot_kw:
       title: Germany power capacity
       #ylim: [0,400]
-      ylabel: GW
+      ylabel: GWe
   country_power_capacity:
     extract: capacity
     exclude: ["EU"]
@@ -123,7 +123,7 @@ kpi:
     plot_kw:
       title: Country power capacity
       #ylim: [0,400]
-      ylabel: GW
+      ylabel: GWe
 # Storage Capacity
   EU_storage_energy_capacity:
     extract: capacity stats
@@ -167,7 +167,7 @@ kpi:
     plot_kw:
       title: Germany power generation
       #ylim: [0,800000]
-      ylabel: GW
+      ylabel: TWh
   country_power_generation:
     extract: generation
     exclude: ["EU"]
@@ -177,7 +177,7 @@ kpi:
     plot_kw:
       title: Country power generation
       #ylim: [0,800000]
-      ylabel: GWh
+      ylabel: TWh
 # Total Emission
   EU_emission:
     extract: emission
@@ -205,7 +205,7 @@ kpi:
     plot_kw:
       title: Total summer high voltage energy balance
       #ylim: [-150,600]
-      ylabel: MW
+      ylabel: GW
   EU_electricity_winter_energy_balance:
     extract: energy balance
     start_date: '2013-02-01'
@@ -215,7 +215,7 @@ kpi:
     plot_kw:
       title: Total winter high voltage energy balance
       #ylim: [-150,600]
-      ylabel: MW
+      ylabel: GW
   DE_electricity_summer_energy_balance:
     extract: energy balance
     start_date: '2013-08-01'
@@ -226,7 +226,7 @@ kpi:
     plot_kw:
       title: Germany summer high voltage energy balance
       #ylim: [-50,150]
-      ylabel: MW
+      ylabel: GW
   DE_electricity_winter_energy_balance:
     extract: energy balance
     start_date: '2013-02-01'
@@ -237,7 +237,50 @@ kpi:
     plot_kw:
       title: Germany winter high voltage energy balance
       #ylim: [-50,150]
-      ylabel: MW
+      ylabel: GW
+# Storage energy balance
+  EU_storage_summer_energy_balance:
+    extract: energy balance
+    start_date: '2013-08-01'
+    end_date: '2013-09-01'
+    carrier_filter: storage
+    group_carrier: pretty
+    plot_kw:
+      title: Total summer storage energy balance
+      #ylim: [-150,600]
+      ylabel: GW
+  EU_storage_winter_energy_balance:
+    extract: energy balance
+    start_date: '2013-02-01'
+    end_date: '2013-03-01'
+    carrier_filter: storage
+    group_carrier: pretty
+    plot_kw:
+      title: Total winter storage energy balance
+      #ylim: [-150,600]
+      ylabel: GW
+  DE_storage_summer_energy_balance:
+    extract: energy balance
+    start_date: '2013-08-01'
+    end_date: '2013-09-01'
+    include: ["DE"]
+    carrier_filter: storage
+    group_carrier: pretty
+    plot_kw:
+      title: Germany summer storage energy balance
+      #ylim: [-50,150]
+      ylabel: GW
+  DE_storage_winter_energy_balance:
+    extract: energy balance
+    start_date: '2013-02-01'
+    end_date: '2013-03-01'
+    include: ["DE"]
+    carrier_filter: storage
+    group_carrier: pretty
+    plot_kw:
+      title: Germany winter storage energy balance
+      #ylim: [-50,150]
+      ylabel: GW
 # Electricity (with some low voltage tech) energy balance
   EU_electricity_plus_summer_energy_balance:
     extract: energy balance
@@ -248,7 +291,7 @@ kpi:
     plot_kw:
       title: Total summer high and low voltage energy balance
       #ylim: [-150,800]
-      ylabel: MW
+      ylabel: GW
   EU_electricity_plus_winter_energy_balance:
     extract: energy balance
     start_date: '2013-02-01'
@@ -258,7 +301,7 @@ kpi:
     plot_kw:
       title: Total winter high and low voltage energy balance
       #ylim: [-150,800]
-      ylabel: MW
+      ylabel: GW
   DE_electricity_plus_summer_energy_balance:
     extract: energy balance
     start_date: '2013-08-01'
@@ -269,7 +312,7 @@ kpi:
     plot_kw:
       title: Germany summer high and low voltage energy balance
       #ylim: [-50,200]
-      ylabel: MW
+      ylabel: GW
   DE_electricity_plus_winter_energy_balance:
     extract: energy balance
     start_date: '2013-02-01'
@@ -280,7 +323,7 @@ kpi:
     plot_kw:
       title: Germany winter high and low voltage energy balance
       #ylim: [-50,200]
-      ylabel: MW
+      ylabel: GW
 # Low Voltage energy balance
   EU_low_voltage_summer_energy_balance:
     extract: energy balance
@@ -291,7 +334,7 @@ kpi:
     plot_kw:
       title: Total summer low voltage energy balance
       #ylim: [-600,300]
-      ylabel: MW
+      ylabel: GW
   EU_low_voltage_winter_energy_balance:
     extract: energy balance
     start_date: '2013-02-01'
@@ -301,7 +344,7 @@ kpi:
     plot_kw:
       title: Total winter low voltage energy balance
       #ylim: [-600,300]
-      ylabel: MW
+      ylabel: GW
   DE_low_voltage_summer_energy_balance:
     extract: energy balance
     start_date: '2013-08-01'
@@ -312,7 +355,7 @@ kpi:
     plot_kw:
       title: Germany summer low voltage energy balance
       #ylim: [-150,100]
-      ylabel: MW
+      ylabel: GW
   DE_low_voltage_winter_energy_balance:
     extract: energy balance
     start_date: '2013-02-01'
@@ -323,7 +366,7 @@ kpi:
     plot_kw:
       title: Germany winter low voltage energy balance
       #ylim: [-150,100]
-      ylabel: MW
+      ylabel: GW
 # Heat energy balance
   EU_heat_summer_energy_balance:
     extract: energy balance
@@ -334,7 +377,7 @@ kpi:
     plot_kw:
       title: Total summer heat energy balance
       #ylim: [-500,1000]
-      ylabel: MW
+      ylabel: GW
   EU_heat_winter_energy_balance:
     extract: energy balance
     start_date: '2013-02-01'
@@ -344,7 +387,7 @@ kpi:
     plot_kw:
       title: Total winter heat energy balance
       #ylim: [-500,1000]
-      ylabel: MW
+      ylabel: GW
   DE_heat_summer_energy_balance:
     extract: energy balance
     start_date: '2013-08-01'
@@ -355,7 +398,7 @@ kpi:
     plot_kw:
       title: Germany summer heat energy balance
       #ylim: [-150,300]
-      ylabel: MW
+      ylabel: GW
   DE_heat_winter_energy_balance:
     extract: energy balance
     start_date: '2013-02-01'
@@ -366,7 +409,7 @@ kpi:
     plot_kw:
       title: Germany winter heat energy balance
       #ylim: [-150,300]
-      ylabel: MW
+      ylabel: GW
 # short duration SOC Share
   EU_li-ion_winter_SOC_share:
     extract: SOC
@@ -408,7 +451,7 @@ kpi:
     plot_kw:
       title: Short duration storage summer SOC Share
       ylabel: "%"
-# medium duration SOC Share
+# multi day storage SOC Share
   EU_H2_SOC_share:
     extract: SOC
     carrier_filter: H2 Store
@@ -425,13 +468,13 @@ kpi:
     plot_kw:
       title: Iron-Air Battery Storage SOC Share
       ylabel: "%"
-  EU_medium_duration_storage_SOC_share:
+  EU_multi_day_storage_SOC_share:
     extract: SOC
     carrier_filter: [H2 Store, Iron-Air Battery Storage]
     group_carrier: pretty
     plot: share
     plot_kw:
-      title: Medium duration storage SOC Share
+      title: Multi day storage SOC Share
       ylabel: "%"
 # short duration SOC total
   EU_li-ion_winter_SOC_total:
@@ -470,7 +513,7 @@ kpi:
     plot_kw:
       title: Short duration storage summer SOC Total
       ylabel: GWh
-# medium duration SOC total
+# multi day storage SOC total
   EU_H2_SOC_total:
     extract: SOC
     carrier_filter: H2 Store
@@ -485,10 +528,10 @@ kpi:
     plot_kw:
       title: Iron-Air Battery Storage SOC Total
       ylabel: GWh
-  EU_medium_duration_storage_SOC_total:
+  EU_multi_day_storage_SOC_total:
     extract: SOC
     carrier_filter: [H2 Store, Iron-Air Battery Storage]
     group_carrier: pretty
     plot_kw:
-      title: Medium duration storage SOC Total
+      title: Multi day storage SOC Total
       ylabel: GWh
