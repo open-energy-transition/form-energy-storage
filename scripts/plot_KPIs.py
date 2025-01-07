@@ -438,7 +438,6 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, path):
     #cut into the specific timesteps
     start_date = kpi_param.get("start_date", df.index[0])
     end_date = kpi_param.get("end_date", df.index[-1])
-    df = df[pd.Timestamp(start_date):pd.Timestamp(end_date)]
     
     fig, ax = plt.subplots(figsize=(12,5))
     
@@ -446,12 +445,15 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, path):
     
     order = ((df_plot.diff().abs().sum() / df_plot.sum()).sort_values().index)
     df_plot = df_plot[order]
+    df_plot = df_plot.loc[pd.Timestamp(start_date):pd.Timestamp(end_date),:]
     df_plot.plot.area(ax = ax, legend=False, color = [colors[c] for c in df_plot.columns], **plot_kw)
     
     df_demand = df.columns.intersection([line_carrier])
     if df_demand.any():
-        df[df_demand].plot(ax = ax, color = "black", linestyle='dashed', **plot_kw)
-
+        df_demand_plot = df[df_demand][pd.Timestamp(start_date):pd.Timestamp(end_date)]
+        df_demand_plot.plot(ax = ax, color = "black", linestyle='dashed', **plot_kw)
+    
+    ax.grid(axis="y")
     ax.set_xlabel("")
     ax.set_facecolor("white")
     
@@ -634,18 +636,22 @@ def calculate_capacity_csv(network, csv_path, countries):
     
     return df
 
-def calculate_capacity(network, countries, stats = "optimal", storage = False):
+def calculate_capacity(network, countries, kpi_param):
     
     n = network.copy()
     
+    stats = kpi_param.get("stats","optimal")
+    storage = kpi_param.get("storage",None)
+
     if stats == "install":
         df = pd.DataFrame(n.statistics.installed_capacity(groupby=get_country_and_carrier, storage = storage))
     elif stats == "optimal":
         df = pd.DataFrame(n.statistics.optimal_capacity(groupby=get_country_and_carrier, storage = storage))
-    elif stats == "expand" and storage == True:
-        df = pd.DataFrame(n.statistics.optimal_capacity(groupby=get_country_and_carrier, storage = True)).subtract(pd.DataFrame(n.statistics.installed_capacity(groupby=get_country_and_carrier, storage = True)), fill_value=0)
-    elif stats == "expand" and storage == False:
-        df = pd.DataFrame(n.statistics.expanded_capacity(groupby=get_country_and_carrier))
+    elif stats == "expand":
+        if storage == True:
+            df = pd.DataFrame(n.statistics.optimal_capacity(groupby=get_country_and_carrier, storage = True)).subtract(pd.DataFrame(n.statistics.installed_capacity(groupby=get_country_and_carrier, storage = True)), fill_value=0)
+        else:
+            df = pd.DataFrame(n.statistics.expanded_capacity(groupby=get_country_and_carrier))
     df = df.reset_index(["country","component"])
         
     # convert links power gen techs capacity from MWth to MWel by multiplying by efficiency
@@ -1263,9 +1269,7 @@ if __name__ == "__main__":
                     logger.info("extracting capacity")
                     df = df_capacity_csv.copy(deep=True)
                 elif extract_param == "capacity stats":
-                    stats = kpi_param.get("stats","optimal")
-                    storage = kpi_param.get("storage",None)
-                    df = calculate_capacity(n, countries, stats = stats, storage = storage)
+                    df = calculate_capacity(n, countries, kpi_param)
                 elif extract_param == "generation":
                     logger.info("extracting generation")
                     df = df_gen.copy(deep=True)
