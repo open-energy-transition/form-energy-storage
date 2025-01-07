@@ -307,6 +307,12 @@ if __name__ == "__main__":
     )
     load = load.apply(fill_large_gaps, shift=time_shift)
 
+    if snakemake.params.load.get("supplement_entsoe", False):
+        logger.info("Supplement missing data with ENTSO-E load data.")
+        fn = snakemake.input.entsoe_load
+        entsoe_load = pd.read_csv(fn, index_col=0, header=[0], skiprows=[1], parse_dates=True)
+        load = load.combine_first(entsoe_load)
+
     if snakemake.params.load["supplement_synthetic"]:
         logger.info("Supplement missing data with synthetic data.")
         fn = snakemake.input.synthetic

@@ -630,3 +630,20 @@ if config["enable"]["retrieve"] and (
                 "data/osm-raw/{country}/substations_relation.json",
                 country=config_provider("countries"),
             ),
+
+rule build_electricity_loads:
+    """
+    This rule builds the electricity loads from ENTSO-E data.
+    The data is used to prepare the electricity demand if ENTSO-E load data is chosen.
+    """
+    params:
+        snapshots=config_provider("snapshots"),
+        countries=config_provider("countries"),
+    output:
+        resources("historical_electricity_loads.csv"),
+    log:
+        logs("build_electricity_loads.log"),
+    resources:
+        mem_mb=5000,
+    script:
+        "../scripts/build_electricity_loads.py"

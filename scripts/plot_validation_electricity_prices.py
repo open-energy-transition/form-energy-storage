@@ -6,6 +6,7 @@
 
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 import pypsa
 import seaborn as sns
 from _helpers import configure_logging, set_scenario_config
@@ -25,7 +26,7 @@ if __name__ == "__main__":
     configure_logging(snakemake)
     set_scenario_config(snakemake)
 
-    n = pypsa.Network(snakemake.input.network)
+    n = pypsa.Network(str(snakemake.input.network))
     n.loads.carrier = "load"
 
     historic = pd.read_csv(
@@ -36,9 +37,32 @@ if __name__ == "__main__":
     )
 
     if len(historic.index) > len(n.snapshots):
-        historic = historic.resample(n.snapshots.inferred_freq).mean().loc[n.snapshots]
+        if n.snapshots.inferred_freq:
+            historic = historic.resample(n.snapshots.inferred_freq).mean().loc[n.snapshots]
+        else:
+            # if frequency is inconsistent due to segmentation
+            snapshots_interval = pd.Series({n.snapshots[x]:(n.snapshots[x+1] - n.snapshots[x])/np.timedelta64(1,'h') for x in range(0,len(n.snapshots)-1)})
+            snapshots_interval_last = pd.Series({n.snapshots[-1]:(pd.Timestamp(snakemake.config["snapshots"]["end"]) - n.snapshots[-1])/np.timedelta64(1,'h')})
+            snapshots_interval = pd.concat([snapshots_interval, snapshots_interval_last])
 
-    optimized = n.buses_t.marginal_price.groupby(n.buses.country, axis=1).mean()
+            first_bin = [n.snapshots[0]]
+            mid_bins = [x + pd.DateOffset(hours=snapshots_interval[x]/2) for x in n.snapshots[:-1]]
+            last_bin = [n.snapshots[-1] + pd.DateOffset(hours=snapshots_interval[-1])]
+            bins = pd.DatetimeIndex(first_bin + mid_bins + last_bin)
+
+            interval_labels = pd.cut(historic.index, bins=bins, right=False)
+            historic = historic.groupby(interval_labels).sum()
+            historic.index = pd.to_datetime(n.snapshots)
+            historic = historic.div(n.snapshot_weightings.generators, axis=0)
+
+    optimized = n.buses_t.marginal_price.T.groupby(n.buses.country).mean().T
+
+    # Remove all carriers originated not from a country
+    optimized = optimized.loc[:, optimized.columns != '']
+
+        # Set the historic date based on the snapshot year
+    if historic.index.year.unique()[0] != n.snapshots.year.unique()[0]:
+        optimized.index = optimized.index.map(lambda x: x.replace(year=historic.index.year.unique()[0]))
 
     data = pd.concat([historic, optimized], keys=["Historic", "Optimized"], axis=1)
     data.columns.names = ["Kind", "Country"]

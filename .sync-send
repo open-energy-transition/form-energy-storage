@@ -7,7 +7,7 @@ scripts
 config
 config/test
 data
-resources/initial_main_scenarios
+resources/validation_runs
 envs
 matplotlibrc
 Snakefile

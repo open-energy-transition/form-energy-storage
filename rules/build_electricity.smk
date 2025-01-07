@@ -11,6 +11,11 @@ rule build_electricity_demand:
         load=config_provider("load"),
     input:
         reported=ancient("data/electricity_demand_raw.csv"),
+        entsoe_load=lambda w: (
+            resources("historical_electricity_loads.csv")
+            if config_provider("load", "supplement_entsoe")(w)
+            else []
+        ),
         synthetic=lambda w: (
             ancient("data/load_synthetic_raw.csv")
             if config_provider("load", "supplement_synthetic")(w)

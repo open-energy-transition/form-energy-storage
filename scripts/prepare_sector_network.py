@@ -1367,13 +1367,16 @@ def insert_electricity_distribution_grid(n, costs):
     # i.e. 2 kW/person (population data is in thousands of people) so we get MW
     potential = 0.1 * 20 * pop_solar
 
+    extendable_generators = snakemake.params.electricity["extendable_carriers"]["Generator"]
+    solar_extendable = True if "solar" in extendable_generators or "solar rooftop" in extendable_generators else False
+
     n.add(
         "Generator",
         solar,
         suffix=" rooftop",
         bus=n.generators.loc[solar, "bus"] + " low voltage",
         carrier="solar rooftop",
-        p_nom_extendable=True,
+        p_nom_extendable=solar_extendable,
         p_nom_max=potential.loc[solar],
         marginal_cost=n.generators.loc[solar, "marginal_cost"],
         capital_cost=costs.at["solar-rooftop", "fixed"],
@@ -2170,7 +2173,7 @@ def add_fuel_cell_cars(n, p_set, fuel_cell_share, temperature):
         suffix=" land transport fuel cell",
         bus=spatial.h2.nodes,
         carrier="land transport fuel cell",
-        p_set=profile,
+        p_set=profile.loc[n.snapshots],
     )
 
 
@@ -2209,7 +2212,7 @@ def add_ice_cars(n, p_set, ice_share, temperature):
         spatial.oil.land_transport,
         bus=spatial.oil.land_transport,
         carrier="land transport oil",
-        p_set=profile,
+        p_set=profile.loc[n.snapshots],
     )
 
     n.add(

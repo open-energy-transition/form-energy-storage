@@ -7,6 +7,7 @@
 import country_converter as coco
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 import pypsa
 import seaborn as sns
 from _helpers import configure_logging, set_scenario_config
@@ -49,6 +50,8 @@ color_country = {
     "SE": "#8a0000",
     "SI": "#6f0000",
     "SK": "#550000",
+
+    "EU": "blue",
 }
 
 
@@ -73,6 +76,12 @@ def cross_border_time_series(countries, data):
         ymax = 0
         for df in data:
             df_country = sort_one_country(country, df)
+
+            df_country = df_country.resample("1D").mean()
+
+            #MW to GW
+            df_country = df_country / 1e3
+
             df_neg, df_pos = df_country.clip(upper=0), df_country.clip(lower=0)
 
             color = [color_country[link[5:]] for link in df_country.columns]
@@ -111,13 +120,15 @@ def cross_border_time_series(countries, data):
                 ymin = neg_min
 
             pos_max = df_pos.sum(axis=1).max() * 1.2
-            if pos_max < ymax:
+            if pos_max > ymax:
                 ymax = pos_max
 
             axis = axis + 1
 
         for x in range(axis - 2, axis):
-            ax[x].set_ylim([neg_min, pos_max])
+            ax[x].set_ylim([ymin, ymax])
+            ax[x].set_ylabel("Import (-)/Export (+) [GW]")
+            ax[x].set_xlabel("")
 
     fig.savefig(snakemake.output.trade_time_series, bbox_inches="tight")
     plt.close(fig)
@@ -132,6 +143,10 @@ def cross_border_bar(countries, data):
         order = 0
         for df in data:
             df_country = sort_one_country(country, df)
+
+            #MWh to TWh
+            df_country = df_country / 1e6
+
             df_neg, df_pos = df_country.clip(upper=0), df_country.clip(lower=0)
 
             title = "Historic" if (order % 2) == 0 else "Optimized"
@@ -154,6 +169,10 @@ def cross_border_bar(countries, data):
     df_positive.plot.barh(ax=ax, stacked=True, color=color, zorder=2)
     df_negative.plot.barh(ax=ax, stacked=True, color=color, zorder=2)
 
+    xmin, xmax = ax.get_xlim()
+    margin = abs(xmax - xmin) * 0.1
+    ax.set_xlim(xmin - margin, xmax + margin)
+    ax.set_xlabel("Import (-)/Export (+) [TWh]")
     plt.grid(axis="x", zorder=0)
     plt.grid(axis="y", zorder=0)
 
@@ -192,7 +211,8 @@ if __name__ == "__main__":
 
     countries = snakemake.params.countries
 
-    n = pypsa.Network(snakemake.input.network)
+    network = pypsa.Network(str(snakemake.input.network))
+    n = network.copy()
     n.loads.carrier = "load"
 
     historic = pd.read_csv(
@@ -203,7 +223,30 @@ if __name__ == "__main__":
     )
 
     if len(historic.index) > len(n.snapshots):
-        historic = historic.resample(n.snapshots.inferred_freq).mean().loc[n.snapshots]
+        if n.snapshots.inferred_freq:
+            historic = historic.resample(n.snapshots.inferred_freq).sum().loc[n.snapshots]
+        else:
+            # if frequency is inconsistent due to segmentation
+            snapshots_interval = pd.Series({n.snapshots[x]:(n.snapshots[x+1] - n.snapshots[x])/np.timedelta64(1,'h') for x in range(0,len(n.snapshots)-1)})
+            snapshots_interval_last = pd.Series({n.snapshots[-1]:(pd.Timestamp(snakemake.config["snapshots"]["end"]) - n.snapshots[-1])/np.timedelta64(1,'h')})
+            snapshots_interval = pd.concat([snapshots_interval, snapshots_interval_last])
+
+            first_bin = [n.snapshots[0]]
+            mid_bins = [x + pd.DateOffset(hours=snapshots_interval[x]/2) for x in n.snapshots[:-1]]
+            last_bin = [n.snapshots[-1] + pd.DateOffset(hours=snapshots_interval[-1])]
+            bins = pd.DatetimeIndex(first_bin + mid_bins + last_bin)
+
+            interval_labels = pd.cut(historic.index, bins=bins, right=False)
+            historic = historic.groupby(interval_labels).sum()
+            historic.index = pd.to_datetime(n.snapshots)
+
+    # Set the historic date based on the snapshot year
+    if historic.index.year.unique()[0] != n.snapshots.year.unique()[0]:
+        historic.index = historic.index.map(lambda x: x.replace(year=n.snapshots.year.unique()[0]))
+
+    # Remove EU bus before starting
+    to_drop_links=n.links[(n.links.bus0.str[:2] == "EU") | (n.links.bus1.str[:2] == "EU")].index
+    n.remove("Link",to_drop_links)
 
     # Preparing network data to be shaped similar to ENTSOE datastructure
     optimized_links = n.links_t.p0.rename(
@@ -226,8 +269,12 @@ if __name__ == "__main__":
                 optimized = optimized.rename(columns={c1: c2})
 
     optimized = optimized.groupby(lambda x: x, axis=1).sum()
+    optimized = optimized.mul(n.snapshot_weightings.generators, axis=0)
 
     cross_border_bar(countries, [historic, optimized])
+
+    optimized = optimized.div(n.snapshot_weightings.generators, axis=0)
+    historic = historic.div(n.snapshot_weightings.generators, axis=0)
 
     cross_border_time_series(countries, [historic, optimized])
 
