@@ -77,6 +77,8 @@ def cross_border_time_series(countries, data):
         for df in data:
             df_country = sort_one_country(country, df)
 
+            df_country = df_country.resample("1D").mean()
+
             #MW to GW
             df_country = df_country / 1e3
 

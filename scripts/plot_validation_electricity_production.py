@@ -12,6 +12,7 @@ import pypsa
 import seaborn as sns
 from _helpers import configure_logging, set_scenario_config
 from pypsa.statistics import get_bus_and_carrier
+from matplotlib.dates import DateFormatter
 
 sns.set_theme("paper", style="whitegrid")
 
@@ -112,9 +113,9 @@ def plot_seasonal_operation(data, path, aggregated=False):
     fig, axes = plt.subplots(3, 1, figsize=(9, 9))
 
     df = (
-        data.div(n.snapshot_weightings.generators, axis=0)
-        .groupby(level=["Kind", "Carrier"], axis=1)
-        .sum()
+        data.div(n.snapshot_weightings.generators, axis=0).T
+        .groupby(level=["Kind", "Carrier"])
+        .sum().T
         .resample("1D")
         .mean()
         .clip(lower=0)
@@ -133,7 +134,7 @@ def plot_seasonal_operation(data, path, aggregated=False):
     optimized = df["Optimized"].reindex(order, axis=1, level=1)
     historical = df["Historic"].reindex(order, axis=1, level=1)
 
-    kwargs = dict(color=c, legend=False, ylabel="Production [GW]", xlabel="")
+    kwargs = dict(color=c, legend=False, ylabel="Production [GW]", xlabel="", xlim=[df.index[0],df.index[-1]])
 
     optimized.plot.area(ax=axes[0], **kwargs, title="Optimized")
     historical.plot.area(ax=axes[1], **kwargs, title="Historic")
@@ -148,6 +149,9 @@ def plot_seasonal_operation(data, path, aggregated=False):
     axes[0].set_ylim(top=ylim)
     axes[1].set_ylim(top=ylim)
     axes[2].set_ylim(bottom=-ylim/2, top=ylim/2)
+
+    for i in range(3):
+        axes[i].xaxis.set_major_formatter(DateFormatter('%b'))
 
     h, l = axes[0].get_legend_handles_labels()
     fig.legend(
