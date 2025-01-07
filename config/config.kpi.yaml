@@ -191,6 +191,38 @@ kpi:
       title: Country storage energy capacity
       #ylim: [0,5000]
       ylabel: GWh
+  All_storage_power_capacity:
+    extract: capacity
+    storage: true
+    carrier_filter: storage-cap
+    group_carrier: pretty
+    plot: detail
+    plot_kw:
+      title: Total storage power capacity
+      #ylim: [0,18000]
+      ylabel: GWe
+  DE_storage_power_capacity:
+    extract: capacity
+    storage: true
+    include: [ "DE" ]
+    carrier_filter: storage-cap
+    group_carrier: pretty
+    plot: detail
+    plot_kw:
+      title: Germany storage power capacity
+      #ylim: [0,5000]
+      ylabel: GWe
+  country_storage_power_capacity:
+    extract: capacity
+    storage: true
+    exclude: [ "EU" ]
+    carrier_filter: storage-cap
+    group_carrier: pretty
+    plot: overview
+    plot_kw:
+      title: Country storage power capacity
+      #ylim: [0,5000]
+      ylabel: GWe
 # Expanded Storage Capacity
   All_expanded_storage_energy_capacity:
     extract: capacity stats
@@ -228,42 +260,42 @@ kpi:
       title: Country expanded storage energy capacity
       #ylim: [0,5000]
       ylabel: GWh
-  All_expanded_storage_power_capacity:
-    extract: capacity stats
-    stats: expand
-    storage: true
-    exclude: ["EU"]
-    carrier_filter: storage-cap
-    group_carrier: pretty
-    plot: detail
-    plot_kw:
-      title: Total expanded storage power capacity
-      #ylim: [0,18000]
-      ylabel: GWe
-  DE_expanded_storage_power_capacity:
-    extract: capacity stats
-    stats: expand
-    storage: true
-    include: [ "DE" ]
-    carrier_filter: storage-cap
-    group_carrier: pretty
-    plot: detail
-    plot_kw:
-      title: Germany expanded storage power capacity
-      #ylim: [0,5000]
-      ylabel: GWe
-  country_expanded_storage_power_capacity:
-    extract: capacity stats
-    stats: expand
-    storage: true
-    exclude: [ "EU" ]
-    carrier_filter: storage-cap
-    group_carrier: pretty
-    plot: overview
-    plot_kw:
-      title: Country expanded storage power capacity
-      #ylim: [0,5000]
-      ylabel: GWe
+#  All_expanded_storage_power_capacity:
+#    extract: capacity
+#    stats: expand
+#    storage: true
+#    exclude: ["EU"]
+#    carrier_filter: storage-cap
+#    group_carrier: pretty
+#    plot: detail
+#    plot_kw:
+#      title: Total expanded storage power capacity
+#      #ylim: [0,18000]
+#      ylabel: GWe
+#  DE_expanded_storage_power_capacity:
+#    extract: capacity
+#    stats: expand
+#    storage: true
+#    include: [ "DE" ]
+#    carrier_filter: storage-cap
+#    group_carrier: pretty
+#    plot: detail
+#    plot_kw:
+#      title: Germany expanded storage power capacity
+#      #ylim: [0,5000]
+#      ylabel: GWe
+#  country_expanded_storage_power_capacity:
+#    extract: capacity
+#    stats: expand
+#    storage: true
+#    exclude: [ "EU" ]
+#    carrier_filter: storage-cap
+#    group_carrier: pretty
+#    plot: overview
+#    plot_kw:
+#      title: Country expanded storage power capacity
+#      #ylim: [0,5000]
+#      ylabel: GWe
 # Power Generation
   DE_power_generation:
     extract: generation
@@ -313,7 +345,7 @@ kpi:
       title: Total summer high voltage energy balance
       #ylim: [-150,600]
       ylabel: GW
-  EU_electricity_winter_energy_balance:
+  All_electricity_winter_energy_balance:
     extract: energy balance
     start_date: '2013-02-01'
     end_date: '2013-03-01'
@@ -346,7 +378,7 @@ kpi:
       #ylim: [-50,150]
       ylabel: GW
 # Storage energy balance
-  EU_storage_summer_energy_balance:
+  All_storage_summer_energy_balance:
     extract: energy balance
     start_date: '2013-08-01'
     end_date: '2013-09-01'
@@ -356,7 +388,7 @@ kpi:
       title: Total summer storage energy balance
       #ylim: [-150,600]
       ylabel: GW
-  EU_storage_winter_energy_balance:
+  All_storage_winter_energy_balance:
     extract: energy balance
     start_date: '2013-02-01'
     end_date: '2013-03-01'
@@ -399,7 +431,7 @@ kpi:
       title: Total summer high and low voltage energy balance
       #ylim: [-150,800]
       ylabel: GW
-  EU_electricity_plus_winter_energy_balance:
+  All_electricity_plus_winter_energy_balance:
     extract: energy balance
     start_date: '2013-02-01'
     end_date: '2013-03-01'
@@ -442,7 +474,7 @@ kpi:
       title: Total summer low voltage energy balance
       #ylim: [-600,300]
       ylabel: GW
-  EU_low_voltage_winter_energy_balance:
+  All_low_voltage_winter_energy_balance:
     extract: energy balance
     start_date: '2013-02-01'
     end_date: '2013-03-01'
@@ -485,7 +517,7 @@ kpi:
       title: Total summer heat energy balance
       #ylim: [-500,1000]
       ylabel: GW
-  EU_heat_winter_energy_balance:
+  All_heat_winter_energy_balance:
     extract: energy balance
     start_date: '2013-02-01'
     end_date: '2013-03-01'

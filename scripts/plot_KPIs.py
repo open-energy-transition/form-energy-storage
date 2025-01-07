@@ -453,7 +453,7 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, path):
         df_demand_plot = df[df_demand][pd.Timestamp(start_date):pd.Timestamp(end_date)]
         df_demand_plot.plot(ax = ax, color = "black", linestyle='dashed', **plot_kw)
     
-    ax.grid(axis="y")
+    # ax.grid(axis="y")
     ax.set_xlabel("")
     ax.set_facecolor("white")
     
