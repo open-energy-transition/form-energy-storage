@@ -474,6 +474,8 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
     group_carrier = kpi_param.get("group_carrier", None)
     plot = kpi_param.get("plot", None)
     plot_kw = kpi_param.get("plot_kw", {})
+    if plot_kw["ylabel"] == "%":
+        plot_kw["ylabel"] = "\%"
     
     n = network.copy()
     df = dataframe.copy()

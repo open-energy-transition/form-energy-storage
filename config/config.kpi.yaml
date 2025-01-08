@@ -622,6 +622,7 @@ kpi:
     end_date: '2013-03-01'
     carrier_filter: H2 Store
     group_carrier: pretty
+    plot: share
     plot_kw:
       title: H2 Store winter SOC Share
       ylabel: "%"
@@ -631,6 +632,7 @@ kpi:
     end_date: '2013-03-01'
     carrier_filter: Iron-Air Battery Storage
     group_carrier: pretty
+    plot: share
     plot_kw:
       title: Iron-Air Battery Storage winter SOC Share
       ylabel: "%"
@@ -640,6 +642,7 @@ kpi:
     end_date: '2013-03-01'
     carrier_filter: [H2 Store, Iron-Air Battery Storage]
     group_carrier: pretty
+    plot: share
     plot_kw:
       title: Multi day storage winter SOC Share
       ylabel: "%"
@@ -649,6 +652,7 @@ kpi:
     end_date: '2013-09-01'
     carrier_filter: H2 Store
     group_carrier: pretty
+    plot: share
     plot_kw:
       title: H2 Store summer SOC Share
       ylabel: "%"
@@ -658,6 +662,7 @@ kpi:
     end_date: '2013-09-01'
     carrier_filter: Iron-Air Battery Storage
     group_carrier: pretty
+    plot: share
     plot_kw:
       title: Iron-Air Battery Storage summer SOC Share
       ylabel: "%"
@@ -667,6 +672,7 @@ kpi:
     end_date: '2013-09-01'
     carrier_filter: [H2 Store, Iron-Air Battery Storage]
     group_carrier: pretty
+    plot: share
     plot_kw:
       title: Multi day storage summer SOC Share
       ylabel: "%"
@@ -775,7 +781,7 @@ kpi:
     plot_kw:
       title: Iron-Air Battery Storage summer SOC Total
       ylabel: GWh
-  All_multi_day_duration_storage_summer_SOC_total:
+  All_multi_day_storage_summer_SOC_total:
     extract: SOC
     start_date: '2013-08-01'
     end_date: '2013-09-01'
