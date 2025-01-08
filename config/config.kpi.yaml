@@ -260,42 +260,42 @@ kpi:
       title: Country expanded storage energy capacity
       #ylim: [0,5000]
       ylabel: GWh
-#  All_expanded_storage_power_capacity:
-#    extract: capacity
-#    stats: expand
-#    storage: true
-#    exclude: ["EU"]
-#    carrier_filter: storage-cap
-#    group_carrier: pretty
-#    plot: detail
-#    plot_kw:
-#      title: Total expanded storage power capacity
-#      #ylim: [0,18000]
-#      ylabel: GWe
-#  DE_expanded_storage_power_capacity:
-#    extract: capacity
-#    stats: expand
-#    storage: true
-#    include: [ "DE" ]
-#    carrier_filter: storage-cap
-#    group_carrier: pretty
-#    plot: detail
-#    plot_kw:
-#      title: Germany expanded storage power capacity
-#      #ylim: [0,5000]
-#      ylabel: GWe
-#  country_expanded_storage_power_capacity:
-#    extract: capacity
-#    stats: expand
-#    storage: true
-#    exclude: [ "EU" ]
-#    carrier_filter: storage-cap
-#    group_carrier: pretty
-#    plot: overview
-#    plot_kw:
-#      title: Country expanded storage power capacity
-#      #ylim: [0,5000]
-#      ylabel: GWe
+  All_expanded_storage_power_capacity:
+    extract: capacity stats
+    stats: expand
+    storage: false
+    exclude: ["EU"]
+    carrier_filter: storage-cap
+    group_carrier: pretty
+    plot: detail
+    plot_kw:
+      title: Total expanded storage power capacity
+      #ylim: [0,18000]
+      ylabel: GWe
+  DE_expanded_storage_power_capacity:
+    extract: capacity stats
+    stats: expand
+    storage: false
+    include: [ "DE" ]
+    carrier_filter: storage-cap
+    group_carrier: pretty
+    plot: detail
+    plot_kw:
+      title: Germany expanded storage power capacity
+      #ylim: [0,5000]
+      ylabel: GWe
+  country_expanded_storage_power_capacity:
+    extract: capacity stats
+    stats: expand
+    storage: false
+    exclude: [ "EU" ]
+    carrier_filter: storage-cap
+    group_carrier: pretty
+    plot: overview
+    plot_kw:
+      title: Country expanded storage power capacity
+      #ylim: [0,5000]
+      ylabel: GWe
 # Power Generation
   DE_power_generation:
     extract: generation
