@@ -333,6 +333,16 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, path):
     n = network.copy()
     df = dataframe.copy()
 
+    include = kpi_param.get("include",False)
+    exclude = kpi_param.get("exclude",False)
+
+    if include:
+        logger.info(f"include only {include}")
+        df = df[df.index.get_level_values("bus").isin(include)]
+    if exclude:
+        logger.info(f"exclude {exclude}")
+        df = df[~df.index.get_level_values("bus").isin(exclude)]
+
     # Model 1: Electricity system with generators and batteries out
     if carrier_filter == "electricity+":
         extract_carrier = ["solar rooftop",'BEV charger', 'V2G']
@@ -468,6 +478,15 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, path):
 
     fig.savefig(path, bbox_inches="tight")
 
+def prepare_SOC(network):
+    n = network.copy()
+    n.storage_units["bus"] = n.storage_units.bus.map(n.buses.country)
+    n.storage_units["carrier"] = n.storage_units.carrier.map(n.carriers.nice_name)
+    df = n.storage_units_t.state_of_charge.T
+    df.index = pd.MultiIndex.from_frame(n.storage_units[["bus","carrier"]])
+    
+    return df.groupby(["bus","carrier"]).sum()
+
 def filter_plot_SOC(network, dataframe, kpi_param, path):
 
     carrier_filter = kpi_param.get("carrier_filter", "Li-Ion Battery Storage")
@@ -480,36 +499,22 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
     n = network.copy()
     df = dataframe.copy()
 
+    include = kpi_param.get("include",False)
+    exclude = kpi_param.get("exclude",False)
+
+    if include:
+        logger.info(f"include only {include}")
+        df = df[df.index.get_level_values("bus").isin(include)]
+    if exclude:
+        logger.info(f"exclude {exclude}")
+        df = df[~df.index.get_level_values("bus").isin(exclude)]
+
     if isinstance(carrier_filter, list):
         df = df[df.index.get_level_values("carrier").isin(carrier_filter)]
     elif isinstance(carrier_filter, str):
         df = df[df.index.get_level_values("carrier").isin([carrier_filter])]
 
-    # readjust charge and discharge efficiency in storage units
-    n_storage_units = n.storage_units
-    n_storage_units["carrier"] = n_storage_units["carrier"].map(n.carriers.nice_name)
-    efficiency_store = n_storage_units.groupby(["carrier"]).efficiency_store.mean()
-    efficiency_dispatch = n_storage_units.groupby(["carrier"]).efficiency_dispatch.mean()
-    roundtrip_efficiency = efficiency_store * efficiency_dispatch
-
-    df_charge = df.copy(deep=True).clip(upper=0)
-    df_discharge = df.copy(deep=True).clip(lower=0)
-
-    for c in efficiency_store.index:
-        df_charge[df_charge.index.get_level_values("carrier").isin([c])] *= roundtrip_efficiency[c]
-
-    df = df_charge + df_discharge
-
     df = df.groupby(["carrier"]).sum()
-
-    # Factor in snapshot weightings
-    df = df.mul(n.snapshot_weightings.stores, axis=1)
-
-    # Accumulate energy based on the value of the previous energy level
-    for i in range(len(df.columns)):
-        if i == 0:
-            continue
-        df.iloc[:,i] = df.iloc[:,i] + df.iloc[:,i-1]
 
     #Set color
     colors = n.carriers.set_index("nice_name").color.where(lambda s: s != "", "green")
@@ -524,14 +529,11 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
     #MWh to GWh
     df = df/1e3
 
-    #remove if smaller than 1 MWh
+    #remove if smaller than 1 GWh
     to_drop = abs(df.max()) < 1
     df = df.loc[:,~to_drop]
 
-    # Set the minimum value to zero
-    df = (df - df.min())
-
-    if plot == "share":
+    if plot_kw["ylabel"] == "\%":
         # Set the maximum value to 100
         df = (df/df.max() * 100)
 
@@ -1235,6 +1237,7 @@ if __name__ == "__main__":
     df_gen = calculate_generation(n, countries)
     df_co2 = calculate_emission(n, countries)
     df_eql = prepare_energy_balance(n)
+    df_SOC = prepare_SOC(n)
 
     df_storages = (
         n.statistics.optimal_capacity(
@@ -1261,8 +1264,6 @@ if __name__ == "__main__":
                 logger.info(f"Preparing plot {fn}")
 
                 extract_param = kpi_param.get("extract",None)
-                include = kpi_param.get("include",False)
-                exclude = kpi_param.get("exclude",False)
 
                 if extract_param == "system cost":
                     logger.info("extracting system cost")
@@ -1280,21 +1281,17 @@ if __name__ == "__main__":
                     df = df_co2.copy(deep=True)
 
                 #time series plots have their own route
-                elif extract_param == "energy balance" or extract_param == "SOC":
+                elif extract_param == "energy balance":
                     df = df_eql.copy(deep=True)
-
-                    if include:
-                        print(f"include only {include}")
-                        df = df[df.index.get_level_values("bus").isin(include)]
-                    if exclude:
-                        print(f"exclude {exclude}")
-                        df = df[~df.index.get_level_values("bus").isin(exclude)]
-
-                    if extract_param == "energy balance":
-                        filter_plot_energy_balance(n, df, kpi_param, snakemake.output[fn])
-                    elif extract_param == "SOC":
-                        filter_plot_SOC(n, df, kpi_param, snakemake.output[fn])
+                    filter_plot_energy_balance(n, df, kpi_param, snakemake.output[fn])
                     continue
+                elif extract_param == "SOC":
+                    df = df_SOC.copy(deep=True)
+                    filter_plot_SOC(n, df, kpi_param, snakemake.output[fn])
+                    continue
+
+                include = kpi_param.get("include",False)
+                exclude = kpi_param.get("exclude",False)
 
                 if include:
                     logger.info(f"include only {include}")
