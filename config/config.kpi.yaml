@@ -337,254 +337,230 @@ kpi:
 # Electricity energy balance
   All_electricity_summer_energy_balance:
     extract: energy balance
-    start_date: '2013-08-01'
-    end_date: '2013-09-01'
     carrier_filter: electricity
     group_carrier: pretty
     plot_kw:
       title: Total summer high voltage energy balance
+      xlim: ['2013-08-01', '2013-09-01']
       #ylim: [-150,600]
       ylabel: GW
   All_electricity_winter_energy_balance:
     extract: energy balance
-    start_date: '2013-02-01'
-    end_date: '2013-03-01'
     carrier_filter: electricity
     group_carrier: pretty
     plot_kw:
       title: Total winter high voltage energy balance
+      xlim: ['2013-02-01', '2013-03-01']
       #ylim: [-150,600]
       ylabel: GW
   DE_electricity_summer_energy_balance:
     extract: energy balance
-    start_date: '2013-08-01'
-    end_date: '2013-09-01'
     include: ["DE"]
     carrier_filter: electricity
     group_carrier: pretty
     plot_kw:
       title: Germany summer high voltage energy balance
+      xlim: ['2013-08-01', '2013-09-01']
       #ylim: [-50,150]
       ylabel: GW
   DE_electricity_winter_energy_balance:
     extract: energy balance
-    start_date: '2013-02-01'
-    end_date: '2013-03-01'
     include: ["DE"]
     carrier_filter: electricity
     group_carrier: pretty
     plot_kw:
       title: Germany winter high voltage energy balance
+      xlim: ['2013-02-01', '2013-03-01']
       #ylim: [-50,150]
       ylabel: GW
 # Storage energy balance
   All_storage_summer_energy_balance:
     extract: energy balance
-    start_date: '2013-08-01'
-    end_date: '2013-09-01'
     carrier_filter: storage
     group_carrier: pretty
     plot_kw:
       title: Total summer storage energy balance
+      xlim: ['2013-08-01', '2013-09-01']
       #ylim: [-150,600]
       ylabel: GW
   All_storage_winter_energy_balance:
     extract: energy balance
-    start_date: '2013-02-01'
-    end_date: '2013-03-01'
     carrier_filter: storage
     group_carrier: pretty
     plot_kw:
       title: Total winter storage energy balance
+      xlim: ['2013-02-01', '2013-03-01']
       #ylim: [-150,600]
       ylabel: GW
   DE_storage_summer_energy_balance:
     extract: energy balance
-    start_date: '2013-08-01'
-    end_date: '2013-09-01'
     include: ["DE"]
     carrier_filter: storage
     group_carrier: pretty
     plot_kw:
       title: Germany summer storage energy balance
+      xlim: ['2013-08-01', '2013-09-01']
       #ylim: [-50,150]
       ylabel: GW
   DE_storage_winter_energy_balance:
     extract: energy balance
-    start_date: '2013-02-01'
-    end_date: '2013-03-01'
     include: ["DE"]
     carrier_filter: storage
     group_carrier: pretty
     plot_kw:
       title: Germany winter storage energy balance
+      xlim: ['2013-02-01', '2013-03-01']
       #ylim: [-50,150]
       ylabel: GW
 # Electricity (with some low voltage tech) energy balance
   All_electricity_plus_summer_energy_balance:
     extract: energy balance
-    start_date: '2013-08-01'
-    end_date: '2013-09-01'
     carrier_filter: electricity+
     group_carrier: pretty
     plot_kw:
       title: Total summer high and low voltage energy balance
+      xlim: ['2013-08-01', '2013-09-01']
       #ylim: [-150,800]
       ylabel: GW
   All_electricity_plus_winter_energy_balance:
     extract: energy balance
-    start_date: '2013-02-01'
-    end_date: '2013-03-01'
     carrier_filter: electricity+
     group_carrier: pretty
     plot_kw:
       title: Total winter high and low voltage energy balance
+      xlim: ['2013-02-01', '2013-03-01']
       #ylim: [-150,800]
       ylabel: GW
   DE_electricity_plus_summer_energy_balance:
     extract: energy balance
-    start_date: '2013-08-01'
-    end_date: '2013-09-01'
     include: ["DE"]
     carrier_filter: electricity+
     group_carrier: pretty
     plot_kw:
       title: Germany summer high and low voltage energy balance
+      xlim: ['2013-08-01', '2013-09-01']
       #ylim: [-50,200]
       ylabel: GW
   DE_electricity_plus_winter_energy_balance:
     extract: energy balance
-    start_date: '2013-02-01'
-    end_date: '2013-03-01'
     include: ["DE"]
     carrier_filter: electricity+
     group_carrier: pretty
     plot_kw:
       title: Germany winter high and low voltage energy balance
+      xlim: ['2013-02-01', '2013-03-01']
       #ylim: [-50,200]
       ylabel: GW
 # Low Voltage energy balance
   All_low_voltage_summer_energy_balance:
     extract: energy balance
-    start_date: '2013-08-01'
-    end_date: '2013-09-01'
     carrier_filter: low voltage
     group_carrier: pretty
     plot_kw:
       title: Total summer low voltage energy balance
+      xlim: ['2013-08-01', '2013-09-01']
       #ylim: [-600,300]
       ylabel: GW
   All_low_voltage_winter_energy_balance:
     extract: energy balance
-    start_date: '2013-02-01'
-    end_date: '2013-03-01'
     carrier_filter: low voltage
     group_carrier: pretty
     plot_kw:
       title: Total winter low voltage energy balance
+      xlim: ['2013-02-01', '2013-03-01']
       #ylim: [-600,300]
       ylabel: GW
   DE_low_voltage_summer_energy_balance:
     extract: energy balance
-    start_date: '2013-08-01'
-    end_date: '2013-09-01'
     include: ["DE"]
     carrier_filter: low voltage
     group_carrier: pretty
     plot_kw:
       title: Germany summer low voltage energy balance
+      xlim: ['2013-08-01', '2013-09-01']
       #ylim: [-150,100]
       ylabel: GW
   DE_low_voltage_winter_energy_balance:
     extract: energy balance
-    start_date: '2013-02-01'
-    end_date: '2013-03-01'
     include: ["DE"]
     carrier_filter: low voltage
     group_carrier: pretty
     plot_kw:
       title: Germany winter low voltage energy balance
+      xlim: ['2013-02-01', '2013-03-01']
       #ylim: [-150,100]
       ylabel: GW
 # Heat energy balance
   All_heat_summer_energy_balance:
     extract: energy balance
-    start_date: '2013-08-01'
-    end_date: '2013-09-01'
     carrier_filter: heat
     group_carrier: pretty
     plot_kw:
       title: Total summer heat energy balance
+      xlim: ['2013-08-01', '2013-09-01']
       #ylim: [-500,1000]
       ylabel: GW
   All_heat_winter_energy_balance:
     extract: energy balance
-    start_date: '2013-02-01'
-    end_date: '2013-03-01'
     carrier_filter: heat
     group_carrier: pretty
     plot_kw:
       title: Total winter heat energy balance
+      xlim: ['2013-02-01', '2013-03-01']
       #ylim: [-500,1000]
       ylabel: GW
   DE_heat_summer_energy_balance:
     extract: energy balance
-    start_date: '2013-08-01'
-    end_date: '2013-09-01'
     include: ["DE"]
     carrier_filter: heat
     group_carrier: pretty
     plot_kw:
       title: Germany summer heat energy balance
+      xlim: ['2013-08-01', '2013-09-01']
       #ylim: [-150,300]
       ylabel: GW
   DE_heat_winter_energy_balance:
     extract: energy balance
-    start_date: '2013-02-01'
-    end_date: '2013-03-01'
     include: ["DE"]
     carrier_filter: heat
     group_carrier: pretty
     plot_kw:
       title: Germany winter heat energy balance
+      xlim: ['2013-02-01', '2013-03-01']
       #ylim: [-150,300]
       ylabel: GW
 # short duration SOC Share
   All_li-ion_winter_SOC_share:
     extract: SOC
-    start_date: '2013-02-01'
-    end_date: '2013-03-01'
     carrier_filter: Li-Ion Battery Storage
     group_carrier: pretty
     plot_kw:
       title: Li-Ion Battery Storage winter SOC Share
+      xlim: ['2013-08-01', '2013-09-01']
       ylabel: "%"
   All_short_duration_storage_winter_SOC_share:
     extract: SOC
-    start_date: '2013-02-01'
-    end_date: '2013-03-01'
     carrier_filter: [Li-Ion Battery Storage, lair, pair, vanadium]
     group_carrier: pretty
     plot_kw:
       title: Short duration storage winter SOC Share
+      xlim: ['2013-02-01', '2013-03-01']
       ylabel: "%"
   All_li-ion_summer_SOC_share:
     extract: SOC
-    start_date: '2013-08-01'
-    end_date: '2013-09-01'
     carrier_filter: Li-Ion Battery Storage
     group_carrier: pretty
     plot_kw:
       title: Li-Ion Battery Storage summer SOC Share
+      xlim: ['2013-08-01', '2013-09-01']
       ylabel: "%"
   All_short_duration_storage_summer_SOC_share:
     extract: SOC
-    start_date: '2013-08-01'
-    end_date: '2013-09-01'
     carrier_filter: [Li-Ion Battery Storage, lair, pair, vanadium]
     group_carrier: pretty
     plot_kw:
       title: Short duration storage summer SOC Share
+      xlim: ['2013-02-01', '2013-03-01']
       ylabel: "%"
 # multi day storage SOC Share
   All_H2_SOC_share:
@@ -611,94 +587,84 @@ kpi:
 # Multi day seasonal SOC share
   All_H2_winter_SOC_share:
     extract: SOC
-    start_date: '2013-02-01'
-    end_date: '2013-03-01'
     carrier_filter: H2 Store
     group_carrier: pretty
     plot_kw:
       title: H2 Store winter SOC Share
+      xlim: ['2013-02-01', '2013-03-01']
       ylabel: "%"
   All_iron-air_winter_SOC_share:
     extract: SOC
-    start_date: '2013-02-01'
-    end_date: '2013-03-01'
     carrier_filter: Iron-Air Battery Storage
     group_carrier: pretty
     plot_kw:
       title: Iron-Air Battery Storage winter SOC Share
+      xlim: ['2013-02-01', '2013-03-01']
       ylabel: "%"
   All_multi_day_storage_winter_SOC_share:
     extract: SOC
-    start_date: '2013-02-01'
-    end_date: '2013-03-01'
     carrier_filter: [H2 Store, Iron-Air Battery Storage]
     group_carrier: pretty
     plot_kw:
       title: Multi day storage winter SOC Share
+      xlim: ['2013-02-01', '2013-03-01']
       ylabel: "%"
   All_H2_summer_SOC_share:
     extract: SOC
-    start_date: '2013-08-01'
-    end_date: '2013-09-01'
     carrier_filter: H2 Store
     group_carrier: pretty
     plot_kw:
       title: H2 Store summer SOC Share
+      xlim: ['2013-08-01', '2013-09-01']
       ylabel: "%"
   All_iron-air_summer_SOC_share:
     extract: SOC
-    start_date: '2013-08-01'
-    end_date: '2013-09-01'
     carrier_filter: Iron-Air Battery Storage
     group_carrier: pretty
     plot_kw:
       title: Iron-Air Battery Storage summer SOC Share
+      xlim: ['2013-08-01', '2013-09-01']
       ylabel: "%"
   All_multi_day_storage_summer_SOC_share:
     extract: SOC
-    start_date: '2013-08-01'
-    end_date: '2013-09-01'
     carrier_filter: [H2 Store, Iron-Air Battery Storage]
     group_carrier: pretty
     plot_kw:
       title: Multi day storage summer SOC Share
+      xlim: ['2013-08-01', '2013-09-01']
       ylabel: "%"
 # short duration SOC total
   All_li-ion_winter_SOC_total:
     extract: SOC
-    start_date: '2013-02-01'
-    end_date: '2013-03-01'
     carrier_filter: Li-Ion Battery Storage
     group_carrier: pretty
     plot_kw:
       title: Li-Ion Battery Storage winter SOC Total
+      xlim: ['2013-02-01', '2013-03-01']
       ylabel: GWh
   All_short_duration_storage_winter_SOC_total:
     extract: SOC
-    start_date: '2013-02-01'
-    end_date: '2013-03-01'
     carrier_filter: [Li-Ion Battery Storage, lair, pair, vanadium]
     group_carrier: pretty
     plot_kw:
       title: Short duration storage winter SOC Total
+      xlim: ['2013-02-01', '2013-03-01']
       ylabel: GWh
   All_li-ion_summer_SOC_total:
     extract: SOC
-    start_date: '2013-08-01'
-    end_date: '2013-09-01'
     carrier_filter: Li-Ion Battery Storage
     group_carrier: pretty
     plot_kw:
       title: Li-Ion Battery Storage summer SOC Total
+      xlim: ['2013-08-01', '2013-09-01']
       ylabel: GWh
   All_short_duration_storage_summer_SOC_total:
     extract: SOC
-    start_date: '2013-08-01'
-    end_date: '2013-09-01'
     carrier_filter: [Li-Ion Battery Storage, lair, pair, vanadium]
     group_carrier: pretty
     plot_kw:
       title: Short duration storage summer SOC Total
+      xlim: ['2013-08-01', '2013-09-01']
       ylabel: GWh
 # multi day storage SOC total
   All_H2_SOC_total:
@@ -725,55 +691,49 @@ kpi:
 # multi day duration seasonal SOC total
   All_H2_winter_SOC_total:
     extract: SOC
-    start_date: '2013-02-01'
-    end_date: '2013-03-01'
     carrier_filter: H2 Store
     group_carrier: pretty
     plot_kw:
       title: H2 Store winter SOC Total
+      xlim: ['2013-02-01', '2013-03-01']
       ylabel: GWh
   All_iron-air_winter_SOC_total:
     extract: SOC
-    start_date: '2013-02-01'
-    end_date: '2013-03-01'
     carrier_filter: Iron-Air Battery Storage
     group_carrier: pretty
     plot_kw:
       title: Iron-Air Battery Storage winter SOC Total
+      xlim: ['2013-02-01', '2013-03-01']
       ylabel: GWh
   All_multi_day_storage_winter_SOC_total:
     extract: SOC
-    start_date: '2013-02-01'
-    end_date: '2013-03-01'
     carrier_filter: [H2 Store, Iron-Air Battery Storage]
     group_carrier: pretty
     plot_kw:
       title: Multi day storage winter SOC Total
+      xlim: ['2013-02-01', '2013-03-01']
       ylabel: GWh
   All_H2_summer_SOC_total:
     extract: SOC
-    start_date: '2013-08-01'
-    end_date: '2013-09-01'
     carrier_filter: H2 Store
     group_carrier: pretty
     plot_kw:
       title: H2 Store summer SOC Total
+      xlim: ['2013-08-01', '2013-09-01']
       ylabel: GWh
   All_iron-air_summer_SOC_total:
     extract: SOC
-    start_date: '2013-08-01'
-    end_date: '2013-09-01'
     carrier_filter: Iron-Air Battery Storage
     group_carrier: pretty
     plot_kw:
       title: Iron-Air Battery Storage summer SOC Total
+      xlim: ['2013-08-01', '2013-09-01']
       ylabel: GWh
   All_multi_day_storage_summer_SOC_total:
     extract: SOC
-    start_date: '2013-08-01'
-    end_date: '2013-09-01'
     carrier_filter: [H2 Store, Iron-Air Battery Storage]
     group_carrier: pretty
     plot_kw:
       title: Multi day storage summer SOC Total
+      xlim: ['2013-08-01', '2013-09-01']
       ylabel: GWh

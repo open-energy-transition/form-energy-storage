@@ -11,6 +11,8 @@ Release Notes
 Upcoming Release
 ================
 
+* Feature: Add `Plot_KPIs` which generates both predefined and configurable results figures from ``config/config.kpi.yaml``. To generate those figures, use the rule``plot_KPIs_all``.
+
 * Added Iron-Air battery storage technology and changed nomenclature for lithium-ion battery storages from ``battery`` to ``li-ion battery``.
 
 * Feature: Allow CHPs to use different fuel sources such as gas, oil, coal, and methanol. Note that the cost assumptions are based on a gas CHP.

@@ -303,7 +303,7 @@ def plot_energy_trade(network, countries, path):
         df_country = sort_one_country(country, df)
         df_country_new = pd.DataFrame(data= n.snapshot_weightings.objective @ df_country)
         df_country_new = df_country_new.T.rename(index={"objective":cc.convert(country, to="name_short")})
-        df_new = pd.concat([df_country_new, df_new])
+        df_new = pd.concat([df_new, df_country_new])
 
     # MWh to GWh
     df_new = df_new/1e3
@@ -445,23 +445,17 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, path):
     to_drop = abs(n.snapshot_weightings.objective @ df) < 1
     df = df.loc[:,~to_drop]
     
-    #cut into the specific timesteps
-    start_date = kpi_param.get("start_date", df.index[0])
-    end_date = kpi_param.get("end_date", df.index[-1])
-    
     fig, ax = plt.subplots(figsize=(12,5))
     
     df_plot = df[df.columns.difference([line_carrier])]
     
     order = ((df_plot.diff().abs().sum() / df_plot.sum()).sort_values().index)
     df_plot = df_plot[order]
-    df_plot = df_plot.loc[pd.Timestamp(start_date):pd.Timestamp(end_date),:]
     df_plot.plot.area(ax = ax, legend=False, color = [colors[c] for c in df_plot.columns], **plot_kw)
     
     df_demand = df.columns.intersection([line_carrier])
     if df_demand.any():
-        df_demand_plot = df[df_demand][pd.Timestamp(start_date):pd.Timestamp(end_date)]
-        df_demand_plot.plot(ax = ax, color = "black", linestyle='dashed', **plot_kw)
+        df[df_demand].plot(ax = ax, color = "black", linestyle='dashed', **plot_kw)
     
     # ax.grid(axis="y")
     ax.set_xlabel("")
@@ -542,11 +536,6 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
     else:
         if not plot_kw.get("ylim", False):
             plot_kw["ylim"] = [0, None]
-
-    #cut into the specific timesteps
-    start_date = kpi_param.get("start_date", df.index[0])
-    end_date = kpi_param.get("end_date", df.index[-1])
-    df = df[pd.Timestamp(start_date):pd.Timestamp(end_date)]
 
     fig, ax = plt.subplots(figsize=(12,5))
 
