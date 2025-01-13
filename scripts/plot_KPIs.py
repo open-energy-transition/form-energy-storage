@@ -43,6 +43,43 @@ rc('xtick', **{'labelsize': 12})
 rc('ytick', **{'labelsize': 12})
 # plt.style.use(["ggplot"])
 
+def expanded_sector_names(n):
+    index = n.statistics().index.get_level_values(1)
+    index_missing = index.difference(sector_names.keys())
+    dict_index = {i : "other" for i in index_missing}
+    
+    for i in dict_index:
+        if any(x in i for x in ["heat", "thermal", "boiler", "CHP"]):
+            dict_index[i] = "Heating Sector"
+
+    return sector_names | dict_index
+
+def expanded_pretty_names(n):
+    index = n.statistics().index.get_level_values(1)
+    index_missing = index.difference(pretty_names.keys())
+    dict_index = {i : i for i in index_missing}
+
+    for i in dict_index:
+        if "CHP" in i:
+            dict_index[i] = "CHP"
+        elif "solar thermal" in i:
+            dict_index[i] = "Solar Thermal"
+        elif "heat pump" in i:
+            dict_index[i] = "Heat Pump"
+        elif "resistive heater" in i:
+            dict_index[i] = "Resistive Heater"
+        elif "water tanks" in i:
+            dict_index[i] = "Water Tanks"
+        elif "gas boiler" in i:
+            dict_index[i] = "Gas boiler"
+        elif "oil boiler" in i:
+            dict_index[i] = "Oil boiler"
+        elif "heat" in i:
+            dict_index[i] = "heat"
+        
+
+    return pretty_names | dict_index
+
 def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legend_circles=[5, 3, 1], bus_size_factor_ = 1e4, vmax_price=105, vmin_price=45):
     n = network.copy()
     map_opts = map_opts_params.copy()
@@ -438,7 +475,7 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, path):
             colors[c + " Charge"] = colors[c]
             df = df.drop(columns=c)
 
-    #MW to GW
+    #MW to GWarch
     df = df/1e3
     
     #remove if smaller than 1 GWh
@@ -983,22 +1020,12 @@ if __name__ == "__main__":
         "agriculture electricity": "Agriculture electricity demand",
         "hot water storage": "Hot water storage",
         "resistive heater": "Resistive heater",
-        "air heat pump": "Heat pump (air)",
-        "ground heat pump": "Heat pump (ground)",
         "electricity distribution grid": "Electricity distribution grid",
         "transmission lines": "Transmission lines",
         "Reservoir & Dam": "Reservoir \& Dam",  # Note, revert this back to /&
         "ror": "Run of River",
         "offwind-float": "Offshore Wind (Floating)",
         "solar-hsat": "Solar (HSAT)",
-        "residential rural solar thermal": "Solar Thermal",
-        "urban central solar thermal": "Solar Thermal",
-        "rural solar thermal": "Solar Thermal",
-        "residential urban decentral solar thermal": "Solar Thermal",
-        "urban decentral solar thermal": "Solar Thermal",
-        "urban central water tanks": "Water Tanks",
-        "residential rural water tanks": "Water Tanks",
-        "residential urban decentral water tanks": "Water Tanks",
         "V2G": "Vehicle-to-Grid",
     }
 
@@ -1007,7 +1034,8 @@ if __name__ == "__main__":
         "Transport Sector": '#baf238',
         "Heating Sector": '#db6a25',
         "CCUS": '#d2d2d2',
-        "Primary Fuel": '#692e0a'
+        "Primary Fuel": '#692e0a',
+        "Other": 'black'
     }
 
     sector_names = {
@@ -1046,45 +1074,6 @@ if __name__ == "__main__":
         "EV battery": "Transport Sector",
         "V2G": "Transport Sector",
         "land transport oil": "Transport Sector",
-        "residential rural gas boiler": "Heating Sector",
-        "residential rural resistive heater": "Heating Sector",
-        'residential rural ground heat pump': "Heating Sector",
-        "residential rural solar thermal": "Heating Sector",
-        "residential rural water tanks": "Heating Sector",
-        "residential rural water tanks discharger": "Heating Sector",
-        "residential urban decentral air heat pump": "Heating Sector",
-        "residential urban decentral resistive heater": "Heating Sector",
-        "residential urban decentral solar thermal": "Heating Sector",
-        "residential urban decentral water tanks": "Heating Sector",
-        "residential urban decentral water tanks charger": "Heating Sector",
-        "residential urban decentral gas boiler": "Heating Sector",
-        "rural oil boiler": "Heating Sector",
-        "rural gas boiler": "Heating Sector",
-        "rural ground heat pump": "Heating Sector",
-        "services rural gas boiler": "Heating Sector",
-        "services rural air heat pump": "Heating Sector",
-        "services rural ground heat pump": "Heating Sector",
-        "services rural resistive heater": "Heating Sector",
-        "services rural water tanks charger": "Heating Sector",
-        "services urban decentral gas boiler": "Heating Sector",
-        "services urban decentral water tanks discharger": "Heating Sector",
-        "services urban decentral air heat pump": "Heating Sector",
-        "services urban decentral resistive heater": "Heating Sector",
-        "services rural biomass boiler": "Heating Sector",
-        "urban central CHP": "Heating Sector",
-        "urban central CHP CC": "Heating Sector",
-        "urban central air heat pump": "Heating Sector",
-        "urban central gas boiler": "Heating Sector",
-        "urban central resistive heater": "Heating Sector",
-        "urban central solar thermal": "Heating Sector",
-        "urban central solid biomass CHP": "Heating Sector",
-        "urban central water tanks": "Heating Sector",
-        "urban central water tanks charger": "Heating Sector",
-        "urban central water tanks discharger": "Heating Sector",
-        "urban decentral oil boiler": "Heating Sector",
-        "residential rural biomass boiler": "Heating Sector",
-        "services urban decentral biomass boiler": "Heating Sector",
-        "urban central solid biomass CHP CC": "Heating Sector",
         "co2": "Primary Fuel",
         "co2 stored": "CCUS",
         "co2 sequestered": "CCUS",
@@ -1134,35 +1123,13 @@ if __name__ == "__main__":
         "EV battery",
         "V2G",
         "land transport oil",
-        "residential rural gas boiler",
-        "residential rural resistive heater",
-        "residential rural solar thermal",
-        "residential rural water tanks",
-        "residential rural water tanks discharger",
-        "residential urban decentral air heat pump",
-        "residential urban decentral resistive heater",
-        "residential urban decentral solar thermal",
-        "residential urban decentral water tanks",
-        "residential urban decentral water tanks charger",
-        "rural oil boiler",
-        "services rural gas boiler",
-        "services rural air heat pump",
-        "services rural ground heat pump",
-        "services rural resistive heater",
-        "services rural water tanks charger",
-        "services urban decentral gas boiler",
-        "services urban decentral water tanks discharger",
-        "urban central CHP",
-        "urban central CHP CC",
-        "urban central air heat pump",
-        "urban central gas boiler",
-        "urban central resistive heater",
-        "urban central solar thermal",
-        "urban central solid biomass CHP",
-        "urban central water tanks",
-        "urban central water tanks charger",
-        "urban central water tanks discharger",
-        "urban decentral oil boiler",
+        "Solar Thermal"
+        "Heat Pump"
+        "Resistive Heater"
+        "Gas boiler"
+        "Oil boiler"
+        "Water Tanks"
+        "heat"
         "co2",
         "co2 stored",
         "co2 sequestered",
@@ -1179,6 +1146,12 @@ if __name__ == "__main__":
         "coal",
         "uranium"
     ])
+
+    n = pypsa.Network(snakemake.input.network)
+
+    # expand the names
+    pretty_names = expanded_pretty_names(n)
+    sector_names = expanded_sector_names(n)
 
     # defined preferred order under all naming schemes
     preferred_order_reversed = preferred_order[::-1]
@@ -1204,7 +1177,6 @@ if __name__ == "__main__":
     start_date = time_series_params["start_date"]
     end_date = time_series_params["end_date"]
 
-    n = pypsa.Network(snakemake.input.network)
     # calculate and print emissions
     co2_emissions = n.stores_t.e.filter(like="co2 atmosphere", axis=1).iloc[-1].div(1e6)[0]  # in MtCO2
     logger.info(f"Total annual CO2 emissions of {co2_emissions} MtCO2.")
