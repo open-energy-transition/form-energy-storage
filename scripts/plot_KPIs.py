@@ -60,7 +60,9 @@ def expanded_pretty_names(n):
     dict_index = {i : i for i in index_missing}
 
     for i in dict_index:
-        if "CHP" in i:
+        if "CHP CC" in i:
+            dict_index[i] = "CHP CC"
+        elif "CHP" in i:
             dict_index[i] = "CHP"
         elif "solar thermal" in i:
             dict_index[i] = "Solar Thermal"
@@ -475,7 +477,7 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, path):
             colors[c + " Charge"] = colors[c]
             df = df.drop(columns=c)
 
-    #MW to GWarch
+    #MW to GWh
     df = df/1e3
     
     #remove if smaller than 1 GWh
@@ -1130,6 +1132,8 @@ if __name__ == "__main__":
         "Oil boiler"
         "Water Tanks"
         "heat"
+        "CHP CC"
+        "CHP"
         "co2",
         "co2 stored",
         "co2 sequestered",
