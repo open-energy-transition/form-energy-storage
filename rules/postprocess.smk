@@ -112,9 +112,13 @@ KPIS = {
     },
     **{
         "curtailment_map": RESULTS
-                           + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-curtailment_{planning_horizons}.pdf",
-        "curtailment_map_EU": RESULTS
-                           + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-curtailment_EU_{planning_horizons}.pdf",
+                           + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-curtailment_DE_{planning_horizons}.pdf",
+        "curtailment_map_All": RESULTS
+                           + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-curtailment_All_{planning_horizons}.pdf",
+        "storage_map": RESULTS
+                           + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-storage_capacity_DE_{planning_horizons}.pdf",
+        "storage_map_All": RESULTS
+                           + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-storage_capacity_All_{planning_horizons}.pdf",
         "line_loading_map": RESULTS
                             + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-line_loading_{planning_horizons}.pdf",
         "energy_trade": RESULTS

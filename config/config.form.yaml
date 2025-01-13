@@ -244,14 +244,17 @@ plotting:
     lfp: '#ace37f'
     vanadium: '#9B111E'
     Vanadium Redox Flow battery storage: '#9B111E'
+    Vanadium-Redox Battery Storage: '#9B111E'
     lair: '#87CEEB'
     Liquid Air energy storage: '#87CEEB'
+    Liquid Air Energy Storage: '#87CEEB'
     pair: '#003366'
     Adiabatic CAES: '#edba1c'
     iron-air battery: '#1c404c'
     Iron-Air battery storage: '#1c404c'
     Iron-Air Battery Storage: '#1c404c'
     Li-Ion battery storage: '#ace37f'
+    Li-Ion Battery Storage: '#ace37f'
     other battery storage: '#80c944'
 
 solving:

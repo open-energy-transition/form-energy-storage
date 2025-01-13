@@ -206,6 +206,106 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legen
         fig.show()
     fig.savefig(path, bbox_inches="tight")
 
+def plot_storage_map(network, path, show_fig=True, focus_de=True, legend_circles=[5, 3, 1], bus_size_factor_ = 1e4):
+    n = network.copy()
+    map_opts = map_opts_params.copy()
+    storage_techs = snakemake.config["sector"]["storage_units"]
+    storage_techs.append("PHS")
+
+    # iron air capacities in GW
+    storage_cap = (
+        n.statistics.optimal_capacity(
+        bus_carrier=["AC", "low voltage"],
+        groupby=n.statistics.groupers.get_bus_and_carrier,
+        nice_names=False
+    ).div(1e3)   # GW
+    .sort_values(ascending=False)
+    .to_frame(name="p_nom_opt")
+    .query("carrier in @storage_techs")
+    # .query("carrier.str.contains('battery|lair|pair|vanadium|Fuel|PHS')")
+    .groupby(["bus", "carrier"]).sum()
+    )
+
+    storage_cap = storage_cap.where(storage_cap > 1e-4, 0).p_nom_opt
+    storage_cap.rename(pretty_names, inplace=True)
+
+    bus_size_factor = bus_size_factor_
+
+    n.buses.drop(n.buses.index[n.buses.carrier != "AC"], inplace=True)
+
+    if focus_de:
+        storage_cap = storage_cap.filter(like="DE", axis=0)
+        for c in n.iterate_components(n.branch_components):
+            c.df.drop(c.df.index[~((c.df.bus0.str.startswith("DE")) | (c.df.bus1.str.startswith("DE")))], inplace=True)
+        map_opts["boundaries"] = [4, 17, 46, 56]
+
+    bus_sizes = storage_cap / bus_size_factor
+
+    proj = ccrs.EqualEarth()
+
+    fig, ax = plt.subplots(figsize=(7, 6), subplot_kw={"projection": proj})
+
+    n.plot(
+        geomap=True,
+        bus_sizes=bus_sizes,
+        bus_colors=tech_colors,
+        link_widths=0,
+        branch_components=["Link"],
+        ax=ax,
+        **map_opts,
+    )
+
+    legend_x = 0
+    legend_y = 0.57
+    sizes = legend_circles  # GW
+
+    labels = [f"{s} GW" for s in sizes]
+    sizes = [s / bus_size_factor for s in sizes]
+
+    legend_kw = dict(
+        loc="upper left",
+        bbox_to_anchor=(legend_x, 1.01),
+        labelspacing=0.9,
+        handletextpad=0,
+        frameon=False,
+    )
+
+    add_legend_circles(
+        ax,
+        sizes,
+        labels,
+        srid=n.srid,
+        patch_kw=dict(facecolor="lightgrey"),
+        legend_kw=legend_kw,
+    )
+
+    carriers = storage_cap[storage_cap>0].index.get_level_values(1).unique()
+    colors = [tech_colors[c] for c in carriers]
+    labels = list(carriers)
+
+    labels = list(pd.Series(labels).replace(pretty_names))
+
+    legend_kw = dict(
+        loc="upper left",
+        bbox_to_anchor=(legend_x, legend_y - 0.35),
+        frameon=False,
+        title="Capacity",
+        alignment="left",
+    )
+
+    add_legend_patches(
+        ax,
+        colors,
+        labels,
+        legend_kw=legend_kw
+    )
+
+    ax.set_facecolor("white")
+
+    if show_fig:
+        fig.show()
+    fig.savefig(path, bbox_inches="tight")
+
 def plot_line_loading(network, regions, path, focus_de=True, value="mean", show_fig=True):
 
     n = network.copy()
@@ -957,9 +1057,11 @@ if __name__ == "__main__":
 
     # choose pretty names
     pretty_names = {
-        "lair": "Liquid Air Battery Storage",
+        "lair": "Liquid Air energy storage",
         "pair": "Adiabatic CAES",
         "vanadium": "Vanadium-Redox Battery Storage",
+        "li-ion battery": "Li-Ion Battery Storage",
+        "iron-air battery": "Iron-Air Battery Storage",
         "H2 Electrolysis": "H2 electrolysis",
         "H2 pipeline": "H2 pipeline constructed",
         "H2 pipeline retrofitted": "H2 pipeline retrofitted",
@@ -1187,8 +1289,12 @@ if __name__ == "__main__":
 
     plot_curtailment(n, regions, path=snakemake.output.curtailment_map, focus_de=True,
                      show_fig=False, legend_circles=[12, 6, 3], bus_size_factor_=8e4, vmax_price=105, vmin_price=45)
-    plot_curtailment(n, regions, path=snakemake.output.curtailment_map_EU, focus_de=False,
+    plot_curtailment(n, regions, path=snakemake.output.curtailment_map_All, focus_de=False,
                      show_fig=False, legend_circles=[20, 10, 5], bus_size_factor_=4e4, vmax_price=105, vmin_price=45)
+    plot_storage_map(n, path=snakemake.output.storage_map, focus_de=True, show_fig=False,
+                      legend_circles=[5, 3, 1], bus_size_factor_=30)
+    plot_storage_map(n, path=snakemake.output.storage_map_All, focus_de=False, show_fig=False,
+                      legend_circles=[12, 6, 3], bus_size_factor_=30)
 
     plot_line_loading(n, regions, path=snakemake.output.line_loading_map, focus_de=True, value="mean", show_fig=False)
 
