@@ -256,6 +256,14 @@ plotting:
     Li-Ion battery storage: '#ace37f'
     Li-Ion Battery Storage: '#ace37f'
     other battery storage: '#80c944'
+  storage_map_cmaps:
+    iron-air battery: "Greys"
+    li-ion battery: "Greens"
+    lair: "Oranges"
+    pair: "YlOrBr"
+    vanadium: "Reds"
+    H2: "Purples"
+    PHS: "Blues"
 
 solving:
   mem_mb: 150000 #memory in MB; 20 GB enough for 50+B+I+H2; 100 GB for 181+B+I+H2

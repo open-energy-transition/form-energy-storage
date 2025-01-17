@@ -206,13 +206,11 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legen
         fig.show()
     fig.savefig(path, bbox_inches="tight")
 
-def plot_storage_map(network, path, show_fig=True, focus_de=True, legend_circles=[5, 3, 1], bus_size_factor_ = 1e4):
+def plot_storage_map(network, regions, path=None, focus_de=True, legend_circles=[5, 3, 1], bus_size_factor_ = 1e4, tech="iron-air", cmaps={"iron-air": "Greys","li-ion": "Greens","PHS": "Blues"}, ax_ext=None, legend_patches=True):
     n = network.copy()
     map_opts = map_opts_params.copy()
-    storage_techs = snakemake.config["sector"]["storage_units"]
-    storage_techs.append("PHS")
 
-    # iron air capacities in GW
+    # storage capacities in GW
     storage_cap = (
         n.statistics.optimal_capacity(
         bus_carrier=["AC", "low voltage"],
@@ -221,29 +219,51 @@ def plot_storage_map(network, path, show_fig=True, focus_de=True, legend_circles
     ).div(1e3)   # GW
     .sort_values(ascending=False)
     .to_frame(name="p_nom_opt")
-    .query("carrier in @storage_techs")
-    # .query("carrier.str.contains('battery|lair|pair|vanadium|Fuel|PHS')")
+    .query("carrier.str.contains(@tech)")
+    .groupby(["bus"]).sum()
+    )
+
+    vres_cap = (
+        n.statistics.optimal_capacity(
+        bus_carrier=["AC", "low voltage"],
+        groupby=n.statistics.groupers.get_bus_and_carrier,
+        nice_names=False
+    ).div(1e3)   # GW
+    .sort_values(ascending=False)
+    .to_frame(name="p_nom_opt")
+    .query("carrier.str.contains('wind|solar|hydro|ror')")
     .groupby(["bus", "carrier"]).sum()
+    .rename(n.buses.location)
+    .rename(pretty_names)
     )
 
     storage_cap = storage_cap.where(storage_cap > 1e-4, 0).p_nom_opt
-    storage_cap.rename(pretty_names, inplace=True)
+    vres_cap = vres_cap.where(vres_cap > 1e-4, 0).p_nom_opt
+
+    regions["storage_cap"] = storage_cap
 
     bus_size_factor = bus_size_factor_
 
     n.buses.drop(n.buses.index[n.buses.carrier != "AC"], inplace=True)
 
     if focus_de:
+        vres_cap = vres_cap.filter(like="DE", axis=0)
         storage_cap = storage_cap.filter(like="DE", axis=0)
+        regions = regions.filter(like="DE", axis=0)
         for c in n.iterate_components(n.branch_components):
             c.df.drop(c.df.index[~((c.df.bus0.str.startswith("DE")) | (c.df.bus1.str.startswith("DE")))], inplace=True)
         map_opts["boundaries"] = [4, 17, 46, 56]
+        bus_size_factor = bus_size_factor_
 
-    bus_sizes = storage_cap / bus_size_factor
+    bus_sizes = vres_cap / bus_size_factor
 
     proj = ccrs.EqualEarth()
+    regions = regions.to_crs(proj.proj4_init)
 
-    fig, ax = plt.subplots(figsize=(7, 6), subplot_kw={"projection": proj})
+    if ax_ext is not None:
+        ax = ax_ext
+    else:
+        fig, ax = plt.subplots(figsize=(7, 6), subplot_kw={"projection": proj})
 
     n.plot(
         geomap=True,
@@ -253,6 +273,21 @@ def plot_storage_map(network, path, show_fig=True, focus_de=True, legend_circles
         branch_components=["Link"],
         ax=ax,
         **map_opts,
+    )
+
+    regions.plot(
+        ax=ax,
+        column="storage_cap",
+        cmap=cmaps[tech],
+        linewidths=0,
+        legend=True,
+        vmax=storage_cap.max(),
+        vmin=0,
+        legend_kwds={
+            "label": f"{tech.title()} Capacity [GWe]",
+            "shrink": 0.7,
+            "extend": "max",
+        },
     )
 
     legend_x = 0
@@ -279,7 +314,7 @@ def plot_storage_map(network, path, show_fig=True, focus_de=True, legend_circles
         legend_kw=legend_kw,
     )
 
-    carriers = storage_cap[storage_cap>0].index.get_level_values(1).unique()
+    carriers = vres_cap[vres_cap>0].index.get_level_values(1).unique()
     colors = [tech_colors[c] for c in carriers]
     labels = list(carriers)
 
@@ -289,18 +324,36 @@ def plot_storage_map(network, path, show_fig=True, focus_de=True, legend_circles
         loc="upper left",
         bbox_to_anchor=(legend_x, legend_y - 0.35),
         frameon=False,
-        title="Capacity",
+        title=r"\textbf{Installed capacity}",
         alignment="left",
+        ncol=2,
     )
 
-    add_legend_patches(
-        ax,
-        colors,
-        labels,
-        legend_kw=legend_kw
-    )
+    if legend_patches:
+        add_legend_patches(
+            ax,
+            colors,
+            labels,
+            legend_kw=legend_kw
+        )
 
     ax.set_facecolor("white")
+
+    if ax_ext is None and path is not None:
+        fig.savefig(path, bbox_inches="tight")
+
+def plot_storage_maps(network, regions, path, focus_de=False, legend_circles=[30, 15, 5], bus_size_factor_ = 1e2,
+                      techs=["iron-air", "li-ion", "PHS"], cmaps={"iron-air": "Greys"},
+                      show_fig=False):
+    n = network.copy()
+    proj = ccrs.EqualEarth()
+    n_techs = len(techs)
+    fig, axs = plt.subplots(n_techs, 1, figsize=(7, n_techs*6), subplot_kw={"projection": proj})
+    for i, tech in enumerate(techs):
+        ax = axs[i] if (type(axs) == np.ndarray) else axs
+        plot_storage_map(n, regions=regions, focus_de=focus_de,
+                     legend_circles=legend_circles, bus_size_factor_=bus_size_factor_, tech=tech, cmaps=cmaps, ax_ext=ax,
+                     legend_patches=True)
 
     if show_fig:
         fig.show()
@@ -366,8 +419,6 @@ def plot_line_loading(network, regions, path, focus_de=True, value="mean", show_
     link_ave = round((link_weight["w"] * link_colors).sum(),1)
 
     proj = load_projection(snakemake.params.plotting)
-
-    map_opts = snakemake.params.plotting["map"]
 
     if focus_de:
         map_opts["boundaries"] = [4, 17, 46, 56]
@@ -1042,9 +1093,31 @@ if __name__ == "__main__":
         "H2 for shipping": "#238fc4",
         "Sabatier": "#de9e46",
         "methanation": "#de9e46",
+        "Iron-Air Battery Storage": "#edba1c",
+        "Li-Ion Battery Storage": "#1c404c",
         "Reservoir \& Dam": '#298c81',
+        "Reservoir & Dam": '#298c81',
         "Solar Thermal": '#d7b24c',
         "Solar (HSAT)": "#fdb915",
+        "Solar PV (utility)": "#f9d002",
+        "Solar PV (rooftop)": '#ffea80',
+        'Offshore Wind (AC)': "#6895dd",
+        'Offshore Wind (DC)': "#74c6f2",
+        'Offshore Wind (Floating)': "#b5e2fa",
+        "Onshore Wind": "#235ebc",
+        "Run of River": '#3dbfb0',
+        "residential urban decentral gas boiler": "#de9e46",
+        "lfp": '#ace37f',
+        "vanadium": '#9B111E',
+        "Vanadium Redox Flow battery storage": '#9B111E',
+        "lair": '#87CEEB',
+        "Liquid Air energy storage": '#87CEEB',
+        "pair": '#003366',
+        "Adiabatic CAES": '#003366',
+        "iron-air battery": '#edba1c',
+        "Iron-Air battery storage": '#edba1c',
+        "Li-Ion battery storage": '#ace37f',
+        "other battery storage": '#80c944',
     }
 
     pretty_gen = {
@@ -1282,7 +1355,9 @@ if __name__ == "__main__":
     time_series_params = snakemake.params.plotting["time_series"]
     start_date = time_series_params["start_date"]
     end_date = time_series_params["end_date"]
-
+    storage_techs = snakemake.params.storage_techs
+    storage_techs.append("PHS")
+    storage_techs.append("H2 Fuel Cell")
     # calculate and print emissions
     co2_emissions = n.stores_t.e.filter(like="co2 atmosphere", axis=1).iloc[-1].div(1e6)[0]  # in MtCO2
     logger.info(f"Total annual CO2 emissions of {co2_emissions} MtCO2.")
@@ -1291,10 +1366,6 @@ if __name__ == "__main__":
                      show_fig=False, legend_circles=[12, 6, 3], bus_size_factor_=8e4, vmax_price=105, vmin_price=45)
     plot_curtailment(n, regions, path=snakemake.output.curtailment_map_All, focus_de=False,
                      show_fig=False, legend_circles=[20, 10, 5], bus_size_factor_=4e4, vmax_price=105, vmin_price=45)
-    plot_storage_map(n, path=snakemake.output.storage_map, focus_de=True, show_fig=False,
-                      legend_circles=[5, 3, 1], bus_size_factor_=30)
-    plot_storage_map(n, path=snakemake.output.storage_map_All, focus_de=False, show_fig=False,
-                      legend_circles=[12, 6, 3], bus_size_factor_=30)
 
     plot_line_loading(n, regions, path=snakemake.output.line_loading_map, focus_de=True, value="mean", show_fig=False)
 
@@ -1327,6 +1398,30 @@ if __name__ == "__main__":
     )
     pd.concat([df_storages, df_storages.sum().to_frame(name="sum").T]).round(3).to_csv(
         snakemake.output.storage_capacities, decimal=".", sep=",")
+
+    df_storages_aggregated_durations = (
+        n.statistics.optimal_capacity(
+            bus_carrier=["AC", "low voltage"],
+            groupby=n.statistics.groupers.get_country_and_carrier,
+            nice_names=False
+        ).div(1e3)  # GW
+        .sort_values(ascending=False)
+        .to_frame(name="p_nom_opt")
+        .query("p_nom_opt>1e-3")  # filter out techs lower than 1 MW
+        .query("carrier.isin(@storage_techs)")
+        .pivot_table(index="country", columns="carrier", values="p_nom_opt")
+        .fillna(0)
+    )
+    plot_storage_maps(n, regions, path=snakemake.output.storage_map, focus_de=True, show_fig=False,
+                      legend_circles=[15, 10, 5], bus_size_factor_=1e2,
+                      techs=df_storages_aggregated_durations.columns.values,
+                      cmaps=snakemake.params["plotting"]["storage_map_cmaps"]
+                      )
+    plot_storage_maps(n, regions, path=snakemake.output.storage_map_All, focus_de=False, show_fig=False,
+                      legend_circles=[30, 15, 5], bus_size_factor_ = 1e2,
+                      techs=df_storages_aggregated_durations.columns.values,
+                      cmaps=snakemake.params["plotting"]["storage_map_cmaps"]
+                      )
 
     config_kpi = snakemake.params.kpi
     if config_kpi:
