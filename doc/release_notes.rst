@@ -109,6 +109,7 @@ Upcoming Release
 
 * Bugfix: vehicle-to-grid dispatch capacity is now limited by the fraction of vehicles participating in demand-side-management, halving the dispatch capacity under the default demand-side management participation rate of 0.5.
 
+* Add demand-side-response (DSR) for the heating sector.
 
 PyPSA-Eur 0.13.0 (13th September 2024)
 ======================================

@@ -206,3 +206,655 @@ main-mds-vanilla-with-grids:
     H2_network: true
     gas_network: true
     H2_retrofit: true
+
+baseline-mds-chocolate-daclimit-ev30-dh30:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.084 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    district_heating:
+      potential: 0.3
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    land_transport_electric_share:
+      2035: 0.30 # Compromise: FE input & IEA Global EV data explorer EU (STEPS scenario)
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 20  # limit in MtCO2
+    co2_sequestration_potential:
+      2035: 40
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: [10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+
+baseline-mds-chocolate-daclimit20-ev30-dh30-seq60:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.084 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    district_heating:
+      potential: 0.3
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    land_transport_electric_share:
+      2035: 0.30 # Compromise: FE input & IEA Global EV data explorer EU (STEPS scenario)
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 20  # limit in MtCO2
+    co2_sequestration_potential:
+      2035: 60
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: [10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+
+baseline-mds-chocolate-daclimit12-ev30-dh30-seq37:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.084 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    district_heating:
+      potential: 0.3
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    land_transport_electric_share:
+      2035: 0.30 # Compromise: FE input & IEA Global EV data explorer EU (STEPS scenario)
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 12.4  # limit in MtCO2
+    co2_sequestration_potential:
+      2035: 37.2
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: [10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+
+baseline-mds-chocolate-daclimit20-ev30-dh30-seq40-nomethanation:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.084 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    district_heating:
+      potential: 0.3
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    land_transport_electric_share:
+      2035: 0.30 # Compromise: FE input & IEA Global EV data explorer EU (STEPS scenario)
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 20  # limit in MtCO2
+    methanation: false
+    co2_sequestration_potential:
+      2035: 40
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: [10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+
+baseline-mds-chocolate-daclimit20-ev30-dh30-seq60-1H:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.084 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    district_heating:
+      potential: 0.3
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    land_transport_electric_share:
+      2035: 0.30 # Compromise: FE input & IEA Global EV data explorer EU (STEPS scenario)
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 20  # limit in MtCO2
+    co2_sequestration_potential:
+      2035: 60
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: 10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+  clustering:
+    temporal:
+      resolution_sector: 1H
+
+baseline-mds-strawberry-daclimit20-seq60:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.084 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    district_heating:
+      potential: 0.3
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    land_transport_electric_share:
+      2035: 0.30 # Compromise: FE input & IEA Global EV data explorer EU (STEPS scenario)
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 20  # limit in MtCO2
+    co2_sequestration_potential:
+      2035: 60
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: [10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+
+baseline-mds-strawberry-daclimit12-seq37:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.084 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    district_heating:
+      potential: 0.3
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    land_transport_electric_share:
+      2035: 0.30 # Compromise: FE input & IEA Global EV data explorer EU (STEPS scenario)
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 12.4  # limit in MtCO2
+    co2_sequestration_potential:
+      2035: 37.2
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: [10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+
+baseline-mds-strawberry-daclimit20-seq40-nomethanation:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.084 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    district_heating:
+      potential: 0.3
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    land_transport_electric_share:
+      2035: 0.30 # Compromise: FE input & IEA Global EV data explorer EU (STEPS scenario)
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 20  # limit in MtCO2
+    methanation: false
+    co2_sequestration_potential:
+      2035: 40
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: [10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+
+baseline-mds-strawberry-daclimit12-seq37-nometh:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.084 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    district_heating:
+      potential: 0.3
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    land_transport_electric_share:
+      2035: 0.30 # Compromise: FE input & IEA Global EV data explorer EU (STEPS scenario)
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 12.4  # limit in MtCO2
+    methanation: false
+    co2_sequestration_potential:
+      2035: 37.2
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: [10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+
+baseline-mds-strawberry-daclimit12-seq37-nometh-1H:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.084 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    district_heating:
+      potential: 0.3
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    land_transport_electric_share:
+      2035: 0.30 # Compromise: FE input & IEA Global EV data explorer EU (STEPS scenario)
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 12.4  # limit in MtCO2
+    methanation: false
+    co2_sequestration_potential:
+      2035: 37.2
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: [10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+  clustering:
+    temporal:
+      resolution_sector: 1H
+
+baseline-mds-strawberry-daclimit12-seq22-nometh:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.084 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    district_heating:
+      potential: 0.3
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    land_transport_electric_share:
+      2035: 0.30 # Compromise: FE input & IEA Global EV data explorer EU (STEPS scenario)
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 12.4  # limit in MtCO2
+    methanation: false
+    co2_sequestration_potential:
+      2035: 22.3
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: [10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+
+baseline-mds-strawberry-daclimit12-seq22-nometh-co210:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.107 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    district_heating:
+      potential: 0.3
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    land_transport_electric_share:
+      2035: 0.30 # Compromise: FE input & IEA Global EV data explorer EU (STEPS scenario)
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 12.4  # limit in MtCO2
+    methanation: false
+    co2_sequestration_potential:
+      2035: 22.3
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: [10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+
+baseline-mds-strawberry-daclimit12-seq22-co210:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.107 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    district_heating:
+      potential: 0.3
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    land_transport_electric_share:
+      2035: 0.30 # Compromise: FE input & IEA Global EV data explorer EU (STEPS scenario)
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 12.4  # limit in MtCO2
+    co2_sequestration_potential:
+      2035: 22.3
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: [10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+
+baseline-mds-strawberry-daclimit12-seq22:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.084 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    district_heating:
+      potential: 0.3
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    land_transport_electric_share:
+      2035: 0.30 # Compromise: FE input & IEA Global EV data explorer EU (STEPS scenario)
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 12.4  # limit in MtCO2
+    co2_sequestration_potential:
+      2035: 22.3
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: [10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+
+baseline-mds-strawberry-daclimit12-seq22-nometh-biomass:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.084 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    biomass: true
+    district_heating:
+      potential: 0.3
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    land_transport_electric_share:
+      2035: 0.30 # Compromise: FE input & IEA Global EV data explorer EU (STEPS scenario)
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 12.4  # limit in MtCO2
+    methanation: false
+    co2_sequestration_potential:
+      2035: 22.3
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: [10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+
+baseline-mds-strawberry-daclimit12-seq22-nometh-biomass-nogasppde:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.084 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+    powerplants_filter: DateOut >= 2024 and not Fueltype.isin(['Nuclear', 'Hard Coal', 'Lignite']) and not (Country == 'DE' and Fueltype == 'Natural Gas')
+    custom_powerplants: DateIn <= 2024 and DateOut >= 2024
+  sector:
+    biomass: true
+    district_heating:
+      potential: 0.3
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    land_transport_electric_share:
+      2035: 0.30 # Compromise: FE input & IEA Global EV data explorer EU (STEPS scenario)
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 12.4  # limit in MtCO2
+    methanation: false
+    co2_sequestration_potential:
+      2035: 22.3
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: [10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+
+baseline-mds-nometh-1H:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.107 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    district_heating:
+      potential: 0.3
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    land_transport_electric_share:
+      2035: 0.30 # FE input
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 12.4  # limit in MtCO2
+    methanation: false
+    co2_sequestration_potential:
+      2035: 22.3
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: [10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+  clustering:
+    temporal:
+      resolution_sector: 1H
+
+baseline-nomds-nometh-1H:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.107 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    district_heating:
+      potential: 0.3
+    stores: []
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair"]
+    land_transport_electric_share:
+      2035: 0.30 # FE input
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 12.4  # limit in MtCO2
+    methanation: false
+    co2_sequestration_potential:
+      2035: 22.3
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: [10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+  clustering:
+    temporal:
+      resolution_sector: 1H
+
+baseline-mds-1H:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.107 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    district_heating:
+      potential: 0.3
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    land_transport_electric_share:
+      2035: 0.30 # FE input
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 12.4  # limit in MtCO2
+    co2_sequestration_potential:
+      2035: 22.3
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: [10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+  clustering:
+    temporal:
+      resolution_sector: 1H
+
+baseline-nomds-1H:
+  enable:
+    final_adjustment: true
+  co2_budget:
+    2035: 0.107 # excluding domestic transport emissions and non co2 energy emissions from scope
+  electricity:
+    max_hours:
+      li-ion battery: [1, 2, 4, 8]
+      H2: [168]
+      iron-air battery: [100]
+  sector:
+    district_heating:
+      potential: 0.3
+    stores: []
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair"]
+    land_transport_electric_share:
+      2035: 0.30 # FE input
+    land_transport_ice_share:
+      2035: 0
+    dac: true
+    dac_limit:
+        enable: true
+        2035: 12.4  # limit in MtCO2
+    co2_sequestration_potential:
+      2035: 22.3
+    residential_heat_dsm: true
+    residential_heat_restriction_value: 0.27
+    residential_heat_restriction_time: [10, 22] # 9am and 9pm
+  load:
+    scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
+  clustering:
+    temporal:
+      resolution_sector: 1H
