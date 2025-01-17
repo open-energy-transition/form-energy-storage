@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: : 2021-2024 The PyPSA-Eur Authors
+# SPDX-FileCopyrightText: Contributors to PyPSA-Eur <https://github.com/pypsa/pypsa-eur>
 #
 # SPDX-License-Identifier: CC0-1.0
 
@@ -7,7 +7,7 @@ scripts
 config
 config/test
 data
-resources/initial_main_scenarios
+report
 envs
 matplotlibrc
 Snakefile
