@@ -18,6 +18,18 @@ from _helpers import configure_logging, rename_techs, set_scenario_config
 from plot_summary import preferred_order
 from pypsa.plot import add_legend_circles, add_legend_lines, add_legend_patches
 
+from matplotlib import rc
+# activate latex text rendering
+rc('text', usetex=True)
+rc('font', **{'family': 'serif', 'serif': ['Computer Modern Roman'], 'sans-serif': ['Computer Modern Sans serif']})
+rc('axes', **{'edgecolor': 'None', 'titlesize': 18,'titleweight': 'bold', "labelsize": 14})
+rc('figure', **{'edgecolor': 'None'})
+rc('patch', **{'edgecolor': 'None'})
+rc('savefig', **{'edgecolor': 'None'})
+rc('legend', **{'fontsize': 12, 'title_fontsize': 12})
+rc('xtick', **{'labelsize': 12})
+rc('ytick', **{'labelsize': 12})
+
 logger = logging.getLogger(__name__)
 
 
