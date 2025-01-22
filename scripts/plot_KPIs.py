@@ -1100,8 +1100,6 @@ if __name__ == "__main__":
         "H2 for shipping": "#238fc4",
         "Sabatier": "#de9e46",
         "methanation": "#de9e46",
-        "Iron-Air Battery Storage": "#edba1c",
-        "Li-Ion Battery Storage": "#1c404c",
         "Reservoir \& Dam": '#298c81',
         "Reservoir & Dam": '#298c81',
         "Solar Thermal": '#d7b24c',
@@ -1114,17 +1112,6 @@ if __name__ == "__main__":
         "Onshore Wind": "#235ebc",
         "Run of River": '#3dbfb0',
         "residential urban decentral gas boiler": "#de9e46",
-        "lfp": '#ace37f',
-        "vanadium": '#9B111E',
-        "Vanadium Redox Flow battery storage": '#9B111E',
-        "lair": '#87CEEB',
-        "Liquid Air energy storage": '#87CEEB',
-        "pair": '#003366',
-        "Adiabatic CAES": '#003366',
-        "iron-air battery": '#edba1c',
-        "Iron-Air battery storage": '#edba1c',
-        "Li-Ion battery storage": '#ace37f',
-        "other battery storage": '#80c944',
     }
 
     pretty_gen = {
