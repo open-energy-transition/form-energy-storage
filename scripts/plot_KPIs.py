@@ -1044,6 +1044,13 @@ def plot_in_detail(df, plot_kw, path):
     fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")
 
+def extract_li_ion_durations(n):
+    n_duration = n.copy()
+    li_ion_i = n_duration.storage_units.filter(like="li-ion", axis=0).index
+    n_duration.storage_units.loc[li_ion_i, "carrier"] = n_duration.storage_units.loc[li_ion_i, "carrier"] + " " + \
+                                                        n_duration.storage_units.loc[li_ion_i, "carrier"].index.str[-2:]
+    return n_duration
+
 if __name__ == "__main__":
 
     if "snakemake" not in globals():
@@ -1134,6 +1141,10 @@ if __name__ == "__main__":
         "pair": "Adiabatic CAES",
         "vanadium": "Vanadium-Redox Battery Storage",
         "li-ion battery": "Li-Ion Battery Storage",
+        "li-ion battery 1h": "Li-Ion Battery Storage 1h",
+        "li-ion battery 2h": "Li-Ion Battery Storage 2h",
+        "li-ion battery 4h": "Li-Ion Battery Storage 4h",
+        "li-ion battery 8h": "Li-Ion Battery Storage 8h",
         "iron-air battery": "Iron-Air Battery Storage",
         "H2 Electrolysis": "H2 electrolysis",
         "H2 pipeline": "H2 pipeline constructed",
@@ -1218,6 +1229,10 @@ if __name__ == "__main__":
     sector_names = {
         "Iron-Air Battery Storage": "Power Sector",
         "Li-Ion Battery Storage": "Power Sector",
+        "Li-Ion Battery Storage 1h": "Power Sector",
+        "Li-Ion Battery Storage 2h": "Power Sector",
+        "Li-Ion Battery Storage 4h": "Power Sector",
+        "Li-Ion Battery Storage 8h": "Power Sector",
         "Vanadium Redox Flow battery storage": "Power Sector",
         "Liquid Air energy storage": "Power Sector",
         "Adiabatic CAES": "Power Sector",
@@ -1381,16 +1396,18 @@ if __name__ == "__main__":
     df_eql = prepare_energy_balance(n)
     df_SOC = prepare_SOC(n)
 
+    n_duration = extract_li_ion_durations(n)
+
     df_storages = (
-        n.statistics.optimal_capacity(
+        n_duration.statistics.optimal_capacity(
             bus_carrier=["AC", "low voltage"],
-            groupby=n.statistics.groupers.get_country_and_carrier,
+            groupby=n_duration.statistics.groupers.get_country_and_carrier,
             nice_names=False
         ).div(1e3)  # GW
         .sort_values(ascending=False)
         .to_frame(name="p_nom_opt")
-        .query("p_nom_opt>1e-5")
-        .query("carrier.str.contains('battery|lair|pair|vanadium|Fuel|PHS')")
+        .query("p_nom_opt>1e-3")
+        .query("carrier.isin(@storage_techs) or carrier.str.contains('li-ion')")
         .pivot_table(index="country", columns="carrier", values="p_nom_opt")
         .fillna(0)
         .assign(sum=lambda x: x.sum(axis=1))
