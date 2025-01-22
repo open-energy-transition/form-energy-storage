@@ -87,7 +87,7 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legen
     map_opts = map_opts_params.copy()
 
     # curtailment = n.statistics.curtailment(groupby=n.statistics.groupers.get_bus_and_carrier).droplevel(0).loc[regions.index,:,:]
-    elec_generation = n.generators.carrier.replace(pretty_gen).unique()
+    elec_generation = n.generators.carrier.replace(pretty_gen).to_frame().query("not carrier.str.contains('solar thermal')").carrier.unique()
     curtailment = n.statistics.curtailment(groupby=n.statistics.groupers.get_bus_and_carrier).droplevel(0)
     elec_i = pd.Index(set(curtailment.index.get_level_values(1)).intersection(elec_generation))
     curtailment_elec = curtailment.loc[:, elec_i, :].reset_index()
