@@ -108,7 +108,7 @@ KPIS = {
         + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-"
         + f"{kpi_fn}"
         + "_{planning_horizons}.pdf"
-        for kpi_fn in config["kpi"]
+        for kpi_fn in config["kpi"]["custom_plots"]
     },
     **{
         "curtailment_map": RESULTS

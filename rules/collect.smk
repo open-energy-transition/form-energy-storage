@@ -37,7 +37,7 @@ def create_kpi_path(w):
         **config["scenario"],
         run=config["run"]["name"],
         )
-        for kpi_fn in config_provider("kpi")(w)
+        for kpi_fn in config_provider("kpi")(w)["custom_plots"]
     }
 
 rule plot_KPIs_all:

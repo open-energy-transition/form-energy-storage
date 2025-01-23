@@ -514,7 +514,7 @@ def prepare_energy_balance(n):
 
     return df
 
-def filter_plot_energy_balance(network, dataframe, kpi_param, path):
+def filter_plot_energy_balance(network, dataframe, kpi_param, filter_scheme, path):
 
     carrier_filter = kpi_param.get("carrier_filter", "electricity")
     group_carrier = kpi_param.get("group_carrier", None)
@@ -585,12 +585,7 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, path):
 
     # Model 6: Storage
     if carrier_filter == "storage":
-        storage_cap = [
-            "Iron-Air Battery Storage","Li-Ion Battery Storage","lair","vanadium","pair",
-            "Adiabatic CAES","H2 Fuel Cell","H2 Electrolysis","Pumped Hydro Storage",
-            "V2G",'residential rural water tanks',
-            'urban central water tanks','residential urban decentral water tanks',
-        ]
+        storage_cap = filter_scheme["storage-cap"]
         df = df[df.index.get_level_values("carrier").isin(storage_cap)]
         df = df.query("not (carrier.str.contains('V2G') and bus_carrier.str.contains('EV battery'))")
         df = df.groupby(["bus","carrier"]).sum()
@@ -868,7 +863,7 @@ def calculate_generation(network, countries):
     
     return df
 
-def filter_and_rename(network, df, carrier_filter = None, group_carrier = None):
+def filter_and_rename(network, df, carrier_filter = None, group_carrier = None, filter_scheme = {}):
     n = network.copy()
 
     # Replace countries with short country names
@@ -895,39 +890,8 @@ def filter_and_rename(network, df, carrier_filter = None, group_carrier = None):
         carrier = carrier.append(stats.filter(like="EV battery",axis=0).index.get_level_values("carrier").unique())
         df = df.loc[df.index.isin(carrier),:]
 
-    elif carrier_filter == "storage":
-        carrier = pd.Index([
-            "Iron-Air Battery Storage","Li-Ion Battery Storage","lair","vanadium","pair",
-            "H2 Fuel Cell","H2 Store","H2 Electrolysis","Pumped Hydro Storage",
-            "BEV charger","EV battery","V2G",'residential rural water tanks',
-            'urban central water tanks','residential urban decentral water tanks',
-        ])
-        df = df.loc[df.index.isin(carrier),:]
-
-    elif carrier_filter == "storage-cap":
-        carrier = pd.Index([
-            "Iron-Air Battery Storage","Li-Ion Battery Storage","lair","vanadium","pair",
-            "Adiabatic CAES","H2 Fuel Cell","H2 Electrolysis","Pumped Hydro Storage",
-            "V2G",'residential rural water tanks',
-            'urban central water tanks','residential urban decentral water tanks',
-        ])
-        df = df.loc[df.index.isin(carrier),:]
-
-    elif carrier_filter == "storage-energy":
-        carrier = pd.Index([
-            "Iron-Air Battery Storage","Li-Ion Battery Storage","lair","vanadium","pair",
-            "Adiabatic CAES","H2 Store","Pumped Hydro Storage","EV battery",'residential rural water tanks',
-            'urban central water tanks','residential urban decentral water tanks',
-        ])
-        df = df.loc[df.index.isin(carrier),:]
-
-    elif carrier_filter == "power":
-        carrier = pd.Index([
-            "solar rooftop","Solar","solar-hsat","Onshore Wind","Offshore Wind (DC)",
-            "Offshore Wind (AC)","Offshore Wind (Floating)","Run of River","Reservoir & Dam",
-            "Open-Cycle Gas","Combined-Cycle Gas","nuclear","oil","lignite","coal"
-        ])
-        df = df.loc[df.index.isin(carrier),:]
+    elif carrier_filter in filter_scheme:
+        df = df.loc[df.index.isin(filter_scheme[carrier_filter]),:]
 
     # Group carrier
     if group_carrier == "pretty":
@@ -1044,11 +1008,27 @@ def plot_in_detail(df, plot_kw, path):
     fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")
 
-def extract_li_ion_durations(n):
+def extract_durations(n, carrier="li-ion battery"):
+
+    
     n_duration = n.copy()
-    li_ion_i = n_duration.storage_units.filter(like="li-ion", axis=0).index
-    n_duration.storage_units.loc[li_ion_i, "carrier"] = n_duration.storage_units.loc[li_ion_i, "carrier"] + " " + \
-                                                        n_duration.storage_units.loc[li_ion_i, "carrier"].index.str[-2:]
+    
+    # prepare combining the carrier name and its duration
+    carrier_i = n_duration.storage_units.filter(like=carrier, axis=0).index
+    max_hours = n_duration.storage_units.loc[carrier_i, "max_hours"].apply(lambda x: str(round(x)) + "h")
+
+    logger.info(f"Disaggregating {carrier} by adding {max_hours.unique()}")
+    
+    # add the carriers and nice name
+    for d in max_hours.unique():
+        new_carrier = carrier + " " + d
+        n_duration.carriers.loc[new_carrier,:] = n_duration.carriers.loc[carrier,:]
+        n_duration.carriers.loc[new_carrier,"nice_name"] = n_duration.carriers.loc[carrier,"nice_name"] + " " + d
+        if new_carrier in tech_colors:
+            n_duration.carriers.loc[new_carrier,"color"] = tech_colors[new_carrier]
+    
+    n_duration.storage_units.loc[carrier_i, "carrier"] += " " + max_hours[carrier_i]
+
     return n_duration
 
 if __name__ == "__main__":
@@ -1106,12 +1086,14 @@ if __name__ == "__main__":
         "Solar (HSAT)": "#fdb915",
         "Solar PV (utility)": "#f9d002",
         "Solar PV (rooftop)": '#ffea80',
+        'Offshore Wind': "#6895dd",
         'Offshore Wind (AC)': "#6895dd",
         'Offshore Wind (DC)': "#74c6f2",
         'Offshore Wind (Floating)': "#b5e2fa",
         "Onshore Wind": "#235ebc",
         "Run of River": '#3dbfb0',
         "residential urban decentral gas boiler": "#de9e46",
+        "Hydroelectricity": '#298c81'
     }
 
     pretty_gen = {
@@ -1147,16 +1129,22 @@ if __name__ == "__main__":
         "methanation": "Methanation (Sabatier)",
         "land transport fuel cell": "Land transport H2 demand",
         "methanolisation": "Methanol synthesis",
-        "offshore wind (AC)": "Offshore Wind (AC)",
-        "offshore wind (DC)": "Offshore Wind (DC)",
-        "offwind-ac": "Offshore Wind (AC)",
-        "offwind-dc": "Offshore Wind (DC)",
-        "offshore wind": "Offshore Wnd",
+        "Offshore Wind (AC)": "Offshore Wind", # Special Case: aggregate all offshore wind to one
+        "Offshore Wind (DC)": "Offshore Wind",
+        "Offshore Wind (Floating)": "Offshore Wind",
+        "offshore wind (AC)": "Offshore Wind",
+        "offshore wind (DC)": "Offshore Wind",
+        "offwind-ac": "Offshore Wind",
+        "offwind-dc": "Offshore Wind",
+        "offwind-float": "Offshore Wind",
+        "offshore wind": "Offshore Wind",
         "onwind": "Onshore Wind",
         "onshore wind": "Onshore Wind",
-        "solar PV": "Solar PV (utility)",
+        "solar PV": "Solar PV (utility)", # Special Case: aggregate pv to utility and rooftop
         "solar": "Solar PV (utility)",
+        "solar-hsat": "Solar PV (utility)", 
         "solar rooftop": "Solar PV (rooftop)",
+        "hydro": "Hydroelectricity",
         "hydroelectricity": "Hydroelectricity",
         "uranium": "Uranium",
         "solid biomass": "Solid biomass",
@@ -1199,8 +1187,6 @@ if __name__ == "__main__":
         "transmission lines": "Transmission lines",
         "Reservoir & Dam": "Reservoir \& Dam",  # Note, revert this back to /&
         "ror": "Run of River",
-        "offwind-float": "Offshore Wind (Floating)",
-        "solar-hsat": "Solar (HSAT)",
         "V2G": "Vehicle-to-Grid",
     }
 
@@ -1358,8 +1344,7 @@ if __name__ == "__main__":
     start_date = time_series_params["start_date"]
     end_date = time_series_params["end_date"]
     storage_techs = snakemake.params.storage_techs
-    storage_techs.append("PHS")
-    storage_techs.append("H2 Fuel Cell")
+    storage_techs += ["PHS","H2 Fuel Cell"]
     # calculate and print emissions
     co2_emissions = n.stores_t.e.filter(like="co2 atmosphere", axis=1).iloc[-1].div(1e6)[0]  # in MtCO2
     logger.info(f"Total annual CO2 emissions of {co2_emissions} MtCO2.")
@@ -1375,33 +1360,6 @@ if __name__ == "__main__":
     countries = snakemake.params.countries
 
     plot_energy_trade(n, countries, path=snakemake.output.energy_trade)
-
-    df_cost = calculate_system_cost_csv(n, snakemake.input.nodal_costs, countries)
-    df_capacity_csv = calculate_capacity_csv(n, snakemake.input.nodal_capacity, countries)
-    df_gen = calculate_generation(n, countries)
-    df_co2 = calculate_emission(n, countries)
-    df_eql = prepare_energy_balance(n)
-    df_SOC = prepare_SOC(n)
-
-    n_duration = extract_li_ion_durations(n)
-
-    df_storages = (
-        n_duration.statistics.optimal_capacity(
-            bus_carrier=["AC", "low voltage"],
-            groupby=n_duration.statistics.groupers.get_country_and_carrier,
-            nice_names=False
-        ).div(1e3)  # GW
-        .sort_values(ascending=False)
-        .to_frame(name="p_nom_opt")
-        .query("p_nom_opt>1e-3")
-        .query("carrier.isin(@storage_techs) or carrier.str.contains('li-ion')")
-        .pivot_table(index="country", columns="carrier", values="p_nom_opt")
-        .fillna(0)
-        .assign(sum=lambda x: x.sum(axis=1))
-        .sort_values(by=["sum"], ascending=False)
-    )
-    pd.concat([df_storages, df_storages.sum().to_frame(name="sum").T]).round(3).to_csv(
-        snakemake.output.storage_capacities, decimal=".", sep=",")
 
     df_storages_aggregated_durations = (
         n.statistics.optimal_capacity(
@@ -1426,10 +1384,45 @@ if __name__ == "__main__":
                       techs=df_storages_aggregated_durations.columns.values,
                       cmaps=snakemake.params["plotting"]["storage_map_cmaps"]
                       )
+    
+    # Preparing iterative data with aggregated Li-Ion Battery
+    df_cost = calculate_system_cost_csv(n, snakemake.input.nodal_costs, countries)
+    df_capacity_csv = calculate_capacity_csv(n, snakemake.input.nodal_capacity, countries)
+    df_SOC = prepare_SOC(n)
+
+    # disaggregate Li-Ion Battery
+    carrier_diaggregate = "li-ion battery"
+    n = extract_durations(n, carrier=carrier_diaggregate)
+    storage_techs += ["V2G"]
+    storage_techs += n.carriers.filter(like=carrier_diaggregate, axis=0).index.to_list()
+    storage_techs_nice_name = [n.carriers.nice_name[x] for x in storage_techs]
+
+    df_storages = (
+        n.statistics.optimal_capacity(
+            bus_carrier=["AC", "low voltage"],
+            groupby=n.statistics.groupers.get_country_and_carrier,
+        ).div(1e3)  # GW
+        .sort_values(ascending=False)
+        .to_frame(name="p_nom_opt")
+        .query("p_nom_opt>1e-3")
+        .query("carrier.isin(@storage_techs_nice_name)")
+        .pivot_table(index="country", columns="carrier", values="p_nom_opt")
+        .fillna(0)
+        .assign(sum=lambda x: x.sum(axis=1))
+        .sort_values(by=["sum"], ascending=False)
+    )
+    pd.concat([df_storages, df_storages.sum().to_frame(name="sum").T]).round(3).to_csv(
+        snakemake.output.storage_capacities, decimal=".", sep=",")
+    
+    # Preparing iterative data with disaggregate Li-Ion Battery
+    df_gen = calculate_generation(n, countries)
+    df_co2 = calculate_emission(n, countries)
+    df_eql = prepare_energy_balance(n)
 
     config_kpi = snakemake.params.kpi
-    if config_kpi:
-        for fn, kpi_param in config_kpi.items():
+    filter_scheme = config_kpi.get("filter_scheme",{})
+    if config_kpi.get("custom_plots"):
+        for fn, kpi_param in config_kpi["custom_plots"].items():
             try:
                 logger.info(f"Preparing plot {fn}")
 
@@ -1453,7 +1446,7 @@ if __name__ == "__main__":
                 #time series plots have their own route
                 elif extract_param == "energy balance":
                     df = df_eql.copy(deep=True)
-                    filter_plot_energy_balance(n, df, kpi_param, snakemake.output[fn])
+                    filter_plot_energy_balance(n, df, kpi_param, filter_scheme, snakemake.output[fn])
                     continue
                 elif extract_param == "SOC":
                     df = df_SOC.copy(deep=True)
@@ -1474,7 +1467,10 @@ if __name__ == "__main__":
                 group_carrier = kpi_param.get("group_carrier",None)
                 if "TW" in kpi_param.get("plot_kw",{}).get("ylabel", ""):
                     df *= 1e-3
-                df = filter_and_rename(n, df, carrier_filter = carrier_filter, group_carrier = group_carrier)
+                df = filter_and_rename(n, df, carrier_filter = carrier_filter, 
+                                       group_carrier = group_carrier, 
+                                       filter_scheme = filter_scheme
+                                       )
 
                 plot_param = kpi_param.get("plot",None)
                 plot_kw = kpi_param.get("plot_kw",{})
