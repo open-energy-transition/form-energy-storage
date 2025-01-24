@@ -1143,6 +1143,7 @@ if __name__ == "__main__":
         "onshore wind": "Onshore Wind",
         "solar PV": "Solar PV (utility)", # Special Case: aggregate pv to utility and rooftop
         "solar": "Solar PV (utility)",
+        "Solar": "Solar PV (utility)",
         "solar-hsat": "Solar PV (utility)", 
         "solar rooftop": "Solar PV (rooftop)",
         "hydro": "Hydroelectricity",
