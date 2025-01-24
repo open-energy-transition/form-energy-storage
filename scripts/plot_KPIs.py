@@ -1093,7 +1093,8 @@ if __name__ == "__main__":
         "Onshore Wind": "#235ebc",
         "Run of River": '#3dbfb0',
         "residential urban decentral gas boiler": "#de9e46",
-        "Hydroelectricity": '#298c81'
+        "Hydroelectricity": '#298c81',
+        "Gas Turbine": '#a85522',
     }
 
     pretty_gen = {
@@ -1145,7 +1146,10 @@ if __name__ == "__main__":
         "solar-hsat": "Solar PV (utility)", 
         "solar rooftop": "Solar PV (rooftop)",
         "hydro": "Hydroelectricity",
-        "hydroelectricity": "Hydroelectricity",
+        "Reservoir & Dam": "Hydroelectricity", #"Reservoir \& Dam", # Note, revert this back to /&
+        "hydroelectricity": "Hydroelectricity", # Special Case: aggregate ror and hydro to hydroelectricty
+        "ror": "Hydroelectricity",
+        "Run of River": "Hydroelectricity",
         "uranium": "Uranium",
         "solid biomass": "Solid biomass",
         "solid biomass for industry": "Industry biomass demand",
@@ -1163,11 +1167,16 @@ if __name__ == "__main__":
         "gas": "Methane",
         "oil": "Oil",
         "oil primary": "Oil",
-        "coal": "Coal",
         "oil boiler": "Oil boiler",
         "gas boiler": "Gas boiler",
         "nuclear": "Nuclear",
-        "lignite": "Lignite",
+        "coal": "Coal", # Special Case: aggregate lignite with coal
+        "lignite": "Coal", 
+        "Lignite": "Coal",
+        "Combined-Cycle Gas": "Gas Turbine", # Special Case: aggregate CCGT with OCGT
+        "Open-Cycle Gas": "Gas Turbine",
+        "CCGT": "Gas Turbine",
+        "OCGT": "Gas Turbine",
         "land transport oil": "Land transport oil demand",
         "land transport EV": "Land transport EV",
         "naphtha for industry": "Industry naphtha demand",
@@ -1185,8 +1194,6 @@ if __name__ == "__main__":
         "resistive heater": "Resistive heater",
         "electricity distribution grid": "Electricity distribution grid",
         "transmission lines": "Transmission lines",
-        "Reservoir & Dam": "Reservoir \& Dam",  # Note, revert this back to /&
-        "ror": "Run of River",
         "V2G": "Vehicle-to-Grid",
     }
 
