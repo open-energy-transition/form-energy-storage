@@ -79,7 +79,7 @@ rule all:
         "report/report.pdf",
         expand(
             RESULTS
-            + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-curtailment_{planning_horizons}.pdf",
+            + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-storage_capacity_DE_{planning_horizons}.pdf",
             ** config["scenario"],
             run=config["run"]["name"],
             allow_missing=True,

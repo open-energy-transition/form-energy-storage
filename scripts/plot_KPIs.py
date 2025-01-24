@@ -101,7 +101,7 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legen
         electricity_price
     )
 
-    bus_size_factor = bus_size_factor_
+    bus_size_factor = float(bus_size_factor_)
 
     n.buses.drop(n.buses.index[n.buses.carrier != "AC"], inplace=True)
 
@@ -111,7 +111,7 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legen
         for c in n.iterate_components(n.branch_components):
             c.df.drop(c.df.index[~((c.df.bus0.str.startswith("DE")) | (c.df.bus1.str.startswith("DE")))], inplace=True)
         map_opts["boundaries"] = [4, 17, 46, 56]
-        bus_size_factor = bus_size_factor_
+        bus_size_factor = float(bus_size_factor_)
 
     # calculate total curtailment
     total_curtailment = curtailment_elec.groupby(level=0).sum().sum()
@@ -1356,11 +1356,6 @@ if __name__ == "__main__":
     co2_emissions = n.stores_t.e.filter(like="co2 atmosphere", axis=1).iloc[-1].div(1e6)[0]  # in MtCO2
     logger.info(f"Total annual CO2 emissions of {co2_emissions} MtCO2.")
 
-    plot_curtailment(n, regions, path=snakemake.output.curtailment_map, focus_de=True,
-                     show_fig=False, legend_circles=[12, 6, 3], bus_size_factor_=8e4, vmax_price=105, vmin_price=45)
-    plot_curtailment(n, regions, path=snakemake.output.curtailment_map_All, focus_de=False,
-                     show_fig=False, legend_circles=[20, 10, 5], bus_size_factor_=4e4, vmax_price=105, vmin_price=45)
-
     plot_line_loading(n, regions, path=snakemake.output.line_loading_map, focus_de=True, value="mean", show_fig=False)
 
     # extract all the nessesary statistics
@@ -1458,6 +1453,20 @@ if __name__ == "__main__":
                 elif extract_param == "SOC":
                     df = df_SOC.copy(deep=True)
                     filter_plot_SOC(n, df, kpi_param, snakemake.output[fn])
+                    continue
+                elif extract_param == "curtailment_DE":
+                    plot_curtailment(n, regions, path=snakemake.output[fn], focus_de=True,
+                                     show_fig=False, legend_circles=kpi_param.get("legend_cirlces", [12, 6, 3]),
+                                     bus_size_factor_=kpi_param.get("bus_size_factor", 8e4),
+                                     vmax_price=kpi_param.get("vmax_price", 115),
+                                     vmin_price=kpi_param.get("vmin_price", 80))
+                    continue
+                elif extract_param == "curtailment_All":
+                    plot_curtailment(n, regions, path=snakemake.output[fn], focus_de=False,
+                                     show_fig=False, legend_circles=kpi_param.get("legend_cirlces", [20, 10, 5]),
+                                     bus_size_factor_=kpi_param.get("bus_size_factor", 8e4),
+                                     vmax_price=kpi_param.get("vmax_price", 115),
+                                     vmin_price=kpi_param.get("vmin_price", 60))
                     continue
 
                 include = kpi_param.get("include",False)

@@ -32,6 +32,19 @@ kpi:
       ]
 
   custom_plots:
+    # Curtailment plots
+    DE_curtailment_map:
+      extract: curtailment_DE
+      legend_cirlces: [12, 6, 3]
+      bus_size_factor: 8e4
+      vmax_price: 115
+      vmin_price: 80
+    All_curtailment_map:
+      extract: curtailment_All
+      legend_cirlces: [20, 10, 5]
+      bus_size_factor: 5e4
+      vmax_price: 115
+      vmin_price: 60
   # Total System Cost
     All_system_cost:
       extract: system cost
