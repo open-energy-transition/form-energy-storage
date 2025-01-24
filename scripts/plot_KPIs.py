@@ -93,6 +93,7 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legen
     curtailment_elec = curtailment.loc[:, elec_i, :].reset_index()
     curtailment_elec = curtailment_elec.rename(index=curtailment_elec.bus.map(n.buses.location))
     curtailment_elec["bus"] = curtailment_elec.index
+    curtailment_elec = curtailment_elec.replace({"carrier":pretty_names})
     curtailment_elec = curtailment_elec.groupby(["bus", "carrier"]).sum()
     curtailment_elec = curtailment_elec.loc[regions.index, 0].div(1e3)  # GWh
     electricity_price = n.buses_t.marginal_price.loc[:, regions.index].mean(axis=0)
@@ -182,8 +183,6 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legen
     carriers = curtailment_elec.index.get_level_values(1).unique()
     colors = [tech_colors[c] for c in carriers]
     labels = list(carriers)
-
-    labels = list(pd.Series(labels).replace(pretty_names))
 
     legend_kw = dict(
         loc="upper left",
@@ -630,7 +629,7 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, filter_scheme, pat
     to_drop = abs(n.snapshot_weightings.objective @ df) < 1
     df = df.loc[:,~to_drop]
     
-    fig, ax = plt.subplots(figsize=(12,5))
+    fig, ax = plt.subplots(figsize=(12,9)) 
     
     df_plot = df[df.columns.difference([line_carrier])]
     
