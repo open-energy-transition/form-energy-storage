@@ -11,6 +11,13 @@ Release Notes
 Upcoming Release
 ================
 
+
+* Feature: Add `Plot_KPIs` which generates both predefined and configurable results figures from ``config/config.kpi.yaml``. To generate those figures, use the rule``plot_KPIs_all``.
+
+* Added option to include an exogenous DAC yearly limit specified via the configuration file (in MtCO2)
+
+* Added Iron-Air battery storage technology and changed nomenclature for lithium-ion battery storages from ``battery`` to ``li-ion battery``.
+
 * Feature: Introduce geothermal district heating (direct utilisation and heat pumps). Potentials are based on `Manz et al. 2024: Spatial analysis of renewable and excess heat potentials for climate-neutral district heating in Europe <https://www.sciencedirect.com/science/article/pii/S0960148124001769>`.
 
 * Feature: Allow CHPs to use different fuel sources such as gas, oil, coal, and methanol. Note that the cost assumptions are based on a gas CHP (except for solid biomass-fired CHP).
@@ -103,6 +110,8 @@ Upcoming Release
   - Single transformers for each combination of voltage level per substation. Transformers now have a capacity s_nom based on connected lines
   - Use of OSM relations where available and unambiguous (Overwriting all lines that are members of the respective relation to avoid duplicates)
 
+* Add demand-side-response (DSR) for the heating sector.
+
 * Updated osm-prebuilt base network to version 0.6, for changelog, see https://zenodo.org/records/14144752
 
 * Bugfix: vehicle-to-grid dispatch capacity is now limited by the fraction of vehicles participating in demand-side-management, halving the dispatch capacity under the default demand-side management participation rate of 0.5.
@@ -114,7 +123,6 @@ Upcoming Release
 * Development: Ruff is now used for linting and formatting. It is used in the pre-commit, so no changes are needed. But you might wanna set it up in your IDE.
 
 * Update locations and capacities of ammonia plants.
-
 
 PyPSA-Eur 0.13.0 (13th September 2024)
 ======================================
