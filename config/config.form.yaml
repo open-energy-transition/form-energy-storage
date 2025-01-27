@@ -258,19 +258,44 @@ clustering:
     resolution_sector: 2920SEG
 
 plotting:
+  time_series:
+    start_date: '2013-05-01'
+    end_date: '2013-06-01'
+  costs_max: 40
+  costs_threshold: 0.01
   tech_colors:
     # all battery variation:
     lfp: '#ace37f'
     vanadium: '#9B111E'
     Vanadium Redox Flow battery storage: '#9B111E'
+    Vanadium-Redox Battery Storage: '#9B111E'
     lair: '#87CEEB'
     Liquid Air energy storage: '#87CEEB'
+    Liquid Air Energy Storage: '#87CEEB'
     pair: '#003366'
-    Adiabatic CAES: '#003366'
-    iron-air battery: '#edba1c'
-    Iron-Air battery storage: '#edba1c'
+    Adiabatic CAES: '#edba1c'
+    iron-air battery: '#1c404c'
+    Iron-Air battery storage: '#1c404c'
+    Iron-Air Battery Storage: '#1c404c'
     Li-Ion battery storage: '#ace37f'
+    li-ion battery 1h: '#445A32'
+    li-ion battery 2h: '#67884C'
+    li-ion battery 4h: '#89B565'
+    li-ion battery 8h: '#ace37f'
+    Li-Ion Battery Storage 1h: '#445A32'
+    Li-Ion Battery Storage 2h: '#67884C'
+    Li-Ion Battery Storage 4h: '#89B565'
+    Li-Ion Battery Storage 8h: '#ace37f'
+    Li-Ion Battery Storage: '#ace37f'
     other battery storage: '#80c944'
+  storage_map_cmaps:
+    iron-air battery: "Greys"
+    li-ion battery: "Greens"
+    lair: "Oranges"
+    pair: "YlOrBr"
+    vanadium: "Reds"
+    H2: "Purples"
+    PHS: "Blues"
 
 solving:
   mem_mb: 150000 #memory in MB; 20 GB enough for 50+B+I+H2; 100 GB for 181+B+I+H2

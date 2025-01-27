@@ -11,6 +11,9 @@ Release Notes
 Upcoming Release
 ================
 
+
+* Feature: Add `Plot_KPIs` which generates both predefined and configurable results figures from ``config/config.kpi.yaml``. To generate those figures, use the rule``plot_KPIs_all``.
+
 * Added option to include an exogenous DAC yearly limit specified via the configuration file (in MtCO2)
 
 * Added Iron-Air battery storage technology and changed nomenclature for lithium-ion battery storages from ``battery`` to ``li-ion battery``.

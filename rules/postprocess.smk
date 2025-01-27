@@ -102,6 +102,57 @@ if config["foresight"] != "perfect":
         script:
             "../scripts/plot_gas_network.py"
 
+KPIS = {
+    **{
+        f"{kpi_fn}": RESULTS
+        + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-"
+        + f"{kpi_fn}"
+        + "_{planning_horizons}.pdf"
+        for kpi_fn in config["kpi"]["custom_plots"]
+    },
+    **{
+        "storage_map": RESULTS
+                           + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-storage_capacity_DE_{planning_horizons}.pdf",
+        "storage_map_All": RESULTS
+                           + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-storage_capacity_All_{planning_horizons}.pdf",
+        "line_loading_map": RESULTS
+                            + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-line_loading_{planning_horizons}.pdf",
+        "energy_trade": RESULTS
+                            + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-electricity_trade_{planning_horizons}.pdf",
+        "storage_capacities": RESULTS
+                            + "csvs/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-storage_capacities_GW_{planning_horizons}.csv",
+    }
+}
+rule plot_KPIs:
+    params:
+        plotting=config_provider("plotting"),
+        kpi=config_provider("kpi"),
+        countries=config_provider("countries"),
+        storage_techs=config_provider("sector", "storage_units"),
+    input:
+        network=RESULTS
+        + "postnetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
+        regions=resources("regions_onshore_base_s_{clusters}.geojson"),
+        nodal_costs=RESULTS + "csvs/nodal_costs.csv",
+        nodal_capacity=RESULTS + "csvs/nodal_capacities.csv",
+    output:
+        **KPIS
+    threads: 2
+    resources:
+        mem_mb=10000,
+    log:
+        RESULTS
+        + "logs/plot_KPIs/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.log",
+    benchmark:
+        (
+                RESULTS
+                + "benchmarks/plot_KPIs/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}"
+        )
+    conda:
+        "../envs/environment.yaml"
+    script:
+        "../scripts/plot_KPIs.py"
+
 
 if config["foresight"] == "perfect":
 
