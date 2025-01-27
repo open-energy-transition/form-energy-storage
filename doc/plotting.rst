@@ -80,6 +80,7 @@ Key components of each configuration:
 3. `carrier_filter`: Specifies the energy carriers or technologies (e.g., power, electricity, storage, heat) relevant to the figure.
 4. `group_carrier`: Specifies the names used for each carrier. Same names are aggregated.
 5. `plot`: Determines the type of plot or visualization to be used (e.g., "detail" for detailed data, "overview" for broader data representation).
+6. `figsize`: Determines the figsize of the plots. If not defined, the default size are chosen.
 6. `plot_kw`: Additional keyword arguments for the plot (e.g., title, labels, and axis).
 
 Breakdown of the components:
@@ -128,7 +129,12 @@ Breakdown of the components:
   - `overview`: Multiple bar plots are created.
   - The `plot` for energy balance and SOC is always in a time-series format.
 
-6. **plot_kw**:
+6. **figsize**:
+
+  - For detail plots: the default figsize is (6,8)
+  - For overview, energy balance and SOC plots: the default figsize is (12,9)
+
+7. **plot_kw**:
 
   - For system cost, capacity, capacity stats, generation, and emission, see `matplotlib.pyplot.bar documentation <https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.bar.html>`__.
   - For energy balance and SOC, see `pandas.DataFrame.plot documentation <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html#pandas.DataFrame.plot>`__.

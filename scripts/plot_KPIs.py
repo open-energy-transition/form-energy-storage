@@ -629,7 +629,7 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, filter_scheme, pat
     to_drop = abs(n.snapshot_weightings.objective @ df) < 1
     df = df.loc[:,~to_drop]
     
-    fig, ax = plt.subplots(figsize=(12,9)) 
+    fig, ax = plt.subplots(figsize=kpi_param.get("figsize",(12,9))) 
     
     df_plot = df[df.columns.difference([line_carrier])]
     
@@ -721,7 +721,7 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
         if not plot_kw.get("ylim", False):
             plot_kw["ylim"] = [0, None]
 
-    fig, ax = plt.subplots(figsize=(12,5))
+    fig, ax = plt.subplots(figsize=kpi_param.get("figsize",(12,9)))
 
     df.plot(ax = ax, color = [colors[c] for c in df.columns], **plot_kw)
 
@@ -862,7 +862,7 @@ def calculate_generation(network, countries):
     
     return df
 
-def filter_and_rename(network, df, carrier_filter = None, group_carrier = None, filter_scheme = {}):
+def filter_and_rename(network, df, filter_scheme = {}, carrier_filter = None, group_carrier = None):
     n = network.copy()
 
     # Replace countries with short country names
@@ -929,9 +929,9 @@ def filter_and_rename(network, df, carrier_filter = None, group_carrier = None, 
 
     return df.loc[new_index,:]
         
-def plot_by_country(df, plot_kw, path):
+def plot_by_country(df, plot_kw, path, plot_figsize=(12,9)):
 
-    fig, ax = plt.subplots(figsize=(12, 7))
+    fig, ax = plt.subplots(figsize=plot_figsize)
     
     df.drop(columns={"color"}).T.plot(
         kind="bar",
@@ -966,12 +966,12 @@ def plot_by_country(df, plot_kw, path):
 
     fig.savefig(path, bbox_inches="tight")
 
-def plot_in_detail(df, plot_kw, path):
+def plot_in_detail(df, plot_kw, path, plot_figsize=(6, 8)):
     
     c = df.columns.difference(["color"])
     df = df[["color"]].assign(Total=df[c].sum(axis=1))
 
-    fig, ax = plt.subplots(figsize=(6, 8))
+    fig, ax = plt.subplots(figsize=plot_figsize)
 
     df.drop(columns={"color"}).T.plot(
         kind="bar",
@@ -1425,6 +1425,8 @@ if __name__ == "__main__":
                     df = df_SOC.copy(deep=True)
                     filter_plot_SOC(n, df, kpi_param, snakemake.output[fn])
                     continue
+
+                #curtailment plots have their own route
                 elif extract_param == "curtailment_DE":
                     plot_curtailment(n, regions, path=snakemake.output[fn], focus_de=True,
                                      show_fig=False, legend_circles=kpi_param.get("legend_cirlces", [12, 6, 3]),
@@ -1450,23 +1452,31 @@ if __name__ == "__main__":
                     logger.info(f"exclude {exclude}")
                     df = df.loc[:,df.columns.difference(exclude)]
                 
-                carrier_filter = kpi_param.get("carrier_filter",None)
-                group_carrier = kpi_param.get("group_carrier",None)
-                if "TW" in kpi_param.get("plot_kw",{}).get("ylabel", ""):
+                plot_kw = kpi_param.get("plot_kw",{})
+                if "TW" in plot_kw.get("ylabel", ""):
                     df *= 1e-3
-                df = filter_and_rename(n, df, carrier_filter = carrier_filter, 
-                                       group_carrier = group_carrier, 
-                                       filter_scheme = filter_scheme
+                elif plot_kw.get("ylabel", "") == "%":
+                    plot_kw["ylabel"] = "\%"
+
+                df = filter_and_rename(n, df, 
+                                       filter_scheme = filter_scheme,
+                                       carrier_filter = kpi_param.get("carrier_filter",None), 
+                                       group_carrier = kpi_param.get("group_carrier",None), 
                                        )
 
                 plot_param = kpi_param.get("plot",None)
-                plot_kw = kpi_param.get("plot_kw",{})
-                if plot_kw["ylabel"] == "%":
-                    plot_kw["ylabel"] = "\%"
                 if plot_param == "detail":
-                    plot_in_detail(df, plot_kw, snakemake.output[fn])
+                    plot_in_detail(df, 
+                                   plot_kw, 
+                                   snakemake.output[fn],
+                                   plot_figsize = kpi_param.get("figsize",(6,8))
+                                   )
                 elif plot_param == "overview":
-                    plot_by_country(df, plot_kw, snakemake.output[fn])
+                    plot_by_country(df, 
+                                    plot_kw, 
+                                    snakemake.output[fn],
+                                    plot_figsize = kpi_param.get("figsize",(12,9))
+                                    )
 
             except (TypeError):
                 logger.warning(f"Unable to plot {fn} because the datasets is empty after applying the filters")
