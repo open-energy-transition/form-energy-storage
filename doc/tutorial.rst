@@ -1,5 +1,5 @@
 ..
-  SPDX-FileCopyrightText: 2019-2024 The PyPSA-Eur Authors
+  SPDX-FileCopyrightText: Contributors to PyPSA-Eur <https://github.com/pypsa/pypsa-eur>
 
   SPDX-License-Identifier: CC-BY-4.0
 
@@ -88,7 +88,7 @@ want to use the ERA-5 dataset for solar and not the default SARAH-3 dataset.
    :end-at: cutout:
 
 Finally, it is possible to pick a solver. For instance, this tutorial uses the
-open-source solver GLPK.
+open-source solver HiGHS.
 
 .. literalinclude:: ../config/test/config.electricity.yaml
    :language: yaml

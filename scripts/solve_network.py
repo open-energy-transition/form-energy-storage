@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# SPDX-FileCopyrightText: : 2017-2024 The PyPSA-Eur Authors
+# SPDX-FileCopyrightText: Contributors to PyPSA-Eur <https://github.com/pypsa/pypsa-eur>
 #
 # SPDX-License-Identifier: MIT
 """
@@ -155,6 +154,7 @@ def add_land_use_constraint(n):
 def add_solar_potential_constraints(n, config):
     """
     Add constraint to make sure the sum capacity of all solar technologies (fixed, tracking, ets. ) is below the region potential.
+
     Example:
     ES1 0: total solar potential is 10 GW, meaning:
            solar potential : 10 GW
@@ -562,7 +562,7 @@ def add_EQ_constraints(n, o, scaling=1e-1):
     each node to produce on average at least 70% of its consumption.
     """
     # TODO: Generalize to cover myopic and other sectors?
-    float_regex = "[0-9]*\.?[0-9]+"
+    float_regex = r"[0-9]*\.?[0-9]+"
     level = float(re.findall(float_regex, o)[0])
     if o[-1] == "c":
         ggrouper = n.generators.bus.map(n.buses.country)
@@ -931,6 +931,17 @@ def add_co2_atmosphere_constraint(n, snapshots):
             n.model.add_constraints(lhs <= rhs, name=f"GlobalConstraint-{name}")
 
 
+def add_dac_limit(n):
+    """
+    Limit the amount of CO2 captured using DAC. The constraint is formulated in tCO2.
+    """
+    dac = n.links.query("Link.str.contains('DAC')")
+    lhs = (n.model["Link-p"].loc[:, dac.index] * n.snapshot_weightings.generators * dac.efficiency2 * -1).sum()
+    optimization_year = int(snakemake.wildcards.planning_horizons)
+    rhs = n.config["sector"]["dac_limit"][optimization_year] * 1e6  # DAC limit specified in config in MtCO2
+    n.model.add_constraints(lhs <= rhs, name="DAC limit")
+
+
 def extra_functionality(n, snapshots):
     """
     Collects supplementary constraints which will be passed to
@@ -966,6 +977,8 @@ def extra_functionality(n, snapshots):
     add_battery_constraints(n)
     add_lossy_bidirectional_link_constraints(n)
     add_pipe_retrofit_constraint(n)
+    if config["sector"]["dac"] and config["sector"]["dac_limit"]["enable"]:
+        add_dac_limit(n)
     if n._multi_invest:
         add_carbon_constraint(n, snapshots)
         add_carbon_budget_constraint(n, snapshots)

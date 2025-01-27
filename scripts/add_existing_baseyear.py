@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# SPDX-FileCopyrightText: : 2020-2024 The PyPSA-Eur Authors
+# SPDX-FileCopyrightText: Contributors to PyPSA-Eur <https://github.com/pypsa/pypsa-eur>
 #
 # SPDX-License-Identifier: MIT
 """
@@ -22,9 +21,7 @@ from _helpers import (
     update_config_from_wildcards,
 )
 from add_electricity import sanitize_carriers
-from definitions.heat_sector import HeatSector
 from definitions.heat_system import HeatSystem
-from definitions.heat_system_type import HeatSystemType
 from prepare_sector_network import cluster_heat_buses, define_spatial, prepare_costs
 
 logger = logging.getLogger(__name__)
@@ -235,6 +232,8 @@ def add_power_capacities_installed_before_baseyear(n, grouping_years, costs, bas
         "urban central solid biomass CHP": "biomass",
     }
 
+    cf_conventional = snakemake.params.conventional
+
     for grouping_year, generator in df.index:
         # capacity is the capacity in MW at each node for this
         capacity = df.loc[grouping_year, generator]
@@ -335,7 +334,10 @@ def add_power_capacities_installed_before_baseyear(n, grouping_years, costs, bas
                         efficiency2=costs.at[carrier[generator], "CO2 intensity"],
                         build_year=grouping_year,
                         lifetime=lifetime_assets.loc[new_capacity.index],
-                    )
+                        p_min_pu=cf_conventional.get(generator,{}).get("p_min_pu",0),
+                        ramp_limit_up=cf_conventional.get(generator,{}).get("ramp_limit_up",np.nan),
+                        ramp_limit_down=cf_conventional.get(generator,{}).get("ramp_limit_down",np.nan),
+            )
                 else:
                     key = "central solid biomass CHP"
                     central_heat = n.buses.query(
@@ -381,8 +383,8 @@ def get_efficiency(heat_system, carrier, nodes, heating_efficiencies, costs):
     Computes the heating system efficiency based on the sector and carrier
     type.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     heat_system : object
     carrier : str
         The type of fuel or energy carrier (e.g., 'gas', 'oil').
@@ -393,14 +395,14 @@ def get_efficiency(heat_system, carrier, nodes, heating_efficiencies, costs):
     costs : pandas.DataFrame
         A DataFrame containing boiler cost and efficiency data for different heating systems.
 
-    Returns:
-    --------
+    Returns
+    -------
     efficiency : pandas.Series or float
         A pandas Series mapping the efficiencies based on nodes for residential and services sectors, or a single
         efficiency value for other heating systems (e.g., urban central).
 
-    Notes:
-    ------
+    Notes
+    -----
     - For residential and services sectors, efficiency is mapped based on the nodes.
     - For other sectors, the default boiler efficiency is retrieved from the `costs` database.
     """
@@ -628,9 +630,12 @@ def set_defaults(n):
     """
     Set default values for missing values in the network.
 
-    Parameters:
+    Parameters
+    ----------
         n (pypsa.Network): The network object.
-    Returns:
+
+    Returns
+    -------
         None
     """
     if "Link" in n.components:

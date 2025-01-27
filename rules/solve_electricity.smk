@@ -1,7 +1,23 @@
-# SPDX-FileCopyrightText: : 2023-2024 The PyPSA-Eur Authors
+# SPDX-FileCopyrightText: Contributors to PyPSA-Eur <https://github.com/pypsa/pypsa-eur>
 #
 # SPDX-License-Identifier: MIT
 
+
+if config["enable"].get("final_adjustment",False):
+
+    rule final_adjustment:
+        input:
+            network=resources("networks/base_s_{clusters}_elec_l{ll}_{opts}.nc"),
+            ntc="data/TYNDP_NTC.csv",
+        output:
+            network=resources("networks-adjusted/base_s_{clusters}_elec_l{ll}_{opts}.nc"),
+        log:
+            logs(RESULTS
+            + "logs/final_adjustment_electricity_base_s_{clusters}_elec_l{ll}_{opts}.log")
+        conda:
+            "../envs/environment.yaml"
+        script:
+            "../scripts/final_adjustment.py"
 
 rule solve_network:
     params:
@@ -13,7 +29,11 @@ rule solve_network:
         ),
         custom_extra_functionality=input_custom_extra_functionality,
     input:
-        network=resources("networks/base_s_{clusters}_elec_l{ll}_{opts}.nc"),
+        network=lambda w: (
+            resources("networks-adjusted/base_s_{clusters}_elec_l{ll}_{opts}.nc")
+            if config["enable"].get("final_adjustment",False)
+            else resources("networks/base_s_{clusters}_elec_l{ll}_{opts}.nc")
+        ),
     output:
         network=RESULTS + "networks/base_s_{clusters}_elec_l{ll}_{opts}.nc",
         config=RESULTS + "configs/config.base_s_{clusters}_elec_l{ll}_{opts}.yaml",
@@ -22,6 +42,8 @@ rule solve_network:
             RESULTS
             + "logs/solve_network/base_s_{clusters}_elec_l{ll}_{opts}_solver.log"
         ),
+        memory=RESULTS
+        + "logs/solve_network/base_s_{clusters}_elec_l{ll}_{opts}_memory.log",
         python=RESULTS
         + "logs/solve_network/base_s_{clusters}_elec_l{ll}_{opts}_python.log",
     benchmark:

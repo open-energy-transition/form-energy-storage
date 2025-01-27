@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: : 2017-2024 The PyPSA-Eur Authors
+# SPDX-FileCopyrightText: Contributors to PyPSA-Eur <https://github.com/pypsa/pypsa-eur>
 #
 # SPDX-License-Identifier: MIT
 
@@ -18,7 +18,7 @@ copy_default_files(workflow)
 
 configfile: "config/config.kpi.yaml"
 configfile: "config/config.default.yaml"
-configfile: "config/config.yaml"
+configfile: "config/config.form.yaml"
 
 
 run = config["run"]

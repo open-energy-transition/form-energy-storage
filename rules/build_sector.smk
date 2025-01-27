@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: : 2023-2024 The PyPSA-Eur Authors
+# SPDX-FileCopyrightText: Contributors to PyPSA-Eur <https://github.com/pypsa/pypsa-eur>
 #
 # SPDX-License-Identifier: MIT
 
@@ -170,11 +170,15 @@ rule build_hourly_heat_demand:
     params:
         snapshots=config_provider("snapshots"),
         drop_leap_day=config_provider("enable", "drop_leap_day"),
+        sector=config_provider("sector"),
     input:
         heat_profile="data/heat_load_profile_BDEW.csv",
         heat_demand=resources("daily_heat_demand_total_base_s_{clusters}.nc"),
     output:
         heat_demand=resources("hourly_heat_demand_total_base_s_{clusters}.nc"),
+        heat_dsm_profile=resources(
+            "residential_heat_dsm_profile_total_base_s_{clusters}.csv"
+        ),
     resources:
         mem_mb=2000,
     threads: 8
@@ -284,6 +288,28 @@ rule build_central_heating_temperature_profiles:
         "../scripts/build_central_heating_temperature_profiles/run.py"
 
 
+rule build_heat_source_potentials:
+    params:
+        heat_utilisation_potentials=config_provider(
+            "sector", "district_heating", "heat_utilisation_potentials"
+        ),
+    input:
+        utilisation_potential="data/heat_source_utilisation_potentials/{heat_source}.gpkg",
+        regions_onshore=resources("regions_onshore_base_s_{clusters}.geojson"),
+    output:
+        resources("heat_source_potential_{heat_source}_base_s_{clusters}.csv"),
+    resources:
+        mem_mb=2000,
+    log:
+        logs("build_heat_source_potentials_{heat_source}_s_{clusters}.log"),
+    benchmark:
+        benchmarks("build_heat_source_potentials/{heat_source}_s_{clusters}")
+    conda:
+        "../envs/environment.yaml"
+    script:
+        "../scripts/build_heat_source_potentials/run.py"
+
+
 rule build_cop_profiles:
     params:
         heat_pump_sink_T_decentral_heating=config_provider(
@@ -296,6 +322,9 @@ rule build_cop_profiles:
             "sector", "district_heating", "heat_pump_cop_approximation"
         ),
         heat_pump_sources=config_provider("sector", "heat_pump_sources"),
+        heat_utilisation_potentials=config_provider(
+            "sector", "district_heating", "heat_utilisation_potentials"
+        ),
         snapshots=config_provider("snapshots"),
     input:
         central_heating_forward_temperature_profiles=resources(
@@ -319,6 +348,39 @@ rule build_cop_profiles:
         "../envs/environment.yaml"
     script:
         "../scripts/build_cop_profiles/run.py"
+
+
+rule build_direct_heat_source_utilisation_profiles:
+    params:
+        direct_utilisation_heat_sources=config_provider(
+            "sector", "district_heating", "direct_utilisation_heat_sources"
+        ),
+        heat_utilisation_potentials=config_provider(
+            "sector", "district_heating", "heat_utilisation_potentials"
+        ),
+        snapshots=config_provider("snapshots"),
+    input:
+        central_heating_forward_temperature_profiles=resources(
+            "central_heating_forward_temperature_profiles_base_s_{clusters}_{planning_horizons}.nc"
+        ),
+    output:
+        direct_heat_source_utilisation_profiles=resources(
+            "direct_heat_source_utilisation_profiles_base_s_{clusters}_{planning_horizons}.nc"
+        ),
+    resources:
+        mem_mb=20000,
+    log:
+        logs(
+            "build_direct_heat_source_utilisation_profiles_s_{clusters}_{planning_horizons}.log"
+        ),
+    benchmark:
+        benchmarks(
+            "build_direct_heat_source_utilisation_profiles/s_{clusters}_{planning_horizons}"
+        )
+    conda:
+        "../envs/environment.yaml"
+    script:
+        "../scripts/build_direct_heat_source_utilisation_profiles.py"
 
 
 def solar_thermal_cutout(wildcards):
@@ -1004,6 +1066,20 @@ rule build_egs_potentials:
         "../scripts/build_egs_potentials.py"
 
 
+def input_heat_source_potentials(w):
+
+    return {
+        heat_source_name: resources(
+            "heat_source_potential_" + heat_source_name + "_base_s_{clusters}.csv"
+        )
+        for heat_source_name in config_provider(
+            "sector", "district_heating", "heat_utilisation_potentials"
+        )(w).keys()
+        if heat_source_name
+        in config_provider("sector", "heat_pump_sources", "urban central")(w)
+    }
+
+
 rule prepare_sector_network:
     params:
         time_resolution=config_provider("clustering", "temporal", "resolution_sector"),
@@ -1030,8 +1106,16 @@ rule prepare_sector_network:
         heat_pump_sources=config_provider("sector", "heat_pump_sources"),
         heat_systems=config_provider("sector", "heat_systems"),
         energy_totals_year=config_provider("energy", "energy_totals_year"),
+        conventional=config_provider("conventional"),
+        heat_utilisation_potentials=config_provider(
+            "sector", "district_heating", "heat_utilisation_potentials"
+        ),
+        direct_utilisation_heat_sources=config_provider(
+            "sector", "district_heating", "direct_utilisation_heat_sources"
+        ),
     input:
         unpack(input_profile_offwind),
+        unpack(input_heat_source_potentials),
         **rules.cluster_gas_network.output,
         **rules.build_gas_input_locations.output,
         snapshot_weightings=resources(
@@ -1071,6 +1155,9 @@ rule prepare_sector_network:
         transport_data=resources("transport_data_s_{clusters}.csv"),
         avail_profile=resources("avail_profile_s_{clusters}.csv"),
         dsm_profile=resources("dsm_profile_s_{clusters}.csv"),
+        heat_dsm_profile=resources(
+            "residential_heat_dsm_profile_total_base_s_{clusters}.csv"
+        ),
         co2_totals_name=resources("co2_totals.csv"),
         co2="data/bundle/eea/UNFCCC_v23.csv",
         biomass_potentials=resources(
@@ -1120,6 +1207,9 @@ rule prepare_sector_network:
             resources("egs_capacity_factors_{clusters}.csv")
             if config_provider("sector", "enhanced_geothermal", "enable")(w)
             else []
+        ),
+        direct_heat_source_utilisation_profiles=resources(
+            "direct_heat_source_utilisation_profiles_base_s_{clusters}_{planning_horizons}.nc"
         ),
     output:
         RESULTS
