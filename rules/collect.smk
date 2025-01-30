@@ -28,7 +28,21 @@ rule prepare_elec_networks:
             **config["scenario"],
             run=config["run"]["name"],
         ),
+def create_kpi_path(w):
+    return {
+        f"{kpi_fn}": expand(RESULTS
+        + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-"
+        + f"{kpi_fn}"
+        + "_{planning_horizons}.pdf",
+        **config["scenario"],
+        run=config["run"]["name"],
+        )
+        for kpi_fn in config_provider("kpi")(w)["custom_plots"]
+    }
 
+rule plot_KPIs_all:
+    input:
+        unpack(create_kpi_path)
 
 rule prepare_sector_networks:
     input:
