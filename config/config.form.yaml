@@ -12,8 +12,8 @@ logging:
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: "baseline_scenarios"
-  name: "baseline-mds-nometh-1H"
+  prefix: "scenarios"
+  name: "baseline-mds"
   scenarios:
     enable: true
     file: config/scenarios.form.yaml
@@ -48,17 +48,17 @@ snapshots:
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#enable
 enable:
   retrieve: auto
-  retrieve_databundle: true
+  retrieve_databundle: false
   retrieve_cost_data: true
   build_cutout: false
   retrieve_cutout: false
   custom_busmap: false
   drop_leap_day: true
-  final_adjustment: false
+  final_adjustment: true
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#co2-budget
 co2_budget:
-  2035: 0.105 # derived from individual countries carbon emission targets for included sectors excluding domestic transport emissions from scope
+  2035: 0.107 # derived from individual countries carbon emission targets for included sectors excluding domestic transport emissions from scope
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#electricity
 electricity:
@@ -177,7 +177,7 @@ sector:
   land_transport_electric_share:
     2035: 0.30 # FE input
   land_transport_ice_share:
-    2035: 0.70
+    2035: 0 # only include electric transport
   include_transport_emissions: false
   reduce_space_heat_exogenously: true
   reduce_space_heat_exogenously_factor:
@@ -185,11 +185,17 @@ sector:
   tes: false
   dac: true
   dac_limit:
-      enable: false
-      2035: 20  # limit in MtCO2
+      enable: true
+      2035: 12.4  # limit in MtCO2
+  methanation: false
+  co2_sequestration_potential:
+    2035: 22.3
   marginal_cost_storage: 0. #1e-4
   stores: ["H2"]
   storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+  residential_heat_dsm: true
+  residential_heat_restriction_value: 0.27
+  residential_heat_restriction_time: [ 10, 22 ] # 9am and 9pm
   hydrogen_fuel_cell: true
   hydrogen_turbine: false
   hydrogen_underground_storage: true
@@ -200,6 +206,9 @@ sector:
   H2_network: false
   gas_network: false
   H2_retrofit: false
+
+load:
+  scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#costs
 costs:
@@ -255,7 +264,7 @@ clustering:
   focus_weights:
     DE: 0.6
   temporal:
-    resolution_sector: 2920SEG
+    resolution_sector: 4380SEG
 
 plotting:
   time_series:
