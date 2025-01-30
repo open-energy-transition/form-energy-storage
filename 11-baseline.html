@@ -1,0 +1,969 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Base Configuration &#8212; The Role of Energy Storage in Germany</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '11-baseline';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Scenarios Configuration" href="12-scenarios.html" />
+    <link rel="prev" title="Features" href="03-features.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00-readme.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo_OET.png" class="logo__image only-light" alt="The Role of Energy Storage in Germany - Home"/>
+    <img src="_static/logo_OET.png" class="logo__image only-dark pst-js-only" alt="The Role of Energy Storage in Germany - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="00-readme.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-tutorials.html">Tutorials</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="03-features.html">Features</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Base Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-scenarios.html">Scenarios Configuration</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/open-energy-transition/form-energy-storage" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/open-energy-transition/form-energy-storage/issues/new?title=Issue%20on%20page%20%2F11-baseline.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/11-baseline.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Base Configuration</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run"><code class="docutils literal notranslate"><span class="pre">run</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#foresight"><code class="docutils literal notranslate"><span class="pre">foresight</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scenario"><code class="docutils literal notranslate"><span class="pre">scenario</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#countries"><code class="docutils literal notranslate"><span class="pre">countries</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#snapshots"><code class="docutils literal notranslate"><span class="pre">snapshots</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enable"><code class="docutils literal notranslate"><span class="pre">enable</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#co2-budget"><code class="docutils literal notranslate"><span class="pre">co2</span> <span class="pre">budget</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#electricity"><code class="docutils literal notranslate"><span class="pre">electricity</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#atlite"><code class="docutils literal notranslate"><span class="pre">atlite</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#renewable"><code class="docutils literal notranslate"><span class="pre">renewable</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conventional"><code class="docutils literal notranslate"><span class="pre">conventional</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lines"><code class="docutils literal notranslate"><span class="pre">lines</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transmission-projects"><code class="docutils literal notranslate"><span class="pre">transmission</span> <span class="pre">projects</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#existing-capacities"><code class="docutils literal notranslate"><span class="pre">existing_capacities</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sector"><code class="docutils literal notranslate"><span class="pre">sector</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#costs"><code class="docutils literal notranslate"><span class="pre">costs</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clustering"><code class="docutils literal notranslate"><span class="pre">clustering</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving"><code class="docutils literal notranslate"><span class="pre">solving</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting"><code class="docutils literal notranslate"><span class="pre">plotting</span></code></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="base-configuration">
+<h1>Base Configuration<a class="headerlink" href="#base-configuration" title="Link to this heading">#</a></h1>
+<section id="run">
+<h2><code class="docutils literal notranslate"><span class="pre">run</span></code><a class="headerlink" href="#run" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">run</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">prefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;baseline_scenarios&quot;</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;baseline-mds-nometh-1H&quot;</span>
+<span class="w">  </span><span class="nt">scenarios</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">config/scenarios.form.yaml</span>
+<span class="w">  </span><span class="nt">disable_progressbar</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">shared_resources</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">policy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">exclude</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="w">  </span><span class="nt">shared_cutouts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+<p>This is the only few section in the file that needs to be changed in order to run the scenario.</p>
+<ul class="simple">
+<li><p>prefix: (optional) directory for output results</p></li>
+<li><p>name: Scenario name from <code class="docutils literal notranslate"><span class="pre">config/scenarios.form.yaml</span></code></p></li>
+</ul>
+</section>
+<section id="foresight">
+<h2><code class="docutils literal notranslate"><span class="pre">foresight</span></code><a class="headerlink" href="#foresight" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">foresight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myopic</span>
+</pre></div>
+</div>
+<p>The scope of this work is based on myopic foresight.</p>
+</section>
+<section id="scenario">
+<h2><code class="docutils literal notranslate"><span class="pre">scenario</span></code><a class="headerlink" href="#scenario" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">scenario</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ll</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1.11</span><span class="w">  </span><span class="c1"># v1.x with x according to additional NEP links (existing_capacities=zero)</span>
+<span class="w">  </span><span class="nt">clusters</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">52</span>
+<span class="w">  </span><span class="nt">planning_horizons</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2035</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>ll: v1.11 is based on</p></li>
+<li><p>clusters: There are 52 nodes in this model</p></li>
+</ul>
+</section>
+<section id="countries">
+<h2><code class="docutils literal notranslate"><span class="pre">countries</span></code><a class="headerlink" href="#countries" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">countries</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;AT&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;BE&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;CH&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;CZ&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;DE&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;DK&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;FR&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;IT&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;LU&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;NL&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;PL&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;SE&#39;</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>The analysis includes Germany and its neighboring countries, along with Italy.</p>
+<ul class="simple">
+<li><p>AT: Austria</p></li>
+<li><p>BE: Belgium</p></li>
+<li><p>CH: Switzerland</p></li>
+<li><p>CZ: Czech Republic</p></li>
+<li><p>DE: Germany</p></li>
+<li><p>DK: Denmark</p></li>
+<li><p>FR: France</p></li>
+<li><p>IT: Italy</p></li>
+<li><p>LU: Luxembourg</p></li>
+<li><p>NL: Netherlands</p></li>
+<li><p>PL: Poland</p></li>
+<li><p>SE: Sweden</p></li>
+</ul>
+</section>
+<section id="snapshots">
+<h2><code class="docutils literal notranslate"><span class="pre">snapshots</span></code><a class="headerlink" href="#snapshots" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">snapshots</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2013-01-01&quot;</span>
+<span class="w">  </span><span class="nt">end</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2014-01-01&quot;</span>
+<span class="w">  </span><span class="nt">inclusive</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;left&#39;</span>
+</pre></div>
+</div>
+<p>If the scenarios are based on years other than 2013, the start and end years need to be adjusted accordingly.</p>
+</section>
+<section id="enable">
+<h2><code class="docutils literal notranslate"><span class="pre">enable</span></code><a class="headerlink" href="#enable" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">enable</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">retrieve</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auto</span>
+<span class="w">  </span><span class="nt">retrieve_databundle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">retrieve_cost_data</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">build_cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">retrieve_cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">custom_busmap</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">drop_leap_day</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">final_adjustment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</pre></div>
+</div>
+<p>For the first run, it is recommended to set <code class="docutils literal notranslate"><span class="pre">retrieve_databundle</span></code>, <code class="docutils literal notranslate"><span class="pre">retrieve_cost_data</span></code> and <code class="docutils literal notranslate"><span class="pre">retrieve_cutout</span></code> as true.</p>
+</section>
+<section id="co2-budget">
+<h2><code class="docutils literal notranslate"><span class="pre">co2</span> <span class="pre">budget</span></code><a class="headerlink" href="#co2-budget" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">co2_budget</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">2035</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.105</span><span class="w"> </span><span class="c1"># derived from individual countries carbon emission targets for included sectors excluding domestic transport emissions from scope</span>
+</pre></div>
+</div>
+<p>The CO2 budget is derived from individual countries carbon emission targets for included sectors excluding domestic transport emissions from scope
+This means that the total budget is:</p>
+<div class="math notranslate nohighlight">
+\[1.487e+9 * 0.105 =\]</div>
+<p>The complete calculation can be seen in the Assumption processing section.</p>
+</section>
+<section id="electricity">
+<h2><code class="docutils literal notranslate"><span class="pre">electricity</span></code><a class="headerlink" href="#electricity" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">electricity</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">max_hours</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">li-ion battery</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">4</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">8</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">vanadium</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">10</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">lair</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">12</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">pair</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">24</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">H2</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">168</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">iron-air battery</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">100</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">extendable_carriers</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Generator</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">solar</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">solar-hsat</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">onwind</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">offwind-ac</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">offwind-dc</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">offwind-float</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">powerplants_filter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DateOut &gt;= 2024 and not Fueltype.isin([&#39;Nuclear&#39;, &#39;Hard Coal&#39;, &#39;Lignite&#39;])</span>
+<span class="w">  </span><span class="nt">custom_powerplants</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DateIn &lt;= 2024 and DateOut &gt;= 2024</span>
+</pre></div>
+</div>
+<p>Configuration changes made:</p>
+<ul class="simple">
+<li><p>Lithium-ion are disaggregated into 1h, 2h, 4h and 8h for a more detail analysis.</p></li>
+<li><p>Iron-air batteries have 100h max hours</p></li>
+<li><p>Nuclear, Hard Coal, and Lignite power plants are excluded from the powerplantmatching database.</p></li>
+<li><p>Instead, we use a validated dataset of power plants from <code class="docutils literal notranslate"><span class="pre">data/custom_powerplants.csv</span></code></p></li>
+</ul>
+</section>
+<section id="atlite">
+<h2><code class="docutils literal notranslate"><span class="pre">atlite</span></code><a class="headerlink" href="#atlite" title="Link to this heading">#</a></h2>
+<p>Define and specify the <code class="docutils literal notranslate"><span class="pre">atlite.Cutout</span></code> used for calculating renewable potentials and time-series. All options except for <code class="docutils literal notranslate"><span class="pre">features</span></code> are directly used as <a class="reference external" href="https://atlite.readthedocs.io/en/latest/ref_api.html#cutout">cutout parameters</a>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">atlite</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># TODO: weather year - input from FORM</span>
+<span class="w">  </span><span class="nt">default_cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2013-sarah3-era5</span>
+<span class="w">  </span><span class="nt">nprocesses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<span class="w">  </span><span class="nt">show_progress</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">cutouts</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># use &#39;base&#39; to determine geographical bounds and time span from config</span>
+<span class="w">    </span><span class="c1"># base:</span>
+<span class="w">      </span><span class="c1"># module: era5</span>
+<span class="w">    </span><span class="nt">europe-2013-sarah3-era5</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">module</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">sarah</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">era5</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># in priority order</span>
+<span class="w">      </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-12.</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">42.</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">33.</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">72.</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">dx</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+<span class="w">      </span><span class="nt">dy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+<span class="w">      </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;2013&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;2013&#39;</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">default_cutout</span></code> is derived from SARAH-3 weather data, with missing values filled in using ERA-5 weather data.</p>
+</section>
+<section id="renewable">
+<h2><code class="docutils literal notranslate"><span class="pre">renewable</span></code><a class="headerlink" href="#renewable" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">renewable</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hydro</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">PHS_max_hours</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+</pre></div>
+</div>
+<p>The modification in max hours of pumped hydro storages are based on Form Energy.</p>
+</section>
+<section id="conventional">
+<h2><code class="docutils literal notranslate"><span class="pre">conventional</span></code><a class="headerlink" href="#conventional" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">conventional</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">unit_commitment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">dynamic_fuel_price</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">nuclear</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">p_max_pu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;data/nuclear_p_max_pu.csv&quot;</span><span class="w"> </span><span class="c1"># float of file name</span>
+<span class="w">    </span><span class="nt">p_min_pu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+<span class="w">    </span>
+</pre></div>
+</div>
+<p>The minimum energy dispatch for nuclear power plants is set to 50%, instead of the default 20%.</p>
+</section>
+<section id="lines">
+<h2><code class="docutils literal notranslate"><span class="pre">lines</span></code><a class="headerlink" href="#lines" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">lines</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">s_max_pu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+<span class="w">  </span><span class="nt">dynamic_line_rating</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">activate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2013-sarah3-era5</span>
+<span class="w">    </span><span class="nt">correction_factor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.95</span>
+<span class="w">    </span><span class="nt">max_voltage_difference</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w"> </span><span class="c1"># Glaum &amp; Hofmann, 2022 https://arxiv.org/abs/2208.04716</span>
+<span class="w">    </span><span class="nt">max_line_rating</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.5</span><span class="w"> </span><span class="c1"># based on https://www.energysystem2050.net/content/TransnetBW-Study_EnergySystem2050.pdf?v2, p.81</span>
+</pre></div>
+</div>
+<p>The maximum line capacity is set to 50% of its total capacity, rather than 70%,
+to better approximate security and reserve capacity for reactive power flows.</p>
+</section>
+<section id="transmission-projects">
+<h2><code class="docutils literal notranslate"><span class="pre">transmission</span> <span class="pre">projects</span></code><a class="headerlink" href="#transmission-projects" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">transmission_projects</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">include</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">tyndp2020</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">nep</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">manual</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">skip</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">upgraded_lines</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">upgraded_links</span>
+<span class="w">  </span><span class="nt">status</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">under_construction</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">in_permitting</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">confirmed</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">#- planned_not_yet_permitted</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">#- under_consideration</span>
+<span class="w">  </span><span class="nt">new_link_capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zero</span><span class="w"> </span><span class="c1">#keep or zero</span>
+</pre></div>
+</div>
+<p>TYNDP 2020 dataset is not intergrated in this analysis.</p>
+</section>
+<section id="existing-capacities">
+<h2><code class="docutils literal notranslate"><span class="pre">existing_capacities</span></code><a class="headerlink" href="#existing-capacities" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">existing_capacities</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">grouping_years_power</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1920</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1950</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1955</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1960</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1965</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1970</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1975</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1980</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1985</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1990</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1995</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2000</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2005</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2010</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2015</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2020</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2025</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">grouping_years_heat</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1980</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1985</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1990</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1995</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2000</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2005</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2010</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2015</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2019</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># heat grouping years &gt;= baseyear will be ignored</span>
+<span class="w">  </span><span class="nt">threshold_capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">  </span><span class="nt">default_heating_lifetime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
+<span class="w">  </span><span class="nt">conventional_carriers</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lignite</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coal</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">oil</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uranium</span>
+</pre></div>
+</div>
+<p>The content is identical to the default file.</p>
+</section>
+<section id="sector">
+<h2><code class="docutils literal notranslate"><span class="pre">sector</span></code><a class="headerlink" href="#sector" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sector</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">transport</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">heating</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">biomass</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">industry</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">agriculture</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">fossil_fuels</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">district_heating</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">potential</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+<span class="w">    </span><span class="nt">progress</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">2035</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.45</span>
+<span class="w">  </span><span class="nt">bev_dsm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">bev_dsm_availability</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span><span class="w"> </span><span class="c1"># FE input</span>
+<span class="w">  </span><span class="nt">bev_charge_rate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.007</span><span class="w">  </span><span class="c1"># FE input</span>
+<span class="w">  </span><span class="nt">v2g</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">land_transport_fuel_cell_share</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">2035</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">  </span><span class="nt">land_transport_electric_share</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">2035</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.30</span><span class="w"> </span><span class="c1"># FE input</span>
+<span class="w">  </span><span class="nt">land_transport_ice_share</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">2035</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.70</span>
+<span class="w">  </span><span class="nt">include_transport_emissions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">reduce_space_heat_exogenously</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">reduce_space_heat_exogenously_factor</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">2035</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.21</span>
+<span class="w">  </span><span class="nt">tes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">dac</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">dac_limit</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">      </span><span class="nt">2035</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span><span class="w">  </span><span class="c1"># limit in MtCO2</span>
+<span class="w">  </span><span class="nt">marginal_cost_storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.</span><span class="w"> </span><span class="c1">#1e-4</span>
+<span class="w">  </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;iron-air</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">hydrogen_fuel_cell</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">hydrogen_turbine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">hydrogen_underground_storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">hydrogen_underground_storage_locations</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># - onshore  # more than 50 km from sea</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nearshore</span><span class="w">    </span><span class="c1"># within 50 km of sea</span>
+<span class="w">    </span><span class="c1"># - offshore</span>
+<span class="w">  </span><span class="nt">H2_network</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">gas_network</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">H2_retrofit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</pre></div>
+</div>
+<p>Configuration changes made:</p>
+<ul class="simple">
+<li><p>This analysis includes the transport and heating sectors, while excluding biomass, agriculture, and industry.</p></li>
+<li><p>The availability of battery electric vehicles (BEV) for demand-side management is reduced from 50% to 20%.</p></li>
+<li><p>The charging rate for BEVs is reduced from 1.1% to 0.7%.</p></li>
+<li><p>The predicted share of land electric vehicles is reduced from 45% to 30% by 2035.</p></li>
+<li><p>Land transport emissions are excluded from the model, as they are determined exogenously.</p></li>
+<li><p>The reduction in space heating demand is increased from 11% to 21% by 2035.</p></li>
+<li><p>Li-ion batteries, vanadium, liquid air, CAES, and Iron-air batteries are defined as storage unit components rather than stores.</p></li>
+<li><p>The hydrogen network is excluded from the model.</p></li>
+</ul>
+</section>
+<section id="costs">
+<h2><code class="docutils literal notranslate"><span class="pre">costs</span></code><a class="headerlink" href="#costs" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">costs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">year</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2035</span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">67a5830</span>
+<span class="w">  </span><span class="nt">social_discountrate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.02</span>
+<span class="w">  </span><span class="nt">fill_values</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">FOM</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">    </span><span class="nt">VOM</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">    </span><span class="nt">efficiency</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">    </span><span class="nt">fuel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">    </span><span class="nt">investment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">    </span><span class="nt">lifetime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25</span>
+<span class="w">    </span><span class="s">&quot;CO2</span><span class="nv"> </span><span class="s">intensity&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">    </span><span class="s">&quot;discount</span><span class="nv"> </span><span class="s">rate&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.07</span>
+<span class="w">  </span><span class="c1"># Marginal and capital costs can be overwritten</span>
+<span class="w">  </span><span class="c1"># capital_cost:</span>
+<span class="w">  </span><span class="c1">#   onwind: 500</span>
+<span class="w">  </span><span class="nt">fuel</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">OCGT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">38.84</span><span class="w"> </span><span class="c1"># https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex)</span>
+<span class="w">    </span><span class="nt">CCGT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">38.84</span>
+<span class="w">    </span><span class="nt">gas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">38.84</span>
+<span class="w">    </span><span class="nt">coal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">24.57</span><span class="w"> </span><span class="c1"># https://businessanalytiq.com/procurementanalytics/index/subbituminous-coal-price-index/</span>
+<span class="w">    </span><span class="nt">lignite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">22.11</span><span class="w"> </span><span class="c1"># https://businessanalytiq.com/procurementanalytics/index/lignite-coal-price-index/</span>
+<span class="w">    </span><span class="nt">nuclear</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.75</span><span class="w"> </span><span class="c1"># https://markets.businessinsider.com/commodities/uranium-price</span>
+<span class="w">    </span><span class="nt">uranium</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.75</span>
+<span class="w">  </span><span class="nt">efficiency</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Compressed-Air-Adiabatic-bicharger</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.7745</span>
+<span class="w">  </span><span class="nt">investment</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">iron-air battery</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23500</span><span class="w">  </span><span class="c1"># in EUR/MWh</span>
+<span class="w">    </span><span class="nt">Compressed-Air-Adiabatic-store</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30000</span><span class="w">  </span><span class="c1"># in EUR/MWh (2022)</span>
+<span class="w">    </span><span class="nt">Compressed-Air-Adiabatic-bicharger</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1725000</span><span class="w">  </span><span class="c1"># in EUR/MW (2022)</span>
+<span class="w">  </span><span class="nt">lifetime</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Compressed-Air-Adiabatic-store</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">40</span><span class="w">  </span><span class="c1"># years</span>
+<span class="w">    </span><span class="nt">Compressed-Air-Adiabatic-bicharger</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">40</span><span class="w">  </span><span class="c1"># years</span>
+<span class="w">  </span><span class="nt">marginal_cost</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">solar</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01</span>
+<span class="w">    </span><span class="nt">onwind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.015</span>
+<span class="w">    </span><span class="nt">offwind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.015</span>
+<span class="w">    </span><span class="nt">hydro</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.</span>
+<span class="w">    </span><span class="nt">H2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.</span>
+<span class="w">    </span><span class="nt">electrolysis</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.</span>
+<span class="w">    </span><span class="nt">fuel cell</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.</span>
+<span class="w">    </span><span class="nt">li-ion battery</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.</span>
+<span class="w">    </span><span class="nt">battery inverter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.</span>
+<span class="w">  </span><span class="nt">emission_prices</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">co2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.</span>
+<span class="w">    </span><span class="nt">co2_monthly_prices</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</pre></div>
+</div>
+<p>Configuration changes made:</p>
+<ul class="simple">
+<li><p>The cost data from PyPSA technology cost database is based on the year 2035, instead of 2030.</p></li>
+<li><p>Gas price is set at 38.84 EUR/MWh. <a class="reference external" href="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230">Source from the EU Comission (Annex)</a></p></li>
+<li><p>Coal price is set at 24.57 EUR/MWh <a class="reference external" href="https://businessanalytiq.com/procurementanalytics/index/subbituminous-coal-price-index/">Source from Business Analytiq (2024 price)</a></p></li>
+<li><p>Lignite price is set at 22.11 EUR/MWh <a class="reference external" href="https://businessanalytiq.com/procurementanalytics/index/lignite-coal-price-index/">Source from Business Analytiq (2024 price)</a></p></li>
+<li><p>Uranium price is set at 1.75 EUR/MWh <a class="reference external" href="https://markets.businessinsider.com/commodities/uranium-price">Source from Business Insider (2024 price)</a></p></li>
+<li><p>Iron-air battery price is set at 23,500 EUR/MWh.</p></li>
+<li><p>Storage energy cost for CAES is 30,000 EUR/MWh (2022).</p></li>
+<li><p>Storage power cost for CAES is 1,725,000 EUR/MW (2022).</p></li>
+<li><p>The lifetime of CAES is reduced to 40 years.</p></li>
+</ul>
+</section>
+<section id="clustering">
+<h2><code class="docutils literal notranslate"><span class="pre">clustering</span></code><a class="headerlink" href="#clustering" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">clustering</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">focus_weights</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">DE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
+<span class="w">  </span><span class="nt">temporal</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">resolution_sector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2920SEG</span>
+</pre></div>
+</div>
+<p>Germany has a focus weight of 0.6, which means that out of 52 nodes, the distribution is as follows:</p>
+<ul class="simple">
+<li><p>Germany: 31 nodes</p></li>
+<li><p>France: 6 nodes</p></li>
+<li><p>Italy: 5 nodes</p></li>
+<li><p>Denmark: 2 nodes</p></li>
+</ul>
+<p>The following countries each have 1 node, contributing to a total of 9 nodes:</p>
+<ul class="simple">
+<li><p>Austria</p></li>
+<li><p>Belgium</p></li>
+<li><p>Switzerland</p></li>
+<li><p>Czech Republic</p></li>
+<li><p>Luxembourg</p></li>
+<li><p>Netherlands</p></li>
+<li><p>Poland</p></li>
+<li><p>Sweden</p></li>
+</ul>
+<p>The temporal resolution is reduced to 3-hour time steps.</p>
+</section>
+<section id="solving">
+<h2><code class="docutils literal notranslate"><span class="pre">solving</span></code><a class="headerlink" href="#solving" title="Link to this heading">#</a></h2>
+</section>
+<section id="plotting">
+<h2><code class="docutils literal notranslate"><span class="pre">plotting</span></code><a class="headerlink" href="#plotting" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">plotting</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">time_series</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">start_date</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;2013-05-01&#39;</span>
+<span class="w">    </span><span class="nt">end_date</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;2013-06-01&#39;</span>
+<span class="w">  </span><span class="nt">costs_max</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">40</span>
+<span class="w">  </span><span class="nt">costs_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01</span>
+<span class="w">  </span><span class="nt">tech_colors</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># all battery variation:</span>
+<span class="w">    </span><span class="nt">lfp</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#ace37f&#39;</span>
+<span class="w">    </span><span class="nt">vanadium</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#9B111E&#39;</span>
+<span class="w">    </span><span class="nt">Vanadium Redox Flow battery storage</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#9B111E&#39;</span>
+<span class="w">    </span><span class="nt">Vanadium-Redox Battery Storage</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#9B111E&#39;</span>
+<span class="w">    </span><span class="nt">lair</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#87CEEB&#39;</span>
+<span class="w">    </span><span class="nt">Liquid Air energy storage</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#87CEEB&#39;</span>
+<span class="w">    </span><span class="nt">Liquid Air Energy Storage</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#87CEEB&#39;</span>
+<span class="w">    </span><span class="nt">pair</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#003366&#39;</span>
+<span class="w">    </span><span class="nt">Adiabatic CAES</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#edba1c&#39;</span>
+<span class="w">    </span><span class="nt">iron-air battery</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#1c404c&#39;</span>
+<span class="w">    </span><span class="nt">Iron-Air battery storage</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#1c404c&#39;</span>
+<span class="w">    </span><span class="nt">Iron-Air Battery Storage</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#1c404c&#39;</span>
+<span class="w">    </span><span class="nt">Li-Ion battery storage</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#ace37f&#39;</span>
+<span class="w">    </span><span class="nt">li-ion battery 1h</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#445A32&#39;</span>
+<span class="w">    </span><span class="nt">li-ion battery 2h</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#67884C&#39;</span>
+<span class="w">    </span><span class="nt">li-ion battery 4h</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#89B565&#39;</span>
+<span class="w">    </span><span class="nt">li-ion battery 8h</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#ace37f&#39;</span>
+<span class="w">    </span><span class="nt">Li-Ion Battery Storage 1h</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#445A32&#39;</span>
+<span class="w">    </span><span class="nt">Li-Ion Battery Storage 2h</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#67884C&#39;</span>
+<span class="w">    </span><span class="nt">Li-Ion Battery Storage 4h</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#89B565&#39;</span>
+<span class="w">    </span><span class="nt">Li-Ion Battery Storage 8h</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#ace37f&#39;</span>
+<span class="w">    </span><span class="nt">Li-Ion Battery Storage</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#ace37f&#39;</span>
+<span class="w">    </span><span class="nt">other battery storage</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#80c944&#39;</span>
+<span class="w">  </span><span class="nt">storage_map_cmaps</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">iron-air battery</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Greys&quot;</span>
+<span class="w">    </span><span class="nt">li-ion battery</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Greens&quot;</span>
+<span class="w">    </span><span class="nt">lair</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Oranges&quot;</span>
+<span class="w">    </span><span class="nt">pair</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;YlOrBr&quot;</span>
+<span class="w">    </span><span class="nt">vanadium</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Reds&quot;</span>
+<span class="w">    </span><span class="nt">H2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Purples&quot;</span>
+<span class="w">    </span><span class="nt">PHS</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Blues&quot;</span>
+</pre></div>
+</div>
+<p>Not much change here other than the coloring scheme</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03-features.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Features</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="12-scenarios.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Scenarios Configuration</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run"><code class="docutils literal notranslate"><span class="pre">run</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#foresight"><code class="docutils literal notranslate"><span class="pre">foresight</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scenario"><code class="docutils literal notranslate"><span class="pre">scenario</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#countries"><code class="docutils literal notranslate"><span class="pre">countries</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#snapshots"><code class="docutils literal notranslate"><span class="pre">snapshots</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enable"><code class="docutils literal notranslate"><span class="pre">enable</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#co2-budget"><code class="docutils literal notranslate"><span class="pre">co2</span> <span class="pre">budget</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#electricity"><code class="docutils literal notranslate"><span class="pre">electricity</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#atlite"><code class="docutils literal notranslate"><span class="pre">atlite</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#renewable"><code class="docutils literal notranslate"><span class="pre">renewable</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conventional"><code class="docutils literal notranslate"><span class="pre">conventional</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lines"><code class="docutils literal notranslate"><span class="pre">lines</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transmission-projects"><code class="docutils literal notranslate"><span class="pre">transmission</span> <span class="pre">projects</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#existing-capacities"><code class="docutils literal notranslate"><span class="pre">existing_capacities</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sector"><code class="docutils literal notranslate"><span class="pre">sector</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#costs"><code class="docutils literal notranslate"><span class="pre">costs</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clustering"><code class="docutils literal notranslate"><span class="pre">clustering</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving"><code class="docutils literal notranslate"><span class="pre">solving</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting"><code class="docutils literal notranslate"><span class="pre">plotting</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Form Energy Storage and Open Energy Transition
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
