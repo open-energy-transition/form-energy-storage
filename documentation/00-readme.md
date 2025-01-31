@@ -3,6 +3,8 @@ SPDX-FileCopyrightText: Contributors to PyPSA-Eur <https://github.com/pypsa/pyps
 SPDX-License-Identifier: CC-BY-4.0
 -->
 
+# Introduction
+
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/pypsa/pypsa-eur?include_prereleases)
 [![Test workflows](https://github.com/pypsa/pypsa-eur/actions/workflows/test.yaml/badge.svg)](https://github.com/pypsa/pypsa-eur/actions/workflows/test.yaml)
 [![Documentation](https://readthedocs.org/projects/pypsa-eur/badge/?version=latest)](https://pypsa-eur.readthedocs.io/en/latest/?badge=latest)
@@ -13,71 +15,36 @@ SPDX-License-Identifier: CC-BY-4.0
 [![REUSE status](https://api.reuse.software/badge/github.com/pypsa/pypsa-eur)](https://api.reuse.software/info/github.com/pypsa/pypsa-eur)
 [![Stack Exchange questions](https://img.shields.io/stackexchange/stackoverflow/t/pypsa)](https://stackoverflow.com/questions/tagged/pypsa)
 
-# The Role of Energy Storage in Germany
-<img src="https://raw.githubusercontent.com/open-energy-transition/oet-website/main/assets/img/oet-logo-red-n-subtitle.png" alt="Open Energy Transition Logo" width="260" height="100" align="right">
+### The Role of Energy Storage in Germany
+<img src="logo_OET.png" alt="Open Energy Transition Logo" width="260" height="100" align="right">
 
 This repository is a soft-fork of [OET/PyPSA-Eur](https://github.com/open-energy-transition/pypsa-eur) and contains the entire project `The Role of Energy Storage in Germany` supported by [Open Energy Transition (OET)](https://openenergytransition.org/)<sup>*</sup>, including code and report. The philosophy behind this repository is that no intermediary results are included, but all results are computed from raw data and code. The structure is also inspired by [cookiecutter-project](https://github.com/PyPSA/cookiecutter-project).
 
 This repository is maintained using [OET's soft-fork strategy](https://open-energy-transition.github.io/handbook/docs/Engineering/SoftForkStrategy). OET's primary aim is to contribute as much as possible to the open source (OS) upstream repositories. For long-term changes that cannot be directly merged upstream, the strategy organizes and maintains OET forks, ensuring they remain up-to-date and compatible with upstream, while also supporting future contributions back to the OS repositories.
 
+### Tables of Content
+Here are the contents to get started with using this repository:
 
-# Repository structure
+* [Installation]()
+* [Tutorials]()
+* [Features]()
+* [Base Configuration]()
+* [Scenarios]()
+* [KPIs]()
 
-* `benchmarks`: will store `snakemake` benchmarks (does not exist initially)
-* `config`: configurations used in the study
-* `cutouts`: will store raw weather data cutouts from `atlite` (does not exist initially)
-* `data`: includes input data that is not produced by any `snakemake` rule
-* `doc`: includes all files necessary to build the `readthedocs` documentation of PyPSA-Eur
-* `envs`: includes all the `mamba` environment specifications to run the workflow
-* `logs`: will store log files (does not exist initially)
-* `notebooks`: includes all the `notebooks` used for ad-hoc analysis
-* `report`: contains all files necessary to build the report; plots and result files are generated automatically
-* `rules`: includes all the `snakemake`rules loaded in the `Snakefile`
-* `resources`: will store intermediate results of the workflow which can be picked up again by subsequent rules (does not exist initially)
-* `results`: will store the solved PyPSA network data, summary files and plots (does not exist initially)
-* `scripts`: includes all the Python scripts executed by the `snakemake` rules to build the model
+For further readings of PyPSA and PyPSA-Eur:
 
-# Installation and Usage
+* [PyPSA]()
+* [PyPSA-Eur]()
 
-## 1. Installation
+Here are an excerp for the introduction of PyPSA-Eur:
 
-Clone the repository:
-
-    git clone https://github.com/open-energy-transition/form-energy-storage
-
-You need [mamba](https://mamba.readthedocs.io/en/latest/) to run the analysis. Users may also prefer to use [micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html) or [conda](https://docs.conda.io/projects/conda/en/latest/index.html). Using `mamba`, you can create an environment from within you can run it:
-
-    mamba env create -f environment.yaml
-
-Activate the newly created `pypsa-eur` environment:
-
-    mamba activate pypsa-eur
-
-## 2. Run the analysis
-
-    snakemake -call
-
-This will run all analysis steps to reproduce results and build the report.
-
-To generate a PDF of the dependency graph of all steps `resources/dag.pdf` run:
-
-    snakemake -c1 dag
-
-<sup>*</sup> Open Energy Transition (g)GmbH, Königsallee 52, 95448 Bayreuth, Germany
-
-----
-
-----
-
-# PyPSA-Eur: A Sector-Coupled Open Optimisation Model of the European Energy System
+### PyPSA-Eur: A Sector-Coupled Open Optimisation Model of the European Energy System
 
 PyPSA-Eur is an open model dataset of the European energy system at the
 transmission network level that covers the full ENTSO-E area. The model is suitable both for operational studies and generation and transmission expansion planning studies.
 The continental scope and highly resolved spatial scale enables a proper description of the long-range
 smoothing effects for renewable power generation and their varying resource availability.
-
-
-
 
 The model is described in the [documentation](https://pypsa-eur.readthedocs.io)
 and in the paper
@@ -111,7 +78,7 @@ hundred nodes to remove these local inconsistencies. See the discussion in
 Section 3.4 "Model validation" of the paper.
 
 
-![PyPSA-Eur Grid Model](doc/img/elec.png)
+![PyPSA-Eur Grid Model](../doc/img/elec.png)
 
 The dataset consists of:
 
@@ -149,14 +116,14 @@ to 50-200 nodes.
 Already-built versions of the model can be found in the accompanying [Zenodo
 repository](https://doi.org/10.5281/zenodo.3601881).
 
-# Contributing and Support
+### Contributing and Support
 We strongly welcome anyone interested in contributing to this project. If you have any ideas, suggestions or encounter problems, feel invited to file issues or make pull requests on GitHub.
 -   In case of code-related **questions**, please post on [stack overflow](https://stackoverflow.com/questions/tagged/pypsa).
 -   For non-programming related and more general questions please refer to the [mailing list](https://groups.google.com/group/pypsa).
 -   To **discuss** with other PyPSA users, organise projects, share news, and get in touch with the community you can use the [discord server](https://discord.com/invite/AnuJBk23FU).
 -   For **bugs and feature requests**, please use the [PyPSA-Eur Github Issues page](https://github.com/PyPSA/pypsa-eur/issues).
 
-# Licence
+### Licence
 
 The code in PyPSA-Eur is released as free software under the
 [MIT License](https://opensource.org/licenses/MIT), see [`doc/licenses.rst`](doc/licenses.rst).
