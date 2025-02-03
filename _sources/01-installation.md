@@ -2,8 +2,6 @@
 
 (This is a copy of PyPSA-Eur installation with minor changes)
 
-The subsequently described installation steps are demonstrated as shell commands, where the path before the `%` sign denotes the  directory in which the commands following the `%` should be entered.
-
 ## Clone the Repository
 
 First of all, clone the [Form Energy Storage PyPSA-Eur repository](https://github.com/open-energy-transition/form-energy-storage) using the version control system `git` in the command line.

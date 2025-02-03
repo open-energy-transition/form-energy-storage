@@ -36,6 +36,7 @@
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
@@ -169,13 +170,17 @@
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Preparation</span></p>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="01-installation.html">Installation</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Tutorials</a></li>
-
 <li class="toctree-l1"><a class="reference internal" href="03-features.html">Features</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="11-baseline.html">Base Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="12-scenarios.html">Scenarios Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-kpis.html">KPIs Configuration</a></li>
 </ul>
 
     </div>
@@ -282,7 +287,7 @@
       
       
       
-      <li><a href="_sources/02-tutorials.md" target="_blank"
+      <li><a href="_sources/02-tutorials.rst" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -292,7 +297,7 @@
 <span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="btn__text-container">.md</span>
+<span class="btn__text-container">.rst</span>
 </a>
 </li>
       
@@ -368,10 +373,9 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Tutorials</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#repository-structure">Repository structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-run-scenarios">Test run Scenarios</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repository-structure">Repository structure</a></li>
 </ul>
-
             </nav>
         </div>
     </div>
@@ -382,14 +386,667 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="tutorials">
+  <section id="tutorials">
 <h1>Tutorials<a class="headerlink" href="#tutorials" title="Link to this heading">#</a></h1>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">snakemake</span> <span class="o">--</span><span class="n">configfile</span> <span class="n">config</span><span class="o">/</span><span class="n">config</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">yaml</span>
+<p>This is a brief tutorial on how to use the Form Energy Storage scenarios.
+Unlike the original PyPSA-Eur repository, this version comes pre-configured with scenarios that you can test run.</p>
+<section id="test-run-scenarios">
+<h2>Test run Scenarios<a class="headerlink" href="#test-run-scenarios" title="Link to this heading">#</a></h2>
+<p>First, open the <code class="docutils literal notranslate"><span class="pre">config.form.yaml</span></code> file using a code editor of your choice, and navigate to the <code class="docutils literal notranslate"><span class="pre">run</span></code> section:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">run</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">prefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;scenarios&quot;</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;baseline-mds&quot;</span>
+<span class="w">  </span><span class="nt">scenarios</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">config/scenarios.form.yaml</span>
+<span class="w">  </span><span class="nt">disable_progressbar</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">shared_resources</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">policy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">exclude</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="w">  </span><span class="nt">shared_cutouts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </pre></div>
 </div>
+<p>as you can see, <code class="docutils literal notranslate"><span class="pre">baseline-mds</span></code> is the name of the scenario that is chosen.
+The content of <code class="docutils literal notranslate"><span class="pre">baseline-mds</span></code> is defined in <code class="docutils literal notranslate"><span class="pre">scenarios.form.yaml</span></code>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">baseline-mds</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;iron-air</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you want to create a model that minimizes computational time, you can adjust the <code class="docutils literal notranslate"><span class="pre">clustering:</span> <span class="pre">temporal:</span> <span class="pre">resolution_sector</span></code> setting here:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">clustering</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">focus_weights</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">DE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
+<span class="w">  </span><span class="nt">temporal</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">resolution_sector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4380SEG</span>
+</pre></div>
+</div>
+<p>The rule of thumb is:</p>
+<p>The general rule of thumb are as follows:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">4380SEG</span></code>: Three-hour time resolution, takes 4 hours to run on a computer cluster</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2920SEG</span></code>: Four-hour time resolution, takes 2 hours to run on a computer cluster</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">100H</span></code>: Hundred-hour time resolution, very quick to solve.</p></li>
+</ul>
+<p>If you want to test run this model on your computer, replace <code class="docutils literal notranslate"><span class="pre">4380SEG</span></code> with <code class="docutils literal notranslate"><span class="pre">100H</span></code>.</p>
+</div>
+<p>Before running the model, run the snakemake command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">snakemake solve_sector_networks --configfile config/config.form.yaml -n</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">-n</span></code> at the end indicates a dry run. If no errors occur, it will list the jobs that would be run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Job stats:</span>
+<span class="go">job                                                 count</span>
+<span class="go">------------------------------------------------  -------</span>
+<span class="go">add_electricity                                         1</span>
+<span class="go">add_existing_baseyear                                   1</span>
+<span class="go">add_transmission_projects_and_dlr                       1</span>
+<span class="go">base_network                                            1</span>
+<span class="go">build_ammonia_production                                1</span>
+<span class="go">build_biomass_potentials                                1</span>
+<span class="go">build_central_heating_temperature_profiles              1</span>
+<span class="go">build_clustered_population_layouts                      1</span>
+<span class="go">build_cop_profiles                                      1</span>
+<span class="go">build_daily_heat_demand                                 1</span>
+<span class="go">build_direct_heat_source_utilisation_profiles           1</span>
+<span class="go">build_district_heat_share                               1</span>
+<span class="go">build_electricity_demand                                1</span>
+<span class="go">build_electricity_demand_base                           1</span>
+<span class="go">build_energy_totals                                     1</span>
+<span class="go">build_existing_heating_distribution                     1</span>
+<span class="go">build_gas_input_locations                               1</span>
+<span class="go">build_gas_network                                       1</span>
+<span class="go">build_heat_totals                                       1</span>
+<span class="go">build_hourly_heat_demand                                1</span>
+<span class="go">build_hydro_profile                                     1</span>
+<span class="go">build_industrial_distribution_key                       1</span>
+<span class="go">build_industrial_energy_demand_per_country_today        1</span>
+<span class="go">build_industrial_energy_demand_per_node                 1</span>
+<span class="go">build_industrial_energy_demand_per_node_today           1</span>
+<span class="go">build_industrial_production_per_country                 1</span>
+<span class="go">build_industrial_production_per_country_tomorrow        1</span>
+<span class="go">build_industrial_production_per_node                    1</span>
+<span class="go">build_industry_sector_ratios                            1</span>
+<span class="go">build_industry_sector_ratios_intermediate               1</span>
+<span class="go">build_population_layouts                                1</span>
+<span class="go">build_population_weighted_energy_totals                 2</span>
+<span class="go">build_powerplants                                       1</span>
+<span class="go">build_renewable_profiles                                6</span>
+<span class="go">build_salt_cavern_potentials                            1</span>
+<span class="go">build_shapes                                            1</span>
+<span class="go">build_ship_raster                                       1</span>
+<span class="go">build_shipping_demand                                   1</span>
+<span class="go">build_solar_thermal_profiles                            1</span>
+<span class="go">build_temperature_profiles                              1</span>
+<span class="go">build_transmission_projects                             1</span>
+<span class="go">build_transport_demand                                  1</span>
+<span class="go">cluster_gas_network                                     1</span>
+<span class="go">cluster_network                                         1</span>
+<span class="go">determine_availability_matrix                           6</span>
+<span class="go">final_adjustment_myopic                                 1</span>
+<span class="go">prepare_network                                         1</span>
+<span class="go">prepare_sector_network                                  1</span>
+<span class="go">retrieve_cost_data                                      1</span>
+<span class="go">retrieve_electricity_demand                             1</span>
+<span class="go">retrieve_gas_infrastructure_data                        1</span>
+<span class="go">retrieve_osm_prebuilt                                   1</span>
+<span class="go">retrieve_ship_raster                                    1</span>
+<span class="go">simplify_network                                        1</span>
+<span class="go">solve_sector_network_myopic                             1</span>
+<span class="go">solve_sector_networks                                   1</span>
+<span class="go">time_aggregation                                        1</span>
+<span class="go">total                                                  68</span>
+</pre></div>
+</div>
+<p>To create the model, run the snakemake command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">snakemake solve_sector_networks --configfile config/config.form.yaml</span>
+</pre></div>
+</div>
+<p>This triggers a workflow of multiple preceding jobs that depend on each rule’s inputs and outputs:</p>
+digraph snakemake_dag {
+    graph[bgcolor=white, margin=0];
+    node[shape=box, style=rounded, fontname=sans,                 fontsize=10, penwidth=2];
+    edge[penwidth=2, color=grey];
+    0[label = &quot;solve_sector_networks&quot;, color = &quot;0.50 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    1[label = &quot;solve_sector_network_myopic&quot;, color = &quot;0.43 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    2[label = &quot;final_adjustment_myopic&quot;, color = &quot;0.52 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    3[label = &quot;add_existing_baseyear&quot;, color = &quot;0.63 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    4[label = &quot;prepare_sector_network&quot;, color = &quot;0.29 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    5[label = &quot;build_renewable_profiles&quot;, color = &quot;0.13 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    6[label = &quot;determine_availability_matrix\ntechnology: offwind-ac&quot;, color = &quot;0.40 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    7[label = &quot;build_ship_raster\nrun: baseline-mds&quot;, color = &quot;0.41 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    8[label = &quot;retrieve_ship_raster&quot;, color = &quot;0.53 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    9[label = &quot;build_shapes\nrun: baseline-mds&quot;, color = &quot;0.38 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    10[label = &quot;retrieve_naturalearth_countries&quot;, color = &quot;0.65 0.6 0.85&quot;, style=&quot;rounded,dashed&quot;];
+    11[label = &quot;retrieve_eez&quot;, color = &quot;0.45 0.6 0.85&quot;, style=&quot;rounded,dashed&quot;];
+    12[label = &quot;retrieve_nuts_shapes&quot;, color = &quot;0.04 0.6 0.85&quot;, style=&quot;rounded,dashed&quot;];
+    13[label = &quot;cluster_network\nclusters: 52&quot;, color = &quot;0.05 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    14[label = &quot;simplify_network&quot;, color = &quot;0.10 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    15[label = &quot;add_transmission_projects_and_dlr&quot;, color = &quot;0.60 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    16[label = &quot;base_network&quot;, color = &quot;0.34 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    17[label = &quot;retrieve_osm_prebuilt&quot;, color = &quot;0.56 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    18[label = &quot;build_transmission_projects&quot;, color = &quot;0.15 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    19[label = &quot;build_electricity_demand_base&quot;, color = &quot;0.66 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    20[label = &quot;build_electricity_demand\nrun: baseline-mds&quot;, color = &quot;0.58 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    21[label = &quot;retrieve_electricity_demand&quot;, color = &quot;0.15 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    22[label = &quot;retrieve_synthetic_electricity_demand&quot;, color = &quot;0.49 0.6 0.85&quot;, style=&quot;rounded,dashed&quot;];
+    23[label = &quot;build_renewable_profiles&quot;, color = &quot;0.13 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    24[label = &quot;determine_availability_matrix\ntechnology: offwind-dc&quot;, color = &quot;0.40 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    25[label = &quot;build_renewable_profiles&quot;, color = &quot;0.13 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    26[label = &quot;determine_availability_matrix\ntechnology: offwind-float&quot;, color = &quot;0.40 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    27[label = &quot;cluster_gas_network&quot;, color = &quot;0.25 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    28[label = &quot;build_gas_network\nrun: baseline-mds&quot;, color = &quot;0.64 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    29[label = &quot;retrieve_gas_infrastructure_data&quot;, color = &quot;0.21 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    30[label = &quot;build_gas_input_locations&quot;, color = &quot;0.06 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    31[label = &quot;retrieve_gem_europe_gas_tracker&quot;, color = &quot;0.35 0.6 0.85&quot;, style=&quot;rounded,dashed&quot;];
+    32[label = &quot;time_aggregation\nsector_opts: &quot;, color = &quot;0.12 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    33[label = &quot;prepare_network\nll: v1.11\nopts: &quot;, color = &quot;0.26 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    34[label = &quot;add_electricity&quot;, color = &quot;0.62 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    35[label = &quot;build_renewable_profiles&quot;, color = &quot;0.13 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    36[label = &quot;determine_availability_matrix\ntechnology: solar&quot;, color = &quot;0.40 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    37[label = &quot;build_renewable_profiles&quot;, color = &quot;0.13 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    38[label = &quot;determine_availability_matrix\ntechnology: solar-hsat&quot;, color = &quot;0.40 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    39[label = &quot;build_renewable_profiles&quot;, color = &quot;0.13 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    40[label = &quot;determine_availability_matrix\ntechnology: onwind&quot;, color = &quot;0.40 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    41[label = &quot;build_hydro_profile&quot;, color = &quot;0.23 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    42[label = &quot;retrieve_cost_data\nrun: baseline-mds\nyear: 2035&quot;, color = &quot;0.18 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    43[label = &quot;build_powerplants&quot;, color = &quot;0.31 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    44[label = &quot;build_hourly_heat_demand&quot;, color = &quot;0.30 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    45[label = &quot;build_daily_heat_demand&quot;, color = &quot;0.54 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    46[label = &quot;build_population_layouts&quot;, color = &quot;0.18 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    47[label = &quot;retrieve_worldbank_urban_population&quot;, color = &quot;0.30 0.6 0.85&quot;, style=&quot;rounded,dashed&quot;];
+    48[label = &quot;build_solar_thermal_profiles&quot;, color = &quot;0.51 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    49[label = &quot;build_population_weighted_energy_totals\nkind: energy&quot;, color = &quot;0.39 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    50[label = &quot;build_energy_totals&quot;, color = &quot;0.55 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    51[label = &quot;build_clustered_population_layouts&quot;, color = &quot;0.04 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    52[label = &quot;build_population_weighted_energy_totals\nkind: heat&quot;, color = &quot;0.39 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    53[label = &quot;build_heat_totals&quot;, color = &quot;0.39 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    54[label = &quot;build_shipping_demand&quot;, color = &quot;0.20 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    55[label = &quot;build_transport_demand&quot;, color = &quot;0.01 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    56[label = &quot;build_temperature_profiles&quot;, color = &quot;0.25 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    57[label = &quot;build_biomass_potentials\nplanning_horizons: 2035&quot;, color = &quot;0.02 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    58[label = &quot;retrieve_jrc_enspreso_biomass&quot;, color = &quot;0.02 0.6 0.85&quot;, style=&quot;rounded,dashed&quot;];
+    59[label = &quot;build_salt_cavern_potentials&quot;, color = &quot;0.17 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    60[label = &quot;build_industrial_energy_demand_per_node&quot;, color = &quot;0.47 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    61[label = &quot;build_industry_sector_ratios_intermediate\nplanning_horizons: 2035&quot;, color = &quot;0.11 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    62[label = &quot;build_industry_sector_ratios&quot;, color = &quot;0.49 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    63[label = &quot;build_ammonia_production\nrun: baseline-mds&quot;, color = &quot;0.31 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    64[label = &quot;retrieve_usgs_ammonia_production&quot;, color = &quot;0.24 0.6 0.85&quot;, style=&quot;rounded,dashed&quot;];
+    65[label = &quot;build_industrial_energy_demand_per_country_today&quot;, color = &quot;0.41 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    66[label = &quot;build_industrial_production_per_country&quot;, color = &quot;0.32 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    67[label = &quot;build_industrial_production_per_node&quot;, color = &quot;0.48 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    68[label = &quot;build_industrial_distribution_key&quot;, color = &quot;0.13 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    69[label = &quot;retrieve_hotmaps_industrial_sites&quot;, color = &quot;0.03 0.6 0.85&quot;, style=&quot;rounded,dashed&quot;];
+    70[label = &quot;retrieve_gem_steel_plant_tracker&quot;, color = &quot;0.36 0.6 0.85&quot;, style=&quot;rounded,dashed&quot;];
+    71[label = &quot;build_industrial_production_per_country_tomorrow\nplanning_horizons: 2035&quot;, color = &quot;0.06 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    72[label = &quot;build_industrial_energy_demand_per_node_today&quot;, color = &quot;0.03 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    73[label = &quot;build_district_heat_share\nplanning_horizons: 2035&quot;, color = &quot;0.52 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    74[label = &quot;build_cop_profiles&quot;, color = &quot;0.61 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    75[label = &quot;build_central_heating_temperature_profiles\nplanning_horizons: 2035&quot;, color = &quot;0.16 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    76[label = &quot;build_direct_heat_source_utilisation_profiles&quot;, color = &quot;0.59 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    77[label = &quot;build_existing_heating_distribution&quot;, color = &quot;0.08 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    1 -&gt; 0
+    2 -&gt; 1
+    42 -&gt; 1
+    3 -&gt; 2
+    4 -&gt; 3
+    43 -&gt; 3
+    14 -&gt; 3
+    13 -&gt; 3
+    51 -&gt; 3
+    42 -&gt; 3
+    74 -&gt; 3
+    77 -&gt; 3
+    50 -&gt; 3
+    5 -&gt; 4
+    23 -&gt; 4
+    25 -&gt; 4
+    27 -&gt; 4
+    30 -&gt; 4
+    32 -&gt; 4
+    33 -&gt; 4
+    49 -&gt; 4
+    52 -&gt; 4
+    54 -&gt; 4
+    55 -&gt; 4
+    44 -&gt; 4
+    50 -&gt; 4
+    57 -&gt; 4
+    42 -&gt; 4
+    59 -&gt; 4
+    14 -&gt; 4
+    13 -&gt; 4
+    51 -&gt; 4
+    60 -&gt; 4
+    67 -&gt; 4
+    73 -&gt; 4
+    56 -&gt; 4
+    74 -&gt; 4
+    48 -&gt; 4
+    76 -&gt; 4
+    6 -&gt; 5
+    9 -&gt; 5
+    13 -&gt; 5
+    7 -&gt; 6
+    9 -&gt; 6
+    13 -&gt; 6
+    8 -&gt; 7
+    10 -&gt; 9
+    11 -&gt; 9
+    12 -&gt; 9
+    14 -&gt; 13
+    19 -&gt; 13
+    15 -&gt; 14
+    16 -&gt; 14
+    16 -&gt; 15
+    18 -&gt; 15
+    17 -&gt; 16
+    9 -&gt; 16
+    16 -&gt; 18
+    9 -&gt; 18
+    14 -&gt; 19
+    9 -&gt; 19
+    20 -&gt; 19
+    21 -&gt; 20
+    22 -&gt; 20
+    24 -&gt; 23
+    9 -&gt; 23
+    13 -&gt; 23
+    7 -&gt; 24
+    9 -&gt; 24
+    13 -&gt; 24
+    26 -&gt; 25
+    9 -&gt; 25
+    13 -&gt; 25
+    7 -&gt; 26
+    9 -&gt; 26
+    13 -&gt; 26
+    28 -&gt; 27
+    13 -&gt; 27
+    29 -&gt; 28
+    31 -&gt; 30
+    29 -&gt; 30
+    13 -&gt; 30
+    33 -&gt; 32
+    44 -&gt; 32
+    48 -&gt; 32
+    34 -&gt; 33
+    42 -&gt; 33
+    35 -&gt; 34
+    37 -&gt; 34
+    39 -&gt; 34
+    5 -&gt; 34
+    23 -&gt; 34
+    25 -&gt; 34
+    41 -&gt; 34
+    13 -&gt; 34
+    42 -&gt; 34
+    43 -&gt; 34
+    19 -&gt; 34
+    36 -&gt; 35
+    9 -&gt; 35
+    13 -&gt; 35
+    9 -&gt; 36
+    13 -&gt; 36
+    38 -&gt; 37
+    9 -&gt; 37
+    13 -&gt; 37
+    9 -&gt; 38
+    13 -&gt; 38
+    40 -&gt; 39
+    9 -&gt; 39
+    13 -&gt; 39
+    9 -&gt; 40
+    13 -&gt; 40
+    9 -&gt; 41
+    13 -&gt; 43
+    45 -&gt; 44
+    46 -&gt; 45
+    13 -&gt; 45
+    9 -&gt; 46
+    47 -&gt; 46
+    46 -&gt; 48
+    13 -&gt; 48
+    50 -&gt; 49
+    51 -&gt; 49
+    9 -&gt; 50
+    46 -&gt; 51
+    13 -&gt; 51
+    53 -&gt; 52
+    51 -&gt; 52
+    50 -&gt; 53
+    9 -&gt; 54
+    13 -&gt; 54
+    50 -&gt; 54
+    51 -&gt; 55
+    49 -&gt; 55
+    50 -&gt; 55
+    56 -&gt; 55
+    46 -&gt; 56
+    13 -&gt; 56
+    58 -&gt; 57
+    12 -&gt; 57
+    13 -&gt; 57
+    9 -&gt; 57
+    13 -&gt; 59
+    61 -&gt; 60
+    67 -&gt; 60
+    72 -&gt; 60
+    62 -&gt; 61
+    65 -&gt; 61
+    66 -&gt; 61
+    63 -&gt; 62
+    64 -&gt; 63
+    50 -&gt; 65
+    66 -&gt; 65
+    63 -&gt; 66
+    68 -&gt; 67
+    71 -&gt; 67
+    13 -&gt; 68
+    51 -&gt; 68
+    69 -&gt; 68
+    70 -&gt; 68
+    66 -&gt; 71
+    68 -&gt; 72
+    65 -&gt; 72
+    50 -&gt; 73
+    51 -&gt; 73
+    75 -&gt; 74
+    56 -&gt; 74
+    13 -&gt; 74
+    56 -&gt; 75
+    13 -&gt; 75
+    75 -&gt; 76
+    51 -&gt; 77
+    49 -&gt; 77
+    73 -&gt; 77
+}<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>To generate the KPI plots, run the snakemake command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">snakemake plot_KPIs_all --configfile config/config.form.yaml</span>
+</pre></div>
+</div>
+digraph snakemake_dag {
+    graph[bgcolor=white, margin=0];
+    node[shape=box, style=rounded, fontname=sans,                 fontsize=10, penwidth=2];
+    edge[penwidth=2, color=grey];
+    0[label = &quot;plot_KPIs_all&quot;, color = &quot;0.55 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    1[label = &quot;plot_KPIs&quot;, color = &quot;0.21 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    2[label = &quot;solve_sector_network_myopic&quot;, color = &quot;0.18 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    3[label = &quot;final_adjustment_myopic&quot;, color = &quot;0.55 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    4[label = &quot;add_existing_baseyear&quot;, color = &quot;0.56 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    5[label = &quot;prepare_sector_network&quot;, color = &quot;0.16 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    6[label = &quot;build_renewable_profiles&quot;, color = &quot;0.58 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    7[label = &quot;determine_availability_matrix\ntechnology: offwind-ac&quot;, color = &quot;0.44 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    8[label = &quot;build_ship_raster\nrun: baseline-mds&quot;, color = &quot;0.63 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    9[label = &quot;retrieve_ship_raster&quot;, color = &quot;0.64 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    10[label = &quot;build_shapes\nrun: baseline-mds&quot;, color = &quot;0.34 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    11[label = &quot;retrieve_naturalearth_countries&quot;, color = &quot;0.29 0.6 0.85&quot;, style=&quot;rounded,dashed&quot;];
+    12[label = &quot;retrieve_eez&quot;, color = &quot;0.16 0.6 0.85&quot;, style=&quot;rounded,dashed&quot;];
+    13[label = &quot;retrieve_nuts_shapes&quot;, color = &quot;0.03 0.6 0.85&quot;, style=&quot;rounded,dashed&quot;];
+    14[label = &quot;cluster_network\nclusters: 52&quot;, color = &quot;0.49 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    15[label = &quot;simplify_network&quot;, color = &quot;0.04 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    16[label = &quot;add_transmission_projects_and_dlr&quot;, color = &quot;0.61 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    17[label = &quot;base_network&quot;, color = &quot;0.10 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    18[label = &quot;retrieve_osm_prebuilt&quot;, color = &quot;0.06 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    19[label = &quot;build_transmission_projects&quot;, color = &quot;0.57 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    20[label = &quot;build_electricity_demand_base&quot;, color = &quot;0.26 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    21[label = &quot;build_electricity_demand\nrun: baseline-mds&quot;, color = &quot;0.43 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    22[label = &quot;retrieve_electricity_demand&quot;, color = &quot;0.51 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    23[label = &quot;retrieve_synthetic_electricity_demand&quot;, color = &quot;0.11 0.6 0.85&quot;, style=&quot;rounded,dashed&quot;];
+    24[label = &quot;build_renewable_profiles&quot;, color = &quot;0.58 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    25[label = &quot;determine_availability_matrix\ntechnology: offwind-dc&quot;, color = &quot;0.44 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    26[label = &quot;build_renewable_profiles&quot;, color = &quot;0.58 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    27[label = &quot;determine_availability_matrix\ntechnology: offwind-float&quot;, color = &quot;0.44 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    28[label = &quot;cluster_gas_network&quot;, color = &quot;0.14 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    29[label = &quot;build_gas_network\nrun: baseline-mds&quot;, color = &quot;0.07 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    30[label = &quot;retrieve_gas_infrastructure_data&quot;, color = &quot;0.22 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    31[label = &quot;build_gas_input_locations&quot;, color = &quot;0.04 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    32[label = &quot;retrieve_gem_europe_gas_tracker&quot;, color = &quot;0.17 0.6 0.85&quot;, style=&quot;rounded,dashed&quot;];
+    33[label = &quot;time_aggregation\nsector_opts: &quot;, color = &quot;0.65 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    34[label = &quot;prepare_network\nll: v1.11\nopts: &quot;, color = &quot;0.12 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    35[label = &quot;add_electricity&quot;, color = &quot;0.39 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    36[label = &quot;build_renewable_profiles&quot;, color = &quot;0.58 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    37[label = &quot;determine_availability_matrix\ntechnology: solar&quot;, color = &quot;0.44 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    38[label = &quot;build_renewable_profiles&quot;, color = &quot;0.58 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    39[label = &quot;determine_availability_matrix\ntechnology: solar-hsat&quot;, color = &quot;0.44 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    40[label = &quot;build_renewable_profiles&quot;, color = &quot;0.58 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    41[label = &quot;determine_availability_matrix\ntechnology: onwind&quot;, color = &quot;0.44 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    42[label = &quot;build_hydro_profile&quot;, color = &quot;0.44 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    43[label = &quot;retrieve_cost_data\nrun: baseline-mds\nyear: 2035&quot;, color = &quot;0.57 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    44[label = &quot;build_powerplants&quot;, color = &quot;0.31 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    45[label = &quot;build_hourly_heat_demand&quot;, color = &quot;0.60 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    46[label = &quot;build_daily_heat_demand&quot;, color = &quot;0.25 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    47[label = &quot;build_population_layouts&quot;, color = &quot;0.08 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    48[label = &quot;retrieve_worldbank_urban_population&quot;, color = &quot;0.66 0.6 0.85&quot;, style=&quot;rounded,dashed&quot;];
+    49[label = &quot;build_solar_thermal_profiles&quot;, color = &quot;0.22 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    50[label = &quot;build_population_weighted_energy_totals\nkind: energy&quot;, color = &quot;0.27 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    51[label = &quot;build_energy_totals&quot;, color = &quot;0.41 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    52[label = &quot;build_clustered_population_layouts&quot;, color = &quot;0.26 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    53[label = &quot;build_population_weighted_energy_totals\nkind: heat&quot;, color = &quot;0.27 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    54[label = &quot;build_heat_totals&quot;, color = &quot;0.52 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    55[label = &quot;build_shipping_demand&quot;, color = &quot;0.45 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    56[label = &quot;build_transport_demand&quot;, color = &quot;0.00 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    57[label = &quot;build_temperature_profiles&quot;, color = &quot;0.02 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    58[label = &quot;build_biomass_potentials\nplanning_horizons: 2035&quot;, color = &quot;0.12 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    59[label = &quot;retrieve_jrc_enspreso_biomass&quot;, color = &quot;0.18 0.6 0.85&quot;, style=&quot;rounded,dashed&quot;];
+    60[label = &quot;build_salt_cavern_potentials&quot;, color = &quot;0.48 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    61[label = &quot;build_industrial_energy_demand_per_node&quot;, color = &quot;0.13 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    62[label = &quot;build_industry_sector_ratios_intermediate\nplanning_horizons: 2035&quot;, color = &quot;0.58 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    63[label = &quot;build_industry_sector_ratios&quot;, color = &quot;0.54 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    64[label = &quot;build_ammonia_production\nrun: baseline-mds&quot;, color = &quot;0.01 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    65[label = &quot;retrieve_usgs_ammonia_production&quot;, color = &quot;0.11 0.6 0.85&quot;, style=&quot;rounded,dashed&quot;];
+    66[label = &quot;build_industrial_energy_demand_per_country_today&quot;, color = &quot;0.64 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    67[label = &quot;build_industrial_production_per_country&quot;, color = &quot;0.23 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    68[label = &quot;build_industrial_production_per_node&quot;, color = &quot;0.59 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    69[label = &quot;build_industrial_distribution_key&quot;, color = &quot;0.46 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    70[label = &quot;retrieve_hotmaps_industrial_sites&quot;, color = &quot;0.50 0.6 0.85&quot;, style=&quot;rounded,dashed&quot;];
+    71[label = &quot;retrieve_gem_steel_plant_tracker&quot;, color = &quot;0.24 0.6 0.85&quot;, style=&quot;rounded,dashed&quot;];
+    72[label = &quot;build_industrial_production_per_country_tomorrow\nplanning_horizons: 2035&quot;, color = &quot;0.39 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    73[label = &quot;build_industrial_energy_demand_per_node_today&quot;, color = &quot;0.15 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    74[label = &quot;build_district_heat_share\nplanning_horizons: 2035&quot;, color = &quot;0.45 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    75[label = &quot;build_cop_profiles&quot;, color = &quot;0.49 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    76[label = &quot;build_central_heating_temperature_profiles\nplanning_horizons: 2035&quot;, color = &quot;0.21 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    77[label = &quot;build_direct_heat_source_utilisation_profiles&quot;, color = &quot;0.59 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    78[label = &quot;build_existing_heating_distribution&quot;, color = &quot;0.33 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    79[label = &quot;make_summary&quot;, color = &quot;0.62 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    80[label = &quot;plot_power_network_clustered&quot;, color = &quot;0.53 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    81[label = &quot;plot_power_network&quot;, color = &quot;0.25 0.6 0.85&quot;, style=&quot;rounded&quot;];
+    1 -&gt; 0
+    2 -&gt; 1
+    14 -&gt; 1
+    79 -&gt; 1
+    3 -&gt; 2
+    43 -&gt; 2
+    4 -&gt; 3
+    5 -&gt; 4
+    44 -&gt; 4
+    15 -&gt; 4
+    14 -&gt; 4
+    52 -&gt; 4
+    43 -&gt; 4
+    75 -&gt; 4
+    78 -&gt; 4
+    51 -&gt; 4
+    6 -&gt; 5
+    24 -&gt; 5
+    26 -&gt; 5
+    28 -&gt; 5
+    31 -&gt; 5
+    33 -&gt; 5
+    34 -&gt; 5
+    50 -&gt; 5
+    53 -&gt; 5
+    55 -&gt; 5
+    56 -&gt; 5
+    45 -&gt; 5
+    51 -&gt; 5
+    58 -&gt; 5
+    43 -&gt; 5
+    60 -&gt; 5
+    15 -&gt; 5
+    14 -&gt; 5
+    52 -&gt; 5
+    61 -&gt; 5
+    68 -&gt; 5
+    74 -&gt; 5
+    57 -&gt; 5
+    75 -&gt; 5
+    49 -&gt; 5
+    77 -&gt; 5
+    7 -&gt; 6
+    10 -&gt; 6
+    14 -&gt; 6
+    8 -&gt; 7
+    10 -&gt; 7
+    14 -&gt; 7
+    9 -&gt; 8
+    11 -&gt; 10
+    12 -&gt; 10
+    13 -&gt; 10
+    15 -&gt; 14
+    20 -&gt; 14
+    16 -&gt; 15
+    17 -&gt; 15
+    17 -&gt; 16
+    19 -&gt; 16
+    18 -&gt; 17
+    10 -&gt; 17
+    17 -&gt; 19
+    10 -&gt; 19
+    15 -&gt; 20
+    10 -&gt; 20
+    21 -&gt; 20
+    22 -&gt; 21
+    23 -&gt; 21
+    25 -&gt; 24
+    10 -&gt; 24
+    14 -&gt; 24
+    8 -&gt; 25
+    10 -&gt; 25
+    14 -&gt; 25
+    27 -&gt; 26
+    10 -&gt; 26
+    14 -&gt; 26
+    8 -&gt; 27
+    10 -&gt; 27
+    14 -&gt; 27
+    29 -&gt; 28
+    14 -&gt; 28
+    30 -&gt; 29
+    32 -&gt; 31
+    30 -&gt; 31
+    14 -&gt; 31
+    34 -&gt; 33
+    45 -&gt; 33
+    49 -&gt; 33
+    35 -&gt; 34
+    43 -&gt; 34
+    36 -&gt; 35
+    38 -&gt; 35
+    40 -&gt; 35
+    6 -&gt; 35
+    24 -&gt; 35
+    26 -&gt; 35
+    42 -&gt; 35
+    14 -&gt; 35
+    43 -&gt; 35
+    44 -&gt; 35
+    20 -&gt; 35
+    37 -&gt; 36
+    10 -&gt; 36
+    14 -&gt; 36
+    10 -&gt; 37
+    14 -&gt; 37
+    39 -&gt; 38
+    10 -&gt; 38
+    14 -&gt; 38
+    10 -&gt; 39
+    14 -&gt; 39
+    41 -&gt; 40
+    10 -&gt; 40
+    14 -&gt; 40
+    10 -&gt; 41
+    14 -&gt; 41
+    10 -&gt; 42
+    14 -&gt; 44
+    46 -&gt; 45
+    47 -&gt; 46
+    14 -&gt; 46
+    10 -&gt; 47
+    48 -&gt; 47
+    47 -&gt; 49
+    14 -&gt; 49
+    51 -&gt; 50
+    52 -&gt; 50
+    10 -&gt; 51
+    47 -&gt; 52
+    14 -&gt; 52
+    54 -&gt; 53
+    52 -&gt; 53
+    51 -&gt; 54
+    10 -&gt; 55
+    14 -&gt; 55
+    51 -&gt; 55
+    52 -&gt; 56
+    50 -&gt; 56
+    51 -&gt; 56
+    57 -&gt; 56
+    47 -&gt; 57
+    14 -&gt; 57
+    59 -&gt; 58
+    13 -&gt; 58
+    14 -&gt; 58
+    10 -&gt; 58
+    14 -&gt; 60
+    62 -&gt; 61
+    68 -&gt; 61
+    73 -&gt; 61
+    63 -&gt; 62
+    66 -&gt; 62
+    67 -&gt; 62
+    64 -&gt; 63
+    65 -&gt; 64
+    51 -&gt; 66
+    67 -&gt; 66
+    64 -&gt; 67
+    69 -&gt; 68
+    72 -&gt; 68
+    14 -&gt; 69
+    52 -&gt; 69
+    70 -&gt; 69
+    71 -&gt; 69
+    67 -&gt; 72
+    69 -&gt; 73
+    66 -&gt; 73
+    51 -&gt; 74
+    52 -&gt; 74
+    76 -&gt; 75
+    57 -&gt; 75
+    14 -&gt; 75
+    57 -&gt; 76
+    14 -&gt; 76
+    76 -&gt; 77
+    52 -&gt; 78
+    50 -&gt; 78
+    74 -&gt; 78
+    2 -&gt; 79
+    43 -&gt; 79
+    80 -&gt; 79
+    81 -&gt; 79
+    14 -&gt; 80
+    2 -&gt; 81
+    14 -&gt; 81
+}<div class="line-block">
+<div class="line"><br /></div>
+</div>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="repository-structure">
-<h1>Repository structure<a class="headerlink" href="#repository-structure" title="Link to this heading">#</a></h1>
+<section id="repository-structure">
+<h2>Repository structure<a class="headerlink" href="#repository-structure" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">benchmarks</span></code>: will store <code class="docutils literal notranslate"><span class="pre">snakemake</span></code> benchmarks (does not exist initially)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">config</span></code>: configurations used in the study</p></li>
@@ -400,11 +1057,12 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">logs</span></code>: will store log files (does not exist initially)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">notebooks</span></code>: includes all the <code class="docutils literal notranslate"><span class="pre">notebooks</span></code> used for ad-hoc analysis</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">report</span></code>: contains all files necessary to build the report; plots and result files are generated automatically</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rules</span></code>: includes all the <code class="docutils literal notranslate"><span class="pre">snakemake</span></code>rules loaded in the <code class="docutils literal notranslate"><span class="pre">Snakefile</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rules</span></code>: includes all the <code class="docutils literal notranslate"><span class="pre">snakemake``rules</span> <span class="pre">loaded</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">``Snakefile</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">resources</span></code>: will store intermediate results of the workflow which can be picked up again by subsequent rules (does not exist initially)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">results</span></code>: will store the solved PyPSA network data, summary files and plots (does not exist initially)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">scripts</span></code>: includes all the Python scripts executed by the <code class="docutils literal notranslate"><span class="pre">snakemake</span></code> rules to build the model</p></li>
 </ul>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -472,10 +1130,9 @@
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Tutorials</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#repository-structure">Repository structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-run-scenarios">Test run Scenarios</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repository-structure">Repository structure</a></li>
 </ul>
-
   </nav></div>
 
 </div></div>
@@ -499,7 +1156,7 @@ By Form Energy Storage and Open Energy Transition
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2025.
       <br/>
     
   </p>

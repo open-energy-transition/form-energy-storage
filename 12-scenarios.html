@@ -36,6 +36,7 @@
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
@@ -64,7 +65,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="13-kpis.html" />
+    <link rel="next" title="KPIs Configuration" href="13-kpis.html" />
     <link rel="prev" title="Base Configuration" href="11-baseline.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -169,13 +170,17 @@
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Preparation</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="01-installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02-tutorials.html">Tutorials</a></li>
-
 <li class="toctree-l1"><a class="reference internal" href="03-features.html">Features</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="11-baseline.html">Base Configuration</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Scenarios Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-kpis.html">KPIs Configuration</a></li>
 </ul>
 
     </div>
@@ -369,6 +374,11 @@
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#baseline"><code class="docutils literal notranslate"><span class="pre">Baseline</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mid-capex"><code class="docutils literal notranslate"><span class="pre">Mid-Capex</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#low-capex"><code class="docutils literal notranslate"><span class="pre">Low-Capex</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#climate-year-2010"><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">2010</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#climate-year-2012"><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">2012</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#climate-year-1996"><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">1996</span></code></a></li>
 </ul>
             </nav>
         </div>
@@ -382,52 +392,283 @@
                   
   <section id="scenarios-configuration">
 <h1>Scenarios Configuration<a class="headerlink" href="#scenarios-configuration" title="Link to this heading">#</a></h1>
+<p>This is the scenario outline used in the analysis “The Role of Energy Storage in Germany”.
+For each scenario involving medium-duration storages,
+there is always a corresponding counterfactual scenario that excludes medium-duration storages.</p>
 <section id="baseline">
 <h2><code class="docutils literal notranslate"><span class="pre">Baseline</span></code><a class="headerlink" href="#baseline" title="Link to this heading">#</a></h2>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">baseline-mds-1H</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">enable</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">final_adjustment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">co2_budget</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">2035</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.107</span><span class="w"> </span><span class="c1"># excluding domestic transport emissions and non co2 energy emissions from scope</span>
-<span class="w">  </span><span class="nt">electricity</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">max_hours</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">li-ion battery</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">4</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">8</span><span class="p p-Indicator">]</span>
-<span class="w">      </span><span class="nt">H2</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">168</span><span class="p p-Indicator">]</span>
-<span class="w">      </span><span class="nt">iron-air battery</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">100</span><span class="p p-Indicator">]</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">baseline-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">district_heating</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">potential</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
 <span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;iron-air</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">land_transport_electric_share</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">2035</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.30</span><span class="w"> </span><span class="c1"># FE input</span>
-<span class="w">    </span><span class="nt">land_transport_ice_share</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">2035</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
-<span class="w">    </span><span class="nt">dac</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">dac_limit</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">        </span><span class="nt">2035</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">12.4</span><span class="w">  </span><span class="c1"># limit in MtCO2</span>
-<span class="w">    </span><span class="nt">methanation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">co2_sequestration_potential</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">2035</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">22.3</span>
-<span class="w">    </span><span class="nt">residential_heat_dsm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">residential_heat_restriction_value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.27</span>
-<span class="w">    </span><span class="nt">residential_heat_restriction_time</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">10</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">22</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 9am and 9pm</span>
-<span class="w">  </span><span class="nt">load</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">scaling_factor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.26</span><span class="w">  </span><span class="c1"># electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)</span>
-<span class="w">  </span><span class="nt">clustering</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">temporal</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">resolution_sector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1H</span>
 
-<span class="nt">baseline-nomds-1H</span><span class="p">:</span>
+<span class="nt">baseline-nomds</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="w">    </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">]</span>
 </pre></div>
 </div>
-<p>The differences between this scenario and the following are:</p>
-<ul class="simple">
-<li><p><strong>baseline-nomds-1H</strong>: It excludes both iron-air batteries and H2 storage.</p></li>
-<li><p><strong>baseline-mds-100H</strong>: The temporal resolution is reduced to 100 hours per model.</p></li>
-<li><p><strong>baseline-mds-4380SEG</strong>: The temporal resolution is reduced to 2-hour time steps.</p></li>
-</ul>
+<p>The Baseline scenario is based on the climate year 2013, with the cost of iron-air set at 2,350 EUR/kWh.</p>
+</section>
+<section id="mid-capex">
+<h2><code class="docutils literal notranslate"><span class="pre">Mid-Capex</span></code><a class="headerlink" href="#mid-capex" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">mid-capex-mds</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;iron-air</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">costs</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">investment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">iron-air battery</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">18477</span><span class="w">  </span><span class="c1"># in EUR/MWh (2020) from 20,000 EUR/MWh (2024)</span>
+
+<span class="nt">mid-capex-nomds</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="w">    </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">costs</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">investment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">iron-air battery</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">18477</span><span class="w">  </span><span class="c1"># in EUR/MWh (2020) from 20,000 EUR/MWh (2024)</span>
+</pre></div>
+</div>
+<p>The Mid-Capex scenario sets the cost of iron-air at 2,000 EUR/kWh,
+slightly lower than the Baseline scenario.</p>
+</section>
+<section id="low-capex">
+<h2><code class="docutils literal notranslate"><span class="pre">Low-Capex</span></code><a class="headerlink" href="#low-capex" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">low-capex-mds</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;iron-air</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">costs</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">investment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">iron-air battery</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">14089</span><span class="w">  </span><span class="c1"># in EUR/MWh (2020) from 15,250 EUR/MWh (2024)</span>
+
+<span class="nt">low-capex-nomds</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="w">    </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">costs</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">investment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">iron-air battery</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">14089</span><span class="w">  </span><span class="c1"># in EUR/MWh (2020) from 15,250 EUR/MWh (2024)</span>
+</pre></div>
+</div>
+<p>The Low-Capex scenario sets the cost of iron-air at 1,525 EUR/kWh,
+which is half the cost of the Baseline scenario.</p>
+</section>
+<section id="climate-year-2010">
+<h2><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">2010</span></code><a class="headerlink" href="#climate-year-2010" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cy2010-mds</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;iron-air</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">snapshots</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2010-01-01&quot;</span>
+<span class="w">    </span><span class="nt">end</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2011-01-01&quot;</span>
+<span class="w">  </span><span class="nt">atlite</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">default_cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2010-sarah3-era5</span>
+<span class="w">    </span><span class="nt">cutouts</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">europe-2010-sarah3-era5</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">module</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">sarah</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">era5</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># in priority order</span>
+<span class="w">        </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-12.</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">42.</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">33.</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">72.</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">dx</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+<span class="w">        </span><span class="nt">dy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+<span class="w">        </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;2010&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;2010&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">renewable</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">onwind</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2010-sarah3-era5</span>
+<span class="w">    </span><span class="nt">offwind-ac</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2010-sarah3-era5</span>
+<span class="w">    </span><span class="nt">offwind-dc</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2010-sarah3-era5</span>
+<span class="w">    </span><span class="nt">offwind-float</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2010-sarah3-era5</span>
+<span class="w">    </span><span class="nt">solar</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2010-sarah3-era5</span>
+<span class="w">    </span><span class="nt">solar-hsat</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2010-sarah3-era5</span>
+<span class="w">    </span><span class="nt">hydro</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2010-sarah3-era5</span>
+
+<span class="nt">cy2010-nomds</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="w">    </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">snapshots</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2010-01-01&quot;</span>
+<span class="w">    </span><span class="nt">end</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2011-01-01&quot;</span>
+<span class="w">  </span><span class="nt">atlite</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">default_cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2010-sarah3-era5</span>
+<span class="w">    </span><span class="nt">cutouts</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">europe-2010-sarah3-era5</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">module</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">sarah</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">era5</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># in priority order</span>
+<span class="w">        </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-12.</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">42.</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">33.</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">72.</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">dx</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+<span class="w">        </span><span class="nt">dy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+<span class="w">        </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;2010&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;2010&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">renewable</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">onwind</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2010-sarah3-era5</span>
+<span class="w">    </span><span class="nt">offwind-ac</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2010-sarah3-era5</span>
+<span class="w">    </span><span class="nt">offwind-dc</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2010-sarah3-era5</span>
+<span class="w">    </span><span class="nt">offwind-float</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2010-sarah3-era5</span>
+<span class="w">    </span><span class="nt">solar</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2010-sarah3-era5</span>
+<span class="w">    </span><span class="nt">solar-hsat</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2010-sarah3-era5</span>
+<span class="w">    </span><span class="nt">hydro</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2010-sarah3-era5</span>
+</pre></div>
+</div>
+<p>This scenario is based on the climate year 2010, which is characterised by the lowest annual wind resources
+and the second highest annual heating demand from 1960 - 2021 (<a class="reference external" href="https://www.nature.com/articles/s41467-024-54853-3">Gøtske et al., 2024</a>)</p>
+</section>
+<section id="climate-year-2012">
+<h2><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">2012</span></code><a class="headerlink" href="#climate-year-2012" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cy2012-mds</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;iron-air</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">snapshots</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2012-01-01&quot;</span>
+<span class="w">    </span><span class="nt">end</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2013-01-01&quot;</span>
+<span class="w">  </span><span class="nt">atlite</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">default_cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2012-sarah3-era5</span>
+<span class="w">    </span><span class="nt">cutouts</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">europe-2012-sarah3-era5</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">module</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">sarah</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">era5</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># in priority order</span>
+<span class="w">        </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-12.</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">42.</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">33.</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">72.</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">dx</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+<span class="w">        </span><span class="nt">dy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+<span class="w">        </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;2012&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;2012&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">renewable</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">onwind</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2012-sarah3-era5</span>
+<span class="w">    </span><span class="nt">offwind-ac</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2012-sarah3-era5</span>
+<span class="w">    </span><span class="nt">offwind-dc</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2012-sarah3-era5</span>
+<span class="w">    </span><span class="nt">offwind-float</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2012-sarah3-era5</span>
+<span class="w">    </span><span class="nt">solar</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2012-sarah3-era5</span>
+<span class="w">    </span><span class="nt">solar-hsat</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2012-sarah3-era5</span>
+<span class="w">    </span><span class="nt">hydro</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2012-sarah3-era5</span>
+
+<span class="nt">cy2012-nomds</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="w">    </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">snapshots</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2012-01-01&quot;</span>
+<span class="w">    </span><span class="nt">end</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2013-01-01&quot;</span>
+<span class="w">  </span><span class="nt">atlite</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">default_cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2012-sarah3-era5</span>
+<span class="w">    </span><span class="nt">cutouts</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">europe-2012-sarah3-era5</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">module</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">sarah</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">era5</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># in priority order</span>
+<span class="w">        </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-12.</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">42.</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">33.</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">72.</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">dx</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+<span class="w">        </span><span class="nt">dy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+<span class="w">        </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;2012&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;2012&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">renewable</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">onwind</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2012-sarah3-era5</span>
+<span class="w">    </span><span class="nt">offwind-ac</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2012-sarah3-era5</span>
+<span class="w">    </span><span class="nt">offwind-dc</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2012-sarah3-era5</span>
+<span class="w">    </span><span class="nt">offwind-float</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2012-sarah3-era5</span>
+<span class="w">    </span><span class="nt">solar</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2012-sarah3-era5</span>
+<span class="w">    </span><span class="nt">solar-hsat</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2012-sarah3-era5</span>
+<span class="w">    </span><span class="nt">hydro</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2012-sarah3-era5</span>
+</pre></div>
+</div>
+<p>This scenario is based on the climate year 2012, which is the most stressful climate year in terms of
+2-week Dunkelflaute situation at European aggregated level (<a class="reference external" href="https://2024.entsos-tyndp-scenarios.eu/wp-content/uploads/2024/07/TYNDP_2024_Scenarios_Methodology_Report_240708.pdf">2024 TYNDP Scenarios Methodology Report</a>, page 30)</p>
+</section>
+<section id="climate-year-1996">
+<h2><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">1996</span></code><a class="headerlink" href="#climate-year-1996" title="Link to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cy1996-mds</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;iron-air</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">snapshots</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1996-01-01&quot;</span>
+<span class="w">    </span><span class="nt">end</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1997-01-01&quot;</span>
+<span class="w">  </span><span class="nt">atlite</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">default_cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-1996-sarah3-era5</span>
+<span class="w">    </span><span class="nt">cutouts</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">europe-1996-sarah3-era5</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">module</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">sarah</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">era5</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># in priority order</span>
+<span class="w">        </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-12.</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">42.</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">33.</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">72.</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">dx</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+<span class="w">        </span><span class="nt">dy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+<span class="w">        </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;1996&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;1996&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">renewable</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">onwind</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-1996-sarah3-era5</span>
+<span class="w">    </span><span class="nt">offwind-ac</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-1996-sarah3-era5</span>
+<span class="w">    </span><span class="nt">offwind-dc</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-1996-sarah3-era5</span>
+<span class="w">    </span><span class="nt">offwind-float</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-1996-sarah3-era5</span>
+<span class="w">    </span><span class="nt">solar</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-1996-sarah3-era5</span>
+<span class="w">    </span><span class="nt">solar-hsat</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-1996-sarah3-era5</span>
+<span class="w">    </span><span class="nt">hydro</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-1996-sarah3-era5</span>
+
+<span class="nt">cy1996-nomds</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="w">    </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">snapshots</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1996-01-01&quot;</span>
+<span class="w">    </span><span class="nt">end</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1997-01-01&quot;</span>
+<span class="w">  </span><span class="nt">atlite</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">default_cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-1996-sarah3-era5</span>
+<span class="w">    </span><span class="nt">cutouts</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">europe-1996-sarah3-era5</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">module</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">sarah</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">era5</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># in priority order</span>
+<span class="w">        </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-12.</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">42.</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">33.</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">72.</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">dx</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+<span class="w">        </span><span class="nt">dy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+<span class="w">        </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;1996&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;1996&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">renewable</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">onwind</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-1996-sarah3-era5</span>
+<span class="w">    </span><span class="nt">offwind-ac</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-1996-sarah3-era5</span>
+<span class="w">    </span><span class="nt">offwind-dc</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-1996-sarah3-era5</span>
+<span class="w">    </span><span class="nt">offwind-float</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-1996-sarah3-era5</span>
+<span class="w">    </span><span class="nt">solar</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-1996-sarah3-era5</span>
+<span class="w">    </span><span class="nt">solar-hsat</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-1996-sarah3-era5</span>
+<span class="w">    </span><span class="nt">hydro</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-1996-sarah3-era5</span>
+</pre></div>
+</div>
+<p>This scenario is based on the climate year 1996, which is characterised by low yield of PV and wind,
+as well as a pronounced “dark doldrums” for about 10 days in January (<a class="reference external" href="https://www.energysystem2050.net/content/TransnetBW-Study_EnergySystem2050.pdf?v2">TransnetBW Energy System 2050 Report</a>, page 19)</p>
 </section>
 </section>
 
@@ -475,7 +716,7 @@
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">&lt;no title&gt;</p>
+        <p class="prev-next-title">KPIs Configuration</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -497,6 +738,11 @@
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#baseline"><code class="docutils literal notranslate"><span class="pre">Baseline</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mid-capex"><code class="docutils literal notranslate"><span class="pre">Mid-Capex</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#low-capex"><code class="docutils literal notranslate"><span class="pre">Low-Capex</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#climate-year-2010"><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">2010</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#climate-year-2012"><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">2012</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#climate-year-1996"><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">1996</span></code></a></li>
 </ul>
   </nav></div>
 
@@ -521,7 +767,7 @@ By Form Energy Storage and Open Energy Transition
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2025.
       <br/>
     
   </p>

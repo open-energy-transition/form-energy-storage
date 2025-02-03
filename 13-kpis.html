@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; The Role of Energy Storage in Germany</title>
+    <title>KPIs Configuration &#8212; The Role of Energy Storage in Germany</title>
   
   
   
@@ -36,6 +36,7 @@
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
@@ -168,13 +169,17 @@
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Preparation</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="01-installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02-tutorials.html">Tutorials</a></li>
-
 <li class="toctree-l1"><a class="reference internal" href="03-features.html">Features</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="11-baseline.html">Base Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="12-scenarios.html">Scenarios Configuration</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">KPIs Configuration</a></li>
 </ul>
 
     </div>
@@ -357,7 +362,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1><no title></h1>
+    <h1>KPIs Configuration</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -366,9 +371,14 @@
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="simple visible nav section-nav flex-column">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract"><code class="docutils literal notranslate"><span class="pre">extract</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carrier-filter"><code class="docutils literal notranslate"><span class="pre">carrier_filter</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-carrier"><code class="docutils literal notranslate"><span class="pre">group_carrier</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot"><code class="docutils literal notranslate"><span class="pre">plot</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figsize"><code class="docutils literal notranslate"><span class="pre">figsize</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-kw"><code class="docutils literal notranslate"><span class="pre">plot_kw</span></code></a></li>
 </ul>
-
             </nav>
         </div>
     </div>
@@ -379,7 +389,123 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  
+  <section id="kpis-configuration">
+<h1>KPIs Configuration<a class="headerlink" href="#kpis-configuration" title="Link to this heading">#</a></h1>
+<p>Plot_KPIs creates both predefined and configurable figures. The predefined figures are:</p>
+<ul class="simple">
+<li><p>A map of curtailed energy for Germany and the wider region.</p></li>
+<li><p>A map of transmission line loading for Germany and the wider region.</p></li>
+<li><p>An overview plot of the energy trade.</p></li>
+<li><p>A summary CSV for storage capacities.</p></li>
+</ul>
+<p>The configurable figures are defined based on <code class="docutils literal notranslate"><span class="pre">config/config.kpi.yaml</span></code>.</p>
+<p>Key components of each configuration:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">extract</span></code>: Defines the network statistics for the figures (e.g., system cost, generation, storage, emissions).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">include</span></code> and/or <code class="docutils literal notranslate"><span class="pre">exclude</span></code>: Specifies the regions or entities to include or exclude in the calculation (e.g., “DE” for Germany, “EU” for the European Union).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">carrier_filter</span></code>: Specifies the energy carriers or technologies (e.g., power, electricity, storage, heat) relevant to the figure.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">group_carrier</span></code>: Specifies the names used for each carrier. Same names are aggregated.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plot</span></code>: Determines the type of plot or visualization to be used (e.g., “detail” for detailed data, “overview” for broader data representation).</p></li>
+</ol>
+<p>6. <code class="docutils literal notranslate"><span class="pre">figsize</span></code>: Determines the figsize of the plots. If not defined, the default size are chosen.
+6. <code class="docutils literal notranslate"><span class="pre">plot_kw</span></code>: Additional keyword arguments for the plot (e.g., title, labels, and axis).</p>
+<p>Breakdown of the components:</p>
+<section id="extract">
+<h2><code class="docutils literal notranslate"><span class="pre">extract</span></code><a class="headerlink" href="#extract" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>system cost</strong>: Extract data from <code class="docutils literal notranslate"><span class="pre">csvs/nodal_costs.csv</span></code>.</p></li>
+<li><p><strong>capacity</strong>: Extract data from <code class="docutils literal notranslate"><span class="pre">csvs/nodal_capacities.csv</span></code>.</p></li>
+<li><p><strong>capacity stats</strong>: Extract capacity data from <code class="docutils literal notranslate"><span class="pre">n.statistics</span></code>. See notes for more detail.</p></li>
+<li><p><strong>generation</strong>: Extract power generation data from <code class="docutils literal notranslate"><span class="pre">n.statistics.energy_balance</span></code>.</p></li>
+<li><p><strong>emission</strong>: Extract emissions data based on emission links to the atmosphere.</p></li>
+<li><p><strong>energy balance</strong>: Extract energy balance data from <code class="docutils literal notranslate"><span class="pre">n.statistics.energy_balance</span></code>.</p></li>
+<li><p><strong>SOC</strong>: Extract state of charge from the <code class="docutils literal notranslate"><span class="pre">storage_units</span></code> component.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>capacity stats</strong> is a special option because it has two extra components:</p>
+<p><code class="docutils literal notranslate"><span class="pre">stats</span></code>: Three options:</p>
+<ul class="simple">
+<li><p><strong>install</strong>: Extract capacity data from <code class="docutils literal notranslate"><span class="pre">n.statistics.installed_capacity</span></code></p></li>
+<li><p><strong>optimal</strong>: Extract capacity data from <code class="docutils literal notranslate"><span class="pre">n.statistics.optimal_capacity</span></code></p></li>
+<li><p><strong>expand</strong>:  The difference between optimal minus install.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">storage</span></code>: If set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, only storage capacities of the component <code class="docutils literal notranslate"><span class="pre">store</span></code> and <code class="docutils literal notranslate"><span class="pre">storage_units</span></code> are taken into account.</p>
+</div>
+</section>
+<section id="carrier-filter">
+<h2><code class="docutils literal notranslate"><span class="pre">carrier_filter</span></code><a class="headerlink" href="#carrier-filter" title="Link to this heading">#</a></h2>
+<ol class="loweralpha simple">
+<li><p>for system cost, capacity, capacity stats, generation, and emission:</p></li>
+</ol>
+<ul class="simple">
+<li><p><strong>electricity</strong>: Filter carrier with AC bus carrier.</p></li>
+<li><p><strong>electricity+</strong>: Filter carrier with AC bus carrier and also include water tanks and EV batteries.</p></li>
+<li><p><strong>storage</strong>: Filter carrier with all storage-related technologies (<code class="docutils literal notranslate"><span class="pre">storage_units</span></code>, <code class="docutils literal notranslate"><span class="pre">links</span></code>, and <code class="docutils literal notranslate"><span class="pre">stores</span></code>).</p></li>
+<li><p><strong>storage-cap</strong>: Filter carrier with all storage capacity-related technologies (<code class="docutils literal notranslate"><span class="pre">storage_units</span></code> and <code class="docutils literal notranslate"><span class="pre">links</span></code>).</p></li>
+<li><p><strong>storage-energy</strong>: Filter carrier with all storage energy-related technologies (<code class="docutils literal notranslate"><span class="pre">storage_units</span></code> and <code class="docutils literal notranslate"><span class="pre">stores</span></code>).</p></li>
+<li><p><strong>power</strong>: Filter carrier with power generation technologies.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>storage</strong>, <strong>storage-cap</strong>, <strong>storage-energy</strong>, <strong>power</strong> is based on a list in <code class="docutils literal notranslate"><span class="pre">config/config.kpi.yaml</span></code>.
+You can create your own filtering scheme by adding a list in <code class="docutils literal notranslate"><span class="pre">kpi:</span> <span class="pre">filter_scheme</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nt">power</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span>
+<span class="w">      </span><span class="s">&quot;solar</span><span class="nv"> </span><span class="s">rooftop&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;Solar&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;solar-hsat&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;Onshore</span><span class="nv"> </span><span class="s">Wind&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;Offshore</span><span class="nv"> </span><span class="s">Wind</span><span class="nv"> </span><span class="s">(DC)&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">      </span><span class="s">&quot;Offshore</span><span class="nv"> </span><span class="s">Wind</span><span class="nv"> </span><span class="s">(AC)&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;Offshore</span><span class="nv"> </span><span class="s">Wind</span><span class="nv"> </span><span class="s">(Floating)&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;Run</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">River&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;Reservoir</span><span class="nv"> </span><span class="s">&amp;</span><span class="nv"> </span><span class="s">Dam&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">      </span><span class="s">&quot;Open-Cycle</span><span class="nv"> </span><span class="s">Gas&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;Combined-Cycle</span><span class="nv"> </span><span class="s">Gas&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;nuclear&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;oil&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;lignite&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;coal&quot;</span>
+<span class="w">      </span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+</div>
+<ol class="loweralpha simple" start="2">
+<li><p>for energy balance:</p></li>
+</ol>
+<ul class="simple">
+<li><p><strong>electricity</strong>: Filter carrier with AC bus carrier.</p></li>
+<li><p><strong>electricity+</strong>: Filter carrier with AC bus carrier and also include solar rooftops, BEV chargers, and Vehicle-to-Gas.</p></li>
+<li><p><strong>low voltage</strong>: Filter carrier with low voltage bus carrier.</p></li>
+<li><p><strong>storage</strong>: Filter carrier with all storage capacity-related technologies.</p></li>
+<li><p><strong>heat</strong>: Filter carrier with heat bus carrier.</p></li>
+<li><p><strong>hydrogen</strong>: Filter carrier with hydrogen bus carrier.</p></li>
+</ul>
+<ol class="loweralpha simple" start="3">
+<li><p>for SOC can be defined individually or in arrays of <code class="docutils literal notranslate"><span class="pre">storage_units</span></code> carriers.</p></li>
+</ol>
+</section>
+<section id="group-carrier">
+<h2><code class="docutils literal notranslate"><span class="pre">group_carrier</span></code><a class="headerlink" href="#group-carrier" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>pretty</strong>: The first letter is capitalized, abbreviations are spelled out, and similar names are combined.</p></li>
+<li><p><strong>sector</strong>: Aggregate all technologies into either the power sector, heating, transport sector, primary fuel, or CCUS.</p></li>
+</ul>
+<p>Leaving this option empty will lead to the carriers using <code class="docutils literal notranslate"><span class="pre">nice_names</span></code>.</p>
+</section>
+<section id="plot">
+<h2><code class="docutils literal notranslate"><span class="pre">plot</span></code><a class="headerlink" href="#plot" title="Link to this heading">#</a></h2>
+<p>for system cost, capacity, capacity stats, generation, and emission:</p>
+<ul class="simple">
+<li><p><strong>detail</strong>: A single bar plot is created with all the values annotated.</p></li>
+<li><p><strong>overview</strong>: Multiple bar plots are created.</p></li>
+</ul>
+<p>The plot for energy balance and SOC is always in a time-series format.</p>
+</section>
+<section id="figsize">
+<h2><code class="docutils literal notranslate"><span class="pre">figsize</span></code><a class="headerlink" href="#figsize" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>For detail plots: the default figsize is (6,8)</p></li>
+<li><p>For overview, energy balance and SOC plots: the default figsize is (12,9)</p></li>
+</ul>
+</section>
+<section id="plot-kw">
+<h2><code class="docutils literal notranslate"><span class="pre">plot_kw</span></code><a class="headerlink" href="#plot-kw" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>For system cost, capacity, capacity stats, generation, and emission, see <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.bar.html">matplotlib.pyplot.bar documentation</a>.</p></li>
+<li><p>For energy balance and SOC, see <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html#pandas.DataFrame.plot">pandas.DataFrame.plot documentation</a>.</p></li>
+</ul>
+</section>
+</section>
+
     <script type="text/x-thebe-config">
     {
         requestKernel: true,
@@ -435,9 +561,14 @@
     <i class="fa-solid fa-list"></i> Contents
   </div>
   <nav class="bd-toc-nav page-toc">
-    <ul class="simple visible nav section-nav flex-column">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract"><code class="docutils literal notranslate"><span class="pre">extract</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carrier-filter"><code class="docutils literal notranslate"><span class="pre">carrier_filter</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-carrier"><code class="docutils literal notranslate"><span class="pre">group_carrier</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot"><code class="docutils literal notranslate"><span class="pre">plot</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figsize"><code class="docutils literal notranslate"><span class="pre">figsize</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-kw"><code class="docutils literal notranslate"><span class="pre">plot_kw</span></code></a></li>
 </ul>
-
   </nav></div>
 
 </div></div>
@@ -461,7 +592,7 @@ By Form Energy Storage and Open Energy Transition
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2025.
       <br/>
     
   </p>

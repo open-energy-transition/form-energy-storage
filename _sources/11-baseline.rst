@@ -2,8 +2,14 @@
 Base Configuration
 ##########################################
 
+This is the base configuration outline used in the analysis "The Role of Energy Storage in Germany".
+The complete explaination of each configuration can be found in `PyPSA-Eur: Configuration <https://pypsa-eur.readthedocs.io/en/latest/configuration.html>`_.
+
+
 ``run``
 =============
+
+`Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run>`_
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -18,6 +24,8 @@ This is the only few section in the file that needs to be changed in order to ru
 ``foresight``
 =============
 
+`Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#foresight>`_
+
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
    :start-at: foresight:
@@ -28,23 +36,29 @@ The scope of this work is based on myopic foresight.
 ``scenario``
 ============
 
+* `Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#scenario>`_
+* `Wildcard Documentation <https://pypsa-eur.readthedocs.io/en/latest/wildcards.html>`_
+
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
    :start-at: scenario:
    :end-before: # docs
 
-* ll: v1.11 is based on
-* clusters: There are 52 nodes in this model
+* **ll**: v1.11 indicates that the existing transmission network capacity can be increased by 11%.
+* **clusters**: The model results are grouped into 52 nodes; see the clustering section for the disaggregation list.
+* **planning_horizons**: The model is simulating the year 2035.
 
 ``countries``
 =============
+
+`Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#countries>`_
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
    :start-at: countries:
    :end-before: # docs
 
-The analysis includes Germany and its neighboring countries, along with Italy.
+The analysis includes Germany and its neighboring countries, along with Italy. The complete list:
 
 * AT: Austria
 * BE: Belgium
@@ -62,15 +76,19 @@ The analysis includes Germany and its neighboring countries, along with Italy.
 ``snapshots``
 =============
 
+`Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#snapshots>`_
+
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
    :start-at: snapshots:
    :end-before: # docs
 
-If the scenarios are based on years other than 2013, the start and end years need to be adjusted accordingly.
+The baseline scenario is based on the climate year 2013, with the snapshots adjusted accordingly.
 
 ``enable``
 ==========
+
+`Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#enable>`_
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -82,6 +100,8 @@ For the first run, it is recommended to set ``retrieve_databundle``, ``retrieve_
 ``co2 budget``
 ==============
 
+`Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#co2-budget>`_
+
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
    :start-at: co2_budget:
@@ -91,12 +111,14 @@ The CO2 budget is derived from individual countries carbon emission targets for 
 This means that the total budget is: 
 
 .. math::
-   1.487e+9 * 0.105 = 
+   1.487e+9 * 0.107 = 
 
 The complete calculation can be seen in the Assumption processing section.
 
 ``electricity``
 ===============
+
+`Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#electricity>`_
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -113,6 +135,8 @@ Configuration changes made:
 ``atlite``
 ==========
 
+`Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#atlite>`_
+
 Define and specify the ``atlite.Cutout`` used for calculating renewable potentials and time-series. All options except for ``features`` are directly used as `cutout parameters <https://atlite.readthedocs.io/en/latest/ref_api.html#cutout>`__.
 
 .. literalinclude:: ../config/config.form.yaml
@@ -125,6 +149,8 @@ The ``default_cutout`` is derived from SARAH-3 weather data, with missing values
 ``renewable``
 =============
 
+`Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#renewable>`_
+
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
    :start-at: renewable:
@@ -134,6 +160,8 @@ The modification in max hours of pumped hydro storages are based on Form Energy.
 
 ``conventional``
 ================
+
+`Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#conventional>`_
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -145,6 +173,8 @@ The minimum energy dispatch for nuclear power plants is set to 50%, instead of t
 ``lines``
 =============
 
+`Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#lines>`_
+
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
    :start-at: lines:
@@ -154,7 +184,9 @@ The maximum line capacity is set to 50% of its total capacity, rather than 70%,
 to better approximate security and reserve capacity for reactive power flows.
 
 ``transmission projects``
-=======================
+=========================
+
+`Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#transmission_projects>`_
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -166,6 +198,8 @@ TYNDP 2020 dataset is not intergrated in this analysis.
 ``existing_capacities``
 =======================
 
+`Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#existing_capacities>`_
+
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
    :start-at: existing_capacities:
@@ -175,6 +209,8 @@ The content is identical to the default file.
 
 ``sector``
 =======================
+
+`Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#sector>`_
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -192,8 +228,23 @@ Configuration changes made:
 * Li-ion batteries, vanadium, liquid air, CAES, and Iron-air batteries are defined as storage unit components rather than stores.
 * The hydrogen network is excluded from the model.
 
+``load``
+==============
+
+`Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#load>`_
+
+.. literalinclude:: ../config/config.form.yaml
+   :language: yaml
+   :start-at: load:
+   :end-before: # docs
+
+The model's electricity load is based on data from 2013. 
+By 2035, electricity demand is projected to increase by 26% compared to 2013. `Source from Agora Energiewende <https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf>`_
+
 ``costs``
 =============
+
+`Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#costs>`_
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -215,10 +266,12 @@ Configuration changes made:
 ``clustering``
 ==============
 
+`Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#clustering>`_
+
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
    :start-at: clustering:
-   :end-before: plotting:
+   :end-before: # docs
 
 Germany has a focus weight of 0.6, which means that out of 52 nodes, the distribution is as follows:
 
@@ -240,20 +293,23 @@ The following countries each have 1 node, contributing to a total of 9 nodes:
 
 The temporal resolution is reduced to 3-hour time steps.
 
-``solving``
-=============
-
-.. literalinclude:: ../config/config.form.yaml
-   :language: yaml
-   :start-at: solving:
-   :end-before: # docs
-
 ``plotting``
 =============
+
+`Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#plotting>`_
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
    :start-at: plotting:
-   :end-before: solving:
+   :end-before: # docs
 
 Not much change here other than the coloring scheme
+
+``solving``
+=============
+
+`Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#solving>`_
+
+.. literalinclude:: ../config/config.form.yaml
+   :language: yaml
+   :start-at: solving:

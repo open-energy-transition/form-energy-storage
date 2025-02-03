@@ -36,6 +36,7 @@
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
@@ -169,13 +170,17 @@
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Preparation</span></p>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="01-installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02-tutorials.html">Tutorials</a></li>
-
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Features</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="11-baseline.html">Base Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="12-scenarios.html">Scenarios Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-kpis.html">KPIs Configuration</a></li>
 </ul>
 
     </div>
@@ -373,16 +378,16 @@
   <section id="features">
 <h1>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h1>
 <p>Here is a list of changes made to this repository specifically for this work, with the potential to be upstreamed to the main PyPSA-Eur repository.</p>
-<p><strong>Big Features</strong></p>
-<ul class="simple">
-<li><p>Add KPI visualization script and functions. (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/30">open-energy-transition/form-energy-storage#30</a>) and (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/37">open-energy-transition/form-energy-storage#37</a>)</p></li>
-</ul>
 <p><strong>Model Adjustment Features</strong></p>
 <ul class="simple">
 <li><p>Add a constraint to limit the use of Direct Air Capture (DAC) (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/42">open-energy-transition/form-energy-storage#42</a>)</p></li>
 <li><p>Add option for final adjustment before solving the network. This script is used to limit the grid capacity for each country (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/33">open-energy-transition/form-energy-storage#33</a>)</p></li>
 <li><p>Add ramping limit options for conventional powerplants in prepare_sector_network. (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/28">open-energy-transition/form-energy-storage#28</a>)</p></li>
 <li><p>Adjust emission to only include the sector scope (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/29">open-energy-transition/form-energy-storage#29</a>)</p></li>
+</ul>
+<p><strong>Model Visualization Features</strong></p>
+<ul class="simple">
+<li><p>Add KPI visualization script and functions. (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/30">open-energy-transition/form-energy-storage#30</a>) and (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/37">open-energy-transition/form-energy-storage#37</a>)</p></li>
 </ul>
 <p><strong>Bugfixes</strong></p>
 <ul class="simple">
@@ -464,7 +469,7 @@ By Form Energy Storage and Open Energy Transition
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2025.
       <br/>
     
   </p>

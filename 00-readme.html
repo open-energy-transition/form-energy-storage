@@ -36,6 +36,7 @@
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
@@ -172,13 +173,17 @@
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Preparation</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="01-installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02-tutorials.html">Tutorials</a></li>
-
 <li class="toctree-l1"><a class="reference internal" href="03-features.html">Features</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="11-baseline.html">Base Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="12-scenarios.html">Scenarios Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-kpis.html">KPIs Configuration</a></li>
 </ul>
 
     </div>
@@ -372,7 +377,6 @@
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-role-of-energy-storage-in-germany">The Role of Energy Storage in Germany</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tables-of-content">Tables of Content</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pypsa-eur-a-sector-coupled-open-optimisation-model-of-the-european-energy-system">PyPSA-Eur: A Sector-Coupled Open Optimisation Model of the European Energy System</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing-and-support">Contributing and Support</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#licence">Licence</a></li>
@@ -404,25 +408,12 @@ SPDX-License-Identifier: CC-BY-4.0
 <a class="reference external" href="https://stackoverflow.com/questions/tagged/pypsa"><img alt="Stack Exchange questions" src="https://img.shields.io/stackexchange/stackoverflow/t/pypsa" /></a></p>
 <section id="the-role-of-energy-storage-in-germany">
 <h2>The Role of Energy Storage in Germany<a class="headerlink" href="#the-role-of-energy-storage-in-germany" title="Link to this heading">#</a></h2>
-<img src="logo_OET.png" alt="Open Energy Transition Logo" width="260" height="100" align="right">
 <p>This repository is a soft-fork of <a class="reference external" href="https://github.com/open-energy-transition/pypsa-eur">OET/PyPSA-Eur</a> and contains the entire project <code class="docutils literal notranslate"><span class="pre">The</span> <span class="pre">Role</span> <span class="pre">of</span> <span class="pre">Energy</span> <span class="pre">Storage</span> <span class="pre">in</span> <span class="pre">Germany</span></code> supported by <a class="reference external" href="https://openenergytransition.org/">Open Energy Transition (OET)</a><sup>*</sup>, including code and report. The philosophy behind this repository is that no intermediary results are included, but all results are computed from raw data and code. The structure is also inspired by <a class="reference external" href="https://github.com/PyPSA/cookiecutter-project">cookiecutter-project</a>.</p>
 <p>This repository is maintained using <a class="reference external" href="https://open-energy-transition.github.io/handbook/docs/Engineering/SoftForkStrategy">OET’s soft-fork strategy</a>. OET’s primary aim is to contribute as much as possible to the open source (OS) upstream repositories. For long-term changes that cannot be directly merged upstream, the strategy organizes and maintains OET forks, ensuring they remain up-to-date and compatible with upstream, while also supporting future contributions back to the OS repositories.</p>
-</section>
-<section id="tables-of-content">
-<h2>Tables of Content<a class="headerlink" href="#tables-of-content" title="Link to this heading">#</a></h2>
-<p>Here are the contents to get started with using this repository:</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="#"><span class="xref myst">Installation</span></a></p></li>
-<li><p><a class="reference internal" href="#"><span class="xref myst">Tutorials</span></a></p></li>
-<li><p><a class="reference internal" href="#"><span class="xref myst">Features</span></a></p></li>
-<li><p><a class="reference internal" href="#"><span class="xref myst">Base Configuration</span></a></p></li>
-<li><p><a class="reference internal" href="#"><span class="xref myst">Scenarios</span></a></p></li>
-<li><p><a class="reference internal" href="#"><span class="xref myst">KPIs</span></a></p></li>
-</ul>
 <p>For further readings of PyPSA and PyPSA-Eur:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#"><span class="xref myst">PyPSA</span></a></p></li>
-<li><p><a class="reference internal" href="#"><span class="xref myst">PyPSA-Eur</span></a></p></li>
+<li><p><a class="reference external" href="https://pypsa-eur.readthedocs.io">PyPSA</a></p></li>
+<li><p><a class="reference external" href="https://pypsa.readthedocs.io">PyPSA-Eur</a></p></li>
 </ul>
 <p>Here are an excerp for the introduction of PyPSA-Eur:</p>
 </section>
@@ -511,6 +502,10 @@ input data, see <a class="reference internal" href="#doc/data_sources.rst"><span
 </section>
 <div class="toctree-wrapper compound">
 </div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -570,7 +565,6 @@ input data, see <a class="reference internal" href="#doc/data_sources.rst"><span
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-role-of-energy-storage-in-germany">The Role of Energy Storage in Germany</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tables-of-content">Tables of Content</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pypsa-eur-a-sector-coupled-open-optimisation-model-of-the-european-energy-system">PyPSA-Eur: A Sector-Coupled Open Optimisation Model of the European Energy System</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing-and-support">Contributing and Support</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#licence">Licence</a></li>
@@ -598,7 +592,7 @@ By Form Energy Storage and Open Energy Transition
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2025.
       <br/>
     
   </p>
