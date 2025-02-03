@@ -16,26 +16,15 @@ SPDX-License-Identifier: CC-BY-4.0
 [![Stack Exchange questions](https://img.shields.io/stackexchange/stackoverflow/t/pypsa)](https://stackoverflow.com/questions/tagged/pypsa)
 
 ### The Role of Energy Storage in Germany
-<img src="logo_OET.png" alt="Open Energy Transition Logo" width="260" height="100" align="right">
 
 This repository is a soft-fork of [OET/PyPSA-Eur](https://github.com/open-energy-transition/pypsa-eur) and contains the entire project `The Role of Energy Storage in Germany` supported by [Open Energy Transition (OET)](https://openenergytransition.org/)<sup>*</sup>, including code and report. The philosophy behind this repository is that no intermediary results are included, but all results are computed from raw data and code. The structure is also inspired by [cookiecutter-project](https://github.com/PyPSA/cookiecutter-project).
 
 This repository is maintained using [OET's soft-fork strategy](https://open-energy-transition.github.io/handbook/docs/Engineering/SoftForkStrategy). OET's primary aim is to contribute as much as possible to the open source (OS) upstream repositories. For long-term changes that cannot be directly merged upstream, the strategy organizes and maintains OET forks, ensuring they remain up-to-date and compatible with upstream, while also supporting future contributions back to the OS repositories.
 
-### Tables of Content
-Here are the contents to get started with using this repository:
-
-* [Installation]()
-* [Tutorials]()
-* [Features]()
-* [Base Configuration]()
-* [Scenarios]()
-* [KPIs]()
-
 For further readings of PyPSA and PyPSA-Eur:
 
-* [PyPSA]()
-* [PyPSA-Eur]()
+* [PyPSA](https://pypsa-eur.readthedocs.io)
+* [PyPSA-Eur](https://pypsa.readthedocs.io)
 
 Here are an excerp for the introduction of PyPSA-Eur:
 
