@@ -1,0 +1,1583 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Carbon Emission Calculation &#8212; The Role of Energy Storage in Germany</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '22-co2_calculation';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="KPIs Configuration" href="13-kpis.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00-readme.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo_OET.png" class="logo__image only-light" alt="The Role of Energy Storage in Germany - Home"/>
+    <img src="_static/logo_OET.png" class="logo__image only-dark pst-js-only" alt="The Role of Energy Storage in Germany - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="00-readme.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Preparation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-features.html">Features</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="11-baseline.html">Base Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-scenarios.html">Scenarios Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-kpis.html">KPIs Configuration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Assumption</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Carbon Emission Calculation</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/open-energy-transition/form-energy-storage/blob/feature/docs/documentation/22-co2_calculation.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/open-energy-transition/form-energy-storage" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/open-energy-transition/form-energy-storage/issues/new?title=Issue%20on%20page%20%2F22-co2_calculation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/22-co2_calculation.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Carbon Emission Calculation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-the-total-emissions-data-for-the-years-1990-and-2005">1. Extract the total emissions data for the years 1990 and 2005.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-the-linearly-interpolated-targets-for-2035">2. Calculate the linearly interpolated targets for 2035.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-the-data-and-exclude-lulucf-from-the-calculation">3. Extract the data and exclude LULUCF from the calculation.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-the-absolute-emissions">4. Calculate the absolute emissions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-the-emission-target-by-sector-and-interpolate-to-the-year-2035">5. Extract the emission target by sector and interpolate to the year 2035</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#select-the-included-sector-in-the-model">6. Select the included sector in the model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-the-absolute-emission-of-the-included-sector-emission">7. Calculate the absolute emission of the included sector emission</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="carbon-emission-calculation">
+<h1>Carbon Emission Calculation<a class="headerlink" href="#carbon-emission-calculation" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The purpose of this calculation is to determine the appropriate total emission constraints based on the defined scope of the model.
+The objective is to establish the relationship between this target and the total emissions from the year 1990.</p>
+<p>The countries included in the analysis are:</p>
+<ul class="simple">
+<li><p>AT: Austria</p></li>
+<li><p>BE: Belgium</p></li>
+<li><p>CH: Switzerland</p></li>
+<li><p>CZ: Czech Republic</p></li>
+<li><p>DE: Germany</p></li>
+<li><p>DK: Denmark</p></li>
+<li><p>FR: France</p></li>
+<li><p>IT: Italy</p></li>
+<li><p>LU: Luxembourg</p></li>
+<li><p>NL: Netherlands</p></li>
+<li><p>PL: Poland</p></li>
+<li><p>SE: Sweden</p></li>
+</ul>
+<p>The sector scope for this analysis includes:</p>
+<ul class="simple">
+<li><p>Power Sector</p></li>
+<li><p>Transport Sector (emissions are excluded)</p></li>
+<li><p>Heating Sector</p></li>
+</ul>
+<p>Since the emissions of individual countries are being compared for the years 1990 and 2005, we first need to extract the emissions data for those years.</p>
+<section id="extract-the-total-emissions-data-for-the-years-1990-and-2005">
+<h2>1. Extract the total emissions data for the years 1990 and 2005.<a class="headerlink" href="#extract-the-total-emissions-data-for-the-years-1990-and-2005" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ctrys</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;AT&#39;</span><span class="p">,</span> <span class="s1">&#39;BE&#39;</span><span class="p">,</span> <span class="s1">&#39;CH&#39;</span><span class="p">,</span> <span class="s1">&#39;CZ&#39;</span><span class="p">,</span> <span class="s1">&#39;DE&#39;</span><span class="p">,</span> <span class="s1">&#39;DK&#39;</span><span class="p">,</span> <span class="s1">&#39;FR&#39;</span><span class="p">,</span> <span class="s1">&#39;IT&#39;</span><span class="p">,</span> <span class="s1">&#39;LU&#39;</span><span class="p">,</span> <span class="s1">&#39;NL&#39;</span><span class="p">,</span> <span class="s1">&#39;PL&#39;</span><span class="p">,</span> <span class="s1">&#39;SE&#39;</span><span class="p">]</span>
+
+<span class="c1"># 1990 emissions in MtCO2</span>
+<span class="n">co2_totals</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../data/co2_totals_1990.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">ctrys</span><span class="p">]</span>
+
+<span class="c1"># 2005 emissions in MtCO2</span>
+<span class="n">co2_totals_2005</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../data/co2_totals_2005.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">ctrys</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="calculate-the-linearly-interpolated-targets-for-2035">
+<h2>2. Calculate the linearly interpolated targets for 2035.<a class="headerlink" href="#calculate-the-linearly-interpolated-targets-for-2035" title="Link to this heading">#</a></h2>
+<p>Below are the emission reduction targets for each of these countries:</p>
+<center>Table 1: Country Specific Emission Reduction Targets</center>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Country</p></th>
+<th class="head"><p>2030</p></th>
+<th class="head"><p>2035</p></th>
+<th class="head"><p>2040</p></th>
+<th class="head"><p>2045</p></th>
+<th class="head"><p>2050</p></th>
+<th class="head"><p>Source</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DE</p></td>
+<td><p>65% below 1990 excl. LULUCF</p></td>
+<td><p>-</p></td>
+<td><p>85% below 1990 excl. LULUCF</p></td>
+<td><p>100%</p></td>
+<td><p>-</p></td>
+<td><p><a class="reference external" href="https://www.bundesregierung.de/breg-de/themen/klimaschutz/klimaschutzgesetz-2021-1913672">Source</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>AT</p></td>
+<td><p>48% below 2005 excl. LULUCF</p></td>
+<td><p>-</p></td>
+<td><p>100%</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p><a class="reference external" href="https://climate.ec.europa.eu/eu-action/effort-sharing-member-states-emission-targets/effort-sharing-2021-2030-targets-and-flexibilities_en">Source1</a> <a class="reference external" href="https://www.sustainability.gov/pdfs/austria-nzgi-roadmap.pdf">Source2</a></p></td>
+</tr>
+<tr class="row-even"><td><p>BE</p></td>
+<td><p>55% below 1990 excl. LULUCF</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>100%</p></td>
+<td><p><a class="reference external" href="https://www.sustainability.gov/pdfs/belgium-nzgi-roadmap.pdf">Source</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>CH</p></td>
+<td><p>50% below 1990 excl. LULUCF</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>100%</p></td>
+<td><p><a class="reference external" href="https://www.bafu.admin.ch/bafu/en/home/topics/climate/info-specialists/emission-reduction/reduction-targets.html">Source</a></p></td>
+</tr>
+<tr class="row-even"><td><p>CZ</p></td>
+<td><p>26% below 2005 excl. LULUCF</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>100%</p></td>
+<td><p><a class="reference external" href="https://tracker.carbongap.org/region/czech-republic/">Source</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>DK</p></td>
+<td><p>70% below 1990 incl. LULUCF and 50% below 2005 excl. LULUCF</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>100%</p></td>
+<td><p>110%</p></td>
+<td><p><a class="reference external" href="https://unfccc.int/sites/default/files/resource/SBI60_MA_DNK-7June2024-Presentation.pdf">Source</a></p></td>
+</tr>
+<tr class="row-even"><td><p>FR</p></td>
+<td><p>47.5% below 2005 excl. LULUCF</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>100%</p></td>
+<td><p><a class="reference external" href="https://climate.ec.europa.eu/eu-action/effort-sharing-member-states-emission-targets/effort-sharing-2021-2030-targets-and-flexibilities_en">Source</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>IT</p></td>
+<td><p>43.7% below 2005 excl. LULUCF</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>100%</p></td>
+<td><p><a class="reference external" href="https://climate.ec.europa.eu/eu-action/effort-sharing-member-states-emission-targets/effort-sharing-2021-2030-targets-and-flexibilities_en">Source1</a> <a class="reference external" href="https://www.iea.org/countries/italy#">Source2</a></p></td>
+</tr>
+<tr class="row-even"><td><p>LU</p></td>
+<td><p>55% below 2005 excl. LULUCF</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>100%</p></td>
+<td><p><a class="reference external" href="https://gouvernement.lu/en/dossiers/2023/2023-pnec.html">Source</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>NL</p></td>
+<td><p>55% below 1990</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>100%</p></td>
+<td><p><a class="reference external" href="https://commission.europa.eu/document/download/b6d21e56-4297-4b91-a692-300716209f72_en?filename=NL_FINAL%20UPDATED%20NECP%202021-2030%20%28English%29.pdf">Source</a></p></td>
+</tr>
+<tr class="row-even"><td><p>PL</p></td>
+<td><p>17.7% below 2005 excl. LULUCF</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p></p></td>
+<td><p><a class="reference external" href="https://climate.ec.europa.eu/eu-action/effort-sharing-member-states-emission-targets/effort-sharing-2021-2030-targets-and-flexibilities_en">Source</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>SE</p></td>
+<td><p>63% below 1990</p></td>
+<td><p>-</p></td>
+<td><p>75% below 1990</p></td>
+<td><p>100%</p></td>
+<td><p></p></td>
+<td><p><a class="reference external" href="https://www.bafu.admin.ch/bafu/en/home/topics/climate/info-specialists/emission-reduction/reduction-targets.html">Source</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Since Table 1 do not include the year 2035, we will interpolate the targets linearly to estimate the 2035 values.</p>
+<p>Note: Polands 2035 target is deduced based on the EUs Effort Sharing Regulation (ESR) distrubution key in relation to the German interpolated target <a class="reference external" href="https://climate.ec.europa.eu/eu-action/effort-sharing-member-states-emission-targets/effort-sharing-2021-2030-targets-and-flexibilities_en">Source</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># EU Effort Sharing Regulation</span>
+<span class="n">esr_targets</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;AT&quot;</span><span class="p">:</span> <span class="mf">0.48</span><span class="p">,</span>
+    <span class="s2">&quot;BE&quot;</span><span class="p">:</span> <span class="mf">0.47</span><span class="p">,</span>
+    <span class="s2">&quot;CZ&quot;</span><span class="p">:</span> <span class="mf">0.26</span><span class="p">,</span>
+    <span class="s2">&quot;DE&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="s2">&quot;DK&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="s2">&quot;FR&quot;</span><span class="p">:</span> <span class="mf">0.475</span><span class="p">,</span>
+    <span class="s2">&quot;IT&quot;</span><span class="p">:</span> <span class="mf">0.437</span><span class="p">,</span>
+    <span class="s2">&quot;LU&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="s2">&quot;NL&quot;</span><span class="p">:</span> <span class="mf">0.48</span><span class="p">,</span>
+    <span class="s2">&quot;PL&quot;</span><span class="p">:</span> <span class="mf">0.177</span><span class="p">,</span>
+    <span class="s2">&quot;SE&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Emission reduction targets for countries with a base year of 1990</span>
+<span class="n">target2035_base1990</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">DE</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">,</span>
+                           <span class="n">BE</span> <span class="o">=</span> <span class="mf">0.55</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mf">0.55</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">2035</span><span class="o">-</span><span class="mi">2030</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2050</span><span class="o">-</span><span class="mi">2030</span><span class="p">),</span>
+                           <span class="n">CH</span> <span class="o">=</span> <span class="mf">0.625</span><span class="p">,</span>
+                           <span class="n">DK</span> <span class="o">=</span> <span class="mf">0.7</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mf">0.7</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">2035</span><span class="o">-</span><span class="mi">2030</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2045</span><span class="o">-</span><span class="mi">2030</span><span class="p">),</span>
+                           <span class="n">NL</span> <span class="o">=</span> <span class="mf">0.55</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mf">0.55</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">2035</span><span class="o">-</span><span class="mi">2030</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2050</span><span class="o">-</span><span class="mi">2030</span><span class="p">),</span>
+                           <span class="n">SE</span> <span class="o">=</span> <span class="mf">0.69</span><span class="p">,</span>
+                           <span class="n">PL</span> <span class="o">=</span> <span class="p">(</span><span class="n">esr_targets</span><span class="p">[</span><span class="s2">&quot;PL&quot;</span><span class="p">]</span><span class="o">/</span><span class="n">esr_targets</span><span class="p">[</span><span class="s2">&quot;DE&quot;</span><span class="p">])</span><span class="o">*</span><span class="mf">0.75</span>
+                          <span class="p">)</span>
+
+<span class="c1"># Emission reduction targets for countries with a base year of 2005</span>
+<span class="n">target2035_base2005</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">AT</span> <span class="o">=</span> <span class="mf">0.74</span><span class="p">,</span>
+                           <span class="n">CZ</span> <span class="o">=</span> <span class="mf">0.26</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mf">0.26</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">2035</span><span class="o">-</span><span class="mi">2030</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2050</span><span class="o">-</span><span class="mi">2030</span><span class="p">),</span>
+                           <span class="n">FR</span> <span class="o">=</span> <span class="mf">0.475</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mf">0.475</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">2035</span><span class="o">-</span><span class="mi">2030</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2050</span><span class="o">-</span><span class="mi">2030</span><span class="p">),</span>
+                           <span class="n">IT</span> <span class="o">=</span> <span class="mf">0.437</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mf">0.437</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">2035</span><span class="o">-</span><span class="mi">2030</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2050</span><span class="o">-</span><span class="mi">2030</span><span class="p">),</span>
+                           <span class="n">LU</span> <span class="o">=</span> <span class="mf">0.55</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mf">0.55</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">2035</span><span class="o">-</span><span class="mi">2030</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2050</span><span class="o">-</span><span class="mi">2030</span><span class="p">)</span>
+                          <span class="p">)</span>
+
+<span class="n">target_2035</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">co2_totals</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">target_2035</span><span class="p">[</span><span class="s2">&quot;base1990&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target2035_base1990</span>
+<span class="n">target_2035</span><span class="p">[</span><span class="s2">&quot;base2005&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target2035_base2005</span>
+<span class="n">target_2035</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>base1990</th>
+      <th>base2005</th>
+    </tr>
+    <tr>
+      <th>Country_code</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AT</th>
+      <td>NaN</td>
+      <td>0.74000</td>
+    </tr>
+    <tr>
+      <th>BE</th>
+      <td>0.6625</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>CH</th>
+      <td>0.6250</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>CZ</th>
+      <td>NaN</td>
+      <td>0.44500</td>
+    </tr>
+    <tr>
+      <th>DE</th>
+      <td>0.7500</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>DK</th>
+      <td>0.8000</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>FR</th>
+      <td>NaN</td>
+      <td>0.60625</td>
+    </tr>
+    <tr>
+      <th>IT</th>
+      <td>NaN</td>
+      <td>0.57775</td>
+    </tr>
+    <tr>
+      <th>LU</th>
+      <td>NaN</td>
+      <td>0.66250</td>
+    </tr>
+    <tr>
+      <th>NL</th>
+      <td>0.6625</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>PL</th>
+      <td>0.2655</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>SE</th>
+      <td>0.6900</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="extract-the-data-and-exclude-lulucf-from-the-calculation">
+<h2>3. Extract the data and exclude LULUCF from the calculation.<a class="headerlink" href="#extract-the-data-and-exclude-lulucf-from-the-calculation" title="Link to this heading">#</a></h2>
+<p>LULUFC: Land Use, Land Use Change and Forestry</p>
+<p>LULUCF is excluded for all the countries listed in Table 1.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Total emissions incl. LULUCF</span>
+<span class="n">co2_totals_incl_lulucf</span> <span class="o">=</span> <span class="n">co2_totals</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># Total emissions incl. LULUCF 2005</span>
+<span class="n">co2_totals_incl_lulucf_2005</span> <span class="o">=</span> <span class="n">co2_totals_2005</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># Total emissions excl. LULUCF</span>
+<span class="n">co2_totals_excl_lulucf</span> <span class="o">=</span> <span class="n">co2_totals</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;LULUCF&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># Total emissions excl. LULUCF</span>
+<span class="n">co2_totals_excl_lulucf_2005</span> <span class="o">=</span> <span class="n">co2_totals_2005</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;LULUCF&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;1990&quot;</span><span class="p">:</span><span class="n">co2_totals_incl_lulucf</span><span class="p">,</span> <span class="s2">&quot;2005&quot;</span><span class="p">:</span><span class="n">co2_totals_incl_lulucf_2005</span><span class="p">,</span> <span class="s2">&quot;1990 excl. LULUFC&quot;</span><span class="p">:</span><span class="n">co2_totals_excl_lulucf</span><span class="p">,</span> <span class="s2">&quot;2005 excl. LULUFC&quot;</span><span class="p">:</span><span class="n">co2_totals_excl_lulucf_2005</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>1990</th>
+      <th>2005</th>
+      <th>1990 excl. LULUFC</th>
+      <th>2005 excl. LULUFC</th>
+    </tr>
+    <tr>
+      <th>Country_code</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AT</th>
+      <td>49.968104</td>
+      <td>68.414161</td>
+      <td>62.124701</td>
+      <td>79.192432</td>
+    </tr>
+    <tr>
+      <th>BE</th>
+      <td>117.060288</td>
+      <td>124.024742</td>
+      <td>120.309343</td>
+      <td>125.661688</td>
+    </tr>
+    <tr>
+      <th>CH</th>
+      <td>42.515838</td>
+      <td>43.712103</td>
+      <td>44.534441</td>
+      <td>45.915746</td>
+    </tr>
+    <tr>
+      <th>CZ</th>
+      <td>160.298010</td>
+      <td>119.316791</td>
+      <td>166.068823</td>
+      <td>126.738399</td>
+    </tr>
+    <tr>
+      <th>DE</th>
+      <td>1021.884333</td>
+      <td>851.168952</td>
+      <td>1052.348544</td>
+      <td>866.388549</td>
+    </tr>
+    <tr>
+      <th>DK</th>
+      <td>60.858777</td>
+      <td>57.805099</td>
+      <td>54.685986</td>
+      <td>52.164863</td>
+    </tr>
+    <tr>
+      <th>FR</th>
+      <td>374.572263</td>
+      <td>377.355895</td>
+      <td>400.777042</td>
+      <td>426.412463</td>
+    </tr>
+    <tr>
+      <th>IT</th>
+      <td>432.346810</td>
+      <td>463.962937</td>
+      <td>438.008802</td>
+      <td>500.005676</td>
+    </tr>
+    <tr>
+      <th>LU</th>
+      <td>11.927560</td>
+      <td>11.462305</td>
+      <td>11.847635</td>
+      <td>12.105448</td>
+    </tr>
+    <tr>
+      <th>NL</th>
+      <td>169.786966</td>
+      <td>183.428661</td>
+      <td>163.302301</td>
+      <td>177.897237</td>
+    </tr>
+    <tr>
+      <th>PL</th>
+      <td>343.554029</td>
+      <td>271.748435</td>
+      <td>376.546518</td>
+      <td>323.161267</td>
+    </tr>
+    <tr>
+      <th>SE</th>
+      <td>21.112932</td>
+      <td>19.936933</td>
+      <td>57.348825</td>
+      <td>53.852857</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="calculate-the-absolute-emissions">
+<h2>4. Calculate the absolute emissions<a class="headerlink" href="#calculate-the-absolute-emissions" title="Link to this heading">#</a></h2>
+<p>This is done by multiplying the remaining emissions (1 - target emissions) by the CO2 emissions for the respective year.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate aggregated 1990 emissions in MtCO2</span>
+<span class="n">co2_1990_aggregated</span> <span class="o">=</span> <span class="n">co2_totals_excl_lulucf</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="c1"># Calculate absolute target emissions in 2035 based on shares</span>
+<span class="n">target_2035</span><span class="p">[</span><span class="s2">&quot;absolute_emissions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">target_2035</span><span class="o">.</span><span class="n">base1990</span><span class="p">)</span> <span class="o">*</span> <span class="n">co2_totals_excl_lulucf</span><span class="p">)</span><span class="o">.</span><span class="n">combine_first</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">target_2035</span><span class="o">.</span><span class="n">base2005</span><span class="p">)</span> <span class="o">*</span> <span class="n">co2_totals_excl_lulucf_2005</span><span class="p">)</span>
+<span class="n">target_2035_aggregated</span> <span class="o">=</span> <span class="n">target_2035</span><span class="o">.</span><span class="n">absolute_emissions</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">target_2035</span><span class="p">)</span>
+
+<span class="c1"># Calculate share of 1990 emissions</span>
+<span class="nb">round</span><span class="p">(</span><span class="n">target_2035_aggregated</span><span class="o">/</span><span class="n">co2_1990_aggregated</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>base1990</th>
+      <th>base2005</th>
+      <th>absolute_emissions</th>
+    </tr>
+    <tr>
+      <th>Country_code</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AT</th>
+      <td>NaN</td>
+      <td>0.74000</td>
+      <td>20.590032</td>
+    </tr>
+    <tr>
+      <th>BE</th>
+      <td>0.6625</td>
+      <td>NaN</td>
+      <td>40.604403</td>
+    </tr>
+    <tr>
+      <th>CH</th>
+      <td>0.6250</td>
+      <td>NaN</td>
+      <td>16.700415</td>
+    </tr>
+    <tr>
+      <th>CZ</th>
+      <td>NaN</td>
+      <td>0.44500</td>
+      <td>70.339812</td>
+    </tr>
+    <tr>
+      <th>DE</th>
+      <td>0.7500</td>
+      <td>NaN</td>
+      <td>263.087136</td>
+    </tr>
+    <tr>
+      <th>DK</th>
+      <td>0.8000</td>
+      <td>NaN</td>
+      <td>10.937197</td>
+    </tr>
+    <tr>
+      <th>FR</th>
+      <td>NaN</td>
+      <td>0.60625</td>
+      <td>167.899907</td>
+    </tr>
+    <tr>
+      <th>IT</th>
+      <td>NaN</td>
+      <td>0.57775</td>
+      <td>211.127397</td>
+    </tr>
+    <tr>
+      <th>LU</th>
+      <td>NaN</td>
+      <td>0.66250</td>
+      <td>4.085589</td>
+    </tr>
+    <tr>
+      <th>NL</th>
+      <td>0.6625</td>
+      <td>NaN</td>
+      <td>55.114527</td>
+    </tr>
+    <tr>
+      <th>PL</th>
+      <td>0.2655</td>
+      <td>NaN</td>
+      <td>276.573417</td>
+    </tr>
+    <tr>
+      <th>SE</th>
+      <td>0.6900</td>
+      <td>NaN</td>
+      <td>17.778136</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.392
+</pre></div>
+</div>
+</div>
+</div>
+<p>0.392 is the result when all sectors are included, but since this is not the case, we need to divide the remaining emissions further based on the share of remaining emissions in each sector.</p>
+</section>
+<section id="extract-the-emission-target-by-sector-and-interpolate-to-the-year-2035">
+<h2>5. Extract the emission target by sector and interpolate to the year 2035<a class="headerlink" href="#extract-the-emission-target-by-sector-and-interpolate-to-the-year-2035" title="Link to this heading">#</a></h2>
+<p>Data is from Europe’s 2040 climate target <a class="reference external" href="https://eur-lex.europa.eu/resource.html?uri=cellar:6c154426-c5a6-11ee-95d9-01aa75ed71a1.0001.02/DOC_3&amp;amp;format=PDF">Source</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">target_sector</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../data/co2_total_sector.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># calculate linearly interpolated 2035 targets</span>
+<span class="n">target_sector</span><span class="p">[</span><span class="s1">&#39;2035 S2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">target_sector</span><span class="p">[</span><span class="s1">&#39;2030&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">target_sector</span><span class="p">[</span><span class="s1">&#39;2040 S2&#39;</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">target_sector_share</span> <span class="o">=</span> <span class="n">target_sector</span><span class="o">/</span><span class="n">target_sector</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Total Gross GHG Emissions&#39;</span><span class="p">,:]</span>
+<span class="n">target_sector</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>2005</th>
+      <th>2015</th>
+      <th>2030</th>
+      <th>2040 S1</th>
+      <th>2040 S2</th>
+      <th>2040 S3</th>
+      <th>2040 LIFE</th>
+      <th>2050 S1</th>
+      <th>2050 S2</th>
+      <th>2050 S3</th>
+      <th>2050 LIFE</th>
+      <th>2035 S2</th>
+    </tr>
+    <tr>
+      <th>MtC02-eq</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Total Gross GHG Emissions</th>
+      <td>4641</td>
+      <td>3914</td>
+      <td>2301</td>
+      <td>1273</td>
+      <td>943</td>
+      <td>748</td>
+      <td>740</td>
+      <td>416</td>
+      <td>413</td>
+      <td>411</td>
+      <td>360.00</td>
+      <td>1622.0</td>
+    </tr>
+    <tr>
+      <th>Power and district heating</th>
+      <td>1300</td>
+      <td>1012</td>
+      <td>339</td>
+      <td>123</td>
+      <td>42</td>
+      <td>23</td>
+      <td>34</td>
+      <td>21</td>
+      <td>22</td>
+      <td>19</td>
+      <td>15.00</td>
+      <td>190.5</td>
+    </tr>
+    <tr>
+      <th>Other Energy sectors*</th>
+      <td>277</td>
+      <td>237</td>
+      <td>133</td>
+      <td>71</td>
+      <td>59</td>
+      <td>53</td>
+      <td>57</td>
+      <td>39</td>
+      <td>39</td>
+      <td>38</td>
+      <td>36.00</td>
+      <td>96.0</td>
+    </tr>
+    <tr>
+      <th>Industry (Energy)</th>
+      <td>469</td>
+      <td>360</td>
+      <td>232</td>
+      <td>126</td>
+      <td>94</td>
+      <td>75</td>
+      <td>86</td>
+      <td>6</td>
+      <td>6</td>
+      <td>9</td>
+      <td>11.00</td>
+      <td>163.0</td>
+    </tr>
+    <tr>
+      <th>Domestic Transport</th>
+      <td>822</td>
+      <td>772</td>
+      <td>583</td>
+      <td>190</td>
+      <td>143</td>
+      <td>120</td>
+      <td>134</td>
+      <td>10</td>
+      <td>8</td>
+      <td>7</td>
+      <td>9.00</td>
+      <td>363.0</td>
+    </tr>
+    <tr>
+      <th>Residential and Services**</th>
+      <td>648</td>
+      <td>514</td>
+      <td>221</td>
+      <td>119</td>
+      <td>92</td>
+      <td>75</td>
+      <td>92</td>
+      <td>20</td>
+      <td>19</td>
+      <td>19</td>
+      <td>29.00</td>
+      <td>156.5</td>
+    </tr>
+    <tr>
+      <th>Industry (Non-Energy)</th>
+      <td>343</td>
+      <td>233</td>
+      <td>157</td>
+      <td>139</td>
+      <td>88</td>
+      <td>14</td>
+      <td>13</td>
+      <td>7</td>
+      <td>7</td>
+      <td>7</td>
+      <td>7.00</td>
+      <td>122.5</td>
+    </tr>
+    <tr>
+      <th>Other Non-Energv sectors***</th>
+      <td>101</td>
+      <td>130</td>
+      <td>56</td>
+      <td>33</td>
+      <td>26</td>
+      <td>25</td>
+      <td>25</td>
+      <td>23</td>
+      <td>22</td>
+      <td>22</td>
+      <td>22.00</td>
+      <td>41.0</td>
+    </tr>
+    <tr>
+      <th>Intra-EU aviation</th>
+      <td>35</td>
+      <td>38</td>
+      <td>43</td>
+      <td>31</td>
+      <td>29</td>
+      <td>28</td>
+      <td>14</td>
+      <td>14</td>
+      <td>12</td>
+      <td>11</td>
+      <td>10.00</td>
+      <td>36.0</td>
+    </tr>
+    <tr>
+      <th>Intra-EU navigation</th>
+      <td>31</td>
+      <td>27</td>
+      <td>25</td>
+      <td>7</td>
+      <td>6</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.00</td>
+      <td>15.5</td>
+    </tr>
+    <tr>
+      <th>50% extra-EU maritime MRV</th>
+      <td>50</td>
+      <td>42</td>
+      <td>44</td>
+      <td>14</td>
+      <td>11</td>
+      <td>9</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.00</td>
+      <td>27.5</td>
+    </tr>
+    <tr>
+      <th>Agriculture****</th>
+      <td>390</td>
+      <td>385</td>
+      <td>361</td>
+      <td>351</td>
+      <td>302</td>
+      <td>271</td>
+      <td>209</td>
+      <td>249</td>
+      <td>249</td>
+      <td>249</td>
+      <td>194.00</td>
+      <td>331.5</td>
+    </tr>
+    <tr>
+      <th>Waste</th>
+      <td>155</td>
+      <td>118</td>
+      <td>87</td>
+      <td>68</td>
+      <td>55</td>
+      <td>55</td>
+      <td>55</td>
+      <td>32</td>
+      <td>32</td>
+      <td>32</td>
+      <td>0.32</td>
+      <td>71.0</td>
+    </tr>
+    <tr>
+      <th>C02 calibration</th>
+      <td>15</td>
+      <td>43</td>
+      <td>24</td>
+      <td>3</td>
+      <td>-1</td>
+      <td>-1</td>
+      <td>-1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.00</td>
+      <td>11.5</td>
+    </tr>
+    <tr>
+      <th>Non-C02 calibration</th>
+      <td>5</td>
+      <td>2</td>
+      <td>-3</td>
+      <td>-3</td>
+      <td>-3</td>
+      <td>-3</td>
+      <td>-3</td>
+      <td>-3</td>
+      <td>-3</td>
+      <td>-3</td>
+      <td>-3.00</td>
+      <td>-3.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="select-the-included-sector-in-the-model">
+<h2>6. Select the included sector in the model<a class="headerlink" href="#select-the-included-sector-in-the-model" title="Link to this heading">#</a></h2>
+<p>(other energy sectors include non-CO2 GHG emissions and are thus excluded)</p>
+<p>In this list, we only model:</p>
+<ul class="simple">
+<li><p>Power and district heating</p></li>
+<li><p>Other Energy sectors*</p></li>
+<li><p>Residential and Services**</p></li>
+</ul>
+<p>Note:</p>
+<ul class="simple">
+<li><p>Calibration of total to inventory 2023</p></li>
+<li><p>*Includes emissions from energy branch and other non-CO2 emissions from the energy sector</p></li>
+<li><p>**Includes fossil fuel combustion in the agriculture/fishery/forestry sector</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">include_sector</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Power and district heating&#39;</span><span class="p">,</span><span class="s1">&#39;Residential and Services**&#39;</span><span class="p">,</span><span class="s1">&#39;Other Energy sectors*&#39;</span><span class="p">]</span>
+
+<span class="n">target_sector_share_2035</span> <span class="o">=</span> <span class="n">target_sector_share</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">include_sector</span><span class="p">,</span><span class="s1">&#39;2035 S2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">target_sector_share_2035</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.27311960542540076
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="calculate-the-absolute-emission-of-the-included-sector-emission">
+<h2>7. Calculate the absolute emission of the included sector emission<a class="headerlink" href="#calculate-the-absolute-emission-of-the-included-sector-emission" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">target_2035</span><span class="p">[</span><span class="s1">&#39;included_sector_emissions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target_2035</span><span class="p">[</span><span class="s1">&#39;absolute_emissions&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">target_sector_share_2035</span>
+<span class="n">display</span><span class="p">(</span><span class="n">target_2035</span><span class="p">)</span>
+
+<span class="c1"># Calculate share of 1990 emissions</span>
+<span class="nb">round</span><span class="p">(</span><span class="n">target_2035</span><span class="p">[</span><span class="s1">&#39;included_sector_emissions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">co2_1990_aggregated</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>base1990</th>
+      <th>base2005</th>
+      <th>absolute_emissions</th>
+      <th>included_sector_emissions</th>
+    </tr>
+    <tr>
+      <th>Country_code</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AT</th>
+      <td>NaN</td>
+      <td>0.74000</td>
+      <td>20.590032</td>
+      <td>5.623541</td>
+    </tr>
+    <tr>
+      <th>BE</th>
+      <td>0.6625</td>
+      <td>NaN</td>
+      <td>40.604403</td>
+      <td>11.089859</td>
+    </tr>
+    <tr>
+      <th>CH</th>
+      <td>0.6250</td>
+      <td>NaN</td>
+      <td>16.700415</td>
+      <td>4.561211</td>
+    </tr>
+    <tr>
+      <th>CZ</th>
+      <td>NaN</td>
+      <td>0.44500</td>
+      <td>70.339812</td>
+      <td>19.211182</td>
+    </tr>
+    <tr>
+      <th>DE</th>
+      <td>0.7500</td>
+      <td>NaN</td>
+      <td>263.087136</td>
+      <td>71.854255</td>
+    </tr>
+    <tr>
+      <th>DK</th>
+      <td>0.8000</td>
+      <td>NaN</td>
+      <td>10.937197</td>
+      <td>2.987163</td>
+    </tr>
+    <tr>
+      <th>FR</th>
+      <td>NaN</td>
+      <td>0.60625</td>
+      <td>167.899907</td>
+      <td>45.856756</td>
+    </tr>
+    <tr>
+      <th>IT</th>
+      <td>NaN</td>
+      <td>0.57775</td>
+      <td>211.127397</td>
+      <td>57.663031</td>
+    </tr>
+    <tr>
+      <th>LU</th>
+      <td>NaN</td>
+      <td>0.66250</td>
+      <td>4.085589</td>
+      <td>1.115854</td>
+    </tr>
+    <tr>
+      <th>NL</th>
+      <td>0.6625</td>
+      <td>NaN</td>
+      <td>55.114527</td>
+      <td>15.052858</td>
+    </tr>
+    <tr>
+      <th>PL</th>
+      <td>0.2655</td>
+      <td>NaN</td>
+      <td>276.573417</td>
+      <td>75.537623</td>
+    </tr>
+    <tr>
+      <th>SE</th>
+      <td>0.6900</td>
+      <td>NaN</td>
+      <td>17.778136</td>
+      <td>4.855557</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.107
+</pre></div>
+</div>
+</div>
+</div>
+<p>0.107 is the answer is put in to the <code class="docutils literal notranslate"><span class="pre">co2_budget</span></code> for the year 2035</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="13-kpis.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">KPIs Configuration</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-the-total-emissions-data-for-the-years-1990-and-2005">1. Extract the total emissions data for the years 1990 and 2005.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-the-linearly-interpolated-targets-for-2035">2. Calculate the linearly interpolated targets for 2035.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-the-data-and-exclude-lulucf-from-the-calculation">3. Extract the data and exclude LULUCF from the calculation.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-the-absolute-emissions">4. Calculate the absolute emissions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-the-emission-target-by-sector-and-interpolate-to-the-year-2035">5. Extract the emission target by sector and interpolate to the year 2035</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#select-the-included-sector-in-the-model">6. Select the included sector in the model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-the-absolute-emission-of-the-included-sector-emission">7. Calculate the absolute emission of the included sector emission</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Form Energy Storage and Open Energy Transition
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
