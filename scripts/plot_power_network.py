@@ -16,11 +16,8 @@ import pypsa
 from _helpers import configure_logging, rename_techs, retry, set_scenario_config
 from plot_summary import preferred_order
 from pypsa.plot import add_legend_circles, add_legend_lines, add_legend_patches
-
 from matplotlib import rc
-# activate latex text rendering
-rc('text', usetex=True)
-rc('font', **{'family': 'serif', 'serif': ['Computer Modern Roman'], 'sans-serif': ['Computer Modern Sans serif']})
+
 rc('axes', **{'edgecolor': 'None', 'titlesize': 18,'titleweight': 'bold', "labelsize": 14})
 rc('figure', **{'edgecolor': 'None'})
 rc('patch', **{'edgecolor': 'None'})
@@ -31,6 +28,34 @@ rc('ytick', **{'labelsize': 12})
 
 logger = logging.getLogger(__name__)
 
+def test_and_enable_latex():
+    import shutil
+    import os
+
+    if not shutil.which('latex'):
+        logger.warning("Latex is not installed, disabling latex text")
+        
+        return
+
+    path = "test_and_enable_latex.pdf"
+    
+    try:
+        # add the changes here if latex is enabled
+        logger.info("Test run latex compilation")
+        rc('text', usetex=True)
+        rc('font', **{'family': 'serif', 'serif': ['Computer Modern Roman'], 'sans-serif': ['Computer Modern Sans serif']})
+
+        # test if latex can render
+        fig, ax = plt.subplots(figsize=(7, 6))
+        pd.Series([1, 2, 3, 3]).plot(kind='hist', ax=ax,title="My plot")
+        fig.savefig(path, bbox_inches="tight")
+
+        os.remove(path)
+
+    except:
+        logger.warning("Latex text compilation failed, disabling it now")
+        rc('text', usetex=False)
+        rc('font', **{'family': 'serif', 'serif': ['DejaVu Serif'], 'sans-serif': ['DejaVu Sans']})
 
 def rename_techs_tyndp(tech):
     tech = rename_techs(tech)
@@ -281,5 +306,9 @@ if __name__ == "__main__":
         map_opts["boundaries"] = regions.total_bounds[[0, 2, 1, 3]] + [-1, 1, -1, 1]
 
     proj = load_projection(snakemake.params.plotting)
+
+    # test run latex compilation
+    config_kpi = snakemake.params.kpi
+    if config_kpi.get("enable_latex", False): test_and_enable_latex()
 
     plot_map(n)

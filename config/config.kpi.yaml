@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: CC0-1.0
 
 kpi:
+  enable_latex: True
   filter_scheme:
     # Create your own custom filtering schemes during the filter_and_rename() section.
     # The naming convention must be in nice names.
