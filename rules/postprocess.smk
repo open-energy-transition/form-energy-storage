@@ -26,6 +26,7 @@ if config["foresight"] != "perfect":
     rule plot_power_network:
         params:
             plotting=config_provider("plotting"),
+            kpi=config_provider("kpi"),
         input:
             network=RESULTS
             + "postnetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",

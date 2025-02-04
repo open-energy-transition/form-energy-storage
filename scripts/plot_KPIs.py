@@ -22,10 +22,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import pypsa
 from matplotlib import rc
-from plot_power_network import load_projection
+from plot_power_network import load_projection, test_and_enable_latex
 from matplotlib.colors import Normalize
 from plot_summary import preferred_order
-from pypsa.statistics import get_bus_and_carrier_and_bus_carrier, get_country_and_carrier
 from plot_validation_cross_border_flows import sort_one_country, color_country
 import country_converter as coco
 
@@ -40,35 +39,6 @@ rc('legend', **{'fontsize': 12, 'title_fontsize': 12})
 rc('xtick', **{'labelsize': 12})
 rc('ytick', **{'labelsize': 12})
 # plt.style.use(["ggplot"])
-
-def test_run_latex():
-    import shutil
-    import os
-
-    if not shutil.which('latex'):
-        logger.warning("Latex is not installed, disabling latex text")
-        
-        return
-
-    path = "test_run_latex.pdf"
-    
-    try:
-        # add the changes here if latex is enabled
-        logger.info("Test run latex compilation")
-        rc('text', usetex=True)
-        rc('font', **{'family': 'serif', 'serif': ['Computer Modern Roman'], 'sans-serif': ['Computer Modern Sans serif']})
-
-        # test if latex can render
-        fig, ax = plt.subplots(figsize=(7, 6))
-        pd.Series([1, 2, 3, 3]).plot(kind='hist', ax=ax,title="My plot")
-        fig.savefig(path, bbox_inches="tight")
-
-        os.remove(path)
-
-    except:
-        logger.warning("Latex text compilation failed, disabling it now")
-        rc('text', usetex=False)
-        rc('font', **{'family': 'serif', 'serif': ['DejaVu Serif'], 'sans-serif': ['DejaVu Sans']})
 
 def expanded_sector_names(n):
     index = n.statistics().index.get_level_values(1)
@@ -1356,7 +1326,7 @@ if __name__ == "__main__":
 
     # test run latex compilation
     config_kpi = snakemake.params.kpi
-    if config_kpi.get("enable_latex", False): test_run_latex()
+    if config_kpi.get("enable_latex", False): test_and_enable_latex()
 
     plot_line_loading(n, regions, path=snakemake.output.line_loading_map, focus_de=True, value="mean", show_fig=False)
 
