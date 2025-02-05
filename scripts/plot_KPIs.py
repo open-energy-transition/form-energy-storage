@@ -519,6 +519,10 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, filter_scheme, pat
     n = network.copy()
     df = dataframe.copy()
 
+    # set dates to be aligned with snapshot year
+    if plot_kw.get("xlim", None):
+        plot_kw["xlim"] = [date.replace("2013", str(n.snapshots[0].year)) for date in plot_kw["xlim"]]
+
     include = kpi_param.get("include",False)
     exclude = kpi_param.get("exclude",False)
 
@@ -626,7 +630,7 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, filter_scheme, pat
     to_drop = abs(n.snapshot_weightings.objective @ df) < 1
     df = df.loc[:,~to_drop]
     
-    fig, ax = plt.subplots(figsize=kpi_param.get("figsize",(12,9))) 
+    fig, ax = plt.subplots(figsize=tuple(kpi_param.get("figsize",(12,9))))
     
     df_plot = df[df.columns.difference([line_carrier])]
     
@@ -674,6 +678,10 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
     n = network.copy()
     df = dataframe.copy()
 
+    # set dates to be aligned with snapshot year
+    if plot_kw.get("xlim", None):
+        plot_kw["xlim"] = [date.replace("2013", str(n.snapshots[0].year)) for date in plot_kw["xlim"]]
+
     include = kpi_param.get("include",False)
     exclude = kpi_param.get("exclude",False)
 
@@ -718,7 +726,7 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
         if not plot_kw.get("ylim", False):
             plot_kw["ylim"] = [0, None]
 
-    fig, ax = plt.subplots(figsize=kpi_param.get("figsize",(12,9)))
+    fig, ax = plt.subplots(figsize=tuple(kpi_param.get("figsize",(12,9))))
 
     df.plot(ax = ax, color = [colors[c] for c in df.columns], **plot_kw)
 
@@ -1469,13 +1477,13 @@ if __name__ == "__main__":
                     plot_in_detail(df, 
                                    plot_kw, 
                                    snakemake.output[fn],
-                                   plot_figsize = kpi_param.get("figsize",(6,8))
+                                   plot_figsize = tuple(kpi_param.get("figsize",(6,8)))
                                    )
                 elif plot_param == "overview":
                     plot_by_country(df, 
                                     plot_kw, 
                                     snakemake.output[fn],
-                                    plot_figsize = kpi_param.get("figsize",(12,9))
+                                    plot_figsize = tuple(kpi_param.get("figsize",(12,9)))
                                     )
 
             except (TypeError):
