@@ -280,7 +280,7 @@ def plot_storage_map(network, regions, path=None, focus_de=True, legend_circles=
         vmax=storage_cap.max(),
         vmin=0,
         legend_kwds={
-            "label": f"{tech.title()} Capacity [GWe]",
+            "label": f"{pretty_names[tech]} Capacity [GWe]",
             "shrink": 0.7,
             "extend": "max",
         },
@@ -1171,6 +1171,7 @@ if __name__ == "__main__":
         "electricity distribution grid": "Electricity distribution grid",
         "transmission lines": "Transmission lines",
         "V2G": "Vehicle-to-Grid",
+        "PHS": "Pumped Hydro Storage",
     }
 
     sector_colors = {
