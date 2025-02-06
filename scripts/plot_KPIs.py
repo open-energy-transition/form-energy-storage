@@ -73,6 +73,8 @@ def expanded_pretty_names(n):
             dict_index[i] = "Gas boiler"
         elif "oil boiler" in i:
             dict_index[i] = "Oil boiler"
+        elif "heating flexibility" in i:
+            dict_index[i] = "Heating flexibility"
         elif "heat" in i:
             dict_index[i] = "heat"
         
