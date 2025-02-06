@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: CC0-1.0
 
 kpi:
-  enable_latex: True
+  enable_latex: true
   filter_scheme:
     # Create your own custom filtering schemes during the filter_and_rename() section.
     # The naming convention must be in nice names.
@@ -358,6 +358,27 @@ kpi:
       plot: overview
       plot_kw:
         title: Country power generation
+        #ylim: [0,800000]
+        ylabel: TWh
+  # Power Curtailment
+    DE_power_curtailment:
+      extract: curtailment
+      include: ["DE"]
+      carrier_filter: power
+      group_carrier: pretty
+      plot: detail
+      plot_kw:
+        title: Germany power curtailment
+        #ylim: [0,800000]
+        ylabel: TWh
+    country_power_curtailment:
+      extract: curtailment
+      exclude: ["EU"]
+      carrier_filter: power
+      group_carrier: pretty
+      plot: overview
+      plot_kw:
+        title: Country power curtailment
         #ylim: [0,800000]
         ylabel: TWh
   # Total Emission
