@@ -29,26 +29,10 @@ mid-capex-mds:
     investment:
       iron-air battery: 18477  # in EUR/MWh (2020) from 20,000 EUR/MWh (2024)
 
-mid-capex-nomds:
-  sector:
-    stores: []
-    storage_units: ["li-ion battery", "vanadium", "lair", "pair"]
-  costs:
-    investment:
-      iron-air battery: 18477  # in EUR/MWh (2020) from 20,000 EUR/MWh (2024)
-
 low-capex-mds:
   sector:
     stores: ["H2"]
     storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
-  costs:
-    investment:
-      iron-air battery: 14089  # in EUR/MWh (2020) from 15,250 EUR/MWh (2024)
-
-low-capex-nomds:
-  sector:
-    stores: []
-    storage_units: ["li-ion battery", "vanadium", "lair", "pair"]
   costs:
     investment:
       iron-air battery: 14089  # in EUR/MWh (2020) from 15,250 EUR/MWh (2024)
