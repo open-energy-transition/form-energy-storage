@@ -75,13 +75,7 @@ if __name__ == "__main__":
     if "snakemake" not in globals():
         from _helpers import mock_snakemake
 
-        snakemake = mock_snakemake("add_transmission_projects_and_dlr",
-                                   opts="",
-                                   clusters="52",
-                                   ll="v1.11",
-                                   sector_opts="",
-                                   run="baseline-neplinesandlinks"
-                                   )
+        snakemake = mock_snakemake("add_transmission_projects_and_dlr")
     configure_logging(snakemake)
     set_scenario_config(snakemake)
 
