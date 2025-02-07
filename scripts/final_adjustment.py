@@ -70,6 +70,7 @@ def connection_limit_ntc(n,fn,year="2035"):
     return n
 
 def disable_links_expansion(n, country, carrier):
+    logger.info(f"Disable links expansion for {carrier} in {country}")
     n.links.loc[(n.links.bus1.map(n.buses.country).isin(country)) & (n.links.carrier.isin(carrier)),"p_nom_extendable"] = False
 
     return n
