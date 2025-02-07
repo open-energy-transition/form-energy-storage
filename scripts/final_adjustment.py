@@ -69,6 +69,11 @@ def connection_limit_ntc(n,fn,year="2035"):
     
     return n
 
+def disable_links_expansion(n, country, carrier):
+    n.links.loc[(n.links.bus1.map(n.buses.country).isin(country)) & (n.links.carrier.isin(carrier)),"p_nom_extendable"] = False
+
+    return n
+
 if __name__ == "__main__":
     if "snakemake" not in globals():
         from _helpers import mock_snakemake
@@ -89,5 +94,8 @@ if __name__ == "__main__":
     n = pypsa.Network(snakemake.input.network)
 
     n = connection_limit_ntc(n,snakemake.input.ntc,year="2035")
+
+    if not snakemake.params.chp_extendable:
+        n = disable_links_expansion(n, ["DE"], ["urban central CHP"])
 
     n.export_to_netcdf(snakemake.output.network)
