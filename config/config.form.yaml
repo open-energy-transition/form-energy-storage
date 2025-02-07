@@ -206,6 +206,7 @@ sector:
   H2_network: false
   gas_network: false
   H2_retrofit: false
+  chp_extendable_DE: true # in final adjustment
 
 load:
   scaling_factor: 1.26  # electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)
