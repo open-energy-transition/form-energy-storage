@@ -95,7 +95,7 @@ if __name__ == "__main__":
 
     n = connection_limit_ntc(n,snakemake.input.ntc,year="2035")
 
-    if not snakemake.params.chp_extendable:
+    if not snakemake.params.chp_extendable_DE:
         n = disable_links_expansion(n, ["DE"], ["urban central CHP"])
 
     n.export_to_netcdf(snakemake.output.network)

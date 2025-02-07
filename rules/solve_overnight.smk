@@ -7,7 +7,7 @@ if config["enable"].get("final_adjustment",False):
 
     rule final_adjustment_overnight:
         params:
-            chp_extendable=config_provider("sector","chp_extendable"),
+            chp_extendable_DE=config_provider("sector","chp_extendable_DE"),
         input:
             network=RESULTS
             + "prenetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",

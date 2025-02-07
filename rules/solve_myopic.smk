@@ -108,7 +108,7 @@ ruleorder: add_existing_baseyear > add_brownfield
 
 rule final_adjustment_myopic:
     params:
-        chp_extendable=config_provider("sector","chp_extendable"),
+        chp_extendable_DE=config_provider("sector","chp_extendable_DE"),
     input:
         network=RESULTS
         + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
