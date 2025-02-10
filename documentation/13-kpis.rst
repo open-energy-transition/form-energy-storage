@@ -2,8 +2,6 @@
 KPIs Configuration
 ##########################################
 
-.. automodule:: plot_KPIs
-
 Plot_KPIs creates both predefined and configurable figures. The predefined figures are:
 
 - A map of curtailed energy for Germany and the wider region.
@@ -21,7 +19,7 @@ Key components of each configuration:
 4. ``group_carrier``: Specifies the names used for each carrier. Same names are aggregated.
 5. ``plot``: Determines the type of plot or visualization to be used (e.g., "detail" for detailed data, "overview" for broader data representation).
 6. ``figsize``: Determines the figsize of the plots. If not defined, the default size are chosen.
-6. ``plot_kw``: Additional keyword arguments for the plot (e.g., title, labels, and axis).
+7. ``plot_kw``: Additional keyword arguments for the plot (e.g., title, labels, and axis).
 
 Breakdown of the components:
 
