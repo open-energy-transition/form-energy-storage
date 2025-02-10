@@ -15,106 +15,90 @@ SPDX-License-Identifier: CC-BY-4.0
 [![REUSE status](https://api.reuse.software/badge/github.com/pypsa/pypsa-eur)](https://api.reuse.software/info/github.com/pypsa/pypsa-eur)
 [![Stack Exchange questions](https://img.shields.io/stackexchange/stackoverflow/t/pypsa)](https://stackoverflow.com/questions/tagged/pypsa)
 
-### The Role of Energy Storage in Germany
-
-This repository is a soft-fork of [OET/PyPSA-Eur](https://github.com/open-energy-transition/pypsa-eur) and contains the entire project `The Role of Energy Storage in Germany` supported by [Open Energy Transition (OET)](https://openenergytransition.org/)<sup>*</sup>, including code and report. The philosophy behind this repository is that no intermediary results are included, but all results are computed from raw data and code. The structure is also inspired by [cookiecutter-project](https://github.com/PyPSA/cookiecutter-project).
+This repository is a soft-fork of [OET/PyPSA-Eur](https://github.com/open-energy-transition/pypsa-eur) and contains the entire project **The Role of Energy Storage in Germany** supported by [Open Energy Transition (OET)](https://openenergytransition.org/)<sup>*</sup>, including code and visualization. The philosophy behind this repository is that no intermediary results are included, but all results are computed from raw data and code.
 
 This repository is maintained using [OET's soft-fork strategy](https://open-energy-transition.github.io/handbook/docs/Engineering/SoftForkStrategy). OET's primary aim is to contribute as much as possible to the open source (OS) upstream repositories. For long-term changes that cannot be directly merged upstream, the strategy organizes and maintains OET forks, ensuring they remain up-to-date and compatible with upstream, while also supporting future contributions back to the OS repositories.
 
-For further readings of PyPSA and PyPSA-Eur:
+## The Role of Energy Storage in Germany
 
-* [PyPSA](https://pypsa-eur.readthedocs.io)
-* [PyPSA-Eur](https://pypsa.readthedocs.io)
+Energy storage technologies hold significant promise for reducing carbon emissions. While short-duration storage is popular today, the system benefits for
+long duration storage are rather hidden and require more effort to receive policy attention. This project aims to reveal the hidden benefits of multi-day energy storage through the analysis of
+energy system models.
 
-Here are an excerp for the introduction of PyPSA-Eur:
+The primary objectives are to develop a policy relevant validated energy system model with a focus on Germany, and integrate various representations of short to long-duration energy storage
+into the model. Then, optimization runs are conducted to explore various scenarios to inform policy-makers about the benefits of various types of energy storage. The project will culminate
+in a detailed report and the full model open-source code to support global research efforts. OET, an international non-profit organization specializing in open energy modeling software
+development and support, will bring its expertise to this project. The organization has a proven track record in promoting transparent, data-driven decision-making in energy policy and
+planning, with its software products (including PyPSA-Eur and PyPSA-Earth) used in more than 50 research and industry-related projects.
 
-### PyPSA-Eur: A Sector-Coupled Open Optimisation Model of the European Energy System
+All results will be based on open-source software and fully reproducible. If implemented successfully for Germany, the methods can be replicated easily within the same model framework all-around the world using, among others, PyPSA-Eur or PyPSA-Earth.
+
+For further readings of PyPSA and PyPSA-Eur, check out:
+
+* [PyPSA](https://pypsa.readthedocs.io)
+* [PyPSA-Eur](https://pypsa-eur.readthedocs.io)
+* [PyPSA-Earth](https://pypsa-earth.readthedocs.io)
+
+## Scope of the Model
+
+![alt text](img/iron_air_map.png)
+
+To run multiple scenarios with a reasonable amount of computational power, we limit the scope of the model to the following:
+
+- **Spatial Scope**: 
+  - The model includes Germany, along with its neighboring countries and Italy, making up 12 out of the 34 countries in PyPSA-Eur.
+  - The spatial resolution are 52 nodes in total, with 31 nodes dedicated to Germany, making the results for Germany more accurate than those for other modeled countries.
+- **Temporal Scope**: 
+  - The analysis targets the near-term application of iron-air storage technologies, focusing on the year 2035, while PyPSA-Eur models the period from 2020 to 2050 in 5-year intervals.
+  - The temporal resolution is based on 4380 hours, instead of the full 8760 hours.
+- **Sectoral Scope**: 
+  - The model includes only sectors with energy storage technologies, specifically the power, heating, and transport sectors, excluding the industrial sector.
+
+To view all the changes in detail, check out:
+
+* [Base Configuration](https://open-energy-transition.github.io/form-energy-storage/11-baseline.html)
+* [Features](https://open-energy-transition.github.io/form-energy-storage/03-features.html)
+
+## PyPSA-Eur: A Sector-Coupled Open Optimisation Model of the European Energy System
 
 PyPSA-Eur is an open model dataset of the European energy system at the
 transmission network level that covers the full ENTSO-E area. The model is suitable both for operational studies and generation and transmission expansion planning studies.
 The continental scope and highly resolved spatial scale enables a proper description of the long-range
 smoothing effects for renewable power generation and their varying resource availability.
 
-The model is described in the [documentation](https://pypsa-eur.readthedocs.io)
-and in the paper
-[PyPSA-Eur: An Open Optimisation Model of the European Transmission
-System](https://arxiv.org/abs/1806.01613), 2018,
+The original PyPSA-Eur model is described in the [documentation](https://pypsa-eur.readthedocs.io)
+and in the paper[PyPSA-Eur: An Open Optimisation Model of the European Transmission System](https://arxiv.org/abs/1806.01613), 2018,
 [arXiv:1806.01613](https://arxiv.org/abs/1806.01613).
-The model building routines are defined through a snakemake workflow.
-Please see the [documentation](https://pypsa-eur.readthedocs.io/)
-for installation instructions and other useful information about the snakemake workflow.
-The model is designed to be imported into the open toolbox
-[PyPSA](https://github.com/PyPSA/PyPSA).
-
-**WARNING**: PyPSA-Eur is under active development and has several
-[limitations](https://pypsa-eur.readthedocs.io/en/latest/limitations.html) which
-you should understand before using the model. The github repository
-[issues](https://github.com/PyPSA/pypsa-eur/issues) collect known topics we are
-working on (please feel free to help or make suggestions). The
-[documentation](https://pypsa-eur.readthedocs.io/) remains somewhat patchy. You
-can find showcases of the model's capabilities in the Joule paper [The potential
-role of a hydrogen network in
-Europe](https://doi.org/10.1016/j.joule.2023.06.016), another [paper in Joule
-with a description of the industry
-sector](https://doi.org/10.1016/j.joule.2022.04.016), or in [a 2021 presentation
-at EMP-E](https://nworbmot.org/energy/brown-empe.pdf). We do not recommend to
-use the full resolution network model for simulations. At high granularity the
-assignment of loads and generators to the nearest network node may not be a
-correct assumption, depending on the topology of the underlying distribution
-grid, and local grid bottlenecks may cause unrealistic load-shedding or
-generator curtailment. We recommend to cluster the network to a couple of
-hundred nodes to remove these local inconsistencies. See the discussion in
-Section 3.4 "Model validation" of the paper.
-
 
 ![PyPSA-Eur Grid Model](../doc/img/elec.png)
 
 The dataset consists of:
 
-- A grid model based on a modified [GridKit](https://github.com/bdw/GridKit)
-  extraction of the [ENTSO-E Transmission System
-  Map](https://www.entsoe.eu/data/map/). The grid model contains 7072 lines
-  (alternating current lines at and above 220kV voltage level and all high
-  voltage direct current lines) and 3803 substations.
-- The open power plant database
-  [powerplantmatching](https://github.com/PyPSA/powerplantmatching).
-- Electrical demand time series from the
-  [OPSD project](https://open-power-system-data.org/).
+- A grid model based on a modified [GridKit](https://github.com/bdw/GridKit) extraction of the [ENTSO-E Transmission System Map](https://www.entsoe.eu/data/map/). The grid model contains 7072 lines
+  (alternating current lines at and above 220kV voltage level and all high voltage direct current lines) and 3803 substations.
+- The open power plant database [powerplantmatching](https://github.com/PyPSA/powerplantmatching).
+- Electrical demand time series from the [OPSD project](https://open-power-system-data.org/).
 - Renewable time series based on ERA5 and SARAH, assembled using the [atlite tool](https://github.com/PyPSA/atlite).
 - Geographical potentials for wind and solar generators based on land use (CORINE) and excluding nature reserves (Natura2000) are computed with the [atlite library](https://github.com/PyPSA/atlite).
 
-A sector-coupled extension adds demand
-and supply for the following sectors: transport, space and water
-heating, biomass, industry and industrial feedstocks, agriculture,
-forestry and fishing. This completes the energy system and includes
-all greenhouse gas emitters except waste management and land use.
+A sector-coupled extension adds demand and supply for the following sectors: transport, space and water heating, biomass, industry and industrial feedstocks, agriculture,
+forestry and fishing. This completes the energy system and includes all greenhouse gas emitters except waste management and land use.
 
-This diagram gives an overview of the sectors and the links between
-them:
+Each of these sectors is built up on the transmission network nodes from [PyPSA-Eur](https://github.com/PyPSA/pypsa-eur):
 
-![sector diagram](doc/img/multisector_figure.png)
+## Repository structure
 
-Each of these sectors is built up on the transmission network nodes
-from [PyPSA-Eur](https://github.com/PyPSA/pypsa-eur):
-
-![network diagram](https://github.com/PyPSA/pypsa-eur/blob/master/doc/img/base.png?raw=true)
-
-For computational reasons the model is usually clustered down
-to 50-200 nodes.
-
-Already-built versions of the model can be found in the accompanying [Zenodo
-repository](https://doi.org/10.5281/zenodo.3601881).
-
-### Contributing and Support
-We strongly welcome anyone interested in contributing to this project. If you have any ideas, suggestions or encounter problems, feel invited to file issues or make pull requests on GitHub.
--   In case of code-related **questions**, please post on [stack overflow](https://stackoverflow.com/questions/tagged/pypsa).
--   For non-programming related and more general questions please refer to the [mailing list](https://groups.google.com/group/pypsa).
--   To **discuss** with other PyPSA users, organise projects, share news, and get in touch with the community you can use the [discord server](https://discord.com/invite/AnuJBk23FU).
--   For **bugs and feature requests**, please use the [PyPSA-Eur Github Issues page](https://github.com/PyPSA/pypsa-eur/issues).
-
-### Licence
-
-The code in PyPSA-Eur is released as free software under the
-[MIT License](https://opensource.org/licenses/MIT), see [`doc/licenses.rst`](doc/licenses.rst).
-However, different licenses and terms of use may apply to the various
-input data, see [`doc/data_sources.rst`](doc/data_sources.rst).
+* `benchmarks`: will store `snakemake` benchmarks (does not exist initially)
+* `config`: configurations used in the study
+* `cutouts`: will store raw weather data cutouts from `atlite` (does not exist initially)
+* `data`: includes input data that is not produced by any `snakemake` rule
+* `doc`: includes all files necessary to build the `readthedocs` documentation of PyPSA-Eur
+* `documentation`: includes all files necessary to build the `jupyter book` documentation of Form Energy Storage version of PyPSA-Eur
+* `envs`: includes all the `mamba` environment specifications to run the workflow
+* `logs`: will store log files (does not exist initially)
+* `notebooks`: includes all the `notebooks` used for ad-hoc analysis
+<!--* `report`: contains all files necessary to build the report; plots and result files are generated automatically-->
+* `rules`: includes all the `snakemake`rules loaded in the `Snakefile`
+* `resources`: will store intermediate results of the workflow which can be picked up again by subsequent rules (does not exist initially)
+* `results`: will store the solved PyPSA network data, summary files and plots (does not exist initially)
+* `scripts`: includes all the Python scripts executed by the `snakemake` rules to build the model

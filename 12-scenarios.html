@@ -396,11 +396,12 @@
                   
   <section id="scenarios-configuration">
 <h1>Scenarios Configuration<a class="headerlink" href="#scenarios-configuration" title="Link to this heading">#</a></h1>
-<p>This is the scenario outline used in the analysis “The Role of Energy Storage in Germany”.
+<p>This is the scenario outline used in the analysis <strong>The Role of Energy Storage in Germany</strong>.
 For each scenario involving medium-duration storages,
 there is always a corresponding counterfactual scenario that excludes medium-duration storages.</p>
 <section id="baseline">
 <h2><code class="docutils literal notranslate"><span class="pre">Baseline</span></code><a class="headerlink" href="#baseline" title="Link to this heading">#</a></h2>
+<p>The Baseline scenario is based on the climate year 2013, with the cost of iron-air set at 2,350 EUR/kWh.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">baseline-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
@@ -412,10 +413,11 @@ there is always a corresponding counterfactual scenario that excludes medium-dur
 <span class="w">    </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">]</span>
 </pre></div>
 </div>
-<p>The Baseline scenario is based on the climate year 2013, with the cost of iron-air set at 2,350 EUR/kWh.</p>
 </section>
 <section id="mid-capex">
 <h2><code class="docutils literal notranslate"><span class="pre">Mid-Capex</span></code><a class="headerlink" href="#mid-capex" title="Link to this heading">#</a></h2>
+<p>The Mid-Capex scenario sets the cost of iron-air at 2,000 EUR/kWh,
+slightly lower than the Baseline scenario.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">mid-capex-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
@@ -433,11 +435,11 @@ there is always a corresponding counterfactual scenario that excludes medium-dur
 <span class="w">      </span><span class="nt">iron-air battery</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">18477</span><span class="w">  </span><span class="c1"># in EUR/MWh (2020) from 20,000 EUR/MWh (2024)</span>
 </pre></div>
 </div>
-<p>The Mid-Capex scenario sets the cost of iron-air at 2,000 EUR/kWh,
-slightly lower than the Baseline scenario.</p>
 </section>
 <section id="low-capex">
 <h2><code class="docutils literal notranslate"><span class="pre">Low-Capex</span></code><a class="headerlink" href="#low-capex" title="Link to this heading">#</a></h2>
+<p>The Low-Capex scenario sets the cost of iron-air at 1,525 EUR/kWh,
+which is half the cost of the Baseline scenario.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">low-capex-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
@@ -455,11 +457,11 @@ slightly lower than the Baseline scenario.</p>
 <span class="w">      </span><span class="nt">iron-air battery</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">14089</span><span class="w">  </span><span class="c1"># in EUR/MWh (2020) from 15,250 EUR/MWh (2024)</span>
 </pre></div>
 </div>
-<p>The Low-Capex scenario sets the cost of iron-air at 1,525 EUR/kWh,
-which is half the cost of the Baseline scenario.</p>
 </section>
 <section id="climate-year-2010">
 <h2><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">2010</span></code><a class="headerlink" href="#climate-year-2010" title="Link to this heading">#</a></h2>
+<p>This scenario is based on the climate year 2010, which is characterised by the lowest annual wind resources
+and the second highest annual heating demand from 1960 - 2021 (<a class="reference external" href="https://www.nature.com/articles/s41467-024-54853-3">Gøtske et al., 2024</a>)</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cy2010-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
@@ -527,11 +529,11 @@ which is half the cost of the Baseline scenario.</p>
 <span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2010-sarah3-era5</span>
 </pre></div>
 </div>
-<p>This scenario is based on the climate year 2010, which is characterised by the lowest annual wind resources
-and the second highest annual heating demand from 1960 - 2021 (<a class="reference external" href="https://www.nature.com/articles/s41467-024-54853-3">Gøtske et al., 2024</a>)</p>
 </section>
 <section id="climate-year-2012">
 <h2><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">2012</span></code><a class="headerlink" href="#climate-year-2012" title="Link to this heading">#</a></h2>
+<p>This scenario is based on the climate year 2012, which is the most stressful climate year in terms of
+2-week Dunkelflaute situation at European aggregated level (<a class="reference external" href="https://2024.entsos-tyndp-scenarios.eu/wp-content/uploads/2024/07/TYNDP_2024_Scenarios_Methodology_Report_240708.pdf">2024 TYNDP Scenarios Methodology Report</a>, page 30)</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cy2012-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
@@ -599,11 +601,11 @@ and the second highest annual heating demand from 1960 - 2021 (<a class="referen
 <span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-2012-sarah3-era5</span>
 </pre></div>
 </div>
-<p>This scenario is based on the climate year 2012, which is the most stressful climate year in terms of
-2-week Dunkelflaute situation at European aggregated level (<a class="reference external" href="https://2024.entsos-tyndp-scenarios.eu/wp-content/uploads/2024/07/TYNDP_2024_Scenarios_Methodology_Report_240708.pdf">2024 TYNDP Scenarios Methodology Report</a>, page 30)</p>
 </section>
 <section id="climate-year-1996">
 <h2><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">1996</span></code><a class="headerlink" href="#climate-year-1996" title="Link to this heading">#</a></h2>
+<p>This scenario is based on the climate year 1996, which is characterised by low yield of PV and wind,
+as well as a pronounced “dark doldrums” for about 10 days in January (<a class="reference external" href="https://www.energysystem2050.net/content/TransnetBW-Study_EnergySystem2050.pdf?v2">TransnetBW Energy System 2050 Report</a>, page 19)</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cy1996-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
@@ -671,8 +673,6 @@ and the second highest annual heating demand from 1960 - 2021 (<a class="referen
 <span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-1996-sarah3-era5</span>
 </pre></div>
 </div>
-<p>This scenario is based on the climate year 1996, which is characterised by low yield of PV and wind,
-as well as a pronounced “dark doldrums” for about 10 days in January (<a class="reference external" href="https://www.energysystem2050.net/content/TransnetBW-Study_EnergySystem2050.pdf?v2">TransnetBW Energy System 2050 Report</a>, page 19)</p>
 </section>
 </section>
 

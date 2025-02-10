@@ -61,8 +61,6 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '11-baseline';</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -391,7 +389,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#renewable"><code class="docutils literal notranslate"><span class="pre">renewable</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conventional"><code class="docutils literal notranslate"><span class="pre">conventional</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lines"><code class="docutils literal notranslate"><span class="pre">lines</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transmission-projects"><code class="docutils literal notranslate"><span class="pre">transmission</span> <span class="pre">projects</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transmission-projects"><code class="docutils literal notranslate"><span class="pre">transmission_projects</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#existing-capacities"><code class="docutils literal notranslate"><span class="pre">existing_capacities</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sector"><code class="docutils literal notranslate"><span class="pre">sector</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load"><code class="docutils literal notranslate"><span class="pre">load</span></code></a></li>
@@ -416,7 +414,7 @@
 The complete explaination of each configuration can be found in <a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html">PyPSA-Eur: Configuration</a>.</p>
 <section id="run">
 <h2><code class="docutils literal notranslate"><span class="pre">run</span></code><a class="headerlink" href="#run" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run">Documentation</a></p>
+<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run">Run Documentation</a></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">run</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">prefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;scenarios&quot;</span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;baseline-mds&quot;</span>
@@ -438,7 +436,7 @@ The complete explaination of each configuration can be found in <a class="refere
 </section>
 <section id="foresight">
 <h2><code class="docutils literal notranslate"><span class="pre">foresight</span></code><a class="headerlink" href="#foresight" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#foresight">Documentation</a></p>
+<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#foresight">Foresight Documentation</a></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">foresight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myopic</span>
 </pre></div>
 </div>
@@ -447,7 +445,7 @@ The complete explaination of each configuration can be found in <a class="refere
 <section id="scenario">
 <h2><code class="docutils literal notranslate"><span class="pre">scenario</span></code><a class="headerlink" href="#scenario" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#scenario">Documentation</a></p></li>
+<li><p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#scenario">Scenario Documentation</a></p></li>
 <li><p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/wildcards.html">Wildcard Documentation</a></p></li>
 </ul>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">scenario</span><span class="p">:</span>
@@ -467,7 +465,7 @@ The complete explaination of each configuration can be found in <a class="refere
 </section>
 <section id="countries">
 <h2><code class="docutils literal notranslate"><span class="pre">countries</span></code><a class="headerlink" href="#countries" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#countries">Documentation</a></p>
+<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#countries">Countries Documentation</a></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">countries</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;AT&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;BE&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;CH&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;CZ&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;DE&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;DK&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;FR&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;IT&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;LU&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;NL&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;PL&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;SE&#39;</span><span class="p p-Indicator">]</span>
 </pre></div>
 </div>
@@ -489,7 +487,7 @@ The complete explaination of each configuration can be found in <a class="refere
 </section>
 <section id="snapshots">
 <h2><code class="docutils literal notranslate"><span class="pre">snapshots</span></code><a class="headerlink" href="#snapshots" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#snapshots">Documentation</a></p>
+<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#snapshots">Snapshots Documentation</a></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">snapshots</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2013-01-01&quot;</span>
 <span class="w">  </span><span class="nt">end</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2014-01-01&quot;</span>
@@ -500,7 +498,7 @@ The complete explaination of each configuration can be found in <a class="refere
 </section>
 <section id="enable">
 <h2><code class="docutils literal notranslate"><span class="pre">enable</span></code><a class="headerlink" href="#enable" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#enable">Documentation</a></p>
+<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#enable">Enable Documentation</a></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">enable</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">retrieve</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auto</span>
 <span class="w">  </span><span class="nt">retrieve_databundle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
@@ -516,20 +514,17 @@ The complete explaination of each configuration can be found in <a class="refere
 </section>
 <section id="co2-budget">
 <h2><code class="docutils literal notranslate"><span class="pre">co2</span> <span class="pre">budget</span></code><a class="headerlink" href="#co2-budget" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#co2-budget">Documentation</a></p>
+<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#co2-budget">CO2 Budget Documentation</a></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">co2_budget</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">2035</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.107</span><span class="w"> </span><span class="c1"># derived from individual countries carbon emission targets for included sectors excluding domestic transport emissions from scope</span>
 </pre></div>
 </div>
 <p>The CO2 budget is derived from individual countries carbon emission targets for included sectors excluding domestic transport emissions from scope
-This means that the total budget is:</p>
-<div class="math notranslate nohighlight">
-\[1.487e+9 * 0.107 =\]</div>
-<p>The complete calculation can be seen in the Assumption processing section.</p>
+This means that the total budget is 315.4 MtCO2. The complete calculation can be seen in the <a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/22-co2_calculation.html">Assumption processing</a> section.</p>
 </section>
 <section id="electricity">
 <h2><code class="docutils literal notranslate"><span class="pre">electricity</span></code><a class="headerlink" href="#electricity" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#electricity">Documentation</a></p>
+<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#electricity">Electricity Documentation</a></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">electricity</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">max_hours</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">li-ion battery</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">4</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">8</span><span class="p p-Indicator">]</span>
@@ -554,7 +549,7 @@ This means that the total budget is:</p>
 </section>
 <section id="atlite">
 <h2><code class="docutils literal notranslate"><span class="pre">atlite</span></code><a class="headerlink" href="#atlite" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#atlite">Documentation</a></p>
+<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#atlite">Atlite Documentation</a></p>
 <p>Define and specify the <code class="docutils literal notranslate"><span class="pre">atlite.Cutout</span></code> used for calculating renewable potentials and time-series. All options except for <code class="docutils literal notranslate"><span class="pre">features</span></code> are directly used as <a class="reference external" href="https://atlite.readthedocs.io/en/latest/ref_api.html#cutout">cutout parameters</a>.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">atlite</span><span class="p">:</span>
 <span class="w">  </span><span class="c1"># TODO: weather year - input from FORM</span>
@@ -578,7 +573,7 @@ This means that the total budget is:</p>
 </section>
 <section id="renewable">
 <h2><code class="docutils literal notranslate"><span class="pre">renewable</span></code><a class="headerlink" href="#renewable" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#renewable">Documentation</a></p>
+<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#renewable">Renewable Documentation</a></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">renewable</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hydro</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">PHS_max_hours</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
@@ -588,7 +583,7 @@ This means that the total budget is:</p>
 </section>
 <section id="conventional">
 <h2><code class="docutils literal notranslate"><span class="pre">conventional</span></code><a class="headerlink" href="#conventional" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#conventional">Documentation</a></p>
+<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#conventional">Conventional Documentation</a></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">conventional</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">unit_commitment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">  </span><span class="nt">dynamic_fuel_price</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
@@ -602,7 +597,7 @@ This means that the total budget is:</p>
 </section>
 <section id="lines">
 <h2><code class="docutils literal notranslate"><span class="pre">lines</span></code><a class="headerlink" href="#lines" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#lines">Documentation</a></p>
+<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#lines">Lines Documentation</a></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">lines</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">s_max_pu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
 <span class="w">  </span><span class="nt">dynamic_line_rating</span><span class="p">:</span>
@@ -617,8 +612,8 @@ This means that the total budget is:</p>
 to better approximate security and reserve capacity for reactive power flows.</p>
 </section>
 <section id="transmission-projects">
-<h2><code class="docutils literal notranslate"><span class="pre">transmission</span> <span class="pre">projects</span></code><a class="headerlink" href="#transmission-projects" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#transmission_projects">Documentation</a></p>
+<h2><code class="docutils literal notranslate"><span class="pre">transmission_projects</span></code><a class="headerlink" href="#transmission-projects" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#transmission_projects">Transmission Projects Documentation</a></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">transmission_projects</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">include</span><span class="p">:</span>
@@ -641,7 +636,7 @@ to better approximate security and reserve capacity for reactive power flows.</p
 </section>
 <section id="existing-capacities">
 <h2><code class="docutils literal notranslate"><span class="pre">existing_capacities</span></code><a class="headerlink" href="#existing-capacities" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#existing_capacities">Documentation</a></p>
+<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#existing_capacities">Existing Capacities Documentation</a></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">existing_capacities</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">grouping_years_power</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1920</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1950</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1955</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1960</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1965</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1970</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1975</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1980</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1985</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1990</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1995</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2000</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2005</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2010</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2015</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2020</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2025</span><span class="p p-Indicator">]</span>
 <span class="w">  </span><span class="nt">grouping_years_heat</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1980</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1985</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1990</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1995</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2000</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2005</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2010</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2015</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2019</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># heat grouping years &gt;= baseyear will be ignored</span>
@@ -658,7 +653,7 @@ to better approximate security and reserve capacity for reactive power flows.</p
 </section>
 <section id="sector">
 <h2><code class="docutils literal notranslate"><span class="pre">sector</span></code><a class="headerlink" href="#sector" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#sector">Documentation</a></p>
+<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#sector">Sector Documentation</a></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sector</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">transport</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">heating</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
@@ -724,7 +719,7 @@ to better approximate security and reserve capacity for reactive power flows.</p
 </section>
 <section id="load">
 <h2><code class="docutils literal notranslate"><span class="pre">load</span></code><a class="headerlink" href="#load" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#load">Documentation</a></p>
+<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#load">Load Documentation</a></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">load</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">scaling_factor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.26</span><span class="w">  </span><span class="c1"># electricity load increase PyPSA 2013 to 2035 (https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf)</span>
 </pre></div>
@@ -734,7 +729,7 @@ By 2035, electricity demand is projected to increase by 26% compared to 2013. <a
 </section>
 <section id="costs">
 <h2><code class="docutils literal notranslate"><span class="pre">costs</span></code><a class="headerlink" href="#costs" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#costs">Documentation</a></p>
+<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#costs">Costs Documentation</a></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">costs</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">year</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2035</span>
 <span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">67a5830</span>
@@ -788,8 +783,8 @@ By 2035, electricity demand is projected to increase by 26% compared to 2013. <a
 <ul class="simple">
 <li><p>The cost data from PyPSA technology cost database is based on the year 2035, instead of 2030.</p></li>
 <li><p>Gas price is set at 38.84 EUR/MWh. <a class="reference external" href="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230">Source from the EU Comission (Annex)</a></p></li>
-<li><p>Coal price is set at 24.57 EUR/MWh <a class="reference external" href="https://businessanalytiq.com/procurementanalytics/index/subbituminous-coal-price-index/">Source from Business Analytiq (2024 price)</a></p></li>
-<li><p>Lignite price is set at 22.11 EUR/MWh <a class="reference external" href="https://businessanalytiq.com/procurementanalytics/index/lignite-coal-price-index/">Source from Business Analytiq (2024 price)</a></p></li>
+<li><p>Coal price is set at 24.57 EUR/MWh <a class="reference external" href="https://businessanalytiq.com/procurementanalytics/index/subbituminous-coal-price-index/">Source from Business Analytiq (2024 Coal price)</a></p></li>
+<li><p>Lignite price is set at 22.11 EUR/MWh <a class="reference external" href="https://businessanalytiq.com/procurementanalytics/index/lignite-coal-price-index/">Source from Business Analytiq (2024 Lignite price)</a></p></li>
 <li><p>Uranium price is set at 1.75 EUR/MWh <a class="reference external" href="https://markets.businessinsider.com/commodities/uranium-price">Source from Business Insider (2024 price)</a></p></li>
 <li><p>Iron-air battery price is set at 23,500 EUR/MWh.</p></li>
 <li><p>Storage energy cost for CAES is 30,000 EUR/MWh (2022).</p></li>
@@ -799,7 +794,7 @@ By 2035, electricity demand is projected to increase by 26% compared to 2013. <a
 </section>
 <section id="clustering">
 <h2><code class="docutils literal notranslate"><span class="pre">clustering</span></code><a class="headerlink" href="#clustering" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#clustering">Documentation</a></p>
+<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#clustering">Clustering Documentation</a></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">clustering</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">focus_weights</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">DE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
@@ -825,11 +820,11 @@ By 2035, electricity demand is projected to increase by 26% compared to 2013. <a
 <li><p>Poland</p></li>
 <li><p>Sweden</p></li>
 </ul>
-<p>The temporal resolution is reduced to 3-hour time steps.</p>
+<p>The temporal resolution are segmented into 4380 hours.</p>
 </section>
 <section id="plotting">
 <h2><code class="docutils literal notranslate"><span class="pre">plotting</span></code><a class="headerlink" href="#plotting" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#plotting">Documentation</a></p>
+<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#plotting">Plotting Documentation</a></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">plotting</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">time_series</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">start_date</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;2013-05-01&#39;</span>
@@ -875,7 +870,7 @@ By 2035, electricity demand is projected to increase by 26% compared to 2013. <a
 </section>
 <section id="solving">
 <h2><code class="docutils literal notranslate"><span class="pre">solving</span></code><a class="headerlink" href="#solving" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#solving">Documentation</a></p>
+<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#solving">Solving Documentation</a></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">solving</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">mem_mb</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">150000</span><span class="w"> </span><span class="c1">#memory in MB; 20 GB enough for 50+B+I+H2; 100 GB for 181+B+I+H2</span>
 <span class="w">  </span><span class="nt">runtime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">24h</span><span class="w"> </span><span class="c1">#runtime in humanfriendly style https://humanfriendly.readthedocs.io/en/latest/</span>
@@ -961,7 +956,7 @@ By 2035, electricity demand is projected to increase by 26% compared to 2013. <a
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#renewable"><code class="docutils literal notranslate"><span class="pre">renewable</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conventional"><code class="docutils literal notranslate"><span class="pre">conventional</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lines"><code class="docutils literal notranslate"><span class="pre">lines</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transmission-projects"><code class="docutils literal notranslate"><span class="pre">transmission</span> <span class="pre">projects</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transmission-projects"><code class="docutils literal notranslate"><span class="pre">transmission_projects</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#existing-capacities"><code class="docutils literal notranslate"><span class="pre">existing_capacities</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sector"><code class="docutils literal notranslate"><span class="pre">sector</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load"><code class="docutils literal notranslate"><span class="pre">load</span></code></a></li>

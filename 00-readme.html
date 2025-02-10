@@ -61,8 +61,6 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '00-readme';</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -381,9 +379,9 @@
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-role-of-energy-storage-in-germany">The Role of Energy Storage in Germany</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scope-of-the-model">Scope of the Model</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pypsa-eur-a-sector-coupled-open-optimisation-model-of-the-european-energy-system">PyPSA-Eur: A Sector-Coupled Open Optimisation Model of the European Energy System</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing-and-support">Contributing and Support</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#licence">Licence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repository-structure">Repository structure</a></li>
 </ul>
             </nav>
         </div>
@@ -410,16 +408,54 @@ SPDX-License-Identifier: CC-BY-4.0
 <a class="reference external" href="https://snakemake.readthedocs.io"><img alt="Snakemake" src="https://img.shields.io/badge/snakemake-%E2%89%A58.14.0-brightgreen.svg?style=flat" /></a>
 <a class="reference external" href="https://api.reuse.software/info/github.com/pypsa/pypsa-eur"><img alt="REUSE status" src="https://api.reuse.software/badge/github.com/pypsa/pypsa-eur" /></a>
 <a class="reference external" href="https://stackoverflow.com/questions/tagged/pypsa"><img alt="Stack Exchange questions" src="https://img.shields.io/stackexchange/stackoverflow/t/pypsa" /></a></p>
+<p>This repository is a soft-fork of <a class="reference external" href="https://github.com/open-energy-transition/pypsa-eur">OET/PyPSA-Eur</a> and contains the entire project <strong>The Role of Energy Storage in Germany</strong> supported by <a class="reference external" href="https://openenergytransition.org/">Open Energy Transition (OET)</a><sup>*</sup>, including code and visualization. The philosophy behind this repository is that no intermediary results are included, but all results are computed from raw data and code.</p>
+<p>This repository is maintained using <a class="reference external" href="https://open-energy-transition.github.io/handbook/docs/Engineering/SoftForkStrategy">OET’s soft-fork strategy</a>. OET’s primary aim is to contribute as much as possible to the open source (OS) upstream repositories. For long-term changes that cannot be directly merged upstream, the strategy organizes and maintains OET forks, ensuring they remain up-to-date and compatible with upstream, while also supporting future contributions back to the OS repositories.</p>
 <section id="the-role-of-energy-storage-in-germany">
 <h2>The Role of Energy Storage in Germany<a class="headerlink" href="#the-role-of-energy-storage-in-germany" title="Link to this heading">#</a></h2>
-<p>This repository is a soft-fork of <a class="reference external" href="https://github.com/open-energy-transition/pypsa-eur">OET/PyPSA-Eur</a> and contains the entire project <code class="docutils literal notranslate"><span class="pre">The</span> <span class="pre">Role</span> <span class="pre">of</span> <span class="pre">Energy</span> <span class="pre">Storage</span> <span class="pre">in</span> <span class="pre">Germany</span></code> supported by <a class="reference external" href="https://openenergytransition.org/">Open Energy Transition (OET)</a><sup>*</sup>, including code and report. The philosophy behind this repository is that no intermediary results are included, but all results are computed from raw data and code. The structure is also inspired by <a class="reference external" href="https://github.com/PyPSA/cookiecutter-project">cookiecutter-project</a>.</p>
-<p>This repository is maintained using <a class="reference external" href="https://open-energy-transition.github.io/handbook/docs/Engineering/SoftForkStrategy">OET’s soft-fork strategy</a>. OET’s primary aim is to contribute as much as possible to the open source (OS) upstream repositories. For long-term changes that cannot be directly merged upstream, the strategy organizes and maintains OET forks, ensuring they remain up-to-date and compatible with upstream, while also supporting future contributions back to the OS repositories.</p>
-<p>For further readings of PyPSA and PyPSA-Eur:</p>
+<p>Energy storage technologies hold significant promise for reducing carbon emissions. While short-duration storage is popular today, the system benefits for
+long duration storage are rather hidden and require more effort to receive policy attention. This project aims to reveal the hidden benefits of multi-day energy storage through the analysis of
+energy system models.</p>
+<p>The primary objectives are to develop a policy relevant validated energy system model with a focus on Germany, and integrate various representations of short to long-duration energy storage
+into the model. Then, optimization runs are conducted to explore various scenarios to inform policy-makers about the benefits of various types of energy storage. The project will culminate
+in a detailed report and the full model open-source code to support global research efforts. OET, an international non-profit organization specializing in open energy modeling software
+development and support, will bring its expertise to this project. The organization has a proven track record in promoting transparent, data-driven decision-making in energy policy and
+planning, with its software products (including PyPSA-Eur and PyPSA-Earth) used in more than 50 research and industry-related projects.</p>
+<p>All results will be based on open-source software and fully reproducible. If implemented successfully for Germany, the methods can be replicated easily within the same model framework all-around the world using, among others, PyPSA-Eur or PyPSA-Earth.</p>
+<p>For further readings of PyPSA and PyPSA-Eur, check out:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://pypsa-eur.readthedocs.io">PyPSA</a></p></li>
-<li><p><a class="reference external" href="https://pypsa.readthedocs.io">PyPSA-Eur</a></p></li>
+<li><p><a class="reference external" href="https://pypsa.readthedocs.io">PyPSA</a></p></li>
+<li><p><a class="reference external" href="https://pypsa-eur.readthedocs.io">PyPSA-Eur</a></p></li>
+<li><p><a class="reference external" href="https://pypsa-earth.readthedocs.io">PyPSA-Earth</a></p></li>
 </ul>
-<p>Here are an excerp for the introduction of PyPSA-Eur:</p>
+</section>
+<section id="scope-of-the-model">
+<h2>Scope of the Model<a class="headerlink" href="#scope-of-the-model" title="Link to this heading">#</a></h2>
+<p><img alt="alt text" src="_images/iron_air_map.png" /></p>
+<p>To run multiple scenarios with a reasonable amount of computational power, we limit the scope of the model to the following:</p>
+<ul class="simple">
+<li><p><strong>Spatial Scope</strong>:</p>
+<ul>
+<li><p>The model includes Germany, along with its neighboring countries and Italy, making up 12 out of the 34 countries in PyPSA-Eur.</p></li>
+<li><p>The spatial resolution are 52 nodes in total, with 31 nodes dedicated to Germany, making the results for Germany more accurate than those for other modeled countries.</p></li>
+</ul>
+</li>
+<li><p><strong>Temporal Scope</strong>:</p>
+<ul>
+<li><p>The analysis targets the near-term application of iron-air storage technologies, focusing on the year 2035, while PyPSA-Eur models the period from 2020 to 2050 in 5-year intervals.</p></li>
+<li><p>The temporal resolution is based on 4380 hours, instead of the full 8760 hours.</p></li>
+</ul>
+</li>
+<li><p><strong>Sectoral Scope</strong>:</p>
+<ul>
+<li><p>The model includes only sectors with energy storage technologies, specifically the power, heating, and transport sectors, excluding the industrial sector.</p></li>
+</ul>
+</li>
+</ul>
+<p>To view all the changes in detail, check out:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/11-baseline.html">Base Configuration</a></p></li>
+<li><p><a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/03-features.html">Features</a></p></li>
+</ul>
 </section>
 <section id="pypsa-eur-a-sector-coupled-open-optimisation-model-of-the-european-energy-system">
 <h2>PyPSA-Eur: A Sector-Coupled Open Optimisation Model of the European Energy System<a class="headerlink" href="#pypsa-eur-a-sector-coupled-open-optimisation-model-of-the-european-energy-system" title="Link to this heading">#</a></h2>
@@ -427,82 +463,43 @@ SPDX-License-Identifier: CC-BY-4.0
 transmission network level that covers the full ENTSO-E area. The model is suitable both for operational studies and generation and transmission expansion planning studies.
 The continental scope and highly resolved spatial scale enables a proper description of the long-range
 smoothing effects for renewable power generation and their varying resource availability.</p>
-<p>The model is described in the <a class="reference external" href="https://pypsa-eur.readthedocs.io">documentation</a>
-and in the paper
-<a class="reference external" href="https://arxiv.org/abs/1806.01613">PyPSA-Eur: An Open Optimisation Model of the European Transmission
-System</a>, 2018,
-<a class="reference external" href="https://arxiv.org/abs/1806.01613">arXiv:1806.01613</a>.
-The model building routines are defined through a snakemake workflow.
-Please see the <a class="reference external" href="https://pypsa-eur.readthedocs.io/">documentation</a>
-for installation instructions and other useful information about the snakemake workflow.
-The model is designed to be imported into the open toolbox
-<a class="reference external" href="https://github.com/PyPSA/PyPSA">PyPSA</a>.</p>
-<p><strong>WARNING</strong>: PyPSA-Eur is under active development and has several
-<a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/limitations.html">limitations</a> which
-you should understand before using the model. The github repository
-<a class="reference external" href="https://github.com/PyPSA/pypsa-eur/issues">issues</a> collect known topics we are
-working on (please feel free to help or make suggestions). The
-<a class="reference external" href="https://pypsa-eur.readthedocs.io/">documentation</a> remains somewhat patchy. You
-can find showcases of the model’s capabilities in the Joule paper <a class="reference external" href="https://doi.org/10.1016/j.joule.2023.06.016">The potential
-role of a hydrogen network in
-Europe</a>, another <a class="reference external" href="https://doi.org/10.1016/j.joule.2022.04.016">paper in Joule
-with a description of the industry
-sector</a>, or in <a class="reference external" href="https://nworbmot.org/energy/brown-empe.pdf">a 2021 presentation
-at EMP-E</a>. We do not recommend to
-use the full resolution network model for simulations. At high granularity the
-assignment of loads and generators to the nearest network node may not be a
-correct assumption, depending on the topology of the underlying distribution
-grid, and local grid bottlenecks may cause unrealistic load-shedding or
-generator curtailment. We recommend to cluster the network to a couple of
-hundred nodes to remove these local inconsistencies. See the discussion in
-Section 3.4 “Model validation” of the paper.</p>
+<p>The original PyPSA-Eur model is described in the <a class="reference external" href="https://pypsa-eur.readthedocs.io">documentation</a>
+and in the paper<a class="reference external" href="https://arxiv.org/abs/1806.01613">PyPSA-Eur: An Open Optimisation Model of the European Transmission System</a>, 2018,
+<a class="reference external" href="https://arxiv.org/abs/1806.01613">arXiv:1806.01613</a>.</p>
 <p><img alt="PyPSA-Eur Grid Model" src="_images/elec.png" /></p>
 <p>The dataset consists of:</p>
 <ul class="simple">
-<li><p>A grid model based on a modified <a class="reference external" href="https://github.com/bdw/GridKit">GridKit</a>
-extraction of the <a class="reference external" href="https://www.entsoe.eu/data/map/">ENTSO-E Transmission System
-Map</a>. The grid model contains 7072 lines
-(alternating current lines at and above 220kV voltage level and all high
-voltage direct current lines) and 3803 substations.</p></li>
-<li><p>The open power plant database
-<a class="reference external" href="https://github.com/PyPSA/powerplantmatching">powerplantmatching</a>.</p></li>
-<li><p>Electrical demand time series from the
-<a class="reference external" href="https://open-power-system-data.org/">OPSD project</a>.</p></li>
+<li><p>A grid model based on a modified <a class="reference external" href="https://github.com/bdw/GridKit">GridKit</a> extraction of the <a class="reference external" href="https://www.entsoe.eu/data/map/">ENTSO-E Transmission System Map</a>. The grid model contains 7072 lines
+(alternating current lines at and above 220kV voltage level and all high voltage direct current lines) and 3803 substations.</p></li>
+<li><p>The open power plant database <a class="reference external" href="https://github.com/PyPSA/powerplantmatching">powerplantmatching</a>.</p></li>
+<li><p>Electrical demand time series from the <a class="reference external" href="https://open-power-system-data.org/">OPSD project</a>.</p></li>
 <li><p>Renewable time series based on ERA5 and SARAH, assembled using the <a class="reference external" href="https://github.com/PyPSA/atlite">atlite tool</a>.</p></li>
 <li><p>Geographical potentials for wind and solar generators based on land use (CORINE) and excluding nature reserves (Natura2000) are computed with the <a class="reference external" href="https://github.com/PyPSA/atlite">atlite library</a>.</p></li>
 </ul>
-<p>A sector-coupled extension adds demand
-and supply for the following sectors: transport, space and water
-heating, biomass, industry and industrial feedstocks, agriculture,
-forestry and fishing. This completes the energy system and includes
-all greenhouse gas emitters except waste management and land use.</p>
-<p>This diagram gives an overview of the sectors and the links between
-them:</p>
-<p><img alt="sector diagram" src="doc/img/multisector_figure.png" /></p>
-<p>Each of these sectors is built up on the transmission network nodes
-from <a class="reference external" href="https://github.com/PyPSA/pypsa-eur">PyPSA-Eur</a>:</p>
-<p><img alt="network diagram" src="https://github.com/PyPSA/pypsa-eur/blob/master/doc/img/base.png?raw=true" /></p>
-<p>For computational reasons the model is usually clustered down
-to 50-200 nodes.</p>
-<p>Already-built versions of the model can be found in the accompanying <a class="reference external" href="https://doi.org/10.5281/zenodo.3601881">Zenodo
-repository</a>.</p>
+<p>A sector-coupled extension adds demand and supply for the following sectors: transport, space and water heating, biomass, industry and industrial feedstocks, agriculture,
+forestry and fishing. This completes the energy system and includes all greenhouse gas emitters except waste management and land use.</p>
+<p>Each of these sectors is built up on the transmission network nodes from <a class="reference external" href="https://github.com/PyPSA/pypsa-eur">PyPSA-Eur</a>:</p>
 </section>
-<section id="contributing-and-support">
-<h2>Contributing and Support<a class="headerlink" href="#contributing-and-support" title="Link to this heading">#</a></h2>
-<p>We strongly welcome anyone interested in contributing to this project. If you have any ideas, suggestions or encounter problems, feel invited to file issues or make pull requests on GitHub.</p>
+<section id="repository-structure">
+<h2>Repository structure<a class="headerlink" href="#repository-structure" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>In case of code-related <strong>questions</strong>, please post on <a class="reference external" href="https://stackoverflow.com/questions/tagged/pypsa">stack overflow</a>.</p></li>
-<li><p>For non-programming related and more general questions please refer to the <a class="reference external" href="https://groups.google.com/group/pypsa">mailing list</a>.</p></li>
-<li><p>To <strong>discuss</strong> with other PyPSA users, organise projects, share news, and get in touch with the community you can use the <a class="reference external" href="https://discord.com/invite/AnuJBk23FU">discord server</a>.</p></li>
-<li><p>For <strong>bugs and feature requests</strong>, please use the <a class="reference external" href="https://github.com/PyPSA/pypsa-eur/issues">PyPSA-Eur Github Issues page</a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">benchmarks</span></code>: will store <code class="docutils literal notranslate"><span class="pre">snakemake</span></code> benchmarks (does not exist initially)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">config</span></code>: configurations used in the study</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cutouts</span></code>: will store raw weather data cutouts from <code class="docutils literal notranslate"><span class="pre">atlite</span></code> (does not exist initially)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: includes input data that is not produced by any <code class="docutils literal notranslate"><span class="pre">snakemake</span></code> rule</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">doc</span></code>: includes all files necessary to build the <code class="docutils literal notranslate"><span class="pre">readthedocs</span></code> documentation of PyPSA-Eur</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">documentation</span></code>: includes all files necessary to build the <code class="docutils literal notranslate"><span class="pre">jupyter</span> <span class="pre">book</span></code> documentation of Form Energy Storage version of PyPSA-Eur</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">envs</span></code>: includes all the <code class="docutils literal notranslate"><span class="pre">mamba</span></code> environment specifications to run the workflow</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logs</span></code>: will store log files (does not exist initially)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">notebooks</span></code>: includes all the <code class="docutils literal notranslate"><span class="pre">notebooks</span></code> used for ad-hoc analysis</p></li>
 </ul>
-</section>
-<section id="licence">
-<h2>Licence<a class="headerlink" href="#licence" title="Link to this heading">#</a></h2>
-<p>The code in PyPSA-Eur is released as free software under the
-<a class="reference external" href="https://opensource.org/licenses/MIT">MIT License</a>, see <a class="reference internal" href="#doc/licenses.rst"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">doc/licenses.rst</span></code></span></a>.
-However, different licenses and terms of use may apply to the various
-input data, see <a class="reference internal" href="#doc/data_sources.rst"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">doc/data_sources.rst</span></code></span></a>.</p>
+<!--* `report`: contains all files necessary to build the report; plots and result files are generated automatically-->
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rules</span></code>: includes all the <code class="docutils literal notranslate"><span class="pre">snakemake</span></code>rules loaded in the <code class="docutils literal notranslate"><span class="pre">Snakefile</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resources</span></code>: will store intermediate results of the workflow which can be picked up again by subsequent rules (does not exist initially)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">results</span></code>: will store the solved PyPSA network data, summary files and plots (does not exist initially)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scripts</span></code>: includes all the Python scripts executed by the <code class="docutils literal notranslate"><span class="pre">snakemake</span></code> rules to build the model</p></li>
+</ul>
 </section>
 <div class="toctree-wrapper compound">
 </div>
@@ -569,9 +566,9 @@ input data, see <a class="reference internal" href="#doc/data_sources.rst"><span
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-role-of-energy-storage-in-germany">The Role of Energy Storage in Germany</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scope-of-the-model">Scope of the Model</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pypsa-eur-a-sector-coupled-open-optimisation-model-of-the-european-energy-system">PyPSA-Eur: A Sector-Coupled Open Optimisation Model of the European Energy System</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing-and-support">Contributing and Support</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#licence">Licence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repository-structure">Repository structure</a></li>
 </ul>
   </nav></div>
 
