@@ -22,18 +22,15 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import pypsa
 from matplotlib import rc
-from plot_power_network import load_projection
+from plot_power_network import load_projection, test_and_enable_latex
 from matplotlib.colors import Normalize
 from plot_summary import preferred_order
-from pypsa.statistics import get_bus_and_carrier_and_bus_carrier, get_country_and_carrier
 from plot_validation_cross_border_flows import sort_one_country, color_country
 import country_converter as coco
 
+
 cc = coco.CountryConverter()
 
-# activate latex text rendering
-rc('text', usetex=True)
-rc('font', **{'family': 'serif', 'serif': ['Computer Modern Roman'], 'sans-serif': ['Computer Modern Sans serif']})
 rc('axes', **{'edgecolor': 'None', 'titlesize': 18,'titleweight': 'bold', "labelsize": 14})
 rc('figure', **{'edgecolor': 'None'})
 rc('patch', **{'edgecolor': 'None'})
@@ -76,6 +73,8 @@ def expanded_pretty_names(n):
             dict_index[i] = "Gas boiler"
         elif "oil boiler" in i:
             dict_index[i] = "Oil boiler"
+        elif "heating flexibility" in i:
+            dict_index[i] = "Heating flexibility"
         elif "heat" in i:
             dict_index[i] = "heat"
         
@@ -88,7 +87,7 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legen
 
     # curtailment = n.statistics.curtailment(groupby=n.statistics.groupers.get_bus_and_carrier).droplevel(0).loc[regions.index,:,:]
     elec_generation = n.generators.carrier.replace(pretty_gen).to_frame().query("not carrier.str.contains('solar thermal')").carrier.unique()
-    curtailment = n.statistics.curtailment(groupby=n.statistics.groupers.get_bus_and_carrier).droplevel(0)
+    curtailment = n.statistics.curtailment(groupby=["bus", "carrier"]).droplevel(0)
     elec_i = pd.Index(set(curtailment.index.get_level_values(1)).intersection(elec_generation))
     curtailment_elec = curtailment.loc[:, elec_i, :].reset_index()
     curtailment_elec = curtailment_elec.rename(index=curtailment_elec.bus.map(n.buses.location))
@@ -213,7 +212,7 @@ def plot_storage_map(network, regions, path=None, focus_de=True, legend_circles=
     storage_cap = (
         n.statistics.optimal_capacity(
         bus_carrier=["AC", "low voltage"],
-        groupby=n.statistics.groupers.get_bus_and_carrier,
+        groupby=["bus", "carrier"],
         nice_names=False
     ).div(1e3)   # GW
     .sort_values(ascending=False)
@@ -225,7 +224,7 @@ def plot_storage_map(network, regions, path=None, focus_de=True, legend_circles=
     vres_cap = (
         n.statistics.optimal_capacity(
         bus_carrier=["AC", "low voltage"],
-        groupby=n.statistics.groupers.get_bus_and_carrier,
+        groupby=["bus", "carrier"],
         nice_names=False
     ).div(1e3)   # GW
     .sort_values(ascending=False)
@@ -283,7 +282,7 @@ def plot_storage_map(network, regions, path=None, focus_de=True, legend_circles=
         vmax=storage_cap.max(),
         vmin=0,
         legend_kwds={
-            "label": f"{tech.title()} Capacity [GWe]",
+            "label": f"{pretty_names[tech]} Capacity [GWe]",
             "shrink": 0.7,
             "extend": "max",
         },
@@ -508,7 +507,7 @@ def plot_energy_trade(network, countries, path):
     plot_by_country(df_new, plot_kw, path)
 
 def prepare_energy_balance(n):
-    df = n.statistics.energy_balance(groupby=get_bus_and_carrier_and_bus_carrier, aggregate_time=False)
+    df = n.statistics.energy_balance(groupby=["bus", "carrier", "bus_carrier"], aggregate_time=False)
     df = df.rename(index=n.buses.country, level="bus")
 
     return df
@@ -521,6 +520,10 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, filter_scheme, pat
     
     n = network.copy()
     df = dataframe.copy()
+
+    # set dates to be aligned with snapshot year
+    if plot_kw.get("xlim", None):
+        plot_kw["xlim"] = [date.replace("2013", str(n.snapshots[0].year)) for date in plot_kw["xlim"]]
 
     include = kpi_param.get("include",False)
     exclude = kpi_param.get("exclude",False)
@@ -629,7 +632,7 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, filter_scheme, pat
     to_drop = abs(n.snapshot_weightings.objective @ df) < 1
     df = df.loc[:,~to_drop]
     
-    fig, ax = plt.subplots(figsize=kpi_param.get("figsize",(12,9))) 
+    fig, ax = plt.subplots(figsize=tuple(kpi_param.get("figsize",(12,9))))
     
     df_plot = df[df.columns.difference([line_carrier])]
     
@@ -677,6 +680,10 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
     n = network.copy()
     df = dataframe.copy()
 
+    # set dates to be aligned with snapshot year
+    if plot_kw.get("xlim", None):
+        plot_kw["xlim"] = [date.replace("2013", str(n.snapshots[0].year)) for date in plot_kw["xlim"]]
+
     include = kpi_param.get("include",False)
     exclude = kpi_param.get("exclude",False)
 
@@ -721,7 +728,7 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
         if not plot_kw.get("ylim", False):
             plot_kw["ylim"] = [0, None]
 
-    fig, ax = plt.subplots(figsize=kpi_param.get("figsize",(12,9)))
+    fig, ax = plt.subplots(figsize=tuple(kpi_param.get("figsize",(12,9))))
 
     df.plot(ax = ax, color = [colors[c] for c in df.columns], **plot_kw)
 
@@ -821,14 +828,14 @@ def calculate_capacity(network, countries, kpi_param):
     storage = kpi_param.get("storage",None)
 
     if stats == "install":
-        df = pd.DataFrame(n.statistics.installed_capacity(groupby=get_country_and_carrier, storage = storage))
+        df = pd.DataFrame(n.statistics.installed_capacity(groupby=["country", "carrier"], storage = storage))
     elif stats == "optimal":
-        df = pd.DataFrame(n.statistics.optimal_capacity(groupby=get_country_and_carrier, storage = storage))
+        df = pd.DataFrame(n.statistics.optimal_capacity(groupby=["country", "carrier"], storage = storage))
     elif stats == "expand":
         if storage == True:
-            df = pd.DataFrame(n.statistics.optimal_capacity(groupby=get_country_and_carrier, storage = True)).subtract(pd.DataFrame(n.statistics.installed_capacity(groupby=get_country_and_carrier, storage = True)), fill_value=0)
+            df = pd.DataFrame(n.statistics.optimal_capacity(groupby=["country", "carrier"], storage = True)).subtract(pd.DataFrame(n.statistics.installed_capacity(groupby=["country", "carrier"], storage = True)), fill_value=0)
         else:
-            df = pd.DataFrame(n.statistics.expanded_capacity(groupby=get_country_and_carrier))
+            df = pd.DataFrame(n.statistics.expanded_capacity(groupby=["country", "carrier"]))
     df = df.reset_index(["country","component"])
         
     # convert links power gen techs capacity from MWth to MWel by multiplying by efficiency
@@ -850,7 +857,7 @@ def calculate_capacity(network, countries, kpi_param):
 def calculate_generation(network, countries):
     n = network.copy()
     
-    df = pd.DataFrame(n.statistics.energy_balance(groupby=get_country_and_carrier))
+    df = pd.DataFrame(n.statistics.energy_balance(groupby=["country", "carrier"]))
     df = df.reset_index(["country","component"])
     df.loc[~df.country.isin(countries),"country"] = "EU"
 
@@ -877,7 +884,7 @@ def filter_and_rename(network, df, filter_scheme = {}, carrier_filter = None, gr
     df = df.set_index("nice_name")
 
     # Create your own filter
-    stats = pd.DataFrame(n.statistics.energy_balance(groupby=get_bus_and_carrier_and_bus_carrier))
+    stats = pd.DataFrame(n.statistics.energy_balance(groupby=["bus", "carrier", "bus_carrier"]))
 
     if carrier_filter == "electricity":
         carrier = stats[stats.index.get_level_values("bus_carrier").isin(["AC"])].index.get_level_values("carrier").unique()
@@ -1166,6 +1173,7 @@ if __name__ == "__main__":
         "electricity distribution grid": "Electricity distribution grid",
         "transmission lines": "Transmission lines",
         "V2G": "Vehicle-to-Grid",
+        "PHS": "Pumped Hydro Storage",
     }
 
     sector_colors = {
@@ -1327,6 +1335,10 @@ if __name__ == "__main__":
     co2_emissions = n.stores_t.e.filter(like="co2 atmosphere", axis=1).iloc[-1].div(1e6)[0]  # in MtCO2
     logger.info(f"Total annual CO2 emissions of {co2_emissions} MtCO2.")
 
+    # test run latex compilation
+    config_kpi = snakemake.params.kpi
+    if config_kpi.get("enable_latex", False): test_and_enable_latex()
+
     plot_line_loading(n, regions, path=snakemake.output.line_loading_map, focus_de=True, value="mean", show_fig=False)
 
     # extract all the nessesary statistics
@@ -1337,7 +1349,7 @@ if __name__ == "__main__":
     df_storages_aggregated_durations = (
         n.statistics.optimal_capacity(
             bus_carrier=["AC", "low voltage"],
-            groupby=n.statistics.groupers.get_country_and_carrier,
+            groupby=["country", "carrier"],
             nice_names=False
         ).div(1e3)  # GW
         .sort_values(ascending=False)
@@ -1373,7 +1385,7 @@ if __name__ == "__main__":
     df_storages = (
         n.statistics.optimal_capacity(
             bus_carrier=["AC", "low voltage"],
-            groupby=n.statistics.groupers.get_country_and_carrier,
+            groupby=["country", "carrier"],
         ).div(1e3)  # GW
         .sort_values(ascending=False)
         .to_frame(name="p_nom_opt")
@@ -1392,7 +1404,6 @@ if __name__ == "__main__":
     df_co2 = calculate_emission(n, countries)
     df_eql = prepare_energy_balance(n)
 
-    config_kpi = snakemake.params.kpi
     filter_scheme = config_kpi.get("filter_scheme",{})
     if config_kpi.get("custom_plots"):
         for fn, kpi_param in config_kpi["custom_plots"].items():
@@ -1469,13 +1480,13 @@ if __name__ == "__main__":
                     plot_in_detail(df, 
                                    plot_kw, 
                                    snakemake.output[fn],
-                                   plot_figsize = kpi_param.get("figsize",(6,8))
+                                   plot_figsize = tuple(kpi_param.get("figsize",(6,8)))
                                    )
                 elif plot_param == "overview":
                     plot_by_country(df, 
                                     plot_kw, 
                                     snakemake.output[fn],
-                                    plot_figsize = kpi_param.get("figsize",(12,9))
+                                    plot_figsize = tuple(kpi_param.get("figsize",(12,9)))
                                     )
 
             except (TypeError):

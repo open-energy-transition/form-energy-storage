@@ -29,26 +29,10 @@ mid-capex-mds:
     investment:
       iron-air battery: 18477  # in EUR/MWh (2020) from 20,000 EUR/MWh (2024)
 
-mid-capex-nomds:
-  sector:
-    stores: []
-    storage_units: ["li-ion battery", "vanadium", "lair", "pair"]
-  costs:
-    investment:
-      iron-air battery: 18477  # in EUR/MWh (2020) from 20,000 EUR/MWh (2024)
-
 low-capex-mds:
   sector:
     stores: ["H2"]
     storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
-  costs:
-    investment:
-      iron-air battery: 14089  # in EUR/MWh (2020) from 15,250 EUR/MWh (2024)
-
-low-capex-nomds:
-  sector:
-    stores: []
-    storage_units: ["li-ion battery", "vanadium", "lair", "pair"]
   costs:
     investment:
       iron-air battery: 14089  # in EUR/MWh (2020) from 15,250 EUR/MWh (2024)
@@ -250,3 +234,148 @@ cy1996-nomds:
       cutout: europe-1996-sarah3-era5
     hydro:
       cutout: europe-1996-sarah3-era5
+
+nogasppde-mid-capex-mds:
+  sector:
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    chp_extendable_DE: false
+  costs:
+    investment:
+      iron-air battery: 18477  # in EUR/MWh (2020) from 20,000 EUR/MWh (2024)
+  electricity:
+    powerplants_filter: DateOut >= 2024 and not Fueltype.isin(['Nuclear', 'Hard Coal', 'Lignite']) and not (Fueltype == 'Natural Gas' and Country == 'DE')
+    custom_powerplants: DateIn <= 2024 and DateOut >= 2024 and not (Fueltype == 'Natural Gas' and Country == 'DE')
+
+nogasppde-low-capex-mds:
+  sector:
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+    chp_extendable_DE: false
+  costs:
+    investment:
+      iron-air battery: 14089  # in EUR/MWh (2020) from 15,250 EUR/MWh (2024)
+  electricity:
+    powerplants_filter: DateOut >= 2024 and not Fueltype.isin(['Nuclear', 'Hard Coal', 'Lignite']) and not (Fueltype == 'Natural Gas' and Country == 'DE')
+    custom_powerplants: DateIn <= 2024 and DateOut >= 2024 and not (Fueltype == 'Natural Gas' and Country == 'DE')
+
+nogasppde-nomds:
+  sector:
+    stores: []
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair"]
+    chp_extendable_DE: false
+  electricity:
+    powerplants_filter: DateOut >= 2024 and not Fueltype.isin(['Nuclear', 'Hard Coal', 'Lignite']) and not (Fueltype == 'Natural Gas' and Country == 'DE')
+    custom_powerplants: DateIn <= 2024 and DateOut >= 2024 and not (Fueltype == 'Natural Gas' and Country == 'DE')
+
+delayed-nep-mid-capex-mds:
+  sector:
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+  costs:
+    investment:
+      iron-air battery: 18477  # in EUR/MWh (2020) from 20,000 EUR/MWh (2024)
+  scenario:
+    ll:
+      - v1.06  # limit to confirmed projects from NEP links to model a delay in the planning/permitting
+  transmission_projects:
+    enable: true
+    include:
+      tyndp2020: false
+      nep: true
+      manual: false
+    skip:
+      - upgraded_lines
+      - upgraded_links
+    status:
+      #      - under_construction
+      #      - in_permitting
+      - confirmed
+      #- planned_not_yet_permitted
+      #- under_consideration
+    new_link_capacity: zero #keep or zero
+
+delayed-nep-low-capex-mds:
+  sector:
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+  costs:
+    investment:
+      iron-air battery: 14089  # in EUR/MWh (2020) from 15,250 EUR/MWh (2024)
+  scenario:
+    ll:
+      - v1.06  # limit to confirmed projects from NEP links to model a delay in the planning/permitting
+  transmission_projects:
+    enable: true
+    include:
+      tyndp2020: false
+      nep: true
+      manual: false
+    skip:
+      - upgraded_lines
+      - upgraded_links
+    status:
+      #      - under_construction
+      #      - in_permitting
+      - confirmed
+      #- planned_not_yet_permitted
+      #- under_consideration
+    new_link_capacity: zero #keep or zero
+
+delayed-nep-nomds:
+  sector:
+    stores: []
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair"]
+  scenario:
+    ll:
+      - v1.06  # limit to confirmed projects from NEP links to model a delay in the planning/permitting
+  transmission_projects:
+    enable: true
+    include:
+      tyndp2020: false
+      nep: true
+      manual: false
+    skip:
+      - upgraded_lines
+      - upgraded_links
+    status:
+      #      - under_construction
+      #      - in_permitting
+      - confirmed
+      #- planned_not_yet_permitted
+      #- under_consideration
+    new_link_capacity: zero #keep or zero
+
+gasprice-peak-mid-capex-mds:
+  sector:
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+  costs:
+    investment:
+      iron-air battery: 18477  # in EUR/MWh (2020) from 20,000 EUR/MWh (2024)
+    fuel:
+      OCGT: 38.84 # https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex)
+      CCGT: 38.84
+      gas: 38.84
+
+gasprice-peak-low-capex-mds:
+  sector:
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+  costs:
+    investment:
+      iron-air battery: 14089  # in EUR/MWh (2020) from 15,250 EUR/MWh (2024)
+    fuel:
+      OCGT: 38.84 # https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex)
+      CCGT: 38.84
+      gas: 38.84
+
+gasprice-peak-nomds:
+  sector:
+    stores: []
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair"]
+  costs:
+    fuel:
+      OCGT: 38.84 # https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex)
+      CCGT: 38.84
+      gas: 38.84

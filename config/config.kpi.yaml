@@ -3,13 +3,14 @@
 # SPDX-License-Identifier: CC0-1.0
 
 kpi:
+  enable_latex: True
   filter_scheme:
     # Create your own custom filtering schemes during the filter_and_rename() section.
     # The naming convention must be in nice names.
     storage: [
       "Iron-Air Battery Storage","Li-Ion Battery Storage","Li-Ion Battery Storage 1h", 
       "Li-Ion Battery Storage 2h","Li-Ion Battery Storage 4h","Li-Ion Battery Storage 8h",
-      "lair","vanadium","pair","H2 Fuel Cell","H2 Store","H2 Electrolysis","Pumped Hydro Storage",
+      "lair","vanadium","pair","Adiabatic CAES", "H2 Fuel Cell","H2 Store","H2 Electrolysis","Pumped Hydro Storage",
       "BEV charger","EV battery","V2G",'residential rural water tanks',
       'urban central water tanks','residential urban decentral water tanks',
       ]
