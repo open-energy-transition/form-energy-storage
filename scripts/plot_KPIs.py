@@ -40,6 +40,12 @@ rc('xtick', **{'labelsize': 12})
 rc('ytick', **{'labelsize': 12})
 # plt.style.use(["ggplot"])
 
+def csv_path(path):
+    csv_path = path.replace("/maps/","/csvs/")
+    csv_path = csv_path.replace(".pdf",".csv")
+
+    return csv_path
+
 def expanded_sector_names(n, sector_names):
     index = n.statistics().index.get_level_values(1)
     index_missing = index.difference(sector_names.keys())
@@ -657,6 +663,9 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, filter_scheme, pat
 
     fig.savefig(path, bbox_inches="tight")
 
+    # Save the figure data in csv file
+    df.to_csv(csv_path(path))
+
 def prepare_SOC(network):
     n = network.copy()
     n.storage_units["bus"] = n.storage_units.bus.map(n.buses.country)
@@ -740,6 +749,9 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
                 title = "Components", title_fontproperties = {'weight':'bold'})
 
     fig.savefig(path, bbox_inches="tight")
+
+    # Save the figure data in csv file
+    df.to_csv(csv_path(path))
 
 def calculate_emission(network, countries):
     n = network.copy()
@@ -986,6 +998,9 @@ def plot_by_country(df, plot_kw, path, plot_figsize=(12,9)):
 
     fig.savefig(path, bbox_inches="tight")
 
+    # Save the figure data in csv file
+    df.drop(columns={"color"}).to_csv(csv_path(path))
+
 def plot_in_detail(df, plot_kw, path, plot_figsize=(6, 8)):
     
     c = df.columns.difference(["color"])
@@ -1026,6 +1041,9 @@ def plot_in_detail(df, plot_kw, path, plot_figsize=(6, 8)):
     ax.set_facecolor("white")
     fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")
+
+    # Save the figure data in csv file
+    df.drop(columns={"color"}).to_csv(csv_path(path))
 
 def extract_durations(n, carrier="li-ion battery"):
 
