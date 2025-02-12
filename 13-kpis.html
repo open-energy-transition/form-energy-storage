@@ -65,7 +65,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Carbon Emission Calculation" href="22-co2_calculation.html" />
+    <link rel="next" title="Segmentation Temporal Clustering" href="21-segmentation.html" />
     <link rel="prev" title="Scenarios Configuration" href="12-scenarios.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -184,6 +184,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Assumption</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="21-segmentation.html">Segmentation Temporal Clustering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="22-co2_calculation.html">Carbon Emission Calculation</a></li>
 </ul>
 
@@ -377,12 +378,21 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract"><code class="docutils literal notranslate"><span class="pre">extract</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carrier-filter"><code class="docutils literal notranslate"><span class="pre">carrier_filter</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-carrier"><code class="docutils literal notranslate"><span class="pre">group_carrier</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot"><code class="docutils literal notranslate"><span class="pre">plot</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figsize"><code class="docutils literal notranslate"><span class="pre">figsize</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-kw"><code class="docutils literal notranslate"><span class="pre">plot_kw</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#components">Components</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extract"><code class="docutils literal notranslate"><span class="pre">extract</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#carrier-filter"><code class="docutils literal notranslate"><span class="pre">carrier_filter</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#group-carrier"><code class="docutils literal notranslate"><span class="pre">group_carrier</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot"><code class="docutils literal notranslate"><span class="pre">plot</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#figsize"><code class="docutils literal notranslate"><span class="pre">figsize</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-kw"><code class="docutils literal notranslate"><span class="pre">plot_kw</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detail-plots">Detail Plots</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-plots">Overview Plots</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series-plots">Time Series Plots</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -404,6 +414,17 @@
 <li><p>A summary CSV for storage capacities.</p></li>
 </ul>
 <p>The configurable figures are defined based on <code class="docutils literal notranslate"><span class="pre">config/config.kpi.yaml</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The PyPSA-Eur configuration follows a pyramid-like structure, where the parameters in the highest configuration override those in the configurations below it.
+The order is as follows:</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/12-scenarios.html">scenarios.form.yaml</a></p></li>
+<li><p><a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/11-baseline.html">config.form.yaml</a></p></li>
+<li><p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html">config.default.yaml</a></p></li>
+<li><p>config.kpi.yaml (<strong>this section</strong>)</p></li>
+</ol>
+</div>
 <p>Key components of each configuration:</p>
 <ol class="arabic simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">extract</span></code>: Defines the network statistics for the figures (e.g., system cost, generation, storage, emissions).</p></li>
@@ -414,9 +435,10 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">figsize</span></code>: Determines the figsize of the plots. If not defined, the default size are chosen.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">plot_kw</span></code>: Additional keyword arguments for the plot (e.g., title, labels, and axis).</p></li>
 </ol>
-<p>Breakdown of the components:</p>
+<section id="components">
+<h2>Components<a class="headerlink" href="#components" title="Link to this heading">#</a></h2>
 <section id="extract">
-<h2><code class="docutils literal notranslate"><span class="pre">extract</span></code><a class="headerlink" href="#extract" title="Link to this heading">#</a></h2>
+<h3><code class="docutils literal notranslate"><span class="pre">extract</span></code><a class="headerlink" href="#extract" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>system cost</strong>: Extract data from <code class="docutils literal notranslate"><span class="pre">csvs/nodal_costs.csv</span></code>.</p></li>
 <li><p><strong>capacity</strong>: Extract data from <code class="docutils literal notranslate"><span class="pre">csvs/nodal_capacities.csv</span></code>.</p></li>
@@ -432,14 +454,14 @@
 <p><code class="docutils literal notranslate"><span class="pre">stats</span></code>: Three options:</p>
 <ul class="simple">
 <li><p><strong>install</strong>: Extract capacity data from <code class="docutils literal notranslate"><span class="pre">n.statistics.installed_capacity</span></code></p></li>
-<li><p><strong>optimal</strong>: Extract capacity data from <code class="docutils literal notranslate"><span class="pre">n.statistics.optimal_capacity</span></code></p></li>
+<li><p><strong>optimal</strong>: (Default) Extract capacity data from <code class="docutils literal notranslate"><span class="pre">n.statistics.optimal_capacity</span></code></p></li>
 <li><p><strong>expand</strong>:  The difference between optimal minus install.</p></li>
 </ul>
 <p><code class="docutils literal notranslate"><span class="pre">storage</span></code>: If set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, only storage capacities of the component <code class="docutils literal notranslate"><span class="pre">store</span></code> and <code class="docutils literal notranslate"><span class="pre">storage_units</span></code> are taken into account.</p>
 </div>
 </section>
 <section id="carrier-filter">
-<h2><code class="docutils literal notranslate"><span class="pre">carrier_filter</span></code><a class="headerlink" href="#carrier-filter" title="Link to this heading">#</a></h2>
+<h3><code class="docutils literal notranslate"><span class="pre">carrier_filter</span></code><a class="headerlink" href="#carrier-filter" title="Link to this heading">#</a></h3>
 <ol class="loweralpha simple">
 <li><p>for system cost, capacity, capacity stats, generation, and emission:</p></li>
 </ol>
@@ -479,7 +501,7 @@ You can create your own filtering scheme by adding a list in <code class="docuti
 </ol>
 </section>
 <section id="group-carrier">
-<h2><code class="docutils literal notranslate"><span class="pre">group_carrier</span></code><a class="headerlink" href="#group-carrier" title="Link to this heading">#</a></h2>
+<h3><code class="docutils literal notranslate"><span class="pre">group_carrier</span></code><a class="headerlink" href="#group-carrier" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>pretty</strong>: The first letter is capitalized, abbreviations are spelled out, and similar names are combined.</p></li>
 <li><p><strong>sector</strong>: Aggregate all technologies into either the power sector, heating, transport sector, primary fuel, or CCUS.</p></li>
@@ -487,7 +509,7 @@ You can create your own filtering scheme by adding a list in <code class="docuti
 <p>Leaving this option empty will lead to the carriers using <code class="docutils literal notranslate"><span class="pre">nice_names</span></code>.</p>
 </section>
 <section id="plot">
-<h2><code class="docutils literal notranslate"><span class="pre">plot</span></code><a class="headerlink" href="#plot" title="Link to this heading">#</a></h2>
+<h3><code class="docutils literal notranslate"><span class="pre">plot</span></code><a class="headerlink" href="#plot" title="Link to this heading">#</a></h3>
 <p>for system cost, capacity, capacity stats, generation, and emission:</p>
 <ul class="simple">
 <li><p><strong>detail</strong>: A single bar plot is created with all the values annotated.</p></li>
@@ -496,18 +518,109 @@ You can create your own filtering scheme by adding a list in <code class="docuti
 <p>The plot for energy balance and SOC is always in a time-series format.</p>
 </section>
 <section id="figsize">
-<h2><code class="docutils literal notranslate"><span class="pre">figsize</span></code><a class="headerlink" href="#figsize" title="Link to this heading">#</a></h2>
+<h3><code class="docutils literal notranslate"><span class="pre">figsize</span></code><a class="headerlink" href="#figsize" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>For detail plots: the default figsize is (6,8)</p></li>
 <li><p>For overview, energy balance and SOC plots: the default figsize is (12,9)</p></li>
 </ul>
 </section>
 <section id="plot-kw">
-<h2><code class="docutils literal notranslate"><span class="pre">plot_kw</span></code><a class="headerlink" href="#plot-kw" title="Link to this heading">#</a></h2>
+<h3><code class="docutils literal notranslate"><span class="pre">plot_kw</span></code><a class="headerlink" href="#plot-kw" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>For system cost, capacity, capacity stats, generation, and emission, see <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.bar.html">matplotlib.pyplot.bar documentation</a>.</p></li>
 <li><p>For energy balance and SOC, see <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html#pandas.DataFrame.plot">pandas.DataFrame.plot documentation</a>.</p></li>
 </ul>
+</section>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
+<section id="detail-plots">
+<h3>Detail Plots<a class="headerlink" href="#detail-plots" title="Link to this heading">#</a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nt">All_electricity_system_cost</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">extract</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">system cost</span>
+<span class="w">      </span><span class="nt">carrier_filter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">electricity</span>
+<span class="w">      </span><span class="nt">group_carrier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pretty</span>
+<span class="w">      </span><span class="nt">plot</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">detail</span>
+<span class="w">      </span><span class="nt">plot_kw</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Total electricity system cost</span>
+<span class="w">        </span><span class="c1">#ylim: [0,350]</span>
+<span class="w">        </span><span class="nt">ylabel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Billion EUR/a</span>
+</pre></div>
+</div>
+<p>Explaination:</p>
+<ul class="simple">
+<li><p>A <code class="docutils literal notranslate"><span class="pre">detail</span></code> plot is one that displays the value of each carrier on the right side of a single bar plot.</p></li>
+<li><p>In this example, the value represented is the <code class="docutils literal notranslate"><span class="pre">system</span> <span class="pre">cost</span></code>.</p></li>
+<li><p>This plot includes only the carriers related to <code class="docutils literal notranslate"><span class="pre">electricity</span></code>.</p></li>
+<li><p>The carrier names are based on the <code class="docutils literal notranslate"><span class="pre">pretty_names</span></code> defined in <code class="docutils literal notranslate"><span class="pre">plot_KPIs.py</span></code>.</p></li>
+<li><p>The title of the plot is <code class="docutils literal notranslate"><span class="pre">Total</span> <span class="pre">electricity</span> <span class="pre">system</span> <span class="pre">cost</span></code>, with the unit in <code class="docutils literal notranslate"><span class="pre">Billion</span> <span class="pre">EUR/a</span></code>.</p></li>
+<li><p>The file is saved as <code class="docutils literal notranslate"><span class="pre">{postnetwork}-All_electricity_system_cost_{planning_horizon}.pdf</span></code>.</p></li>
+</ul>
+<p>The results are the figure below:</p>
+<a class="reference internal image-reference" href="_images/base_s_52_lv1.11__-All_electricity_system_cost_2035.png"><img alt="_images/base_s_52_lv1.11__-All_electricity_system_cost_2035.png" class="align-center" src="_images/base_s_52_lv1.11__-All_electricity_system_cost_2035.png" style="height: 500px;" /></a>
+</section>
+<section id="overview-plots">
+<h3>Overview Plots<a class="headerlink" href="#overview-plots" title="Link to this heading">#</a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nt">country_storage_energy_capacity</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">extract</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">capacity stats</span>
+<span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">exclude</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;EU&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">carrier_filter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">storage-energy</span>
+<span class="w">      </span><span class="nt">group_carrier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pretty</span>
+<span class="w">      </span><span class="nt">plot</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">overview</span>
+<span class="w">      </span><span class="nt">plot_kw</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Country storage energy capacity</span>
+<span class="w">        </span><span class="c1">#ylim: [0,5000]</span>
+<span class="w">        </span><span class="nt">ylabel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GWh</span>
+</pre></div>
+</div>
+<p>Explaination:</p>
+<ul class="simple">
+<li><p>An <code class="docutils literal notranslate"><span class="pre">overview</span></code> plot displays the value of each carrier for all countries that are included, excluding those that are not relevant.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[&quot;EU&quot;]</span></code> refers to buses that do not belong to any specific country. In this context, they are excluded from the plots as they are not relevant.</p></li>
+<li><dl class="simple">
+<dt>In this example, the value represented is <code class="docutils literal notranslate"><span class="pre">capacity</span> <span class="pre">stats</span></code>.</dt><dd><ul>
+<li><p>Since <code class="docutils literal notranslate"><span class="pre">stats</span></code> is not specified, the default <code class="docutils literal notranslate"><span class="pre">optimal</span></code> is chosen, and the data is extracted from <code class="docutils literal notranslate"><span class="pre">n.statistics.optimal_capacity</span></code>.</p></li>
+<li><p>As <code class="docutils literal notranslate"><span class="pre">store</span></code> is set to true, the data for storage capacities is extracted.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>This plot includes only the carriers listed in <code class="docutils literal notranslate"><span class="pre">storage-cap</span></code>.</p></li>
+<li><p>The carrier names are based on the <code class="docutils literal notranslate"><span class="pre">pretty_names</span></code> defined in <code class="docutils literal notranslate"><span class="pre">plot_KPIs.py</span></code>.</p></li>
+<li><p>The title of the plot is <code class="docutils literal notranslate"><span class="pre">Country</span> <span class="pre">storage</span> <span class="pre">power</span> <span class="pre">capacity</span></code> with the unit in <code class="docutils literal notranslate"><span class="pre">GWe</span></code>.</p></li>
+<li><p>The file is saved as <code class="docutils literal notranslate"><span class="pre">{postnetwork}-country_storage_power_capacity_{planning_horizon}.pdf</span></code>.</p></li>
+</ul>
+<p>The results are the figure below:</p>
+<a class="reference internal image-reference" href="_images/base_s_52_lv1.11__-country_storage_energy_capacity_2035.png"><img alt="_images/base_s_52_lv1.11__-country_storage_energy_capacity_2035.png" class="align-center" src="_images/base_s_52_lv1.11__-country_storage_energy_capacity_2035.png" style="height: 500px;" /></a>
+</section>
+<section id="time-series-plots">
+<h3>Time Series Plots<a class="headerlink" href="#time-series-plots" title="Link to this heading">#</a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nt">DE_electricity_plus_summer_energy_balance</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">extract</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">energy balance</span>
+<span class="w">      </span><span class="nt">include</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;DE&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">carrier_filter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">electricity+</span>
+<span class="w">      </span><span class="nt">group_carrier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pretty</span>
+<span class="w">      </span><span class="nt">plot_kw</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Germany summer high and low voltage energy balance</span>
+<span class="w">        </span><span class="nt">xlim</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;2013-08-01&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;2013-09-01&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="c1">#ylim: [-50,200]</span>
+<span class="w">        </span><span class="nt">ylabel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GW</span>
+</pre></div>
+</div>
+<p>Explaination:</p>
+<ul class="simple">
+<li><p>The value represented in this plot is the <code class="docutils literal notranslate"><span class="pre">energy</span> <span class="pre">balance</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Energy</span> <span class="pre">balance</span></code> means the resulting plot will be a time series (no need for a <code class="docutils literal notranslate"><span class="pre">plot</span></code> definition).</p></li>
+<li><p>This plot includes only the carriers related to <code class="docutils literal notranslate"><span class="pre">electricity+</span></code> which covers the high voltage carrier, as well as some low voltage generators such as PV (rooftop) and storages such as Battery Electric Vehicles.</p></li>
+<li><p>The carrier names are based on the <code class="docutils literal notranslate"><span class="pre">pretty_names</span></code> defined in <code class="docutils literal notranslate"><span class="pre">plot_KPIs.py</span></code>.</p></li>
+<li><p>The title of the plot is <code class="docutils literal notranslate"><span class="pre">Germany</span> <span class="pre">summer</span> <span class="pre">high</span> <span class="pre">and</span> <span class="pre">low</span> <span class="pre">voltage</span> <span class="pre">energy</span> <span class="pre">balance</span></code>, with the unit in <code class="docutils literal notranslate"><span class="pre">GW</span></code>.</p></li>
+<li><p>The time series plot is limited to the snapshot dates between <code class="docutils literal notranslate"><span class="pre">2013-08-01</span></code> and <code class="docutils literal notranslate"><span class="pre">2013-09-01</span></code>.</p></li>
+<li><p>The file is saved as <code class="docutils literal notranslate"><span class="pre">{postnetwork}-DE_electricity_plus_summer_energy_balance_{planning_horizon}.pdf</span></code>.</p></li>
+</ul>
+<p>The results are the figure below:</p>
+<a class="reference internal image-reference" href="_images/base_s_52_lv1.11__-DE_electricity_plus_summer_energy_balance_2035.png"><img alt="_images/base_s_52_lv1.11__-DE_electricity_plus_summer_energy_balance_2035.png" class="align-center" src="_images/base_s_52_lv1.11__-DE_electricity_plus_summer_energy_balance_2035.png" style="height: 500px;" /></a>
+</section>
 </section>
 </section>
 
@@ -551,11 +664,11 @@ You can create your own filtering scheme by adding a list in <code class="docuti
       </div>
     </a>
     <a class="right-next"
-       href="22-co2_calculation.html"
+       href="21-segmentation.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Carbon Emission Calculation</p>
+        <p class="prev-next-title">Segmentation Temporal Clustering</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -576,12 +689,21 @@ You can create your own filtering scheme by adding a list in <code class="docuti
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract"><code class="docutils literal notranslate"><span class="pre">extract</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carrier-filter"><code class="docutils literal notranslate"><span class="pre">carrier_filter</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-carrier"><code class="docutils literal notranslate"><span class="pre">group_carrier</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot"><code class="docutils literal notranslate"><span class="pre">plot</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figsize"><code class="docutils literal notranslate"><span class="pre">figsize</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-kw"><code class="docutils literal notranslate"><span class="pre">plot_kw</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#components">Components</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extract"><code class="docutils literal notranslate"><span class="pre">extract</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#carrier-filter"><code class="docutils literal notranslate"><span class="pre">carrier_filter</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#group-carrier"><code class="docutils literal notranslate"><span class="pre">group_carrier</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot"><code class="docutils literal notranslate"><span class="pre">plot</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#figsize"><code class="docutils literal notranslate"><span class="pre">figsize</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-kw"><code class="docutils literal notranslate"><span class="pre">plot_kw</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detail-plots">Detail Plots</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-plots">Overview Plots</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series-plots">Time Series Plots</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

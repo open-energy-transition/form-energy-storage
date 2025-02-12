@@ -10,7 +10,7 @@ Here is a list of changes made to this repository specifically for this work, wi
 
 * Add iron-air battery as storage technology with implementation as ``StorageUnit`` or ``Store`` (https://github.com/open-energy-transition/pypsa-eur/pull/20)
 
-* Add Lithium Iron Phosphate, Vanadium, Liquid-air, Compressed-air energy storage technologies as ``StorageUnit`` #21 (https://github.com/open-energy-transition/pypsa-eur/pull/21)
+* Add Lithium Iron Phosphate, Vanadium, Liquid-air, Compressed-air energy storage technologies as ``StorageUnit`` (https://github.com/open-energy-transition/pypsa-eur/pull/21)
 
 **Model Adjustment Features**
 

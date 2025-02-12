@@ -1,14 +1,38 @@
 # Installation
 
-(This is a copy of PyPSA-Eur installation with minor changes)
+The installation process is a modified version of [PyPSA-Eur Installation](https://pypsa-eur.readthedocs.io/en/latest/installation.html) instruction.
 
-## Clone the Repository
+## Fork and Clone the Repository
 
-First of all, clone the [Form Energy Storage PyPSA-Eur repository](https://github.com/open-energy-transition/form-energy-storage) using the version control system `git` in the command line.
+In the **Create a new fork** pop-up menu, shown in the figure below, deselect the default Copy the `main` branch only option.
 
+:::{admonition} Fork this repository!
+:class: tip
+
+![fork option](img/fork_option.png)
+
+:::
+
+The goal is to keep two branches: `gh-pages`, which is necessary for rebuilding this website, and `feature/calibrated-run`, which is required for generating the calibrated runs for the year 2023.
+
+Then, clone your newly created repository using the version control system `git` in the command line.
+
+```git 
+git clone https://github.com/<your-username>/form-energy-storage
+```
+
+
+:::{admonition} Note
+:class: note
+
+If you want to try out the model as is, you can clone OETs version of [Form Energy Storage  PyPSA-Eur repository](https://github.com/open-energy-transition/form-energy-storage) instead. 
+    
 ```
 git clone https://github.com/open-energy-transition/form-energy-storage
 ```
+
+:::
+
 
 ## Install Python Dependencies
 
@@ -20,13 +44,17 @@ The package requirements are curated in the `envs/environment.yaml` file. There 
 mamba env create -f envs/linux-pinned.yaml # replace for your os
 mamba activate pypsa-eur
 ```
+:::{admonition} Note
+:class: note
 
-> **Note:** The equivalent commands for `conda` would be
+The equivalent commands for `conda` would be
 
 ```
 conda env create -f envs/linux-pinned.yaml # replace for your os
 conda activate pypsa-eur
 ```
+
+:::
 
 ## Install a Solver
 

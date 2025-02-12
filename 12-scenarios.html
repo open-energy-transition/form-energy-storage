@@ -184,6 +184,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Assumption</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="21-segmentation.html">Segmentation Temporal Clustering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="22-co2_calculation.html">Carbon Emission Calculation</a></li>
 </ul>
 
@@ -383,6 +384,9 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#climate-year-2010"><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">2010</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#climate-year-2012"><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">2012</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#climate-year-1996"><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">1996</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#germany-gas-phased-out"><code class="docutils literal notranslate"><span class="pre">Germany</span> <span class="pre">Gas</span> <span class="pre">Phased</span> <span class="pre">Out</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transmission-sensitivity"><code class="docutils literal notranslate"><span class="pre">Transmission</span> <span class="pre">Sensitivity</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#high-gas-price"><code class="docutils literal notranslate"><span class="pre">High</span> <span class="pre">Gas</span> <span class="pre">Price</span></code></a></li>
 </ul>
             </nav>
         </div>
@@ -399,9 +403,20 @@
 <p>This is the scenario outline used in the analysis <strong>The Role of Energy Storage in Germany</strong>.
 For each scenario involving medium-duration storages,
 there is always a corresponding counterfactual scenario that excludes medium-duration storages.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The PyPSA-Eur configuration follows a pyramid-like structure, where the parameters in the highest configuration override those in the configurations below it.
+The order is as follows:</p>
+<ol class="arabic simple">
+<li><p>scenarios.form.yaml (<strong>this section</strong>)</p></li>
+<li><p><a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/11-baseline.html">config.form.yaml</a></p></li>
+<li><p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html">config.default.yaml</a></p></li>
+<li><p><a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/13-kpis.html">config.kpi.yaml</a></p></li>
+</ol>
+</div>
 <section id="baseline">
 <h2><code class="docutils literal notranslate"><span class="pre">Baseline</span></code><a class="headerlink" href="#baseline" title="Link to this heading">#</a></h2>
-<p>The Baseline scenario is based on the climate year 2013, with the cost of iron-air set at 2,350 EUR/kWh.</p>
+<p>The Baseline scenario is based on the climate year 2013, with the cost of iron-air set at 2,350 EUR/kWh (2024).</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">baseline-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
@@ -416,7 +431,7 @@ there is always a corresponding counterfactual scenario that excludes medium-dur
 </section>
 <section id="mid-capex">
 <h2><code class="docutils literal notranslate"><span class="pre">Mid-Capex</span></code><a class="headerlink" href="#mid-capex" title="Link to this heading">#</a></h2>
-<p>The Mid-Capex scenario sets the cost of iron-air at 2,000 EUR/kWh,
+<p>The Mid-Capex scenario sets the cost of iron-air at 2,000 EUR/kWh (2024),
 slightly lower than the Baseline scenario.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">mid-capex-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
@@ -430,7 +445,7 @@ slightly lower than the Baseline scenario.</p>
 </section>
 <section id="low-capex">
 <h2><code class="docutils literal notranslate"><span class="pre">Low-Capex</span></code><a class="headerlink" href="#low-capex" title="Link to this heading">#</a></h2>
-<p>The Low-Capex scenario sets the cost of iron-air at 1,525 EUR/kWh,
+<p>The Low-Capex scenario sets the cost of iron-air at 1,525 EUR/kWh (2024),
 which is half the cost of the Baseline scenario.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">low-capex-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
@@ -655,8 +670,15 @@ as well as a pronounced “dark doldrums” for about 10 days in January (<a cla
 <span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-1996-sarah3-era5</span>
 <span class="w">    </span><span class="nt">hydro</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe-1996-sarah3-era5</span>
-
-<span class="nt">nogasppde-mid-capex-mds</span><span class="p">:</span>
+</pre></div>
+</div>
+</section>
+<section id="germany-gas-phased-out">
+<h2><code class="docutils literal notranslate"><span class="pre">Germany</span> <span class="pre">Gas</span> <span class="pre">Phased</span> <span class="pre">Out</span></code><a class="headerlink" href="#germany-gas-phased-out" title="Link to this heading">#</a></h2>
+<p>These scenarios assume that Germany successfully phases out gas-fired power plants and gas CHPs.
+The impact of the cost difference between iron-air batteries at 2,000 EUR/kWh (2024) and 1,525 EUR/kWh (2024)
+is also examined.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">nogasppde-mid-capex-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;iron-air</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">]</span>
@@ -688,8 +710,15 @@ as well as a pronounced “dark doldrums” for about 10 days in January (<a cla
 <span class="w">  </span><span class="nt">electricity</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">powerplants_filter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DateOut &gt;= 2024 and not Fueltype.isin([&#39;Nuclear&#39;, &#39;Hard Coal&#39;, &#39;Lignite&#39;]) and not (Fueltype == &#39;Natural Gas&#39; and Country == &#39;DE&#39;)</span>
 <span class="w">    </span><span class="nt">custom_powerplants</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DateIn &lt;= 2024 and DateOut &gt;= 2024 and not (Fueltype == &#39;Natural Gas&#39; and Country == &#39;DE&#39;)</span>
-
-<span class="nt">delayed-nep-mid-capex-mds</span><span class="p">:</span>
+</pre></div>
+</div>
+</section>
+<section id="transmission-sensitivity">
+<h2><code class="docutils literal notranslate"><span class="pre">Transmission</span> <span class="pre">Sensitivity</span></code><a class="headerlink" href="#transmission-sensitivity" title="Link to this heading">#</a></h2>
+<p>These scenarios assume that the EU’s transmission project in 2035 faces setbacks, with only existing lines available.
+The impact of the cost difference between iron-air batteries at 2,000 EUR/kWh (2024) and 1,525 EUR/kWh (2024)
+is also examined.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">delayed-nep-mid-capex-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;iron-air</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">]</span>
@@ -766,8 +795,15 @@ as well as a pronounced “dark doldrums” for about 10 days in January (<a cla
 <span class="w">      </span><span class="c1">#- planned_not_yet_permitted</span>
 <span class="w">      </span><span class="c1">#- under_consideration</span>
 <span class="w">    </span><span class="nt">new_link_capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zero</span><span class="w"> </span><span class="c1">#keep or zero</span>
-
-<span class="nt">gasprice-peak-mid-capex-mds</span><span class="p">:</span>
+</pre></div>
+</div>
+</section>
+<section id="high-gas-price">
+<h2><code class="docutils literal notranslate"><span class="pre">High</span> <span class="pre">Gas</span> <span class="pre">Price</span></code><a class="headerlink" href="#high-gas-price" title="Link to this heading">#</a></h2>
+<p>These scenarios assume that the EU’s gas market faces a 50% price increase compared to the baseline scenario.
+The impact of the cost difference between iron-air batteries at 2,000 EUR/kWh (2024) and 1,525 EUR/kWh (2024)
+is also examined.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">gasprice-peak-mid-capex-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;iron-air</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">]</span>
@@ -786,16 +822,6 @@ as well as a pronounced “dark doldrums” for about 10 days in January (<a cla
 <span class="w">  </span><span class="nt">costs</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">investment</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">iron-air battery</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">14089</span><span class="w">  </span><span class="c1"># in EUR/MWh (2020) from 15,250 EUR/MWh (2024)</span>
-<span class="w">    </span><span class="nt">fuel</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">OCGT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">38.84</span><span class="w"> </span><span class="c1"># https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex)</span>
-<span class="w">      </span><span class="nt">CCGT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">38.84</span>
-<span class="w">      </span><span class="nt">gas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">38.84</span>
-
-<span class="nt">gasprice-peak-nomds</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">    </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">  </span><span class="nt">costs</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">fuel</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">OCGT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">38.84</span><span class="w"> </span><span class="c1"># https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex)</span>
 <span class="w">      </span><span class="nt">CCGT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">38.84</span>
@@ -876,6 +902,9 @@ as well as a pronounced “dark doldrums” for about 10 days in January (<a cla
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#climate-year-2010"><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">2010</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#climate-year-2012"><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">2012</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#climate-year-1996"><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">1996</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#germany-gas-phased-out"><code class="docutils literal notranslate"><span class="pre">Germany</span> <span class="pre">Gas</span> <span class="pre">Phased</span> <span class="pre">Out</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transmission-sensitivity"><code class="docutils literal notranslate"><span class="pre">Transmission</span> <span class="pre">Sensitivity</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#high-gas-price"><code class="docutils literal notranslate"><span class="pre">High</span> <span class="pre">Gas</span> <span class="pre">Price</span></code></a></li>
 </ul>
   </nav></div>
 

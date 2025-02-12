@@ -65,7 +65,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="KPIs Configuration" href="13-kpis.html" />
+    <link rel="prev" title="Segmentation Temporal Clustering" href="21-segmentation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -183,6 +183,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Assumption</span></p>
 <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="21-segmentation.html">Segmentation Temporal Clustering</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Carbon Emission Calculation</a></li>
 </ul>
 
@@ -997,11 +998,12 @@ The objective is to establish the relationship between this target and the total
 </div>
 </div>
 </div>
-<p>0.392 is the result when all sectors are included, but since this is not the case, we need to divide the remaining emissions further based on the share of remaining emissions in each sector.</p>
+<p><strong>Note</strong>: 39.2% (0.392) compared to 1990 emissions is the result when all sectors are included.</p>
+<p>Since not all sector is included in the model, we need to divide the remaining emissions further based on the share of remaining emissions in each sector.</p>
 </section>
 <section id="extract-the-emission-target-by-sector-and-interpolate-to-the-year-2035">
 <h2>5. Extract the emission target by sector and interpolate to the year 2035<a class="headerlink" href="#extract-the-emission-target-by-sector-and-interpolate-to-the-year-2035" title="Link to this heading">#</a></h2>
-<p>Data is from Europe’s 2040 climate target <a class="reference external" href="https://eur-lex.europa.eu/resource.html?uri=cellar:6c154426-c5a6-11ee-95d9-01aa75ed71a1.0001.02/DOC_3&amp;amp;format=PDF">Source</a></p>
+<p>Data is from Europe’s 2040 climate target (<a class="reference external" href="https://eur-lex.europa.eu/resource.html?uri=cellar:6c154426-c5a6-11ee-95d9-01aa75ed71a1.0001.02/DOC_3&amp;amp;format=PDF">Source</a>).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">target_sector</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../data/co2_total_sector.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -1297,15 +1299,14 @@ The objective is to establish the relationship between this target and the total
 <p>(other energy sectors include non-CO2 GHG emissions and are thus excluded)</p>
 <p>In this list, we only model:</p>
 <ul class="simple">
-<li><p>Power and district heating</p></li>
-<li><p>Other Energy sectors*</p></li>
-<li><p>Residential and Services**</p></li>
+<li><p><strong>Power and district heating</strong></p></li>
+<li><p><strong>Other Energy sectors</strong>*</p></li>
+<li><p><strong>Residential and Services</strong>**</p></li>
 </ul>
 <p>Note:</p>
 <ul class="simple">
-<li><p>Calibration of total to inventory 2023</p></li>
-<li><p>*Includes emissions from energy branch and other non-CO2 emissions from the energy sector</p></li>
-<li><p>**Includes fossil fuel combustion in the agriculture/fishery/forestry sector</p></li>
+<li><p><strong>Other Energy sectors</strong> includes emissions from the energy branch as well as other non-CO2 emissions from the energy sector.</p></li>
+<li><p>The <strong>Residential and Services</strong> sector may include fossil fuel combustion from the agriculture, fishery, and forestry sectors.</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1322,6 +1323,7 @@ The objective is to establish the relationship between this target and the total
 </div>
 </div>
 </div>
+<p><strong>Note</strong>: 27.3% (0.273) of the emissions come from the included sector, relative to the total emissions from all sectors.</p>
 </section>
 <section id="calculate-the-absolute-emission-of-the-included-sector-emission">
 <h2>7. Calculate the absolute emission of the included sector emission<a class="headerlink" href="#calculate-the-absolute-emission-of-the-included-sector-emission" title="Link to this heading">#</a></h2>
@@ -1459,7 +1461,7 @@ The objective is to establish the relationship between this target and the total
 </div>
 </div>
 </div>
-<p>0.107 is the answer is put in to the <code class="docutils literal notranslate"><span class="pre">co2_budget</span></code> for the year 2035</p>
+<p>10.7% (0.107) compared to 1990 emissions is the answer for the <code class="docutils literal notranslate"><span class="pre">co2_budget</span></code> for the year 2035</p>
 </section>
 </section>
 
@@ -1494,12 +1496,12 @@ The objective is to establish the relationship between this target and the total
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="13-kpis.html"
+       href="21-segmentation.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">KPIs Configuration</p>
+        <p class="prev-next-title">Segmentation Temporal Clustering</p>
       </div>
     </a>
 </div>

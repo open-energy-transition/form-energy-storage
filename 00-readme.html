@@ -185,6 +185,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Assumption</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="21-segmentation.html">Segmentation Temporal Clustering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="22-co2_calculation.html">Carbon Emission Calculation</a></li>
 </ul>
 
@@ -430,7 +431,7 @@ planning, with its software products (including PyPSA-Eur and PyPSA-Earth) used 
 </section>
 <section id="scope-of-the-model">
 <h2>Scope of the Model<a class="headerlink" href="#scope-of-the-model" title="Link to this heading">#</a></h2>
-<p><img alt="alt text" src="_images/iron_air_map.png" /></p>
+<p><img alt="alt text" src="_images/map.png" /></p>
 <p>To run multiple scenarios with a reasonable amount of computational power, we limit the scope of the model to the following:</p>
 <ul class="simple">
 <li><p><strong>Spatial Scope</strong>:</p>
@@ -442,7 +443,7 @@ planning, with its software products (including PyPSA-Eur and PyPSA-Earth) used 
 <li><p><strong>Temporal Scope</strong>:</p>
 <ul>
 <li><p>The analysis targets the near-term application of iron-air storage technologies, focusing on the year 2035, while PyPSA-Eur models the period from 2020 to 2050 in 5-year intervals.</p></li>
-<li><p>The temporal resolution is based on 4380 hours, instead of the full 8760 hours.</p></li>
+<li><p>The temporal resolution is segmented into 4380 hours. See <a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/21-segmentation.html">Segmentation Temporal Clustering</a> for more detail.</p></li>
 </ul>
 </li>
 <li><p><strong>Sectoral Scope</strong>:</p>
@@ -464,10 +465,10 @@ transmission network level that covers the full ENTSO-E area. The model is suita
 The continental scope and highly resolved spatial scale enables a proper description of the long-range
 smoothing effects for renewable power generation and their varying resource availability.</p>
 <p>The original PyPSA-Eur model is described in the <a class="reference external" href="https://pypsa-eur.readthedocs.io">documentation</a>
-and in the paper<a class="reference external" href="https://arxiv.org/abs/1806.01613">PyPSA-Eur: An Open Optimisation Model of the European Transmission System</a>, 2018,
+and in the paper <a class="reference external" href="https://arxiv.org/abs/1806.01613">PyPSA-Eur: An Open Optimisation Model of the European Transmission System</a>, 2018,
 <a class="reference external" href="https://arxiv.org/abs/1806.01613">arXiv:1806.01613</a>.</p>
 <p><img alt="PyPSA-Eur Grid Model" src="_images/elec.png" /></p>
-<p>The dataset consists of:</p>
+<p>The default dataset consists of:</p>
 <ul class="simple">
 <li><p>A grid model based on a modified <a class="reference external" href="https://github.com/bdw/GridKit">GridKit</a> extraction of the <a class="reference external" href="https://www.entsoe.eu/data/map/">ENTSO-E Transmission System Map</a>. The grid model contains 7072 lines
 (alternating current lines at and above 220kV voltage level and all high voltage direct current lines) and 3803 substations.</p></li>
@@ -476,8 +477,7 @@ and in the paper<a class="reference external" href="https://arxiv.org/abs/1806.0
 <li><p>Renewable time series based on ERA5 and SARAH, assembled using the <a class="reference external" href="https://github.com/PyPSA/atlite">atlite tool</a>.</p></li>
 <li><p>Geographical potentials for wind and solar generators based on land use (CORINE) and excluding nature reserves (Natura2000) are computed with the <a class="reference external" href="https://github.com/PyPSA/atlite">atlite library</a>.</p></li>
 </ul>
-<p>A sector-coupled extension adds demand and supply for the following sectors: transport, space and water heating, biomass, industry and industrial feedstocks, agriculture,
-forestry and fishing. This completes the energy system and includes all greenhouse gas emitters except waste management and land use.</p>
+<p>In the default PyPSA-Eur version, a sector-coupled extension adds demand and supply for the following sectors: transport, space and water heating, biomass, industry and industrial feedstocks, agriculture, forestry and fishing. This completes the energy system and includes all greenhouse gas emitters except waste management and land use.</p>
 <p>Each of these sectors is built up on the transmission network nodes from <a class="reference external" href="https://github.com/PyPSA/pypsa-eur">PyPSA-Eur</a>:</p>
 </section>
 <section id="repository-structure">
@@ -492,14 +492,12 @@ forestry and fishing. This completes the energy system and includes all greenhou
 <li><p><code class="docutils literal notranslate"><span class="pre">envs</span></code>: includes all the <code class="docutils literal notranslate"><span class="pre">mamba</span></code> environment specifications to run the workflow</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">logs</span></code>: will store log files (does not exist initially)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">notebooks</span></code>: includes all the <code class="docutils literal notranslate"><span class="pre">notebooks</span></code> used for ad-hoc analysis</p></li>
-</ul>
-<!--* `report`: contains all files necessary to build the report; plots and result files are generated automatically-->
-<ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">rules</span></code>: includes all the <code class="docutils literal notranslate"><span class="pre">snakemake</span></code>rules loaded in the <code class="docutils literal notranslate"><span class="pre">Snakefile</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">resources</span></code>: will store intermediate results of the workflow which can be picked up again by subsequent rules (does not exist initially)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">results</span></code>: will store the solved PyPSA network data, summary files and plots (does not exist initially)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">scripts</span></code>: includes all the Python scripts executed by the <code class="docutils literal notranslate"><span class="pre">snakemake</span></code> rules to build the model</p></li>
 </ul>
+<!--* `report`: contains all files necessary to build the report; plots and result files are generated automatically-->
 </section>
 <div class="toctree-wrapper compound">
 </div>

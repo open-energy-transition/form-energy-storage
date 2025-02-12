@@ -184,6 +184,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Assumption</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="21-segmentation.html">Segmentation Temporal Clustering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="22-co2_calculation.html">Carbon Emission Calculation</a></li>
 </ul>
 
@@ -430,14 +431,16 @@ The content of <code class="docutils literal notranslate"><span class="pre">base
 <span class="w">    </span><span class="nt">resolution_sector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4380SEG</span>
 </pre></div>
 </div>
-<p>The rule of thumb is:</p>
-<p>The general rule of thumb are as follows:</p>
+<p>The general rules of thumb are as follows:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">4380SEG</span></code>: Three-hour time resolution, takes 4 hours to run on a computer cluster</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">2920SEG</span></code>: Four-hour time resolution, takes 2 hours to run on a computer cluster</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">100H</span></code>: Hundred-hour time resolution, very quick to solve.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1H</span></code>: 1-hour time resolution</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">4380SEG</span></code>: 3 times faster computational time compared to <code class="docutils literal notranslate"><span class="pre">1H</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2920SEG</span></code>: 4 times faster computational time compared to <code class="docutils literal notranslate"><span class="pre">1H</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">100H</span></code>: significantly quicker to solve compared to <code class="docutils literal notranslate"><span class="pre">1H</span></code></p></li>
 </ul>
-<p>If you want to test run this model on your computer, replace <code class="docutils literal notranslate"><span class="pre">4380SEG</span></code> with <code class="docutils literal notranslate"><span class="pre">100H</span></code>.</p>
+<p>If you want to test run this model on your computer, replace <code class="docutils literal notranslate"><span class="pre">4380SEG</span></code> with <code class="docutils literal notranslate"><span class="pre">100H</span></code>.
+Using a lower time resolution, such as that from <code class="docutils literal notranslate"><span class="pre">SEG</span></code>, can still capture the desired variability in the model.
+See <a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/21-segmentation.html">Segmentation Temporal Clustering</a> for more details</p>
 </div>
 </section>
 <section id="run-the-model">
@@ -513,18 +516,20 @@ The content of <code class="docutils literal notranslate"><span class="pre">base
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If an error occurs due to missing data, the first solution is to check the <code class="docutils literal notranslate"><span class="pre">enable:</span></code> setting in <code class="docutils literal notranslate"><span class="pre">config.form.yaml</span></code>.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">config/scenarios.form.yaml</span>
-<span class="w"> </span><span class="w w-Error"> </span><span class="nt">disable_progressbar</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">  </span><span class="nt">shared_resources</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">policy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">exclude</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">shared_cutouts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">enable</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">retrieve</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auto</span>
+<span class="w">  </span><span class="nt">retrieve_databundle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">retrieve_cost_data</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">build_cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">retrieve_cutout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">custom_busmap</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">drop_leap_day</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">final_adjustment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">retrieve_databundle</span></code>: set this to true if a file in <code class="docutils literal notranslate"><span class="pre">data/</span></code> is missing</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">retrieve_cost_data</span></code>: set this to true if <code class="docutils literal notranslate"><span class="pre">resources/..</span> <span class="pre">../cost_2035.csv</span></code> is missing</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">retrieve_cost_data</span></code>: set this to true if <code class="docutils literal notranslate"><span class="pre">resources/{run}/cost_2035.csv</span></code> is missing</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">retrieve_cutout</span></code>: set this to true if <code class="docutils literal notranslate"><span class="pre">cutouts/europe-2013-sarah3-era5.nc</span></code> is missing</p></li>
 </ul>
 <p>For cutouts from years other than 2013, 2018, and 2023, you can download them from xx.</p>
@@ -539,9 +544,9 @@ The content of <code class="docutils literal notranslate"><span class="pre">base
 <h2>Analyze the model<a class="headerlink" href="#analyze-the-model" title="Link to this heading">#</a></h2>
 <p>There are several ways to analyze the results of the Snakemake run:</p>
 <ul class="simple">
-<li><p>By using the CSV files and graphs located in <code class="docutils literal notranslate"><span class="pre">results/../csvs/</span></code> and <code class="docutils literal notranslate"><span class="pre">results/../graphs/</span></code></p></li>
+<li><p>By using the CSV files and graphs located in <code class="docutils literal notranslate"><span class="pre">results/{run}/csvs/</span></code> and <code class="docutils literal notranslate"><span class="pre">results/{run}/graphs/</span></code></p></li>
 <li><p>By using a pre-configured Jupyter Notebook in <code class="docutils literal notranslate"><span class="pre">notebooks/</span></code> or any Jupyter Notebook of your choice.</p></li>
-<li><p>By utilizing the customizable KPIs in <code class="docutils literal notranslate"><span class="pre">results/../maps/</span></code></p></li>
+<li><p>By utilizing the customizable KPIs in <code class="docutils literal notranslate"><span class="pre">results/{run}/maps/</span></code></p></li>
 </ul>
 <p>The automatic generation of KPI plots is a feature from this project and may be upstreamed in the future. To create your own custom KPI plots, see <a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/13-kpis.html">KPI Configuration</a></p>
 <p>To generate the KPI plots, run the snakemake command:</p>

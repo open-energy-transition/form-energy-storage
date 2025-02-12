@@ -184,6 +184,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Assumption</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="21-segmentation.html">Segmentation Temporal Clustering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="22-co2_calculation.html">Carbon Emission Calculation</a></li>
 </ul>
 
@@ -395,8 +396,8 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load"><code class="docutils literal notranslate"><span class="pre">load</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#costs"><code class="docutils literal notranslate"><span class="pre">costs</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clustering"><code class="docutils literal notranslate"><span class="pre">clustering</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting"><code class="docutils literal notranslate"><span class="pre">plotting</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving"><code class="docutils literal notranslate"><span class="pre">solving</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting"><code class="docutils literal notranslate"><span class="pre">plotting</span></code></a></li>
 </ul>
             </nav>
         </div>
@@ -412,6 +413,17 @@
 <h1>Base Configuration<a class="headerlink" href="#base-configuration" title="Link to this heading">#</a></h1>
 <p>This is the base configuration outline used in the analysis “The Role of Energy Storage in Germany”.
 The complete explaination of each configuration can be found in <a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html">PyPSA-Eur: Configuration</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The PyPSA-Eur configuration follows a pyramid-like structure, where the parameters in the highest configuration override those in the configurations below it.
+The order is as follows:</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/12-scenarios.html">scenarios.form.yaml</a></p></li>
+<li><p>config.form.yaml (<strong>this section</strong>)</p></li>
+<li><p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html">config.default.yaml</a></p></li>
+<li><p><a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/13-kpis.html">config.kpi.yaml</a></p></li>
+</ol>
+</div>
 <section id="run">
 <h2><code class="docutils literal notranslate"><span class="pre">run</span></code><a class="headerlink" href="#run" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run">Run Documentation</a></p>
@@ -494,7 +506,7 @@ The complete explaination of each configuration can be found in <a class="refere
 <span class="w">  </span><span class="nt">inclusive</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;left&#39;</span>
 </pre></div>
 </div>
-<p>The baseline scenario is based on the climate year 2013, with the snapshots adjusted accordingly.</p>
+<p>The baseline scenario is based on the climate year 2013, with the snapshots adjusted in each scenarios accordingly.</p>
 </section>
 <section id="enable">
 <h2><code class="docutils literal notranslate"><span class="pre">enable</span></code><a class="headerlink" href="#enable" title="Link to this heading">#</a></h2>
@@ -520,7 +532,7 @@ The complete explaination of each configuration can be found in <a class="refere
 </pre></div>
 </div>
 <p>The CO2 budget is derived from individual countries carbon emission targets for included sectors excluding domestic transport emissions from scope
-This means that the total budget is 315.4 MtCO2. The complete calculation can be seen in the <a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/22-co2_calculation.html">Assumption processing</a> section.</p>
+This means that the total budget is 315.4 MtCO2. The complete calculation can be seen in the <a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/22-co2_calculation.html">Carbon Emission Calculation</a> section.</p>
 </section>
 <section id="electricity">
 <h2><code class="docutils literal notranslate"><span class="pre">electricity</span></code><a class="headerlink" href="#electricity" title="Link to this heading">#</a></h2>
@@ -542,7 +554,7 @@ This means that the total budget is 315.4 MtCO2. The complete calculation can be
 <p>Configuration changes made:</p>
 <ul class="simple">
 <li><p>Lithium-ion are disaggregated into 1h, 2h, 4h and 8h for a more detail analysis.</p></li>
-<li><p>Iron-air batteries have 100h max hours</p></li>
+<li><p>Iron-air batteries have a maximum state of charge (<code class="docutils literal notranslate"><span class="pre">max</span> <span class="pre">hours</span></code>) of 100 hours</p></li>
 <li><p>Nuclear, Hard Coal, and Lignite power plants are excluded from the powerplantmatching database.</p></li>
 <li><p>Instead, we use a validated dataset of power plants from <code class="docutils literal notranslate"><span class="pre">data/custom_powerplants.csv</span></code></p></li>
 </ul>
@@ -579,7 +591,7 @@ This means that the total budget is 315.4 MtCO2. The complete calculation can be
 <span class="w">    </span><span class="nt">PHS_max_hours</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 </pre></div>
 </div>
-<p>The modification in max hours of pumped hydro storages are based on Form Energy.</p>
+<p>The maximum state of charge storage for pumped hydro storages are limited to 10h, instead of the default 6h.</p>
 </section>
 <section id="conventional">
 <h2><code class="docutils literal notranslate"><span class="pre">conventional</span></code><a class="headerlink" href="#conventional" title="Link to this heading">#</a></h2>
@@ -632,7 +644,15 @@ to better approximate security and reserve capacity for reactive power flows.</p
 <span class="w">  </span><span class="nt">new_link_capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zero</span><span class="w"> </span><span class="c1">#keep or zero</span>
 </pre></div>
 </div>
-<p>TYNDP 2020 dataset is not intergrated in this analysis.</p>
+<p>Configuration changes made:</p>
+<ul class="simple">
+<li><p>The Ten Year Network Development Plan (TYNDP) 2020 transmission plan has been excluded from the model.</p></li>
+<li><p>The Netzentwicklungsplan (NEP) of Germany has been included in the model.</p></li>
+<li><p>Only transmission projects that are under construction, in permitting, or confirmed are included.</p></li>
+</ul>
+<p>Since the focus is on Germany, a conservative assumption is made regarding transmission projects,
+specifically by selecting only those that are most likely to be realized.
+This is why the NEP is preferred over the TYNDP.</p>
 </section>
 <section id="existing-capacities">
 <h2><code class="docutils literal notranslate"><span class="pre">existing_capacities</span></code><a class="headerlink" href="#existing-capacities" title="Link to this heading">#</a></h2>
@@ -711,7 +731,8 @@ to better approximate security and reserve capacity for reactive power flows.</p
 </div>
 <p>Configuration changes made:</p>
 <ul class="simple">
-<li><p>This analysis includes the transport and heating sectors, while excluding biomass, agriculture, and industry.</p></li>
+<li><p>This analysis includes the power, transport and heating sectors.</p></li>
+<li><p>This analysis excludes biomass, agriculture, and industry sectors.</p></li>
 <li><p>The availability of battery electric vehicles (BEV) for demand-side management is reduced from 50% to 20%.</p></li>
 <li><p>The charging rate for BEVs is reduced from 1.1% to 0.7%.</p></li>
 <li><p>The predicted share of land electric vehicles is reduced from 45% to 30% by 2035.</p></li>
@@ -720,6 +741,8 @@ to better approximate security and reserve capacity for reactive power flows.</p
 <li><p>Li-ion batteries, vanadium, liquid air, CAES, and Iron-air batteries are defined as storage unit components rather than stores.</p></li>
 <li><p>The hydrogen network is excluded from the model.</p></li>
 </ul>
+<p>H2 networks were excluded from the study due to the limited scope of H2 in the rest of our model and the trade-off with model complexity,
+particularly in terms of computational time.</p>
 </section>
 <section id="load">
 <h2><code class="docutils literal notranslate"><span class="pre">load</span></code><a class="headerlink" href="#load" title="Link to this heading">#</a></h2>
@@ -790,7 +813,7 @@ By 2035, electricity demand is projected to increase by 26% compared to 2013. <a
 <li><p>Coal price is set at 24.57 EUR/MWh <a class="reference external" href="https://businessanalytiq.com/procurementanalytics/index/subbituminous-coal-price-index/">Source from Business Analytiq (2024 Coal price)</a></p></li>
 <li><p>Lignite price is set at 22.11 EUR/MWh <a class="reference external" href="https://businessanalytiq.com/procurementanalytics/index/lignite-coal-price-index/">Source from Business Analytiq (2024 Lignite price)</a></p></li>
 <li><p>Uranium price is set at 1.75 EUR/MWh <a class="reference external" href="https://markets.businessinsider.com/commodities/uranium-price">Source from Business Insider (2024 price)</a></p></li>
-<li><p>Iron-air battery price is set at 23,500 EUR/MWh.</p></li>
+<li><p>Iron-air battery price is set at 23,500 EUR/MWh (2024).</p></li>
 <li><p>Storage energy cost for CAES is 30,000 EUR/MWh (2022).</p></li>
 <li><p>Storage power cost for CAES is 1,725,000 EUR/MW (2022).</p></li>
 <li><p>The lifetime of CAES is reduced to 40 years.</p></li>
@@ -825,6 +848,38 @@ By 2035, electricity demand is projected to increase by 26% compared to 2013. <a
 <li><p>Sweden</p></li>
 </ul>
 <p>The temporal resolution are segmented into 4380 hours.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the temporal resolution is not the highest option, it still produces similar results with fewer computational cost.
+See <a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/21-segmentation.html">Segmentation Temporal Clustering</a> for more details</p>
+</div>
+</section>
+<section id="solving">
+<h2><code class="docutils literal notranslate"><span class="pre">solving</span></code><a class="headerlink" href="#solving" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#solving">Solving Documentation</a></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">solving</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">mem_mb</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">150000</span><span class="w"> </span><span class="c1">#memory in MB; 20 GB enough for 50+B+I+H2; 100 GB for 181+B+I+H2</span>
+<span class="w">  </span><span class="nt">runtime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">24h</span><span class="w"> </span><span class="c1">#runtime in humanfriendly style https://humanfriendly.readthedocs.io/en/latest/</span>
+
+<span class="w">  </span><span class="nt">solver</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gurobi</span>
+<span class="w">    </span><span class="nt">options</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gurobi-default</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As noted in the <a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/01-installation.html">Installation</a> section,
+there are several solvers compatible with PyPSA. Please choose the ones that are available to you.</p>
+<p>Each solver has a solver-specific parameter settings (<code class="docutils literal notranslate"><span class="pre">options</span></code>) to chose from:</p>
+<ul class="simple">
+<li><p><strong>gurobi</strong>: <code class="docutils literal notranslate"><span class="pre">gurobi-default</span></code>, <code class="docutils literal notranslate"><span class="pre">gurobi-numeric-focus</span></code>, <code class="docutils literal notranslate"><span class="pre">gurobi-fallback</span></code></p></li>
+<li><p><strong>highs</strong>: <code class="docutils literal notranslate"><span class="pre">highs-default</span></code></p></li>
+<li><p><strong>cplex</strong>: <code class="docutils literal notranslate"><span class="pre">cplex-default</span></code></p></li>
+<li><p><strong>copt</strong>: <code class="docutils literal notranslate"><span class="pre">copt-default</span></code>, <code class="docutils literal notranslate"><span class="pre">copt-gpu</span></code></p></li>
+<li><p><strong>cbc</strong>: <code class="docutils literal notranslate"><span class="pre">cbc-default</span></code></p></li>
+<li><p><strong>glpk</strong>: <code class="docutils literal notranslate"><span class="pre">glpk-default</span></code></p></li>
+</ul>
+</div>
 </section>
 <section id="plotting">
 <h2><code class="docutils literal notranslate"><span class="pre">plotting</span></code><a class="headerlink" href="#plotting" title="Link to this heading">#</a></h2>
@@ -871,15 +926,6 @@ By 2035, electricity demand is projected to increase by 26% compared to 2013. <a
 </pre></div>
 </div>
 <p>Not much change here other than the coloring scheme</p>
-</section>
-<section id="solving">
-<h2><code class="docutils literal notranslate"><span class="pre">solving</span></code><a class="headerlink" href="#solving" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/configuration.html#solving">Solving Documentation</a></p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">solving</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">mem_mb</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">150000</span><span class="w"> </span><span class="c1">#memory in MB; 20 GB enough for 50+B+I+H2; 100 GB for 181+B+I+H2</span>
-<span class="w">  </span><span class="nt">runtime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">24h</span><span class="w"> </span><span class="c1">#runtime in humanfriendly style https://humanfriendly.readthedocs.io/en/latest/</span>
-</pre></div>
-</div>
 </section>
 </section>
 
@@ -966,8 +1012,8 @@ By 2035, electricity demand is projected to increase by 26% compared to 2013. <a
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load"><code class="docutils literal notranslate"><span class="pre">load</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#costs"><code class="docutils literal notranslate"><span class="pre">costs</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clustering"><code class="docutils literal notranslate"><span class="pre">clustering</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting"><code class="docutils literal notranslate"><span class="pre">plotting</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving"><code class="docutils literal notranslate"><span class="pre">solving</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting"><code class="docutils literal notranslate"><span class="pre">plotting</span></code></a></li>
 </ul>
   </nav></div>
 
