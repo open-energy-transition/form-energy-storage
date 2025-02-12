@@ -18,14 +18,3 @@ parts:
   chapters:
   - file: 21-segmentation.md
   - file: 22-co2_calculation
-
-
-#format: jb-book
-#root: 00-readme
-#chapters:
-#- file: 01-installation.md
-#- file: 02-tutorials.md
-#- file: 03-features.rst # New and Custom Features
-#- file: 11-baseline.rst
-#- file: 12-scenarios.rst
-#- file: 13-kpis.rst

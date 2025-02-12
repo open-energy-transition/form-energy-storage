@@ -2,7 +2,7 @@
 KPIs Configuration
 ##########################################
 
-Plot_KPIs creates both predefined and configurable figures. The predefined figures are:
+`Plot_KPIs` creates both predefined and configurable figures. The predefined figures are:
 
 * A map of curtailed energy for Germany and the wider region.
 * A map of transmission line loading for Germany and the wider region.
@@ -47,7 +47,7 @@ Components
 .. note::
     **capacity stats** is a special option because it has two extra components:
 
-    ``stats``: Three options:
+    ``stats``: Extract capacity data from these three options:
     
     * **install**: Extract capacity data from ``n.statistics.installed_capacity``
     * **optimal**: (Default) Extract capacity data from ``n.statistics.optimal_capacity``
@@ -58,7 +58,7 @@ Components
 ``carrier_filter``
 ==========================
 
-a. for system cost, capacity, capacity stats, generation, and emission:
+**a. for system cost, capacity, capacity stats, generation, and emission**:
 
 * **electricity**: Filter carrier with AC bus carrier.
 * **electricity+**: Filter carrier with AC bus carrier and also include water tanks and EV batteries.
@@ -76,7 +76,7 @@ a. for system cost, capacity, capacity stats, generation, and emission:
        :start-at: power:
        :end-at: ]
 
-b. for energy balance:
+**b. for energy balance**:
 
 * **electricity**: Filter carrier with AC bus carrier.
 * **electricity+**: Filter carrier with AC bus carrier and also include solar rooftops, BEV chargers, and Vehicle-to-Gas.
@@ -85,7 +85,7 @@ b. for energy balance:
 * **heat**: Filter carrier with heat bus carrier.
 * **hydrogen**: Filter carrier with hydrogen bus carrier.
 
-c. for SOC can be defined individually or in arrays of ``storage_units`` carriers.
+**c. for SOC**, this can be defined individually or in arrays of ``storage_units`` carriers.
 
 ``group_carrier``
 ==========================

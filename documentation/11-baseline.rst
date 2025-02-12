@@ -115,7 +115,7 @@ For the first run, it is recommended to set ``retrieve_databundle``, ``retrieve_
    :start-at: co2_budget:
    :end-before: # docs
 
-The CO2 budget is derived from individual countries carbon emission targets for included sectors excluding domestic transport emissions from scope
+The CO2 budget is derived from individual countries carbon emission targets for included sectors excluding fossil fuel domestic transport emissions from scope
 This means that the total budget is 315.4 MtCO2. The complete calculation can be seen in the `Carbon Emission Calculation <https://open-energy-transition.github.io/form-energy-storage/22-co2_calculation.html>`_ section.
 
 ``electricity``
@@ -171,7 +171,7 @@ The maximum state of charge storage for pumped hydro storages are limited to 10h
    :start-at: conventional:
    :end-before: # docs
 
-The minimum energy dispatch for nuclear power plants is set to 50%, instead of the default 20%.
+The minimum energy dispatch for nuclear power plants is set to 50%.
 
 ``lines``
 =============
@@ -254,7 +254,7 @@ particularly in terms of computational time.
    :end-before: # docs
 
 The model's electricity load is based on data from 2013. 
-By 2035, electricity demand is projected to increase by 26% compared to 2013. `Source from Agora Energiewende <https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf>`_
+By 2035, electricity demand is projected to increase by 26% compared to 2013 (`Source from Agora Energiewende <https://www.agora-energiewende.de/fileadmin/Projekte/2021/2021_11_DE_KNStrom2035/2022-06-23_Praesentation_Klimaneutrales_Stromsystem_2035.pdf>`_).
 
 ``costs``
 =============
