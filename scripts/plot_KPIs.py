@@ -40,7 +40,13 @@ rc('xtick', **{'labelsize': 12})
 rc('ytick', **{'labelsize': 12})
 # plt.style.use(["ggplot"])
 
-def expanded_sector_names(n):
+def csv_path(path):
+    csv_path = path.replace("/maps/","/csvs/")
+    csv_path = csv_path.replace(".pdf",".csv")
+
+    return csv_path
+
+def expanded_sector_names(n, sector_names):
     index = n.statistics().index.get_level_values(1)
     index_missing = index.difference(sector_names.keys())
     dict_index = {i : "other" for i in index_missing}
@@ -51,7 +57,7 @@ def expanded_sector_names(n):
 
     return sector_names | dict_index
 
-def expanded_pretty_names(n):
+def expanded_pretty_names(n, pretty_names):
     index = n.statistics().index.get_level_values(1)
     index_missing = index.difference(pretty_names.keys())
     dict_index = {i : i for i in index_missing}
@@ -659,6 +665,8 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, filter_scheme, pat
 
     fig.savefig(path, bbox_inches="tight")
 
+    return df
+
 def prepare_SOC(network):
     n = network.copy()
     n.storage_units["bus"] = n.storage_units.bus.map(n.buses.country)
@@ -743,10 +751,11 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
 
     fig.savefig(path, bbox_inches="tight")
 
+    return df
+
 def calculate_emission(network, countries):
     n = network.copy()
     
-    index_with_emission = (n.links == 'co2 atmosphere').T.any()
     df_links = n.links
     
     for num in [0,1,2,3,4]:
@@ -869,6 +878,21 @@ def calculate_generation(network, countries):
     
     return df
 
+def calculate_curtailment(network, countries):
+    n = network.copy()
+    
+    df = pd.DataFrame(n.statistics.curtailment(groupby=["country", "carrier"]))
+    df = df.reset_index(["country","component"])
+    df.loc[~df.country.isin(countries),"country"] = "EU"
+
+    df = pd.DataFrame(df.groupby(["country","carrier"])[0].sum()).unstack("country")
+    df.columns = df.columns.get_level_values("country")
+
+    # convert from MW to GW
+    df = df / 1e3
+    
+    return df
+
 def filter_and_rename(network, df, filter_scheme = {}, carrier_filter = None, group_carrier = None):
     n = network.copy()
 
@@ -939,10 +963,11 @@ def filter_and_rename(network, df, filter_scheme = {}, carrier_filter = None, gr
 def plot_by_country(df, plot_kw, path, plot_figsize=(12,9)):
 
     fig, ax = plt.subplots(figsize=plot_figsize)
+
+    plot_kw["width"] = plot_kw.get("width",0.9)
     
     df.drop(columns={"color"}).T.plot(
         kind="bar",
-        width = 0.9,
         ax=ax,
         stacked=True,
         color=df["color"],
@@ -1303,8 +1328,8 @@ if __name__ == "__main__":
     n = pypsa.Network(snakemake.input.network)
 
     # expand the names
-    pretty_names = expanded_pretty_names(n)
-    sector_names = expanded_sector_names(n)
+    pretty_names = expanded_pretty_names(n, pretty_names)
+    sector_names = expanded_sector_names(n, sector_names)
 
     # defined preferred order under all naming schemes
     preferred_order_reversed = preferred_order[::-1]
@@ -1402,11 +1427,19 @@ if __name__ == "__main__":
     # Preparing iterative data with disaggregate Li-Ion Battery
     df_gen = calculate_generation(n, countries)
     df_co2 = calculate_emission(n, countries)
+    df_cur = calculate_curtailment(n, countries)
     df_eql = prepare_energy_balance(n)
 
     filter_scheme = config_kpi.get("filter_scheme",{})
+    include_csvs = config_kpi.get("include_csvs")
+
     if config_kpi.get("custom_plots"):
         for fn, kpi_param in config_kpi["custom_plots"].items():
+
+            if include_csvs:
+                with open(snakemake.output[fn + "_csv"], "a") as my_empty:
+                    pass
+
             try:
                 logger.info(f"Preparing plot {fn}")
 
@@ -1419,6 +1452,7 @@ if __name__ == "__main__":
                     logger.info("extracting capacity")
                     df = df_capacity_csv.copy(deep=True)
                 elif extract_param == "capacity stats":
+                    logger.info("extracting capacity stats")
                     df = calculate_capacity(n, countries, kpi_param)
                 elif extract_param == "generation":
                     logger.info("extracting generation")
@@ -1426,15 +1460,22 @@ if __name__ == "__main__":
                 elif extract_param == "emission":
                     logger.info("extracting emission")
                     df = df_co2.copy(deep=True)
+                elif extract_param == "curtailment":
+                    logger.info("extracting curtailment")
+                    df = df_cur.copy(deep=True)
 
                 #time series plots have their own route
                 elif extract_param == "energy balance":
                     df = df_eql.copy(deep=True)
-                    filter_plot_energy_balance(n, df, kpi_param, filter_scheme, snakemake.output[fn])
+                    df = filter_plot_energy_balance(n, df, kpi_param, filter_scheme, snakemake.output[fn])
+                    if include_csvs:
+                        df.to_csv(snakemake.output[fn + "_csv"])
                     continue
                 elif extract_param == "SOC":
                     df = df_SOC.copy(deep=True)
-                    filter_plot_SOC(n, df, kpi_param, snakemake.output[fn])
+                    df = filter_plot_SOC(n, df, kpi_param, snakemake.output[fn])
+                    if include_csvs:
+                        df.to_csv(snakemake.output[fn + "_csv"])
                     continue
 
                 #curtailment plots have their own route
@@ -1482,19 +1523,20 @@ if __name__ == "__main__":
                                    snakemake.output[fn],
                                    plot_figsize = tuple(kpi_param.get("figsize",(6,8)))
                                    )
+                    df = df.drop(columns={"color"}).T.sum()
                 elif plot_param == "overview":
                     plot_by_country(df, 
                                     plot_kw, 
                                     snakemake.output[fn],
                                     plot_figsize = tuple(kpi_param.get("figsize",(12,9)))
                                     )
+                    df = df.drop(columns={"color"})
+
+                if include_csvs:
+                    df.to_csv(snakemake.output[fn + "_csv"])
 
             except (TypeError):
                 logger.warning(f"Unable to plot {fn} because the datasets is empty after applying the filters")
 
-                fig, ax = plt.subplots(figsize=(8,8))
-                ax.set_axis_off()
-                fig.text(4,4,f"Unable to plot {fn} because the datasets is empty after applying the filters")
-                fig.savefig(snakemake.output[fn])
-                continue
-
+                with open(snakemake.output[fn], "a") as my_empty:
+                    pass

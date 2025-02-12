@@ -105,6 +105,14 @@ if config["foresight"] != "perfect":
 
 KPIS = {
     **{
+        f"{kpi_fn}_csv": RESULTS
+        + "csvs/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-"
+        + f"{kpi_fn}"
+        + "_{planning_horizons}.csv"
+        for kpi_fn in config["kpi"]["custom_plots"]
+        if config["kpi"]["include_csvs"]
+    },
+    **{
         f"{kpi_fn}": RESULTS
         + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-"
         + f"{kpi_fn}"
