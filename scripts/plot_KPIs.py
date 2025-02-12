@@ -663,8 +663,7 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, filter_scheme, pat
 
     fig.savefig(path, bbox_inches="tight")
 
-    # Save the figure data in csv file
-    df.to_csv(csv_path(path))
+    return df
 
 def prepare_SOC(network):
     n = network.copy()
@@ -750,8 +749,7 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
 
     fig.savefig(path, bbox_inches="tight")
 
-    # Save the figure data in csv file
-    df.to_csv(csv_path(path))
+    return df
 
 def calculate_emission(network, countries):
     n = network.copy()
@@ -998,9 +996,6 @@ def plot_by_country(df, plot_kw, path, plot_figsize=(12,9)):
 
     fig.savefig(path, bbox_inches="tight")
 
-    # Save the figure data in csv file
-    df.drop(columns={"color"}).to_csv(csv_path(path))
-
 def plot_in_detail(df, plot_kw, path, plot_figsize=(6, 8)):
     
     c = df.columns.difference(["color"])
@@ -1041,9 +1036,6 @@ def plot_in_detail(df, plot_kw, path, plot_figsize=(6, 8)):
     ax.set_facecolor("white")
     fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")
-
-    # Save the figure data in csv file
-    df.drop(columns={"color"}).to_csv(csv_path(path))
 
 def extract_durations(n, carrier="li-ion battery"):
 
@@ -1436,8 +1428,15 @@ if __name__ == "__main__":
     df_eql = prepare_energy_balance(n)
 
     filter_scheme = config_kpi.get("filter_scheme",{})
+    include_csvs = config_kpi.get("include_csvs")
+
     if config_kpi.get("custom_plots"):
         for fn, kpi_param in config_kpi["custom_plots"].items():
+
+            if include_csvs:
+                with open(snakemake.output[fn + "_csv"], "a") as my_empty:
+                    pass
+
             try:
                 logger.info(f"Preparing plot {fn}")
 
@@ -1465,11 +1464,15 @@ if __name__ == "__main__":
                 #time series plots have their own route
                 elif extract_param == "energy balance":
                     df = df_eql.copy(deep=True)
-                    filter_plot_energy_balance(n, df, kpi_param, filter_scheme, snakemake.output[fn])
+                    df = filter_plot_energy_balance(n, df, kpi_param, filter_scheme, snakemake.output[fn])
+                    if include_csvs:
+                        df.to_csv(snakemake.output[fn + "_csv"])
                     continue
                 elif extract_param == "SOC":
                     df = df_SOC.copy(deep=True)
-                    filter_plot_SOC(n, df, kpi_param, snakemake.output[fn])
+                    df = filter_plot_SOC(n, df, kpi_param, snakemake.output[fn])
+                    if include_csvs:
+                        df.to_csv(snakemake.output[fn + "_csv"])
                     continue
 
                 #curtailment plots have their own route
@@ -1517,19 +1520,20 @@ if __name__ == "__main__":
                                    snakemake.output[fn],
                                    plot_figsize = tuple(kpi_param.get("figsize",(6,8)))
                                    )
+                    df = df.drop(columns={"color"}).T.sum()
                 elif plot_param == "overview":
                     plot_by_country(df, 
                                     plot_kw, 
                                     snakemake.output[fn],
                                     plot_figsize = tuple(kpi_param.get("figsize",(12,9)))
                                     )
+                    df = df.drop(columns={"color"})
+
+                if include_csvs:
+                    df.to_csv(snakemake.output[fn + "_csv"])
 
             except (TypeError):
                 logger.warning(f"Unable to plot {fn} because the datasets is empty after applying the filters")
 
-                fig, ax = plt.subplots(figsize=(8,8))
-                ax.set_axis_off()
-                fig.text(4,4,f"Unable to plot {fn} because the datasets is empty after applying the filters")
-                fig.savefig(snakemake.output[fn])
-                continue
-
+                with open(snakemake.output[fn], "a") as my_empty:
+                    pass
