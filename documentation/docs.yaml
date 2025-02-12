@@ -1,0 +1,17 @@
+name: docs
+channels:
+- conda-forge
+dependencies:
+- python>=3.12,<3.13
+- pip
+- pandas
+- numpy
+- pypsa
+
+# interactive python
+- jupyterlab
+
+# publishing
+- jupyter-book
+- ghp-import
+- pre-commit
