@@ -6,7 +6,7 @@ Here is a list of changes made to this repository specifically for this work, wi
 
 **Model Features for Energy Storage Technologies**
 
-* Add structure in ``prepare_sector_network`` to specify implementation of storages as either ``Stores`` or ``StorageUnits`` (https://github.com/open-energy-transition/pypsa-eur/pull/15)
+* Add structure in ``prepare_sector_network`` to specify a modelling approaches of storage as either ``Stores`` or ``StorageUnits`` (https://github.com/open-energy-transition/pypsa-eur/pull/15)
 
 * Add iron-air battery as storage technology with implementation as ``StorageUnit`` or ``Store`` (https://github.com/open-energy-transition/pypsa-eur/pull/20)
 
@@ -14,7 +14,7 @@ Here is a list of changes made to this repository specifically for this work, wi
 
 **Model Adjustment Features**
 
-* Overwrite cost table attributes specified in config in ``prepare_costs`` and ``load_costs`` (https://github.com/open-energy-transition/pypsa-eur/pull/23)
+* Add an option to overwrite cost table attributes with the config in ``prepare_costs`` and ``load_costs`` (https://github.com/open-energy-transition/pypsa-eur/pull/23)
 
 * Add ramping limit options for conventional powerplants in ``prepare_sector_network``. (https://github.com/open-energy-transition/form-energy-storage/pull/28)
 
@@ -28,7 +28,6 @@ Here is a list of changes made to this repository specifically for this work, wi
 
 * Add solid biomass and biogas sources for bioenergy power plants (https://github.com/open-energy-transition/form-energy-storage/pull/54)
 
-* Fix for ``heat_dsm_profile`` for leap year (https://github.com/open-energy-transition/form-energy-storage/pull/60)
 
 **Model Visualization Features**
 
@@ -51,3 +50,5 @@ Here is a list of changes made to this repository specifically for this work, wi
 * Fix deprecation warning inside ``prepare_cost`` and ``load_cost`` functions (https://github.com/open-energy-transition/pypsa-eur/pull/24)
 
 * Fix bugs of adding nuclear capacities twice (https://github.com/open-energy-transition/form-energy-storage/pull/32)
+
+* Fix for ``heat_dsm_profile`` for leap year (https://github.com/open-energy-transition/form-energy-storage/pull/60)

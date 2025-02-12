@@ -406,7 +406,7 @@
                   
   <section id="kpis-configuration">
 <h1>KPIs Configuration<a class="headerlink" href="#kpis-configuration" title="Link to this heading">#</a></h1>
-<p>Plot_KPIs creates both predefined and configurable figures. The predefined figures are:</p>
+<p><cite>Plot_KPIs</cite> creates both predefined and configurable figures. The predefined figures are:</p>
 <ul class="simple">
 <li><p>A map of curtailed energy for Germany and the wider region.</p></li>
 <li><p>A map of transmission line loading for Germany and the wider region.</p></li>
@@ -451,7 +451,7 @@ The order is as follows:</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><strong>capacity stats</strong> is a special option because it has two extra components:</p>
-<p><code class="docutils literal notranslate"><span class="pre">stats</span></code>: Three options:</p>
+<p><code class="docutils literal notranslate"><span class="pre">stats</span></code>: Extract capacity data from these three options:</p>
 <ul class="simple">
 <li><p><strong>install</strong>: Extract capacity data from <code class="docutils literal notranslate"><span class="pre">n.statistics.installed_capacity</span></code></p></li>
 <li><p><strong>optimal</strong>: (Default) Extract capacity data from <code class="docutils literal notranslate"><span class="pre">n.statistics.optimal_capacity</span></code></p></li>
@@ -462,9 +462,7 @@ The order is as follows:</p>
 </section>
 <section id="carrier-filter">
 <h3><code class="docutils literal notranslate"><span class="pre">carrier_filter</span></code><a class="headerlink" href="#carrier-filter" title="Link to this heading">#</a></h3>
-<ol class="loweralpha simple">
-<li><p>for system cost, capacity, capacity stats, generation, and emission:</p></li>
-</ol>
+<p><strong>a. for system cost, capacity, capacity stats, generation, and emission</strong>:</p>
 <ul class="simple">
 <li><p><strong>electricity</strong>: Filter carrier with AC bus carrier.</p></li>
 <li><p><strong>electricity+</strong>: Filter carrier with AC bus carrier and also include water tanks and EV batteries.</p></li>
@@ -485,9 +483,7 @@ You can create your own filtering scheme by adding a list in <code class="docuti
 </pre></div>
 </div>
 </div>
-<ol class="loweralpha simple" start="2">
-<li><p>for energy balance:</p></li>
-</ol>
+<p><strong>b. for energy balance</strong>:</p>
 <ul class="simple">
 <li><p><strong>electricity</strong>: Filter carrier with AC bus carrier.</p></li>
 <li><p><strong>electricity+</strong>: Filter carrier with AC bus carrier and also include solar rooftops, BEV chargers, and Vehicle-to-Gas.</p></li>
@@ -496,9 +492,7 @@ You can create your own filtering scheme by adding a list in <code class="docuti
 <li><p><strong>heat</strong>: Filter carrier with heat bus carrier.</p></li>
 <li><p><strong>hydrogen</strong>: Filter carrier with hydrogen bus carrier.</p></li>
 </ul>
-<ol class="loweralpha simple" start="3">
-<li><p>for SOC can be defined individually or in arrays of <code class="docutils literal notranslate"><span class="pre">storage_units</span></code> carriers.</p></li>
-</ol>
+<p><strong>c. for SOC</strong>, this can be defined individually or in arrays of <code class="docutils literal notranslate"><span class="pre">storage_units</span></code> carriers.</p>
 </section>
 <section id="group-carrier">
 <h3><code class="docutils literal notranslate"><span class="pre">group_carrier</span></code><a class="headerlink" href="#group-carrier" title="Link to this heading">#</a></h3>

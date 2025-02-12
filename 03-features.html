@@ -385,20 +385,19 @@
 <p>Here is a list of changes made to this repository specifically for this work, with the potential to be upstreamed to the main PyPSA-Eur repository.</p>
 <p><strong>Model Features for Energy Storage Technologies</strong></p>
 <ul class="simple">
-<li><p>Add structure in <code class="docutils literal notranslate"><span class="pre">prepare_sector_network</span></code> to specify implementation of storages as either <code class="docutils literal notranslate"><span class="pre">Stores</span></code> or <code class="docutils literal notranslate"><span class="pre">StorageUnits</span></code> (<a class="github reference external" href="https://github.com/open-energy-transition/pypsa-eur/pull/15">open-energy-transition/pypsa-eur#15</a>)</p></li>
+<li><p>Add structure in <code class="docutils literal notranslate"><span class="pre">prepare_sector_network</span></code> to specify a modelling approaches of storage as either <code class="docutils literal notranslate"><span class="pre">Stores</span></code> or <code class="docutils literal notranslate"><span class="pre">StorageUnits</span></code> (<a class="github reference external" href="https://github.com/open-energy-transition/pypsa-eur/pull/15">open-energy-transition/pypsa-eur#15</a>)</p></li>
 <li><p>Add iron-air battery as storage technology with implementation as <code class="docutils literal notranslate"><span class="pre">StorageUnit</span></code> or <code class="docutils literal notranslate"><span class="pre">Store</span></code> (<a class="github reference external" href="https://github.com/open-energy-transition/pypsa-eur/pull/20">open-energy-transition/pypsa-eur#20</a>)</p></li>
 <li><p>Add Lithium Iron Phosphate, Vanadium, Liquid-air, Compressed-air energy storage technologies as <code class="docutils literal notranslate"><span class="pre">StorageUnit</span></code> (<a class="github reference external" href="https://github.com/open-energy-transition/pypsa-eur/pull/21">open-energy-transition/pypsa-eur#21</a>)</p></li>
 </ul>
 <p><strong>Model Adjustment Features</strong></p>
 <ul class="simple">
-<li><p>Overwrite cost table attributes specified in config in <code class="docutils literal notranslate"><span class="pre">prepare_costs</span></code> and <code class="docutils literal notranslate"><span class="pre">load_costs</span></code> (<a class="github reference external" href="https://github.com/open-energy-transition/pypsa-eur/pull/23">open-energy-transition/pypsa-eur#23</a>)</p></li>
+<li><p>Add an option to overwrite cost table attributes with the config in <code class="docutils literal notranslate"><span class="pre">prepare_costs</span></code> and <code class="docutils literal notranslate"><span class="pre">load_costs</span></code> (<a class="github reference external" href="https://github.com/open-energy-transition/pypsa-eur/pull/23">open-energy-transition/pypsa-eur#23</a>)</p></li>
 <li><p>Add ramping limit options for conventional powerplants in <code class="docutils literal notranslate"><span class="pre">prepare_sector_network</span></code>. (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/28">open-energy-transition/form-energy-storage#28</a>)</p></li>
 <li><p>Adjust emission to only include the sector scope (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/29">open-energy-transition/form-energy-storage#29</a>)</p></li>
 <li><p>Add option for <code class="docutils literal notranslate"><span class="pre">final_adjustment</span></code> before solving the network. This script is used to limit the grid capacity for each country (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/33">open-energy-transition/form-energy-storage#33</a>)</p></li>
 <li><p>Add a constraint to limit the use of Direct Air Capture (DAC) (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/42">open-energy-transition/form-energy-storage#42</a>)</p></li>
 <li><p>Merge heat DSM implementation and configuration (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/47">open-energy-transition/form-energy-storage#47</a>)</p></li>
 <li><p>Add solid biomass and biogas sources for bioenergy power plants (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/54">open-energy-transition/form-energy-storage#54</a>)</p></li>
-<li><p>Fix for <code class="docutils literal notranslate"><span class="pre">heat_dsm_profile</span></code> for leap year (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/60">open-energy-transition/form-energy-storage#60</a>)</p></li>
 </ul>
 <p><strong>Model Visualization Features</strong></p>
 <ul class="simple">
@@ -416,6 +415,7 @@
 <ul class="simple">
 <li><p>Fix deprecation warning inside <code class="docutils literal notranslate"><span class="pre">prepare_cost</span></code> and <code class="docutils literal notranslate"><span class="pre">load_cost</span></code> functions (<a class="github reference external" href="https://github.com/open-energy-transition/pypsa-eur/pull/24">open-energy-transition/pypsa-eur#24</a>)</p></li>
 <li><p>Fix bugs of adding nuclear capacities twice (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/32">open-energy-transition/form-energy-storage#32</a>)</p></li>
+<li><p>Fix for <code class="docutils literal notranslate"><span class="pre">heat_dsm_profile</span></code> for leap year (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/60">open-energy-transition/form-energy-storage#60</a>)</p></li>
 </ul>
 </section>
 
