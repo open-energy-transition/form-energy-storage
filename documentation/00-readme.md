@@ -41,7 +41,7 @@ For further readings of PyPSA and PyPSA-Eur, check out:
 
 ## Scope of the Model
 
-![alt text](img/iron_air_map.png)
+![alt text](img/map.png)
 
 To run multiple scenarios with a reasonable amount of computational power, we limit the scope of the model to the following:
 
@@ -50,7 +50,7 @@ To run multiple scenarios with a reasonable amount of computational power, we li
   - The spatial resolution are 52 nodes in total, with 31 nodes dedicated to Germany, making the results for Germany more accurate than those for other modeled countries.
 - **Temporal Scope**: 
   - The analysis targets the near-term application of iron-air storage technologies, focusing on the year 2035, while PyPSA-Eur models the period from 2020 to 2050 in 5-year intervals.
-  - The temporal resolution is based on 4380 hours, instead of the full 8760 hours.
+  - The temporal resolution is segmented into 4380 hours. See [Segmentation Temporal Clustering](https://open-energy-transition.github.io/form-energy-storage/21-segmentation.html) for more detail.
 - **Sectoral Scope**: 
   - The model includes only sectors with energy storage technologies, specifically the power, heating, and transport sectors, excluding the industrial sector.
 
@@ -67,12 +67,12 @@ The continental scope and highly resolved spatial scale enables a proper descrip
 smoothing effects for renewable power generation and their varying resource availability.
 
 The original PyPSA-Eur model is described in the [documentation](https://pypsa-eur.readthedocs.io)
-and in the paper[PyPSA-Eur: An Open Optimisation Model of the European Transmission System](https://arxiv.org/abs/1806.01613), 2018,
+and in the paper [PyPSA-Eur: An Open Optimisation Model of the European Transmission System](https://arxiv.org/abs/1806.01613), 2018,
 [arXiv:1806.01613](https://arxiv.org/abs/1806.01613).
 
 ![PyPSA-Eur Grid Model](../doc/img/elec.png)
 
-The dataset consists of:
+The default dataset consists of:
 
 - A grid model based on a modified [GridKit](https://github.com/bdw/GridKit) extraction of the [ENTSO-E Transmission System Map](https://www.entsoe.eu/data/map/). The grid model contains 7072 lines
   (alternating current lines at and above 220kV voltage level and all high voltage direct current lines) and 3803 substations.
@@ -81,8 +81,7 @@ The dataset consists of:
 - Renewable time series based on ERA5 and SARAH, assembled using the [atlite tool](https://github.com/PyPSA/atlite).
 - Geographical potentials for wind and solar generators based on land use (CORINE) and excluding nature reserves (Natura2000) are computed with the [atlite library](https://github.com/PyPSA/atlite).
 
-A sector-coupled extension adds demand and supply for the following sectors: transport, space and water heating, biomass, industry and industrial feedstocks, agriculture,
-forestry and fishing. This completes the energy system and includes all greenhouse gas emitters except waste management and land use.
+In the default PyPSA-Eur version, a sector-coupled extension adds demand and supply for the following sectors: transport, space and water heating, biomass, industry and industrial feedstocks, agriculture, forestry and fishing. This completes the energy system and includes all greenhouse gas emitters except waste management and land use.
 
 Each of these sectors is built up on the transmission network nodes from [PyPSA-Eur](https://github.com/PyPSA/pypsa-eur):
 
@@ -97,8 +96,9 @@ Each of these sectors is built up on the transmission network nodes from [PyPSA-
 * `envs`: includes all the `mamba` environment specifications to run the workflow
 * `logs`: will store log files (does not exist initially)
 * `notebooks`: includes all the `notebooks` used for ad-hoc analysis
-<!--* `report`: contains all files necessary to build the report; plots and result files are generated automatically-->
 * `rules`: includes all the `snakemake`rules loaded in the `Snakefile`
 * `resources`: will store intermediate results of the workflow which can be picked up again by subsequent rules (does not exist initially)
 * `results`: will store the solved PyPSA network data, summary files and plots (does not exist initially)
 * `scripts`: includes all the Python scripts executed by the `snakemake` rules to build the model
+
+<!--* `report`: contains all files necessary to build the report; plots and result files are generated automatically-->

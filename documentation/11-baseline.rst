@@ -5,6 +5,14 @@ Base Configuration
 This is the base configuration outline used in the analysis "The Role of Energy Storage in Germany".
 The complete explaination of each configuration can be found in `PyPSA-Eur: Configuration <https://pypsa-eur.readthedocs.io/en/latest/configuration.html>`_.
 
+.. note::
+   The PyPSA-Eur configuration follows a pyramid-like structure, where the parameters in the highest configuration override those in the configurations below it. 
+   The order is as follows:
+
+   1. `scenarios.form.yaml <https://open-energy-transition.github.io/form-energy-storage/12-scenarios.html>`_
+   2. config.form.yaml (**this section**)
+   3. `config.default.yaml <https://pypsa-eur.readthedocs.io/en/latest/configuration.html>`_
+   4. `config.kpi.yaml <https://open-energy-transition.github.io/form-energy-storage/13-kpis.html>`_
 
 ``run``
 =============
@@ -83,7 +91,7 @@ The analysis includes Germany and its neighboring countries, along with Italy. T
    :start-at: snapshots:
    :end-before: # docs
 
-The baseline scenario is based on the climate year 2013, with the snapshots adjusted accordingly.
+The baseline scenario is based on the climate year 2013, with the snapshots adjusted in each scenarios accordingly.
 
 ``enable``
 ==========
@@ -108,7 +116,7 @@ For the first run, it is recommended to set ``retrieve_databundle``, ``retrieve_
    :end-before: # docs
 
 The CO2 budget is derived from individual countries carbon emission targets for included sectors excluding domestic transport emissions from scope
-This means that the total budget is 315.4 MtCO2. The complete calculation can be seen in the `Assumption processing <https://open-energy-transition.github.io/form-energy-storage/22-co2_calculation.html>`_ section.
+This means that the total budget is 315.4 MtCO2. The complete calculation can be seen in the `Carbon Emission Calculation <https://open-energy-transition.github.io/form-energy-storage/22-co2_calculation.html>`_ section.
 
 ``electricity``
 ===============
@@ -123,7 +131,7 @@ This means that the total budget is 315.4 MtCO2. The complete calculation can be
 Configuration changes made:
 
 * Lithium-ion are disaggregated into 1h, 2h, 4h and 8h for a more detail analysis.
-* Iron-air batteries have 100h max hours
+* Iron-air batteries have a maximum state of charge (``max hours``) of 100 hours
 * Nuclear, Hard Coal, and Lignite power plants are excluded from the powerplantmatching database.
 * Instead, we use a validated dataset of power plants from ``data/custom_powerplants.csv``
 
@@ -151,7 +159,7 @@ The ``default_cutout`` is derived from SARAH-3 weather data, with missing values
    :start-at: renewable:
    :end-before: # docs
 
-The modification in max hours of pumped hydro storages are based on Form Energy. 
+The maximum state of charge storage for pumped hydro storages are limited to 10h, instead of the default 6h.
 
 ``conventional``
 ================
@@ -188,7 +196,15 @@ to better approximate security and reserve capacity for reactive power flows.
    :start-at: transmission_projects:
    :end-before: pypsa_eur:
 
-TYNDP 2020 dataset is not intergrated in this analysis.
+Configuration changes made:
+
+* The Ten Year Network Development Plan (TYNDP) 2020 transmission plan has been excluded from the model.
+* The Netzentwicklungsplan (NEP) of Germany has been included in the model.
+* Only transmission projects that are under construction, in permitting, or confirmed are included.
+
+Since the focus is on Germany, a conservative assumption is made regarding transmission projects, 
+specifically by selecting only those that are most likely to be realized. 
+This is why the NEP is preferred over the TYNDP.
 
 ``existing_capacities``
 =======================
@@ -214,7 +230,8 @@ The content is identical to the default file.
 
 Configuration changes made:
 
-* This analysis includes the transport and heating sectors, while excluding biomass, agriculture, and industry.
+* This analysis includes the power, transport and heating sectors.
+* This analysis excludes biomass, agriculture, and industry sectors.
 * The availability of battery electric vehicles (BEV) for demand-side management is reduced from 50% to 20%.
 * The charging rate for BEVs is reduced from 1.1% to 0.7%.
 * The predicted share of land electric vehicles is reduced from 45% to 30% by 2035.
@@ -222,6 +239,9 @@ Configuration changes made:
 * The reduction in space heating demand is increased from 11% to 21% by 2035.
 * Li-ion batteries, vanadium, liquid air, CAES, and Iron-air batteries are defined as storage unit components rather than stores.
 * The hydrogen network is excluded from the model.
+
+H2 networks were excluded from the study due to the limited scope of H2 in the rest of our model and the trade-off with model complexity, 
+particularly in terms of computational time.
 
 ``load``
 ==============
@@ -253,7 +273,7 @@ Configuration changes made:
 * Coal price is set at 24.57 EUR/MWh `Source from Business Analytiq (2024 Coal price) <https://businessanalytiq.com/procurementanalytics/index/subbituminous-coal-price-index/>`_
 * Lignite price is set at 22.11 EUR/MWh `Source from Business Analytiq (2024 Lignite price) <https://businessanalytiq.com/procurementanalytics/index/lignite-coal-price-index/>`_
 * Uranium price is set at 1.75 EUR/MWh `Source from Business Insider (2024 price) <https://markets.businessinsider.com/commodities/uranium-price>`_
-* Iron-air battery price is set at 23,500 EUR/MWh.
+* Iron-air battery price is set at 23,500 EUR/MWh (2024).
 * Storage energy cost for CAES is 30,000 EUR/MWh (2022).
 * Storage power cost for CAES is 1,725,000 EUR/MW (2022).
 * The lifetime of CAES is reduced to 40 years.
@@ -288,17 +308,9 @@ The following countries each have 1 node, contributing to a total of 9 nodes:
 
 The temporal resolution are segmented into 4380 hours.
 
-``plotting``
-=============
-
-`Plotting Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#plotting>`_
-
-.. literalinclude:: ../config/config.form.yaml
-   :language: yaml
-   :start-at: plotting:
-   :end-before: # docs
-
-Not much change here other than the coloring scheme
+.. note::
+   Although the temporal resolution is not the highest option, it still produces similar results with fewer computational cost. 
+   See `Segmentation Temporal Clustering <https://open-energy-transition.github.io/form-energy-storage/21-segmentation.html>`_ for more details
 
 ``solving``
 =============
@@ -308,3 +320,29 @@ Not much change here other than the coloring scheme
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
    :start-at: solving:
+   :end-before: # docs
+
+.. note::
+   As noted in the `Installation <https://open-energy-transition.github.io/form-energy-storage/01-installation.html>`_ section, 
+   there are several solvers compatible with PyPSA. Please choose the ones that are available to you.
+
+   Each solver has a solver-specific parameter settings (``options``) to chose from:
+
+   * **gurobi**: ``gurobi-default``, ``gurobi-numeric-focus``, ``gurobi-fallback``
+   * **highs**: ``highs-default``
+   * **cplex**: ``cplex-default``
+   * **copt**: ``copt-default``, ``copt-gpu``
+   * **cbc**: ``cbc-default``
+   * **glpk**: ``glpk-default``
+
+
+``plotting``
+=============
+
+`Plotting Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#plotting>`_
+
+.. literalinclude:: ../config/config.form.yaml
+   :language: yaml
+   :start-at: plotting:
+
+Not much change here other than the coloring scheme

@@ -271,6 +271,15 @@ clustering:
   temporal:
     resolution_sector: 4380SEG
 
+# docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#solving
+solving:
+  mem_mb: 150000 #memory in MB; 20 GB enough for 50+B+I+H2; 100 GB for 181+B+I+H2
+  runtime: 24h #runtime in humanfriendly style https://humanfriendly.readthedocs.io/en/latest/
+
+  solver:
+    name: gurobi
+    options: gurobi-default
+
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#plotting
 plotting:
   time_series:
@@ -311,8 +320,3 @@ plotting:
     vanadium: "Reds"
     H2: "Purples"
     PHS: "Blues"
-
-# docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#solving
-solving:
-  mem_mb: 150000 #memory in MB; 20 GB enough for 50+B+I+H2; 100 GB for 181+B+I+H2
-  runtime: 24h #runtime in humanfriendly style https://humanfriendly.readthedocs.io/en/latest/

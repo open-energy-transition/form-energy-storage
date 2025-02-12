@@ -26,22 +26,23 @@ The content of ``baseline-mds`` is defined in ``scenarios.form.yaml``.
 To create your own scenarios, it's recommended to define the configurations in ``scenarios.form.yaml`` by either modifying an existing scenario or duplicating and renaming a scenario.
 
 .. note::
-    If you want to create a model with lower computational requirements, you can adjust the ``clustering: temporal: resolution_sector`` setting here:
+   If you want to create a model with lower computational requirements, you can adjust the ``clustering: temporal: resolution_sector`` setting here:
 
-    .. literalinclude:: ../config/config.form.yaml
-       :language: yaml
-       :start-at: clustering:
-       :end-before: # docs
+   .. literalinclude:: ../config/config.form.yaml
+      :language: yaml
+      :start-at: clustering:
+      :end-before: # docs
 
-    The rule of thumb is:
+   The general rules of thumb are as follows:
 
-    The general rule of thumb are as follows:
-
-    * ``4380SEG``: Three-hour time resolution, takes 4 hours to run on a computer cluster
-    * ``2920SEG``: Four-hour time resolution, takes 2 hours to run on a computer cluster
-    * ``100H``: Hundred-hour time resolution, very quick to solve.
-
-    If you want to test run this model on your computer, replace ``4380SEG`` with ``100H``.
+   * ``1H``: 1-hour time resolution
+   * ``4380SEG``: 3 times faster computational time compared to ``1H``
+   * ``2920SEG``: 4 times faster computational time compared to ``1H``
+   * ``100H``: significantly quicker to solve compared to ``1H``
+   
+   If you want to test run this model on your computer, replace ``4380SEG`` with ``100H``.
+   Using a lower time resolution, such as that from ``SEG``, can still capture the desired variability in the model. 
+   See `Segmentation Temporal Clustering <https://open-energy-transition.github.io/form-energy-storage/21-segmentation.html>`_ for more details
 
 Run the model
 =========================
@@ -123,11 +124,11 @@ The ``-n`` at the end indicates a dry run. If no errors occur, it will list the 
 
     .. literalinclude:: ../config/config.form.yaml
        :language: yaml
-       :start-at: enable:
+       :start-after: #enable
        :end-before: # docs
 
     * ``retrieve_databundle``: set this to true if a file in ``data/`` is missing
-    * ``retrieve_cost_data``: set this to true if ``resources/.. ../cost_2035.csv`` is missing
+    * ``retrieve_cost_data``: set this to true if ``resources/{run}/cost_2035.csv`` is missing
     * ``retrieve_cutout``: set this to true if ``cutouts/europe-2013-sarah3-era5.nc`` is missing
 
     For cutouts from years other than 2013, 2018, and 2023, you can download them from xx.
@@ -145,9 +146,9 @@ Analyze the model
 
 There are several ways to analyze the results of the Snakemake run:
 
-* By using the CSV files and graphs located in ``results/../csvs/`` and ``results/../graphs/``
+* By using the CSV files and graphs located in ``results/{run}/csvs/`` and ``results/{run}/graphs/``
 * By using a pre-configured Jupyter Notebook in ``notebooks/`` or any Jupyter Notebook of your choice.
-* By utilizing the customizable KPIs in ``results/../maps/``
+* By utilizing the customizable KPIs in ``results/{run}/maps/``
 
 The automatic generation of KPI plots is a feature from this project and may be upstreamed in the future. To create your own custom KPI plots, see `KPI Configuration <https://open-energy-transition.github.io/form-energy-storage/13-kpis.html>`_
 

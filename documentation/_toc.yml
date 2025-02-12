@@ -16,6 +16,7 @@ parts:
   - file: 13-kpis.rst
 - caption: Assumption
   chapters:
+  - file: 21-segmentation.md
   - file: 22-co2_calculation
 
 
