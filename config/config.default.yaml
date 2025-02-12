@@ -329,6 +329,7 @@ transmission_projects:
     #- planned_not_yet_permitted
     #- under_consideration
   new_link_capacity: zero #keep or zero
+  filter_year: 2050
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#transformers
 transformers:

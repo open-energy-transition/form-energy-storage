@@ -12,6 +12,8 @@ Upcoming Release
 ================
 
 
+* Improve transmission_projects by adding a configuration parameter ``filter_year`` that lets you filter for projects with a build year up until and including a given year.
+
 * Feature: Add `Plot_KPIs` which generates both predefined and configurable results figures from ``config/config.kpi.yaml``. To generate those figures, use the rule``plot_KPIs_all``.
 
 * Added option to include an exogenous DAC yearly limit specified via the configuration file (in MtCO2)
