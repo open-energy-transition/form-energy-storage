@@ -277,7 +277,7 @@ delayed-nep-mid-capex-mds:
       iron-air battery: 18477  # in EUR/MWh (2020) from 20,000 EUR/MWh (2024)
   scenario:
     ll:
-      - v1.06  # limit to confirmed projects from NEP links to model a delay in the planning/permitting
+      - v1.012  # limit to confirmed projects and 2032 from NEP projects to model a delay in the planning/permitting
   transmission_projects:
     enable: true
     include:
@@ -294,6 +294,7 @@ delayed-nep-mid-capex-mds:
       #- planned_not_yet_permitted
       #- under_consideration
     new_link_capacity: zero #keep or zero
+    filter_year: 2032
 
 delayed-nep-low-capex-mds:
   sector:
@@ -304,7 +305,7 @@ delayed-nep-low-capex-mds:
       iron-air battery: 14089  # in EUR/MWh (2020) from 15,250 EUR/MWh (2024)
   scenario:
     ll:
-      - v1.06  # limit to confirmed projects from NEP links to model a delay in the planning/permitting
+      - v1.012  # limit to confirmed projects and 2032 from NEP projects to model a delay in the planning/permitting
   transmission_projects:
     enable: true
     include:
@@ -321,6 +322,7 @@ delayed-nep-low-capex-mds:
       #- planned_not_yet_permitted
       #- under_consideration
     new_link_capacity: zero #keep or zero
+    filter_year: 2032
 
 delayed-nep-nomds:
   sector:
@@ -328,7 +330,7 @@ delayed-nep-nomds:
     storage_units: ["li-ion battery", "vanadium", "lair", "pair"]
   scenario:
     ll:
-      - v1.06  # limit to confirmed projects from NEP links to model a delay in the planning/permitting
+      - v1.012  # limit to confirmed projects and 2032 from NEP projects to model a delay in the planning/permitting
   transmission_projects:
     enable: true
     include:
@@ -345,6 +347,7 @@ delayed-nep-nomds:
       #- planned_not_yet_permitted
       #- under_consideration
     new_link_capacity: zero #keep or zero
+    filter_year: 2032
 
 gasprice-peak-mid-capex-mds:
   sector:
@@ -354,9 +357,9 @@ gasprice-peak-mid-capex-mds:
     investment:
       iron-air battery: 18477  # in EUR/MWh (2020) from 20,000 EUR/MWh (2024)
     fuel:
-      OCGT: 38.84 # https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex)
-      CCGT: 38.84
-      gas: 38.84
+      OCGT: 58.26 # https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex) + 50%
+      CCGT: 58.26 # https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex) + 50%
+      gas: 58.26 # https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex) + 50%
 
 gasprice-peak-low-capex-mds:
   sector:
@@ -366,9 +369,9 @@ gasprice-peak-low-capex-mds:
     investment:
       iron-air battery: 14089  # in EUR/MWh (2020) from 15,250 EUR/MWh (2024)
     fuel:
-      OCGT: 38.84 # https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex)
-      CCGT: 38.84
-      gas: 38.84
+      OCGT: 58.26 # https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex) + 50%
+      CCGT: 58.26 # https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex) + 50%
+      gas: 58.26 # https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex) + 50%
 
 gasprice-peak-nomds:
   sector:
@@ -376,6 +379,150 @@ gasprice-peak-nomds:
     storage_units: ["li-ion battery", "vanadium", "lair", "pair"]
   costs:
     fuel:
-      OCGT: 38.84 # https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex)
-      CCGT: 38.84
-      gas: 38.84
+      OCGT: 58.26 # https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex) + 50%
+      CCGT: 58.26 # https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex) + 50%
+      gas: 58.26 # https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex) + 50%
+
+cy2010-mid-capex-mds:
+  sector:
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+  costs:
+    investment:
+      iron-air battery: 18477  # in EUR/MWh (2020) from 20,000 EUR/MWh (2024)
+  snapshots:
+    start: "2010-01-01"
+    end: "2011-01-01"
+  atlite:
+    default_cutout: europe-2010-sarah3-era5
+    cutouts:
+      europe-2010-sarah3-era5:
+        module: [sarah, era5] # in priority order
+        x: [-12., 42.]
+        y: [33., 72.]
+        dx: 0.3
+        dy: 0.3
+        time: ['2010', '2010']
+  renewable:
+    onwind:
+      cutout: europe-2010-sarah3-era5
+    offwind-ac:
+      cutout: europe-2010-sarah3-era5
+    offwind-dc:
+      cutout: europe-2010-sarah3-era5
+    offwind-float:
+      cutout: europe-2010-sarah3-era5
+    solar:
+      cutout: europe-2010-sarah3-era5
+    solar-hsat:
+      cutout: europe-2010-sarah3-era5
+    hydro:
+      cutout: europe-2010-sarah3-era5
+
+cy2010-low-capex-mds:
+  sector:
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+  costs:
+    investment:
+      iron-air battery: 14089  # in EUR/MWh (2020) from 15,250 EUR/MWh (2024)
+  snapshots:
+    start: "2010-01-01"
+    end: "2011-01-01"
+  atlite:
+    default_cutout: europe-2010-sarah3-era5
+    cutouts:
+      europe-2010-sarah3-era5:
+        module: [sarah, era5] # in priority order
+        x: [-12., 42.]
+        y: [33., 72.]
+        dx: 0.3
+        dy: 0.3
+        time: ['2010', '2010']
+  renewable:
+    onwind:
+      cutout: europe-2010-sarah3-era5
+    offwind-ac:
+      cutout: europe-2010-sarah3-era5
+    offwind-dc:
+      cutout: europe-2010-sarah3-era5
+    offwind-float:
+      cutout: europe-2010-sarah3-era5
+    solar:
+      cutout: europe-2010-sarah3-era5
+    solar-hsat:
+      cutout: europe-2010-sarah3-era5
+    hydro:
+      cutout: europe-2010-sarah3-era5
+
+cy2012-mid-capex-mds:
+  sector:
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+  costs:
+    investment:
+      iron-air battery: 18477  # in EUR/MWh (2020) from 20,000 EUR/MWh (2024)
+  snapshots:
+    start: "2012-01-01"
+    end: "2013-01-01"
+  atlite:
+    default_cutout: europe-2012-sarah3-era5
+    cutouts:
+      europe-2012-sarah3-era5:
+        module: [sarah, era5] # in priority order
+        x: [-12., 42.]
+        y: [33., 72.]
+        dx: 0.3
+        dy: 0.3
+        time: ['2012', '2012']
+  renewable:
+    onwind:
+      cutout: europe-2012-sarah3-era5
+    offwind-ac:
+      cutout: europe-2012-sarah3-era5
+    offwind-dc:
+      cutout: europe-2012-sarah3-era5
+    offwind-float:
+      cutout: europe-2012-sarah3-era5
+    solar:
+      cutout: europe-2012-sarah3-era5
+    solar-hsat:
+      cutout: europe-2012-sarah3-era5
+    hydro:
+      cutout: europe-2012-sarah3-era5
+
+cy2012-low-capex-mds:
+  sector:
+    stores: ["H2"]
+    storage_units: ["li-ion battery", "vanadium", "lair", "pair", "iron-air battery"]
+  costs:
+    investment:
+      iron-air battery: 14089  # in EUR/MWh (2020) from 15,250 EUR/MWh (2024)
+  snapshots:
+    start: "2012-01-01"
+    end: "2013-01-01"
+  atlite:
+    default_cutout: europe-2012-sarah3-era5
+    cutouts:
+      europe-2012-sarah3-era5:
+        module: [sarah, era5] # in priority order
+        x: [-12., 42.]
+        y: [33., 72.]
+        dx: 0.3
+        dy: 0.3
+        time: ['2012', '2012']
+  renewable:
+    onwind:
+      cutout: europe-2012-sarah3-era5
+    offwind-ac:
+      cutout: europe-2012-sarah3-era5
+    offwind-dc:
+      cutout: europe-2012-sarah3-era5
+    offwind-float:
+      cutout: europe-2012-sarah3-era5
+    solar:
+      cutout: europe-2012-sarah3-era5
+    solar-hsat:
+      cutout: europe-2012-sarah3-era5
+    hydro:
+      cutout: europe-2012-sarah3-era5
