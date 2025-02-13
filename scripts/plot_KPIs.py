@@ -869,7 +869,7 @@ def calculate_generation(network, countries):
     
     return df
 
-def filter_and_rename(network, df, filter_scheme = {}, carrier_filter = None, group_carrier = None):
+def filter_and_rename(network, df, filter_scheme = {}, carrier_filter = None, group_carrier = None, threshold=1):
     n = network.copy()
 
     # Replace countries with short country names
@@ -905,7 +905,7 @@ def filter_and_rename(network, df, filter_scheme = {}, carrier_filter = None, gr
     elif group_carrier == "sector": 
         df = df.rename(index=sector_names).groupby(["nice_name"]).sum()
 
-    to_drop = df.loc[abs(df.T.sum()) < 1,:].index
+    to_drop = df.loc[abs(df.T.sum()) < threshold,:].index
     # An exception if Iron Air Battery Storage is still in
     if 'Iron-Air Battery Storage' in to_drop:
         to_drop = to_drop.drop('Iron-Air Battery Storage')
@@ -1469,10 +1469,12 @@ if __name__ == "__main__":
                 elif plot_kw.get("ylabel", "") == "%":
                     plot_kw["ylabel"] = "\%"
 
+                threshold = 1e-3 if extract_param == "emission" else 1
                 df = filter_and_rename(n, df, 
                                        filter_scheme = filter_scheme,
                                        carrier_filter = kpi_param.get("carrier_filter",None), 
-                                       group_carrier = kpi_param.get("group_carrier",None), 
+                                       group_carrier = kpi_param.get("group_carrier",None),
+                                       threshold = threshold,
                                        )
 
                 plot_param = kpi_param.get("plot",None)
