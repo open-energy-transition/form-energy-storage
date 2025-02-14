@@ -24,13 +24,16 @@ def attach_transmission_projects(
     for path in transmission_projects:
         path = Path(path)
         df = pd.read_csv(path, index_col=0, dtype={"bus0": str, "bus1": str})
+        filter_year = params.get("transmission_projects").get("filter_year", np.inf)
         if df.empty:
             continue
         if "new_buses" in path.name:
             n.add("Bus", df.index, **df)
         elif "new_lines" in path.name:
+            df.query("build_year <= @filter_year", inplace=True)
             n.add("Line", df.index, **df)
         elif "new_links" in path.name:
+            df.query("build_year <= @filter_year", inplace=True)
             n.add("Link", df.index, **df)
         elif "adjust_lines" in path.name:
             n.lines.update(df)

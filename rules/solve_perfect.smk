@@ -7,8 +7,10 @@ rule add_existing_baseyear:
         sector=config_provider("sector"),
         existing_capacities=config_provider("existing_capacities"),
         costs=config_provider("costs"),
+        max_hours=config_provider("electricity","max_hours"),
         heat_pump_sources=config_provider("sector", "heat_pump_sources"),
         energy_totals_year=config_provider("energy", "energy_totals_year"),
+        conventional=config_provider("conventional"),
     input:
         network=RESULTS
         + "prenetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
@@ -88,6 +90,25 @@ rule prepare_perfect_foresight:
     script:
         "../scripts/prepare_perfect_foresight.py"
 
+if config["enable"].get("final_adjustment",False):
+
+    rule final_adjustment_perfect:
+        params:
+            chp_extendable_DE=config_provider("sector","chp_extendable_DE"),
+        input:
+            network=RESULTS
+            + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
+            ntc="data/TYNDP_NTC.csv",
+        output:
+            network=RESULTS
+            + "prenetworks-brownfield-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
+        log:
+            logs(RESULTS
+            + "logs/final_adjustment_perfect_base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.log")
+        conda:
+            "../envs/environment.yaml"
+        script:
+            "../scripts/final_adjustment.py"
 
 rule solve_sector_network_perfect:
     params:
@@ -100,8 +121,13 @@ rule solve_sector_network_perfect:
         ),
         custom_extra_functionality=input_custom_extra_functionality,
     input:
-        network=RESULTS
-        + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
+        network=lambda w: ( 
+            RESULTS
+            + "prenetworks-brownfield-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
+            if config["enable"].get("final_adjustment",False)
+            else RESULTS
+            + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",
+        ),
         costs=resources("costs_2030.csv"),
     output:
         network=RESULTS
@@ -128,8 +154,7 @@ rule solve_sector_network_perfect:
     conda:
         "../envs/environment.yaml"
     script:
-        "../scripts/solve_network.py"
-
+            "../scripts/solve_network.py"
 
 def input_networks_make_summary_perfect(w):
     return {
@@ -143,6 +168,8 @@ def input_networks_make_summary_perfect(w):
 
 
 rule make_summary_perfect:
+    params:
+        max_hours=config_provider("electricity","max_hours"),
     input:
         unpack(input_networks_make_summary_perfect),
         costs=resources("costs_2020.csv"),
