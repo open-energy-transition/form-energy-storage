@@ -1469,7 +1469,7 @@ if __name__ == "__main__":
                 elif plot_kw.get("ylabel", "") == "%":
                     plot_kw["ylabel"] = "\%"
 
-                threshold = 1e-3 if extract_param == "emission" else 1
+                threshold = 1e-3 if extract_param in ["emission","system cost"] else 1
                 df = filter_and_rename(n, df, 
                                        filter_scheme = filter_scheme,
                                        carrier_filter = kpi_param.get("carrier_filter",None), 
