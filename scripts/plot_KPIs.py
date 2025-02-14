@@ -887,7 +887,7 @@ def filter_and_rename(network, df, filter_scheme = {}, carrier_filter = None, gr
     stats = pd.DataFrame(n.statistics.energy_balance(groupby=["bus", "carrier", "bus_carrier"]))
 
     if carrier_filter == "electricity":
-        carrier = stats[stats.index.get_level_values("bus_carrier").isin(["AC"])].index.get_level_values("carrier").unique()
+        carrier = [k for k,v in sector_names.items() if v == "Power Sector"]
         df = df.loc[df.index.isin(carrier),:]
 
     elif carrier_filter == "electricity+":
