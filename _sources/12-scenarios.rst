@@ -17,6 +17,8 @@ there is always a corresponding counterfactual scenario that excludes multi-day 
 
 Thus, for example changes specified in `scenario.form.yaml` will add to and override configurations in `config.form.yaml` and so on.
 
+Thus, for example changes specified in `scenario.form.yaml` will add to and override configurations in `config.form.yaml` and so on.
+
 ``Baseline``
 ============
 

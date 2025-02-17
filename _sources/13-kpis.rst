@@ -22,6 +22,8 @@ The configurable figures are defined based on ``config/config.kpi.yaml``.
 
 Thus, for example changes specified in `scenario.form.yaml` will add to and override configurations in `config.form.yaml` and so on.
 
+Thus, for example changes specified in `scenario.form.yaml` will add to and override configurations in `config.form.yaml` and so on.
+
 Key components of each configuration:
 
 1. ``extract``: Defines the network statistics for the figures (e.g., system cost, generation, storage, emissions).
