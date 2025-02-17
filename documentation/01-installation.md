@@ -4,7 +4,7 @@ The installation process is a modified version of [PyPSA-Eur Installation](https
 
 ## Fork and Clone the Repository
 
-In the **Create a new fork** pop-up menu, shown in the figure below, deselect the default Copy the `main` branch only option.
+To make modifications to the existing code base, it is necessary to create your own fork of this repository. In the **Create a new fork** pop-up menu, shown in the figure below, deselect the default 'Copy the `main` branch only' option.
 
 :::{admonition} Fork this repository!
 :class: tip
@@ -13,7 +13,7 @@ In the **Create a new fork** pop-up menu, shown in the figure below, deselect th
 
 :::
 
-The goal is to keep two branches: `gh-pages`, which is necessary for rebuilding this website, and `feature/calibrated-run`, which is required for generating the calibrated runs for the year 2023.
+The repository consists of two additional branches outside of the `master` branch which contains the main code base for the study: `gh-pages`, which is necessary for rebuilding this documentation website, and `feature/calibrated-run`, which is required for generating the calibrated runs for the year 2023.
 
 Then, clone your newly created repository using the version control system `git` in the command line.
 
@@ -74,5 +74,4 @@ and the non-free, commercial software (for some of which free academic licenses 
 
 For installation instructions of these solvers for your operating system, follow the links above. Commercial solvers such as Gurobi and CPLEX currently significantly outperform open-source solvers for large-scale problems, and it might be the case that you can only retrieve solutions by using a commercial solver. Nevertheless, you can still use open-source solvers for smaller problems.
 
-[Instructions how to install a solver in the documentation of PyPSA](https://pypsa.readthedocs.io/en/latest/installation.html#getting-a-solver-for-linear-optimisation)
 

@@ -3,17 +3,19 @@ Scenarios Configuration
 ##########################################
 
 This is the scenario outline used in the analysis **The Role of Energy Storage in Germany**.
-For each scenario involving medium-duration storages, 
-there is always a corresponding counterfactual scenario that excludes medium-duration storages.
+For each scenario involving multi-day storages, 
+there is always a corresponding counterfactual scenario that excludes multi-day storages.
 
 .. note::
-   The PyPSA-Eur configuration follows a pyramid-like structure, where the parameters in the highest configuration override those in the configurations below it. 
+   The PyPSA-Eur configuration files follow a pyramid-like structure, where the parameters in the highest configuration file add to and override those in the configuration file below it. 
    The order is as follows:
 
    1. scenarios.form.yaml (**this section**)
    2. `config.form.yaml <https://open-energy-transition.github.io/form-energy-storage/11-baseline.html>`_
    3. `config.default.yaml <https://pypsa-eur.readthedocs.io/en/latest/configuration.html>`_
    4. `config.kpi.yaml <https://open-energy-transition.github.io/form-energy-storage/13-kpis.html>`_
+
+Thus, for example changes specified in `scenario.form.yaml` will add to and override configurations in `config.form.yaml` and so on.
 
 ``Baseline``
 ============
@@ -40,7 +42,7 @@ slightly lower than the Baseline scenario.
 =============
 
 The Low-Capex scenario sets the cost of iron-air at 1,525 EUR/kWh (2024), 
-which is half the cost of the Baseline scenario.
+representing the lowest cost for iron-air when compared to the Baseline scenario.
 
 .. literalinclude:: ../config/scenarios.form.yaml
    :language: yaml
@@ -80,10 +82,10 @@ as well as a pronounced “dark doldrums” for about 10 days in January (`Trans
    :start-at: cy1996-mds:
    :end-before: nogasppde-mid-capex-mds:
 
-``Germany Gas Phased Out``
+``Germany Gas Power Plant Phase-Out``
 ==========================
 
-These scenarios assume that Germany successfully phases out gas-fired power plants and gas CHPs. 
+These scenarios assume that Germany, driven by policy decision, successfully phases out gas-fired power plants and gas CHPs in 2035. 
 The impact of the cost difference between iron-air batteries at 2,000 EUR/kWh (2024) and 1,525 EUR/kWh (2024) 
 is also examined.
 
@@ -95,7 +97,7 @@ is also examined.
 ``Transmission Sensitivity``
 ============================
 
-These scenarios assume that the EU's transmission project in 2035 faces setbacks, with only existing lines available. 
+These scenarios assume that Germany's 'NEP' transmission projects face delays, with only confirmed AC lines and DC links available that are to be built before and including 2032. 
 The impact of the cost difference between iron-air batteries at 2,000 EUR/kWh (2024) and 1,525 EUR/kWh (2024) 
 is also examined.
 

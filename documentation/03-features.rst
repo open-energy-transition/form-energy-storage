@@ -6,7 +6,7 @@ Here is a list of changes made to this repository specifically for this work, wi
 
 **Model Features for Energy Storage Technologies**
 
-* Add structure in ``prepare_sector_network`` to specify a modelling approaches of storage as either ``Stores`` or ``StorageUnits`` (https://github.com/open-energy-transition/pypsa-eur/pull/15)
+* Add structure in ``prepare_sector_network`` to specify a modelling approach of storages as either ``Stores`` or ``StorageUnits`` (https://github.com/open-energy-transition/pypsa-eur/pull/15)
 
 * Add iron-air battery as storage technology with implementation as ``StorageUnit`` or ``Store`` (https://github.com/open-energy-transition/pypsa-eur/pull/20)
 
@@ -20,13 +20,11 @@ Here is a list of changes made to this repository specifically for this work, wi
 
 * Adjust emission to only include the sector scope (https://github.com/open-energy-transition/form-energy-storage/pull/29)
 
-* Add option for ``final_adjustment`` before solving the network. This script is used to limit the grid capacity for each country (https://github.com/open-energy-transition/form-energy-storage/pull/33)
+* Add option for ``final_adjustment`` before solving the network. This script is used to limit the electricity grid interconnecting capacity for each country (https://github.com/open-energy-transition/form-energy-storage/pull/33)
 
 * Add a constraint to limit the use of Direct Air Capture (DAC) (https://github.com/open-energy-transition/form-energy-storage/pull/42)
 
-* Merge heat DSM implementation and configuration (https://github.com/open-energy-transition/form-energy-storage/pull/47)
-
-* Add solid biomass and biogas sources for bioenergy power plants (https://github.com/open-energy-transition/form-energy-storage/pull/54)
+* Include heat DSM implementation and configuration (https://github.com/open-energy-transition/form-energy-storage/pull/47)
 
 
 **Model Visualization Features**
@@ -37,7 +35,7 @@ Here is a list of changes made to this repository specifically for this work, wi
 
 * Add plotting script for FE KPIs (https://github.com/open-energy-transition/form-energy-storage/pull/37)
 
-* Make the use of Latex for plotting optional (https://github.com/open-energy-transition/form-energy-storage/pull/59)
+* Include optional use of Latex for plotting (https://github.com/open-energy-transition/form-energy-storage/pull/59)
 
 **Model Calibration Runs**
 

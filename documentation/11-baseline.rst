@@ -6,7 +6,7 @@ This is the base configuration outline used in the analysis "The Role of Energy 
 The complete explaination of each configuration can be found in `PyPSA-Eur: Configuration <https://pypsa-eur.readthedocs.io/en/latest/configuration.html>`_.
 
 .. note::
-   The PyPSA-Eur configuration follows a pyramid-like structure, where the parameters in the highest configuration override those in the configurations below it. 
+   The PyPSA-Eur configuration files follow a pyramid-like structure, where the parameters in the highest configuration file add to and override those in the configuration file below it.
    The order is as follows:
 
    1. `scenarios.form.yaml <https://open-energy-transition.github.io/form-energy-storage/12-scenarios.html>`_
@@ -14,10 +14,12 @@ The complete explaination of each configuration can be found in `PyPSA-Eur: Conf
    3. `config.default.yaml <https://pypsa-eur.readthedocs.io/en/latest/configuration.html>`_
    4. `config.kpi.yaml <https://open-energy-transition.github.io/form-energy-storage/13-kpis.html>`_
 
+Thus, for example changes specified in `scenario.form.yaml` will add to and override configurations in `config.form.yaml` and so on.
+
 ``run``
 =============
 
-`Run Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run>`_
+For a comprehensive explanation, refer to the upstream PyPSA-Eur `Run Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run>`_.
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -32,7 +34,7 @@ This is the only few section in the file that needs to be changed in order to ru
 ``foresight``
 =============
 
-`Foresight Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#foresight>`_
+For a comprehensive explanation, refer to the upstream PyPSA-Eur `Foresight Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#foresight>`_.
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -44,6 +46,7 @@ The scope of this work is based on myopic foresight.
 ``scenario``
 ============
 
+For a comprehensive explanation, refer to the upstream PyPSA-Eur
 * `Scenario Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#scenario>`_
 * `Wildcard Documentation <https://pypsa-eur.readthedocs.io/en/latest/wildcards.html>`_
 
@@ -59,14 +62,14 @@ The scope of this work is based on myopic foresight.
 ``countries``
 =============
 
-`Countries Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#countries>`_
+For a comprehensive explanation, refer to the upstream PyPSA-Eur `Countries Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#countries>`_.
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
    :start-at: countries:
    :end-before: # docs
 
-The analysis includes Germany and its neighboring countries, along with Italy. The complete list:
+The analysis includes Germany and its grid neighboring countries, along with Italy. The complete list:
 
 * AT: Austria
 * BE: Belgium
@@ -84,7 +87,7 @@ The analysis includes Germany and its neighboring countries, along with Italy. T
 ``snapshots``
 =============
 
-`Snapshots Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#snapshots>`_
+For a comprehensive explanation, refer to the upstream PyPSA-Eur `Snapshots Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#snapshots>`_.
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -96,7 +99,7 @@ The baseline scenario is based on the climate year 2013, with the snapshots adju
 ``enable``
 ==========
 
-`Enable Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#enable>`_
+For a comprehensive explanation, refer to the upstream PyPSA-Eur `Enable Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#enable>`_.
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -108,7 +111,7 @@ For the first run, it is recommended to set ``retrieve_databundle``, ``retrieve_
 ``co2 budget``
 ==============
 
-`CO2 Budget Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#co2-budget>`_
+For a comprehensive explanation, refer to the upstream PyPSA-Eur `CO2 Budget Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#co2-budget>`_.
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -116,12 +119,12 @@ For the first run, it is recommended to set ``retrieve_databundle``, ``retrieve_
    :end-before: # docs
 
 The CO2 budget is derived from individual countries carbon emission targets for included sectors excluding fossil fuel domestic transport emissions from scope
-This means that the total budget is 315.4 MtCO2. The complete calculation can be seen in the `Carbon Emission Calculation <https://open-energy-transition.github.io/form-energy-storage/22-co2_calculation.html>`_ section.
+This means that the total budget is 315.4 MtCO2, equivalent to 10.7% of 1990 emissions for this scope. The complete calculation can be seen in the `Carbon Emission Calculation <https://open-energy-transition.github.io/form-energy-storage/22-co2_calculation.html>`_ section.
 
 ``electricity``
 ===============
 
-`Electricity Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#electricity>`_
+For a comprehensive explanation, refer to the upstream PyPSA-Eur `Electricity Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#electricity>`_.
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -131,14 +134,14 @@ This means that the total budget is 315.4 MtCO2. The complete calculation can be
 Configuration changes made:
 
 * Lithium-ion are disaggregated into 1h, 2h, 4h and 8h for a more detail analysis.
-* Iron-air batteries have a maximum state of charge (``max hours``) of 100 hours
+* Iron-air batteries have a maximum storage duration (``max hours``) of 100 hours
 * Nuclear, Hard Coal, and Lignite power plants are excluded from the powerplantmatching database.
-* Instead, we use a validated dataset of power plants from ``data/custom_powerplants.csv``
+* Instead, we use a validated dataset of power plants from ``data/custom_powerplants.csv`` where German nuclear, coal and lignite power plants are phased out for 2035.
 
 ``atlite``
 ==========
 
-`Atlite Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#atlite>`_
+For a comprehensive explanation, refer to the upstream PyPSA-Eur `Atlite Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#atlite>`_.
 
 Define and specify the ``atlite.Cutout`` used for calculating renewable potentials and time-series. All options except for ``features`` are directly used as `cutout parameters <https://atlite.readthedocs.io/en/latest/ref_api.html#cutout>`__.
 
@@ -147,24 +150,24 @@ Define and specify the ``atlite.Cutout`` used for calculating renewable potentia
    :start-at: atlite:
    :end-before: # docs
 
-The ``default_cutout`` is derived from SARAH-3 weather data, with missing values filled in using ERA-5 weather data.
+The ``default_cutout`` is derived for 2013 from SARAH-3 weather data, with missing values filled in using ERA-5 weather data.
 
 ``renewable``
 =============
 
-`Renewable Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#renewable>`_
+For a comprehensive explanation, refer to the upstream PyPSA-Eur `Renewable Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#renewable>`_.
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
    :start-at: renewable:
    :end-before: # docs
 
-The maximum state of charge storage for pumped hydro storages are limited to 10h, instead of the default 6h.
+The maximum storage duration for pumped hydro storages are set to 10h, instead of the default 6h.
 
 ``conventional``
 ================
 
-`Conventional Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#conventional>`_
+For a comprehensive explanation, refer to the upstream PyPSA-Eur `Conventional Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#conventional>`_.
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -176,7 +179,7 @@ The minimum energy dispatch for nuclear power plants is set to 50%.
 ``lines``
 =============
 
-`Lines Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#lines>`_
+For a comprehensive explanation, refer to the upstream PyPSA-Eur `Lines Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#lines>`_.
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -184,12 +187,12 @@ The minimum energy dispatch for nuclear power plants is set to 50%.
    :end-before: # docs
 
 The maximum line capacity is set to 50% of its total capacity, rather than 70%, 
-to better approximate security and reserve capacity for reactive power flows.
+to better approximate security and reserve capacity for reactive power flows given the clustered spatial resolution of the model.
 
 ``transmission_projects``
 =========================
 
-`Transmission Projects Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#transmission_projects>`_
+For a comprehensive explanation, refer to the upstream PyPSA-Eur `Transmission Projects Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#transmission_projects>`_.
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -209,19 +212,19 @@ This is why the NEP is preferred over the TYNDP.
 ``existing_capacities``
 =======================
 
-`Existing Capacities Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#existing_capacities>`_
+For a comprehensive explanation, refer to the upstream PyPSA-Eur `Existing Capacities Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#existing_capacities>`_.
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
    :start-at: existing_capacities:
    :end-before: # docs
 
-The content is identical to the default file.
+The content is kept identical to the default configuration file.
 
 ``sector``
 =======================
 
-`Sector Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#sector>`_
+For a comprehensive explanation, refer to the upstream PyPSA-Eur `Sector Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#sector>`_.
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -230,23 +233,20 @@ The content is identical to the default file.
 
 Configuration changes made:
 
-* This analysis includes the power, transport and heating sectors.
-* This analysis excludes biomass, agriculture, and industry sectors.
+* This analysis includes the power, heating and electric transport sector.
+* This analysis excludes the biomass, agriculture, industry, and fossil transport sector.
 * The availability of battery electric vehicles (BEV) for demand-side management is reduced from 50% to 20%.
-* The charging rate for BEVs is reduced from 1.1% to 0.7%.
+* The charging rate for BEVs is reduced from 11 kW to 7 kW.
 * The predicted share of land electric vehicles is reduced from 45% to 30% by 2035.
 * Land transport emissions are excluded from the model, as they are determined exogenously.
-* The reduction in space heating demand is increased from 11% to 21% by 2035.
+* The reduction in space heating demand is increased from 11% to 21% by 2035 to adjust for the geographical scope of the model.
 * Li-ion batteries, vanadium, liquid air, CAES, and Iron-air batteries are defined as storage unit components rather than stores.
-* The hydrogen network is excluded from the model.
-
-H2 networks were excluded from the study due to the limited scope of H2 in the rest of our model and the trade-off with model complexity, 
-particularly in terms of computational time.
+* The hydrogen network is excluded from the model as to the limited scope of H2 in the rest of the model and as a trade-off with model complexity, particularly in terms of computational time.
 
 ``load``
 ==============
 
-`Load Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#load>`_
+For a comprehensive explanation, refer to the upstream PyPSA-Eur `Load Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#load>`_.
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -259,7 +259,7 @@ By 2035, electricity demand is projected to increase by 26% compared to 2013 (`S
 ``costs``
 =============
 
-`Costs Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#costs>`_
+For a comprehensive explanation, refer to the upstream PyPSA-Eur `Costs Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#costs>`_.
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -274,14 +274,14 @@ Configuration changes made:
 * Lignite price is set at 22.11 EUR/MWh `Source from Business Analytiq (2024 Lignite price) <https://businessanalytiq.com/procurementanalytics/index/lignite-coal-price-index/>`_
 * Uranium price is set at 1.75 EUR/MWh `Source from Business Insider (2024 price) <https://markets.businessinsider.com/commodities/uranium-price>`_
 * Iron-air battery price is set at 23,500 EUR/MWh (2024).
-* Storage energy cost for CAES is 30,000 EUR/MWh (2022).
-* Storage power cost for CAES is 1,725,000 EUR/MW (2022).
+* Storage energy cost for CAES is set at 30,000 EUR/MWh (2022).
+* Storage power cost for CAES is set at 1,725,000 EUR/MW (2022).
 * The lifetime of CAES is reduced to 40 years.
 
 ``clustering``
 ==============
 
-`Clustering Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#clustering>`_
+For a comprehensive explanation, refer to the upstream PyPSA-Eur `Clustering Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#clustering>`_.
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -306,16 +306,16 @@ The following countries each have 1 node, contributing to a total of 9 nodes:
 * Poland
 * Sweden
 
-The temporal resolution are segmented into 4380 hours.
+The temporal resolution is segmented into 4380 snapshots, equivalent to an average temporal clustering of 2 hourly resolution.
 
 .. note::
-   Although the temporal resolution is not the highest option, it still produces similar results with fewer computational cost. 
+   High segmentation temporal resolution such as `4380SEG` has shown to yield similar results to 1 hourly temporal resolution, while providing a good compromise in terms of computational cost. 
    See `Segmentation Temporal Clustering <https://open-energy-transition.github.io/form-energy-storage/21-segmentation.html>`_ for more details
 
 ``solving``
 =============
 
-`Solving Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#solving>`_
+For a comprehensive explanation, refer to the upstream PyPSA-Eur `Solving Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#solving>`_.
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -339,10 +339,10 @@ The temporal resolution are segmented into 4380 hours.
 ``plotting``
 =============
 
-`Plotting Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#plotting>`_
+For a comprehensive explanation, refer to the upstream PyPSA-Eur `Plotting Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#plotting>`_.
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
    :start-at: plotting:
 
-Not much change here other than the coloring scheme
+Compared to the default configuration, the coloring scheme has been customized to the scope of this study.
