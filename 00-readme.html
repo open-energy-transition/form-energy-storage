@@ -401,7 +401,6 @@ SPDX-License-Identifier: CC-BY-4.0
 <section class="tex2jax_ignore mathjax_ignore" id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h1>
 <p><img alt="GitHub release (latest by date including pre-releases)" src="https://img.shields.io/github/v/release/pypsa/pypsa-eur?include_prereleases" />
-<a class="reference external" href="https://github.com/pypsa/pypsa-eur/actions/workflows/test.yaml"><img alt="Test workflows" src="https://github.com/pypsa/pypsa-eur/actions/workflows/test.yaml/badge.svg" /></a>
 <a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/?badge=latest"><img alt="Documentation" src="https://readthedocs.org/projects/pypsa-eur/badge/?version=latest" /></a>
 <img alt="Size" src="https://img.shields.io/github/repo-size/pypsa/pypsa-eur" />
 <a class="reference external" href="https://doi.org/10.5281/zenodo.3520874"><img alt="Zenodo PyPSA-Eur" src="https://zenodo.org/badge/DOI/10.5281/zenodo.3520874.svg" /></a>
@@ -414,14 +413,13 @@ SPDX-License-Identifier: CC-BY-4.0
 <section id="the-role-of-energy-storage-in-germany">
 <h2>The Role of Energy Storage in Germany<a class="headerlink" href="#the-role-of-energy-storage-in-germany" title="Link to this heading">#</a></h2>
 <p>Energy storage technologies hold significant promise for reducing carbon emissions. While short-duration storage is popular today, the system benefits for
-long duration storage are rather hidden and require more effort to receive policy attention. This project aims to reveal the hidden benefits of multi-day energy storage through the analysis of
+long duration storage were rather hidden and require more effort to receive policy attention. This project reveals the hidden benefits of multi-day energy storage through the analysis of
 energy system models.</p>
-<p>The primary objectives are to develop a policy relevant validated energy system model with a focus on Germany, and integrate various representations of short to long-duration energy storage
-into the model. Then, optimization runs are conducted to explore various scenarios to inform policy-makers about the benefits of various types of energy storage. The project will culminate
-in a detailed report and the full model open-source code to support global research efforts. OET, an international non-profit organization specializing in open energy modeling software
-development and support, will bring its expertise to this project. The organization has a proven track record in promoting transparent, data-driven decision-making in energy policy and
+<p>The primary objectives were to develop a policy relevant validated energy system model with a focus on Germany, and integrate various representations of short to long-duration energy storage
+into the model. Optimization runs were conducted to explore various scenarios to inform policy-makers about the benefits of various types of energy storage. The project culminates
+in a collection of comprehensive result plots and csv files that are based on open-source software and fully reproducible. OET, an international non-profit organization specializing in open energy modeling software</p>
+<p>development and support, will bring its expertise to this project. The organization has a proven track record in promoting transparent, data-driven decision-making in energy policy and
 planning, with its software products (including PyPSA-Eur and PyPSA-Earth) used in more than 50 research and industry-related projects.</p>
-<p>All results will be based on open-source software and fully reproducible. If implemented successfully for Germany, the methods can be replicated easily within the same model framework all-around the world using, among others, PyPSA-Eur or PyPSA-Earth.</p>
 <p>For further readings of PyPSA and PyPSA-Eur, check out:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://pypsa.readthedocs.io">PyPSA</a></p></li>
@@ -432,18 +430,18 @@ planning, with its software products (including PyPSA-Eur and PyPSA-Earth) used 
 <section id="scope-of-the-model">
 <h2>Scope of the Model<a class="headerlink" href="#scope-of-the-model" title="Link to this heading">#</a></h2>
 <p><img alt="alt text" src="_images/map.png" /></p>
-<p>To run multiple scenarios with a reasonable amount of computational power, we limit the scope of the model to the following:</p>
+<p>To strike a good balance between the spatial and temporal resolution of the model and the required computational power and time, we limit the scope of the model to the following:</p>
 <ul class="simple">
 <li><p><strong>Spatial Scope</strong>:</p>
 <ul>
-<li><p>The model includes Germany, along with its neighboring countries and Italy, making up 12 out of the 34 countries in PyPSA-Eur.</p></li>
+<li><p>The model includes Germany, along with its grid neighboring countries and Italy, making up 12 out of the 34 countries in PyPSA-Eur.</p></li>
 <li><p>The spatial resolution are 52 nodes in total, with 31 nodes dedicated to Germany, making the results for Germany more accurate than those for other modeled countries.</p></li>
 </ul>
 </li>
 <li><p><strong>Temporal Scope</strong>:</p>
 <ul>
-<li><p>The analysis targets the near-term application of iron-air storage technologies, focusing on the year 2035, while PyPSA-Eur models the period from 2020 to 2050 in 5-year intervals.</p></li>
-<li><p>The temporal resolution is segmented into 4380 hours. See <a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/21-segmentation.html">Segmentation Temporal Clustering</a> for more detail.</p></li>
+<li><p>The analysis targets the near-term application of iron-air storage technologies, focusing on the year 2035.</p></li>
+<li><p>The temporal resolution is segmented into 4380 snapshots, equivalent to an average temporal clustering of 2 hourly resolution. See <a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/21-segmentation.html">Segmentation Temporal Clustering</a> for more details.</p></li>
 </ul>
 </li>
 <li><p><strong>Sectoral Scope</strong>:</p>
@@ -452,7 +450,7 @@ planning, with its software products (including PyPSA-Eur and PyPSA-Earth) used 
 </ul>
 </li>
 </ul>
-<p>To view all the changes in detail, check out:</p>
+<p>To view all the changes in detail, refer to:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/11-baseline.html">Base Configuration</a></p></li>
 <li><p><a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/03-features.html">Features</a></p></li>
@@ -470,7 +468,7 @@ and in the paper <a class="reference external" href="https://arxiv.org/abs/1806.
 <p><img alt="PyPSA-Eur Grid Model" src="_images/elec.png" /></p>
 <p>The default dataset consists of:</p>
 <ul class="simple">
-<li><p>A grid model based on a modified <a class="reference external" href="https://github.com/bdw/GridKit">GridKit</a> extraction of the <a class="reference external" href="https://www.entsoe.eu/data/map/">ENTSO-E Transmission System Map</a>. The grid model contains 7072 lines
+<li><p>A grid model based on a prebuilt high voltage-electricity grid (incl. 200 kV and above) extracted from <a class="reference external" href="https://www.openstreetmap.org/">OpenStreetMap</a>. The route and circuit lengths are similar to those found in the official <a class="reference external" href="https://www.entsoe.eu/data/power-stats/">ENTSO-E Transmission Inventory data</a>.
 (alternating current lines at and above 220kV voltage level and all high voltage direct current lines) and 3803 substations.</p></li>
 <li><p>The open power plant database <a class="reference external" href="https://github.com/PyPSA/powerplantmatching">powerplantmatching</a>.</p></li>
 <li><p>Electrical demand time series from the <a class="reference external" href="https://open-power-system-data.org/">OPSD project</a>.</p></li>

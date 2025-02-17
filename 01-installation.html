@@ -397,12 +397,12 @@
 <p>The installation process is a modified version of <a class="reference external" href="https://pypsa-eur.readthedocs.io/en/latest/installation.html">PyPSA-Eur Installation</a> instruction.</p>
 <section id="fork-and-clone-the-repository">
 <h2>Fork and Clone the Repository<a class="headerlink" href="#fork-and-clone-the-repository" title="Link to this heading">#</a></h2>
-<p>In the <strong>Create a new fork</strong> pop-up menu, shown in the figure below, deselect the default Copy the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch only option.</p>
+<p>To make modifications to the existing code base, it is necessary to create your own fork of this repository. In the <strong>Create a new fork</strong> pop-up menu, shown in the figure below, deselect the default ‘Copy the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch only’ option.</p>
 <div class="tip admonition">
 <p class="admonition-title">Fork this repository!</p>
 <p><img alt="fork option" src="_images/fork_option.png" /></p>
 </div>
-<p>The goal is to keep two branches: <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code>, which is necessary for rebuilding this website, and <code class="docutils literal notranslate"><span class="pre">feature/calibrated-run</span></code>, which is required for generating the calibrated runs for the year 2023.</p>
+<p>The repository consists of two additional branches outside of the <code class="docutils literal notranslate"><span class="pre">master</span></code> branch which contains the main code base for the study: <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code>, which is necessary for rebuilding this documentation website, and <code class="docutils literal notranslate"><span class="pre">feature/calibrated-run</span></code>, which is required for generating the calibrated runs for the year 2023.</p>
 <p>Then, clone your newly created repository using the version control system <code class="docutils literal notranslate"><span class="pre">git</span></code> in the command line.</p>
 <div class="highlight-git notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/&lt;your-username&gt;/form-energy-storage
 </pre></div>
@@ -449,7 +449,6 @@
 <li><p><a class="reference external" href="https://www.fico.com/de/products/fico-xpress-solver">FICO Xpress Solver</a></p></li>
 </ul>
 <p>For installation instructions of these solvers for your operating system, follow the links above. Commercial solvers such as Gurobi and CPLEX currently significantly outperform open-source solvers for large-scale problems, and it might be the case that you can only retrieve solutions by using a commercial solver. Nevertheless, you can still use open-source solvers for smaller problems.</p>
-<p><a class="reference external" href="https://pypsa.readthedocs.io/en/latest/installation.html#getting-a-solver-for-linear-optimisation">Instructions how to install a solver in the documentation of PyPSA</a></p>
 </section>
 </section>
 

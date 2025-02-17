@@ -416,7 +416,7 @@
 <p>The configurable figures are defined based on <code class="docutils literal notranslate"><span class="pre">config/config.kpi.yaml</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The PyPSA-Eur configuration follows a pyramid-like structure, where the parameters in the highest configuration override those in the configurations below it.
+<p>The PyPSA-Eur configuration files follow a pyramid-like structure, where the parameters in the highest configuration file add to and override those in the configuration file below it.
 The order is as follows:</p>
 <ol class="arabic simple">
 <li><p><a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/12-scenarios.html">scenarios.form.yaml</a></p></li>
@@ -425,6 +425,7 @@ The order is as follows:</p>
 <li><p>config.kpi.yaml (<strong>this section</strong>)</p></li>
 </ol>
 </div>
+<p>Thus, for example changes specified in <cite>scenario.form.yaml</cite> will add to and override configurations in <cite>config.form.yaml</cite> and so on.</p>
 <p>Key components of each configuration:</p>
 <ol class="arabic simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">extract</span></code>: Defines the network statistics for the figures (e.g., system cost, generation, storage, emissions).</p></li>

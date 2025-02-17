@@ -394,11 +394,11 @@
                   
   <section id="tutorials">
 <h1>Tutorials<a class="headerlink" href="#tutorials" title="Link to this heading">#</a></h1>
-<p>This is a brief tutorial on how to use the Form Energy Storage scenarios.
+<p>This is a brief tutorial on how to recreate the scenarios of the study <strong>The Role of Energy Storage in Germany</strong>.
 Unlike the original PyPSA-Eur repository, this version comes pre-configured with scenarios that you can test run.</p>
 <section id="build-the-tutorial-model">
 <h2>Build the tutorial model<a class="headerlink" href="#build-the-tutorial-model" title="Link to this heading">#</a></h2>
-<p>First, open the <code class="docutils literal notranslate"><span class="pre">config.form.yaml</span></code> file using a code editor of your choice, and navigate to the <code class="docutils literal notranslate"><span class="pre">run</span></code> section:</p>
+<p>First, open the base configuration file for this study, called <code class="docutils literal notranslate"><span class="pre">config.form.yaml`,</span> <span class="pre">using</span> <span class="pre">a</span> <span class="pre">code</span> <span class="pre">editor</span> <span class="pre">of</span> <span class="pre">your</span> <span class="pre">choice,</span> <span class="pre">and</span> <span class="pre">navigate</span> <span class="pre">to</span> <span class="pre">the</span> <span class="pre">``run</span></code> section:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">run</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">prefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;scenarios&quot;</span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;baseline-mds&quot;</span>
@@ -413,7 +413,7 @@ Unlike the original PyPSA-Eur repository, this version comes pre-configured with
 </pre></div>
 </div>
 <p>as you can see, <code class="docutils literal notranslate"><span class="pre">baseline-mds</span></code> is the name of the scenario that is chosen.
-The content of <code class="docutils literal notranslate"><span class="pre">baseline-mds</span></code> is defined in <code class="docutils literal notranslate"><span class="pre">scenarios.form.yaml</span></code>.</p>
+The content of <code class="docutils literal notranslate"><span class="pre">baseline-mds</span></code> as well as a comprehensive list of all studied scenarios is defined in <code class="docutils literal notranslate"><span class="pre">scenarios.form.yaml</span></code> as described in [Scenarios Configuration](<a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/12-scenarios.html">https://open-energy-transition.github.io/form-energy-storage/12-scenarios.html</a>).</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">baseline-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
@@ -532,13 +532,14 @@ See <a class="reference external" href="https://open-energy-transition.github.io
 <li><p><code class="docutils literal notranslate"><span class="pre">retrieve_cost_data</span></code>: set this to true if <code class="docutils literal notranslate"><span class="pre">resources/{run}/cost_2035.csv</span></code> is missing</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">retrieve_cutout</span></code>: set this to true if <code class="docutils literal notranslate"><span class="pre">cutouts/europe-2013-sarah3-era5.nc</span></code> is missing</p></li>
 </ul>
-<p>For cutouts from years other than 2013, 2018, and 2023, you can download them from xx.</p>
+<p>For cutouts of the years 1996, 2010 and 2012, you can download them from xx and place into the cutouts folder of the repository.</p>
 </div>
-<p>To create the model, run the snakemake command:</p>
+<p>To create and solve the model, run the snakemake command:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">snakemake solve_sector_networks --configfile config/config.form.yaml</span>
 </pre></div>
 </div>
-<p>This triggers a workflow of multiple preceding jobs that depend on each rule’s inputs and outputs.</p>
+<p>This triggers a workflow of multiple preceding jobs that depend on each rule’s inputs and outputs.
+To create and solve the model and automatically generate all KPI plots of the study, run the snakemake command:</p>
 </section>
 <section id="analyze-the-model">
 <h2>Analyze the model<a class="headerlink" href="#analyze-the-model" title="Link to this heading">#</a></h2>

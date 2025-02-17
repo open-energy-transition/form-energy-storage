@@ -12,13 +12,15 @@ KPIs Configuration
 The configurable figures are defined based on ``config/config.kpi.yaml``.
 
 .. note::
-   The PyPSA-Eur configuration follows a pyramid-like structure, where the parameters in the highest configuration override those in the configurations below it. 
+   The PyPSA-Eur configuration files follow a pyramid-like structure, where the parameters in the highest configuration file add to and override those in the configuration file below it. 
    The order is as follows:
 
    1. `scenarios.form.yaml <https://open-energy-transition.github.io/form-energy-storage/12-scenarios.html>`_
    2. `config.form.yaml <https://open-energy-transition.github.io/form-energy-storage/11-baseline.html>`_
    3. `config.default.yaml <https://pypsa-eur.readthedocs.io/en/latest/configuration.html>`_
    4. config.kpi.yaml (**this section**)
+
+Thus, for example changes specified in `scenario.form.yaml` will add to and override configurations in `config.form.yaml` and so on.
 
 Key components of each configuration:
 

@@ -2,13 +2,13 @@
 Tutorials
 ##########################################
 
-This is a brief tutorial on how to use the Form Energy Storage scenarios.
+This is a brief tutorial on how to recreate the scenarios of the study **The Role of Energy Storage in Germany**.
 Unlike the original PyPSA-Eur repository, this version comes pre-configured with scenarios that you can test run.
 
 Build the tutorial model
 =========================
 
-First, open the ``config.form.yaml`` file using a code editor of your choice, and navigate to the ``run`` section:
+First, open the base configuration file for this study, called ``config.form.yaml`, using a code editor of your choice, and navigate to the ``run`` section:
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
@@ -16,7 +16,7 @@ First, open the ``config.form.yaml`` file using a code editor of your choice, an
    :end-before: # docs
 
 as you can see, ``baseline-mds`` is the name of the scenario that is chosen. 
-The content of ``baseline-mds`` is defined in ``scenarios.form.yaml``.
+The content of ``baseline-mds`` as well as a comprehensive list of all studied scenarios is defined in ``scenarios.form.yaml`` as described in [Scenarios Configuration](https://open-energy-transition.github.io/form-energy-storage/12-scenarios.html).
 
 .. literalinclude:: ../config/scenarios.form.yaml
    :language: yaml
@@ -131,15 +131,19 @@ The ``-n`` at the end indicates a dry run. If no errors occur, it will list the 
     * ``retrieve_cost_data``: set this to true if ``resources/{run}/cost_2035.csv`` is missing
     * ``retrieve_cutout``: set this to true if ``cutouts/europe-2013-sarah3-era5.nc`` is missing
 
-    For cutouts from years other than 2013, 2018, and 2023, you can download them from xx.
+    For cutouts of the years 1996, 2010 and 2012, you can download them from xx and place into the cutouts folder of the repository.
 
-To create the model, run the snakemake command:
+To create and solve the model, run the snakemake command:
 
 .. code:: console
 
    snakemake solve_sector_networks --configfile config/config.form.yaml
 
 This triggers a workflow of multiple preceding jobs that depend on each rule's inputs and outputs.
+To create and solve the model and automatically generate all KPI plots of the study, run the snakemake command:
+
+.. code:: console
+   snakemake all --configfile config/config.form.yaml
 
 Analyze the model
 =========================

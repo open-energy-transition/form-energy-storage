@@ -6,7 +6,6 @@ SPDX-License-Identifier: CC-BY-4.0
 # Introduction
 
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/pypsa/pypsa-eur?include_prereleases)
-[![Test workflows](https://github.com/pypsa/pypsa-eur/actions/workflows/test.yaml/badge.svg)](https://github.com/pypsa/pypsa-eur/actions/workflows/test.yaml)
 [![Documentation](https://readthedocs.org/projects/pypsa-eur/badge/?version=latest)](https://pypsa-eur.readthedocs.io/en/latest/?badge=latest)
 ![Size](https://img.shields.io/github/repo-size/pypsa/pypsa-eur)
 [![Zenodo PyPSA-Eur](https://zenodo.org/badge/DOI/10.5281/zenodo.3520874.svg)](https://doi.org/10.5281/zenodo.3520874)
@@ -22,16 +21,16 @@ This repository is maintained using [OET's soft-fork strategy](https://open-ener
 ## The Role of Energy Storage in Germany
 
 Energy storage technologies hold significant promise for reducing carbon emissions. While short-duration storage is popular today, the system benefits for
-long duration storage are rather hidden and require more effort to receive policy attention. This project aims to reveal the hidden benefits of multi-day energy storage through the analysis of
+long duration storage were rather hidden and require more effort to receive policy attention. This project reveals the hidden benefits of multi-day energy storage through the analysis of
 energy system models.
 
-The primary objectives are to develop a policy relevant validated energy system model with a focus on Germany, and integrate various representations of short to long-duration energy storage
-into the model. Then, optimization runs are conducted to explore various scenarios to inform policy-makers about the benefits of various types of energy storage. The project will culminate
-in a detailed report and the full model open-source code to support global research efforts. OET, an international non-profit organization specializing in open energy modeling software
+The primary objectives were to develop a policy relevant validated energy system model with a focus on Germany, and integrate various representations of short to long-duration energy storage
+into the model. Optimization runs were conducted to explore various scenarios to inform policy-makers about the benefits of various types of energy storage. The project culminates
+in a collection of comprehensive result plots and csv files that are based on open-source software and fully reproducible. OET, an international non-profit organization specializing in open energy modeling software
+
 development and support, will bring its expertise to this project. The organization has a proven track record in promoting transparent, data-driven decision-making in energy policy and
 planning, with its software products (including PyPSA-Eur and PyPSA-Earth) used in more than 50 research and industry-related projects.
 
-All results will be based on open-source software and fully reproducible. If implemented successfully for Germany, the methods can be replicated easily within the same model framework all-around the world using, among others, PyPSA-Eur or PyPSA-Earth.
 
 For further readings of PyPSA and PyPSA-Eur, check out:
 
@@ -43,18 +42,18 @@ For further readings of PyPSA and PyPSA-Eur, check out:
 
 ![alt text](img/map.png)
 
-To run multiple scenarios with a reasonable amount of computational power, we limit the scope of the model to the following:
+To strike a good balance between the spatial and temporal resolution of the model and the required computational power and time, we limit the scope of the model to the following:
 
 - **Spatial Scope**: 
-  - The model includes Germany, along with its neighboring countries and Italy, making up 12 out of the 34 countries in PyPSA-Eur.
+  - The model includes Germany, along with its grid neighboring countries and Italy, making up 12 out of the 34 countries in PyPSA-Eur.
   - The spatial resolution are 52 nodes in total, with 31 nodes dedicated to Germany, making the results for Germany more accurate than those for other modeled countries.
 - **Temporal Scope**: 
-  - The analysis targets the near-term application of iron-air storage technologies, focusing on the year 2035, while PyPSA-Eur models the period from 2020 to 2050 in 5-year intervals.
-  - The temporal resolution is segmented into 4380 hours. See [Segmentation Temporal Clustering](https://open-energy-transition.github.io/form-energy-storage/21-segmentation.html) for more detail.
+  - The analysis targets the near-term application of iron-air storage technologies, focusing on the year 2035.
+  - The temporal resolution is segmented into 4380 snapshots, equivalent to an average temporal clustering of 2 hourly resolution. See [Segmentation Temporal Clustering](https://open-energy-transition.github.io/form-energy-storage/21-segmentation.html) for more details.
 - **Sectoral Scope**: 
   - The model includes only sectors with energy storage technologies, specifically the power, heating, and transport sectors, excluding the industrial sector.
 
-To view all the changes in detail, check out:
+To view all the changes in detail, refer to:
 
 * [Base Configuration](https://open-energy-transition.github.io/form-energy-storage/11-baseline.html)
 * [Features](https://open-energy-transition.github.io/form-energy-storage/03-features.html)
@@ -74,7 +73,7 @@ and in the paper [PyPSA-Eur: An Open Optimisation Model of the European Transmis
 
 The default dataset consists of:
 
-- A grid model based on a modified [GridKit](https://github.com/bdw/GridKit) extraction of the [ENTSO-E Transmission System Map](https://www.entsoe.eu/data/map/). The grid model contains 7072 lines
+- A grid model based on a prebuilt high voltage-electricity grid (incl. 200 kV and above) extracted from [OpenStreetMap](https://www.openstreetmap.org/). The route and circuit lengths are similar to those found in the official [ENTSO-E Transmission Inventory data](https://www.entsoe.eu/data/power-stats/).
   (alternating current lines at and above 220kV voltage level and all high voltage direct current lines) and 3803 substations.
 - The open power plant database [powerplantmatching](https://github.com/PyPSA/powerplantmatching).
 - Electrical demand time series from the [OPSD project](https://open-power-system-data.org/).
