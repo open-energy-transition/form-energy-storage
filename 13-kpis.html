@@ -592,18 +592,6 @@ You can create your own filtering scheme by adding a list in <code class="docuti
 </section>
 <section id="time-series-plots">
 <h3>Time Series Plots<a class="headerlink" href="#time-series-plots" title="Link to this heading">#</a></h3>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nt">DE_electricity_plus_summer_energy_balance</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">extract</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">energy balance</span>
-<span class="w">      </span><span class="nt">include</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;DE&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">      </span><span class="nt">carrier_filter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">electricity+</span>
-<span class="w">      </span><span class="nt">group_carrier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pretty</span>
-<span class="w">      </span><span class="nt">plot_kw</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Germany summer high and low voltage energy balance</span>
-<span class="w">        </span><span class="nt">xlim</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;2013-08-01&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;2013-09-01&#39;</span><span class="p p-Indicator">]</span>
-<span class="w">        </span><span class="c1">#ylim: [-50,200]</span>
-<span class="w">        </span><span class="nt">ylabel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GW</span>
-</pre></div>
-</div>
 <p>Explaination:</p>
 <ul class="simple">
 <li><p>The value represented in this plot is the <code class="docutils literal notranslate"><span class="pre">energy</span> <span class="pre">balance</span></code>.</p></li>

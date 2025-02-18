@@ -729,7 +729,7 @@ is also examined.</p>
 <span class="w">      </span><span class="nt">iron-air battery</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">18477</span><span class="w">  </span><span class="c1"># in EUR/MWh (2020) from 20,000 EUR/MWh (2024)</span>
 <span class="w">  </span><span class="nt">scenario</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">ll</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1.06</span><span class="w">  </span><span class="c1"># limit to confirmed projects from NEP links to model a delay in the planning/permitting</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1.012</span><span class="w">  </span><span class="c1"># limit to confirmed projects and 2032 from NEP projects to model a delay in the planning/permitting</span>
 <span class="w">  </span><span class="nt">transmission_projects</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">include</span><span class="p">:</span>
@@ -746,6 +746,7 @@ is also examined.</p>
 <span class="w">      </span><span class="c1">#- planned_not_yet_permitted</span>
 <span class="w">      </span><span class="c1">#- under_consideration</span>
 <span class="w">    </span><span class="nt">new_link_capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zero</span><span class="w"> </span><span class="c1">#keep or zero</span>
+<span class="w">    </span><span class="nt">filter_year</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2032</span>
 
 <span class="nt">delayed-nep-low-capex-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
@@ -756,7 +757,7 @@ is also examined.</p>
 <span class="w">      </span><span class="nt">iron-air battery</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">14089</span><span class="w">  </span><span class="c1"># in EUR/MWh (2020) from 15,250 EUR/MWh (2024)</span>
 <span class="w">  </span><span class="nt">scenario</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">ll</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1.06</span><span class="w">  </span><span class="c1"># limit to confirmed projects from NEP links to model a delay in the planning/permitting</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1.012</span><span class="w">  </span><span class="c1"># limit to confirmed projects and 2032 from NEP projects to model a delay in the planning/permitting</span>
 <span class="w">  </span><span class="nt">transmission_projects</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">include</span><span class="p">:</span>
@@ -773,6 +774,7 @@ is also examined.</p>
 <span class="w">      </span><span class="c1">#- planned_not_yet_permitted</span>
 <span class="w">      </span><span class="c1">#- under_consideration</span>
 <span class="w">    </span><span class="nt">new_link_capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zero</span><span class="w"> </span><span class="c1">#keep or zero</span>
+<span class="w">    </span><span class="nt">filter_year</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2032</span>
 
 <span class="nt">delayed-nep-nomds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
@@ -780,7 +782,7 @@ is also examined.</p>
 <span class="w">    </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">]</span>
 <span class="w">  </span><span class="nt">scenario</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">ll</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1.06</span><span class="w">  </span><span class="c1"># limit to confirmed projects from NEP links to model a delay in the planning/permitting</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1.012</span><span class="w">  </span><span class="c1"># limit to confirmed projects and 2032 from NEP projects to model a delay in the planning/permitting</span>
 <span class="w">  </span><span class="nt">transmission_projects</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">include</span><span class="p">:</span>
@@ -797,6 +799,7 @@ is also examined.</p>
 <span class="w">      </span><span class="c1">#- planned_not_yet_permitted</span>
 <span class="w">      </span><span class="c1">#- under_consideration</span>
 <span class="w">    </span><span class="nt">new_link_capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zero</span><span class="w"> </span><span class="c1">#keep or zero</span>
+<span class="w">    </span><span class="nt">filter_year</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2032</span>
 </pre></div>
 </div>
 </section>
@@ -813,9 +816,9 @@ is also examined.</p>
 <span class="w">    </span><span class="nt">investment</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">iron-air battery</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">18477</span><span class="w">  </span><span class="c1"># in EUR/MWh (2020) from 20,000 EUR/MWh (2024)</span>
 <span class="w">    </span><span class="nt">fuel</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">OCGT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">38.84</span><span class="w"> </span><span class="c1"># https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex)</span>
-<span class="w">      </span><span class="nt">CCGT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">38.84</span>
-<span class="w">      </span><span class="nt">gas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">38.84</span>
+<span class="w">      </span><span class="nt">OCGT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">58.26</span><span class="w"> </span><span class="c1"># https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex) + 50%</span>
+<span class="w">      </span><span class="nt">CCGT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">58.26</span><span class="w"> </span><span class="c1"># https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex) + 50%</span>
+<span class="w">      </span><span class="nt">gas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">58.26</span><span class="w"> </span><span class="c1"># https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex) + 50%</span>
 
 <span class="nt">gasprice-peak-low-capex-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
@@ -825,9 +828,9 @@ is also examined.</p>
 <span class="w">    </span><span class="nt">investment</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">iron-air battery</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">14089</span><span class="w">  </span><span class="c1"># in EUR/MWh (2020) from 15,250 EUR/MWh (2024)</span>
 <span class="w">    </span><span class="nt">fuel</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">OCGT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">38.84</span><span class="w"> </span><span class="c1"># https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex)</span>
-<span class="w">      </span><span class="nt">CCGT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">38.84</span>
-<span class="w">      </span><span class="nt">gas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">38.84</span>
+<span class="w">      </span><span class="nt">OCGT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">58.26</span><span class="w"> </span><span class="c1"># https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex) + 50%</span>
+<span class="w">      </span><span class="nt">CCGT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">58.26</span><span class="w"> </span><span class="c1"># https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex) + 50%</span>
+<span class="w">      </span><span class="nt">gas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">58.26</span><span class="w"> </span><span class="c1"># https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex) + 50%</span>
 </pre></div>
 </div>
 </section>
