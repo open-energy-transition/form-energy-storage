@@ -6,7 +6,8 @@ on:
   # Trigger the workflow on push to main branch
   push:
     branches:
-    - feature/docs
+    - form_energy_storage_dev
+    - master
 
 permissions:
   pages: write

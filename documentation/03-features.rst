@@ -26,7 +26,6 @@ Here is a list of changes made to this repository specifically for this work, wi
 
 * Include heat DSM implementation and configuration (https://github.com/open-energy-transition/form-energy-storage/pull/47)
 
-
 **Model Visualization Features**
 
 * Add KPI visualization script and functions. (https://github.com/open-energy-transition/form-energy-storage/pull/30)
@@ -36,6 +35,10 @@ Here is a list of changes made to this repository specifically for this work, wi
 * Add plotting script for FE KPIs (https://github.com/open-energy-transition/form-energy-storage/pull/37)
 
 * Include optional use of Latex for plotting (https://github.com/open-energy-transition/form-energy-storage/pull/59)
+
+**Model Documentation Features**
+
+* Provide documentation using github pages (https://github.com/open-energy-transition/form-energy-storage/pull/57)
 
 **Model Calibration Runs**
 

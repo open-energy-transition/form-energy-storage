@@ -143,6 +143,7 @@ This triggers a workflow of multiple preceding jobs that depend on each rule's i
 To create and solve the model and automatically generate all KPI plots of the study, run the snakemake command:
 
 .. code:: console
+   
    snakemake all --configfile config/config.form.yaml
 
 Analyze the model

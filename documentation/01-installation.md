@@ -4,7 +4,7 @@ The installation process is a modified version of [PyPSA-Eur Installation](https
 
 ## Fork and Clone the Repository
 
-To make modifications to the existing code base, it is necessary to create your own fork of this repository. In the **Create a new fork** pop-up menu, shown in the figure below, deselect the default 'Copy the `main` branch only' option.
+To make modifications to the existing code base, it is necessary to create your own fork of this repository. In the **Create a new fork** pop-up menu, shown in the figure below, deselect the default **Copy the** `master` **branch only** option.
 
 :::{admonition} Fork this repository!
 :class: tip
@@ -17,7 +17,7 @@ The repository consists of two additional branches outside of the `master` branc
 
 Then, clone your newly created repository using the version control system `git` in the command line.
 
-```git 
+```
 git clone https://github.com/<your-username>/form-energy-storage
 ```
 

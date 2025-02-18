@@ -46,10 +46,8 @@ The scope of this work is based on myopic foresight.
 ``scenario``
 ============
 
-For a comprehensive explanation, refer to the upstream PyPSA-Eur
-For a comprehensive explanation, refer to the upstream PyPSA-Eur
-* `Scenario Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#scenario>`_
-* `Wildcard Documentation <https://pypsa-eur.readthedocs.io/en/latest/wildcards.html>`_
+* For a comprehensive explanation, refer to the upstream PyPSA-Eur `Scenario Documentation <https://pypsa-eur.readthedocs.io/en/latest/configuration.html#scenario>`_
+* For a comprehensive explanation, refer to the upstream PyPSA-Eur `Wildcard Documentation <https://pypsa-eur.readthedocs.io/en/latest/wildcards.html>`_
 
 .. literalinclude:: ../config/config.form.yaml
    :language: yaml
