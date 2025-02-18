@@ -426,7 +426,6 @@ The order is as follows:</p>
 </ol>
 </div>
 <p>Thus, for example changes specified in <cite>scenario.form.yaml</cite> will add to and override configurations in <cite>config.form.yaml</cite> and so on.</p>
-<p>Thus, for example changes specified in <cite>scenario.form.yaml</cite> will add to and override configurations in <cite>config.form.yaml</cite> and so on.</p>
 <p>Key components of each configuration:</p>
 <ol class="arabic simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">extract</span></code>: Defines the network statistics for the figures (e.g., system cost, generation, storage, emissions).</p></li>
@@ -437,6 +436,14 @@ The order is as follows:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">figsize</span></code>: Determines the figsize of the plots. If not defined, the default size are chosen.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">plot_kw</span></code>: Additional keyword arguments for the plot (e.g., title, labels, and axis).</p></li>
 </ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The head of the <code class="docutils literal notranslate"><span class="pre">config/config.kpi.yaml</span></code> file includes two options that will affect all plots:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">enable_latex</span></code>: Saves the plot in LaTeX format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">include_csvs</span></code>: Saves a CSV file for each plot generated.</p></li>
+</ul>
+</div>
 <section id="components">
 <h2>Components<a class="headerlink" href="#components" title="Link to this heading">#</a></h2>
 <section id="extract">
@@ -592,6 +599,18 @@ You can create your own filtering scheme by adding a list in <code class="docuti
 </section>
 <section id="time-series-plots">
 <h3>Time Series Plots<a class="headerlink" href="#time-series-plots" title="Link to this heading">#</a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nt">DE_electricity_summer_energy_balance</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">extract</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">energy balance</span>
+<span class="w">      </span><span class="nt">include</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;DE&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">carrier_filter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">electricity+</span>
+<span class="w">      </span><span class="nt">group_carrier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pretty</span>
+<span class="w">      </span><span class="nt">plot_kw</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Germany summer high and low voltage energy balance</span>
+<span class="w">        </span><span class="nt">xlim</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;2013-08-01&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;2013-09-01&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="c1">#ylim: [-50,200]</span>
+<span class="w">        </span><span class="nt">ylabel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GW</span>
+</pre></div>
+</div>
 <p>Explaination:</p>
 <ul class="simple">
 <li><p>The value represented in this plot is the <code class="docutils literal notranslate"><span class="pre">energy</span> <span class="pre">balance</span></code>.</p></li>
@@ -600,7 +619,7 @@ You can create your own filtering scheme by adding a list in <code class="docuti
 <li><p>The carrier names are based on the <code class="docutils literal notranslate"><span class="pre">pretty_names</span></code> defined in <code class="docutils literal notranslate"><span class="pre">plot_KPIs.py</span></code>.</p></li>
 <li><p>The title of the plot is <code class="docutils literal notranslate"><span class="pre">Germany</span> <span class="pre">summer</span> <span class="pre">high</span> <span class="pre">and</span> <span class="pre">low</span> <span class="pre">voltage</span> <span class="pre">energy</span> <span class="pre">balance</span></code>, with the unit in <code class="docutils literal notranslate"><span class="pre">GW</span></code>.</p></li>
 <li><p>The time series plot is limited to the snapshot dates between <code class="docutils literal notranslate"><span class="pre">2013-08-01</span></code> and <code class="docutils literal notranslate"><span class="pre">2013-09-01</span></code>.</p></li>
-<li><p>The file is saved as <code class="docutils literal notranslate"><span class="pre">{postnetwork}-DE_electricity_plus_summer_energy_balance_{planning_horizon}.pdf</span></code>.</p></li>
+<li><p>The file is saved as <code class="docutils literal notranslate"><span class="pre">{postnetwork}-DE_electricity_summer_energy_balance_{planning_horizon}.pdf</span></code>.</p></li>
 </ul>
 <p>The results are the figure below:</p>
 <a class="reference internal image-reference" href="_images/base_s_52_lv1.11__-DE_electricity_plus_summer_energy_balance_2035.png"><img alt="_images/base_s_52_lv1.11__-DE_electricity_plus_summer_energy_balance_2035.png" class="align-center" src="_images/base_s_52_lv1.11__-DE_electricity_plus_summer_energy_balance_2035.png" style="height: 500px;" /></a>

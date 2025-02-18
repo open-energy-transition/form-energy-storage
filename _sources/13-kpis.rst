@@ -22,8 +22,6 @@ The configurable figures are defined based on ``config/config.kpi.yaml``.
 
 Thus, for example changes specified in `scenario.form.yaml` will add to and override configurations in `config.form.yaml` and so on.
 
-Thus, for example changes specified in `scenario.form.yaml` will add to and override configurations in `config.form.yaml` and so on.
-
 Key components of each configuration:
 
 1. ``extract``: Defines the network statistics for the figures (e.g., system cost, generation, storage, emissions).
@@ -33,6 +31,12 @@ Key components of each configuration:
 5. ``plot``: Determines the type of plot or visualization to be used (e.g., "detail" for detailed data, "overview" for broader data representation).
 6. ``figsize``: Determines the figsize of the plots. If not defined, the default size are chosen.
 7. ``plot_kw``: Additional keyword arguments for the plot (e.g., title, labels, and axis).
+
+.. note::
+    The head of the ``config/config.kpi.yaml`` file includes two options that will affect all plots:
+
+    * ``enable_latex``: Saves the plot in LaTeX format.
+    * ``include_csvs``: Saves a CSV file for each plot generated.
 
 Components
 ---------------------------
@@ -178,7 +182,7 @@ Time Series Plots
 
 .. literalinclude:: ../config/config.kpi.yaml
     :language: yaml
-    :start-at: DE_electricity_plus_summer_energy_balance:
+    :start-at: DE_electricity_summer_energy_balance:
     :end-at: ylabel:
 
 Explaination:
@@ -189,7 +193,7 @@ Explaination:
 * The carrier names are based on the ``pretty_names`` defined in ``plot_KPIs.py``.
 * The title of the plot is ``Germany summer high and low voltage energy balance``, with the unit in ``GW``.
 * The time series plot is limited to the snapshot dates between ``2013-08-01`` and ``2013-09-01``.
-* The file is saved as ``{postnetwork}-DE_electricity_plus_summer_energy_balance_{planning_horizon}.pdf``.
+* The file is saved as ``{postnetwork}-DE_electricity_summer_energy_balance_{planning_horizon}.pdf``.
 
 The results are the figure below:
 

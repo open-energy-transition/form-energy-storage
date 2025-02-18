@@ -415,10 +415,16 @@ The order is as follows:</p>
 </ol>
 </div>
 <p>Thus, for example changes specified in <cite>scenario.form.yaml</cite> will add to and override configurations in <cite>config.form.yaml</cite> and so on.</p>
-<p>Thus, for example changes specified in <cite>scenario.form.yaml</cite> will add to and override configurations in <cite>config.form.yaml</cite> and so on.</p>
+<p>The scenario tree are shown below:</p>
+<a class="reference internal image-reference" href="_images/scenario_tree.png"><img alt="_images/scenario_tree.png" class="align-center" src="_images/scenario_tree.png" style="height: 500px;" /></a>
 <section id="baseline">
 <h2><code class="docutils literal notranslate"><span class="pre">Baseline</span></code><a class="headerlink" href="#baseline" title="Link to this heading">#</a></h2>
-<p>The Baseline scenario is based on the climate year 2013, with the cost of iron-air set at 2,350 EUR/kWh (2024).</p>
+<p>The Baseline scenario is based on the climate year 2013, with the cost of iron-air set at 23,500 EUR/MWh (2024).</p>
+<p>There are two baseline scenarios:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">baseline-mds</span></code>: The cost of iron-air is set at 23,500 EUR/MWh (2024).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">baseline-nomds</span></code>: Multi-day storages are excluded.</p></li>
+</ul>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">baseline-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
@@ -433,7 +439,7 @@ The order is as follows:</p>
 </section>
 <section id="mid-capex">
 <h2><code class="docutils literal notranslate"><span class="pre">Mid-Capex</span></code><a class="headerlink" href="#mid-capex" title="Link to this heading">#</a></h2>
-<p>The Mid-Capex scenario sets the cost of iron-air at 2,000 EUR/kWh (2024),
+<p>The Mid-Capex scenario sets the cost of iron-air at 20,000 EUR/MWh (2024),
 slightly lower than the Baseline scenario.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">mid-capex-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
@@ -447,7 +453,7 @@ slightly lower than the Baseline scenario.</p>
 </section>
 <section id="low-capex">
 <h2><code class="docutils literal notranslate"><span class="pre">Low-Capex</span></code><a class="headerlink" href="#low-capex" title="Link to this heading">#</a></h2>
-<p>The Low-Capex scenario sets the cost of iron-air at 1,525 EUR/kWh (2024),
+<p>The Low-Capex scenario sets the cost of iron-air at 15,250 EUR/MWh (2024),
 representing the lowest cost for iron-air when compared to the Baseline scenario.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">low-capex-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
@@ -463,6 +469,13 @@ representing the lowest cost for iron-air when compared to the Baseline scenario
 <h2><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">2010</span></code><a class="headerlink" href="#climate-year-2010" title="Link to this heading">#</a></h2>
 <p>This scenario is based on the climate year 2010, which is characterised by the lowest annual wind resources
 and the second highest annual heating demand from 1960 - 2021 (<a class="reference external" href="https://www.nature.com/articles/s41467-024-54853-3">Gøtske et al., 2024</a>)</p>
+<p>There are four available scenarios for this climate year:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cy2010-mds</span></code>: The cost of iron-air is set at 23,500 EUR/MWh (2024).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cy2010-nomds</span></code>: Multi-day storages are excluded.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cy2010-mid-capex-mds</span></code>: The cost of iron-air is set at 20,000 EUR/MWh (2024).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cy2010-low-capex-mds</span></code>: The cost of iron-air is set at 15,250 EUR/MWh (2024).</p></li>
+</ul>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cy2010-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
@@ -535,6 +548,13 @@ and the second highest annual heating demand from 1960 - 2021 (<a class="referen
 <h2><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">2012</span></code><a class="headerlink" href="#climate-year-2012" title="Link to this heading">#</a></h2>
 <p>This scenario is based on the climate year 2012, which is the most stressful climate year in terms of
 2-week Dunkelflaute situation at European aggregated level (<a class="reference external" href="https://2024.entsos-tyndp-scenarios.eu/wp-content/uploads/2024/07/TYNDP_2024_Scenarios_Methodology_Report_240708.pdf">2024 TYNDP Scenarios Methodology Report</a>, page 30)</p>
+<p>There are four available scenarios for this climate year:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cy2012-mds</span></code>: The cost of iron-air is set at 23,500 EUR/MWh (2024).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cy2012-nomds</span></code>: Multi-day storages are excluded.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cy2012-mid-capex-mds</span></code>: The cost of iron-air is set at 20,000 EUR/MWh (2024).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cy2012-low-capex-mds</span></code>: The cost of iron-air is set at 15,250 EUR/MWh (2024).</p></li>
+</ul>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cy2012-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
@@ -607,6 +627,11 @@ and the second highest annual heating demand from 1960 - 2021 (<a class="referen
 <h2><code class="docutils literal notranslate"><span class="pre">Climate</span> <span class="pre">Year</span> <span class="pre">1996</span></code><a class="headerlink" href="#climate-year-1996" title="Link to this heading">#</a></h2>
 <p>This scenario is based on the climate year 1996, which is characterised by low yield of PV and wind,
 as well as a pronounced “dark doldrums” for about 10 days in January (<a class="reference external" href="https://www.energysystem2050.net/content/TransnetBW-Study_EnergySystem2050.pdf?v2">TransnetBW Energy System 2050 Report</a>, page 19)</p>
+<p>There are two available scenarios for this climate year:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cy1996-mds</span></code>: The cost of iron-air is set at 23,500 EUR/MWh (2024).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cy1996-nomds</span></code>: Multi-day storages are excluded.</p></li>
+</ul>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cy1996-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
@@ -677,9 +702,13 @@ as well as a pronounced “dark doldrums” for about 10 days in January (<a cla
 </section>
 <section id="germany-gas-power-plant-phase-out">
 <h2><code class="docutils literal notranslate"><span class="pre">Germany</span> <span class="pre">Gas</span> <span class="pre">Power</span> <span class="pre">Plant</span> <span class="pre">Phase-Out</span></code><a class="headerlink" href="#germany-gas-power-plant-phase-out" title="Link to this heading">#</a></h2>
-<p>These scenarios assume that Germany, driven by policy decision, successfully phases out gas-fired power plants and gas CHPs in 2035.
-The impact of the cost difference between iron-air batteries at 2,000 EUR/kWh (2024) and 1,525 EUR/kWh (2024)
-is also examined.</p>
+<p>These scenarios assume that Germany, driven by policy decision, successfully phases out gas-fired power plants and gas CHPs in 2035.</p>
+<p>There are three available scenarios:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nogasppde-nomds</span></code>: Multi-day storages are excluded.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nogasppde-mid-capex-mds</span></code>: The cost of iron-air is set at 20,000 EUR/MWh (2024).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nogasppde-low-capex-mds</span></code>: The cost of iron-air is set at 15,250 EUR/MWh (2024).</p></li>
+</ul>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">nogasppde-mid-capex-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
@@ -717,9 +746,13 @@ is also examined.</p>
 </section>
 <section id="transmission-sensitivity">
 <h2><code class="docutils literal notranslate"><span class="pre">Transmission</span> <span class="pre">Sensitivity</span></code><a class="headerlink" href="#transmission-sensitivity" title="Link to this heading">#</a></h2>
-<p>These scenarios assume that Germany’s ‘NEP’ transmission projects face delays, with only confirmed AC lines and DC links available that are to be built before and including 2032.
-The impact of the cost difference between iron-air batteries at 2,000 EUR/kWh (2024) and 1,525 EUR/kWh (2024)
-is also examined.</p>
+<p>These scenarios assume that Germany’s ‘NEP’ transmission projects face delays, with only confirmed AC lines and DC links available that are to be built before and including 2032.</p>
+<p>There are three available scenarios:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">delayed-nep-nomds</span></code>: Multi-day storages are excluded.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">delayed-nep-mid-capex-mds</span></code>: The cost of iron-air is set at 20,000 EUR/MWh (2024).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">delayed-nep-low-capex-mds</span></code>: The cost of iron-air is set at 15,250 EUR/MWh (2024).</p></li>
+</ul>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">delayed-nep-mid-capex-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
@@ -805,9 +838,13 @@ is also examined.</p>
 </section>
 <section id="high-gas-price">
 <h2><code class="docutils literal notranslate"><span class="pre">High</span> <span class="pre">Gas</span> <span class="pre">Price</span></code><a class="headerlink" href="#high-gas-price" title="Link to this heading">#</a></h2>
-<p>These scenarios assume that the EU’s gas market faces a 50% price increase compared to the baseline scenario.
-The impact of the cost difference between iron-air batteries at 2,000 EUR/kWh (2024) and 1,525 EUR/kWh (2024)
-is also examined.</p>
+<p>These scenarios assume that the EU’s gas market faces a 50% price increase compared to the baseline scenario.</p>
+<p>There are three available scenarios:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gasprice-peak-nomds</span></code>: Multi-day storages are excluded.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gasprice-peak-mid-capex-mds</span></code>: The cost of iron-air is set at 20,000 EUR/MWh (2024).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gasprice-peak-low-capex-mds</span></code>: The cost of iron-air is set at 15,250 EUR/MWh (2024).</p></li>
+</ul>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">gasprice-peak-mid-capex-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
@@ -827,6 +864,16 @@ is also examined.</p>
 <span class="w">  </span><span class="nt">costs</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">investment</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">iron-air battery</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">14089</span><span class="w">  </span><span class="c1"># in EUR/MWh (2020) from 15,250 EUR/MWh (2024)</span>
+<span class="w">    </span><span class="nt">fuel</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">OCGT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">58.26</span><span class="w"> </span><span class="c1"># https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex) + 50%</span>
+<span class="w">      </span><span class="nt">CCGT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">58.26</span><span class="w"> </span><span class="c1"># https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex) + 50%</span>
+<span class="w">      </span><span class="nt">gas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">58.26</span><span class="w"> </span><span class="c1"># https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex) + 50%</span>
+
+<span class="nt">gasprice-peak-nomds</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="w">    </span><span class="nt">storage_units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;li-ion</span><span class="nv"> </span><span class="s">battery&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vanadium&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;lair&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pair&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">costs</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">fuel</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">OCGT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">58.26</span><span class="w"> </span><span class="c1"># https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex) + 50%</span>
 <span class="w">      </span><span class="nt">CCGT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">58.26</span><span class="w"> </span><span class="c1"># https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52022SC0230 (Annex) + 50%</span>
