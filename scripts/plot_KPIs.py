@@ -784,13 +784,53 @@ def calculate_emission(network, countries):
 
     return df
 
-def calculate_system_cost_csv(network, csv_path, countries):
+def calculate_system_cost_csv(network, csv_path, countries, dagg_gen=True, group_carrier=""):
     n = network.copy()
     
     df = pd.read_csv(csv_path, index_col=list(range(3)), header=list(range(4)))
-    df = df.set_axis(['carrier', 'cost'], axis=1)
-    df.index = df.index.rename(["country"], level=[2])
-    df = df.rename(index=n.buses.country, level=2)
+    df.index = df.index.set_names(["component","type","bus"])
+    df = (df
+          .set_axis(['carrier', 'cost'], axis=1)
+          .assign(country=lambda x: x.index.get_level_values("bus").map(n.buses.country))
+          .fillna("")
+          .groupby(['component','carrier','country']).sum()
+    )
+
+    # Heuristic to get the Opex from generators
+    if dagg_gen:
+        df_gen = df[(df.index.get_level_values('country') == "") & (df.index.get_level_values('component') == "generators")]
+        to_drop = df_gen.index
+        gen_carrier = df_gen.groupby("carrier").sum()
+    
+        df_factor = n.statistics.energy_balance(groupby=["country","carrier","bus_carrier"], nice_names=False)
+    
+        for c_gen in gen_carrier.index:
+            carrier = df_factor[(df_factor.index.get_level_values("component") == "Link") & (df_factor.index.get_level_values("bus_carrier") == c_gen)].index.get_level_values("carrier")
+            series = df_factor.loc[(df_factor.index.get_level_values('carrier').isin(carrier)) & (df_factor.index.get_level_values("component") == "Link") & (df_factor.index.get_level_values("bus_carrier") == "AC")].copy()
+            df_new = ((series/series.sum())
+                      .to_frame("factor")
+                      .droplevel("component")
+                      .assign(cost=lambda x: x.factor * gen_carrier.loc[c_gen,"cost"],
+                              component="link")
+                     )
+            if group_carrier == "sector":
+                df_new = (df_new
+                          .droplevel("carrier")
+                          .assign(carrier=c_gen)
+                         )
+            
+            df_new = (df_new
+                      .drop(columns="factor")
+                      .groupby(['component','carrier','country'])
+                      .sum()
+             )
+            if df_new.empty:
+                to_drop = to_drop.drop(df_gen[df_gen.index.get_level_values('carrier') == c_gen].index)
+            else:
+                df = pd.concat([df, df_new])
+    
+        df = df.drop(to_drop)
+
     df = df.reset_index(["country"])
     df.loc[~df.country.isin(countries),"country"] = "EU"
     
@@ -1393,7 +1433,6 @@ if __name__ == "__main__":
                       )
     
     # Preparing iterative data with aggregated Li-Ion Battery
-    df_cost = calculate_system_cost_csv(n, snakemake.input.nodal_costs, countries)
     df_capacity_csv = calculate_capacity_csv(n, snakemake.input.nodal_capacity, countries)
     df_SOC = prepare_SOC(n)
 
@@ -1444,7 +1483,12 @@ if __name__ == "__main__":
 
                 if extract_param == "system cost":
                     logger.info("extracting system cost")
-                    df = df_cost.copy(deep=True)
+                    df = calculate_system_cost_csv(n, 
+                                                   snakemake.input.nodal_costs, 
+                                                   countries,
+                                                   dagg_gen=True,
+                                                   group_carrier = kpi_param.get("group_carrier",None)
+                                                   )
                 elif extract_param == "capacity":
                     logger.info("extracting capacity")
                     df = df_capacity_csv.copy(deep=True)
