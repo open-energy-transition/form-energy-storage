@@ -124,8 +124,10 @@ KPIS = {
                            + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-storage_capacity_DE_{planning_horizons}.pdf",
         "storage_map_All": RESULTS
                            + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-storage_capacity_All_{planning_horizons}.pdf",
-        "line_loading_map": RESULTS
-                            + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-line_loading_{planning_horizons}.pdf",
+        "line_loading_map_mean": RESULTS
+                            + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-line_loading_mean_{planning_horizons}.pdf",
+        "line_loading_map_max": RESULTS
+                            + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-line_loading_max_{planning_horizons}.pdf",
         "energy_trade": RESULTS
                             + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-electricity_trade_{planning_horizons}.pdf",
         "storage_capacities": RESULTS

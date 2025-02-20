@@ -116,13 +116,17 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legen
         map_opts["boundaries"] = [4, 17, 46, 56]
         bus_size_factor = float(bus_size_factor_)
 
+    if include_csvs:
+        curtailment_elec.rename("Curtailment [GWh]").to_csv(csv_path(path))
+        regions.elec_price.rename("Avg. Electricity price [EUR/MWh]").to_csv(csv_path(path.replace("curtailment_map", "avg_electricity_prices")))
+
+
     # calculate total curtailment
     total_curtailment = curtailment_elec.groupby(level=0).sum().sum()
     logger.info(f"Total annual curtailment of: {total_curtailment} GWh")
 
     bus_sizes = curtailment_elec / bus_size_factor
 
-    proj = ccrs.EqualEarth()
     regions = regions.to_crs(proj.proj4_init)
 
     fig, ax = plt.subplots(figsize=(7, 6), subplot_kw={"projection": proj})
@@ -259,7 +263,6 @@ def plot_storage_map(network, regions, path=None, focus_de=True, legend_circles=
 
     bus_sizes = vres_cap / bus_size_factor
 
-    proj = ccrs.EqualEarth()
     regions = regions.to_crs(proj.proj4_init)
 
     if ax_ext is not None:
@@ -348,7 +351,6 @@ def plot_storage_maps(network, regions, path, focus_de=False, legend_circles=[30
                       techs=["iron-air", "li-ion", "PHS"], cmaps={"iron-air": "Greys"},
                       show_fig=False):
     n = network.copy()
-    proj = ccrs.EqualEarth()
     n_techs = len(techs)
     fig, axs = plt.subplots(n_techs, 1, figsize=(7, n_techs*6), subplot_kw={"projection": proj})
     for i, tech in enumerate(techs):
@@ -373,7 +375,7 @@ def plot_line_loading(network, regions, path, focus_de=True, value="mean", show_
             hide_connection = []
     
         p0 = l_t.p0.copy()
-        opt = l[opt_name].copy()
+        opt = (l[f"{opt_name}_nom_opt"]*l[f"{opt_name}_max_pu"]).copy()
         alpha = pd.Series(index=l.index)
         
         p0.loc[:, hide_connection] = 0
@@ -396,8 +398,8 @@ def plot_line_loading(network, regions, path, focus_de=True, value="mean", show_
         query_lines = False
         query_links = "carrier != 'DC'"
         
-    lines_p0, lines_opt, lines_alpha = filter_connections(n.lines, n.lines_t,"s_nom_opt", query_lines)
-    links_p0, links_opt, links_alpha = filter_connections(n.links, n.links_t,"p_nom_opt", query_links)
+    lines_p0, lines_opt, lines_alpha = filter_connections(n.lines, n.lines_t, "s", query_lines)
+    links_p0, links_opt, links_alpha = filter_connections(n.links, n.links_t, "p", query_links)
 
     lines_loading = abs(lines_p0)/lines_opt
     links_loading = abs(links_p0)/links_opt
@@ -405,7 +407,7 @@ def plot_line_loading(network, regions, path, focus_de=True, value="mean", show_
     if value == "mean":
         line_colors = lines_loading.mean() * 100
         link_colors = links_loading.mean() * 100
-        title = "Average"
+        title = "Average mean"
         
     elif value == "max":
         line_colors = lines_loading.max() * 100
@@ -420,8 +422,6 @@ def plot_line_loading(network, regions, path, focus_de=True, value="mean", show_
     link_weight["w"] = [links_opt[i] * n.links.length[i] / (links_opt * n.links.length).sum() for i in n.links.index]
     link_ave = round((link_weight["w"] * link_colors).sum(),1)
 
-    proj = load_projection(snakemake.params.plotting)
-
     if focus_de:
         map_opts["boundaries"] = [4, 17, 46, 56]
 
@@ -430,6 +430,12 @@ def plot_line_loading(network, regions, path, focus_de=True, value="mean", show_
 
     fig, ax = plt.subplots(subplot_kw={"projection": proj}, figsize=(7, 6))
     norm = Normalize(vmin=0, vmax=100, clip=True)
+
+    if include_csvs:
+        (pd.concat([line_colors, link_colors])
+         .dropna()
+         .rename(f"{value.title()} Line Loading [%]")
+         ).to_csv(csv_path(path))
 
     collection = n.plot(
         ax=ax,
@@ -441,7 +447,7 @@ def plot_line_loading(network, regions, path, focus_de=True, value="mean", show_
         link_cmap=plt.cm.jet,
         link_alpha=links_alpha,
         link_norm=norm,
-        title="Line loading",
+        title=f"{value.title()} Line Loading",
         bus_sizes=1e-3,
         bus_alpha=0.7,
         boundaries=map_opts["boundaries"]
@@ -505,6 +511,9 @@ def plot_energy_trade(network, countries, path):
     df_new = df_new.groupby(lambda x: x).sum()
     df_new["color"] = [color_country[country] for country in df_new.index]
     df_new = df_new.rename(index={country:cc.convert(country, to="name_short") for country in df_new.index})
+
+    if include_csvs:
+        df_new.drop(columns=["color"]).rename_axis("Traded electricity [GWh]").to_csv(csv_path(path))
 
     plot_kw = {"title": "Total Energy Trade", "ylabel": "Import (-)/Export (+) [GWh]"}
 
@@ -1401,7 +1410,13 @@ if __name__ == "__main__":
     config_kpi = snakemake.params.kpi
     if config_kpi.get("enable_latex", False): test_and_enable_latex()
 
-    plot_line_loading(n, regions, path=snakemake.output.line_loading_map, focus_de=True, value="mean", show_fig=False)
+    # whether to save the csvs to the plots
+    include_csvs = config_kpi.get("include_csvs")
+
+    proj = load_projection(snakemake.params.plotting)
+
+    plot_line_loading(n, regions, path=snakemake.output.line_loading_map_mean, focus_de=True, value="mean", show_fig=False)
+    plot_line_loading(n, regions, path=snakemake.output.line_loading_map_max, focus_de=True, value="max", show_fig=False)
 
     # extract all the nessesary statistics
     countries = snakemake.params.countries
@@ -1467,7 +1482,6 @@ if __name__ == "__main__":
     df_eql = prepare_energy_balance(n)
 
     filter_scheme = config_kpi.get("filter_scheme",{})
-    include_csvs = config_kpi.get("include_csvs")
 
     if config_kpi.get("custom_plots"):
         for fn, kpi_param in config_kpi["custom_plots"].items():
