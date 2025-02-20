@@ -172,10 +172,12 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legen
         legend_kw=legend_kw,
     )
 
-    ax.set_title(f'Total annual curtailment: \n {round(total_curtailment/1e3, 3)} TWh',
+    ax.set_title(f'Total annual curtailment: \n {round(total_curtailment/1e3, 3)} TWh'
+                 f'\n \n'
+                 f'Avg. Electricity Price: \n {round(regions.elec_price.mean(), 2)} EUR/MWh',
                 loc='left',
                 x=legend_x + 0.03,
-                y=legend_y + 0.05,
+                y=legend_y - 0.1,
                 fontsize=12
                 )
 
@@ -185,7 +187,7 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legen
 
     legend_kw = dict(
         loc="upper left",
-        bbox_to_anchor=(legend_x, legend_y),
+        bbox_to_anchor=(legend_x, legend_y - 0.15),
         frameon=False,
         title=r"\textbf{Curtailment}",
         alignment="left",
