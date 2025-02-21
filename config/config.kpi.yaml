@@ -594,14 +594,13 @@ kpi:
         xlim: ['2013-02-01', '2013-03-01']
         #ylim: [-150,300]
         ylabel: GW
-  # short duration SOC Share
-    All_li-ion_winter_SOC_share:
+  # Short duration SOC Share
+    All_short_duration_storage_SOC_share:
       extract: SOC
-      carrier_filter: Li-Ion Battery Storage
+      carrier_filter: [Li-Ion Battery Storage, lair, pair, vanadium]
       group_carrier: pretty
       plot_kw:
-        title: Li-Ion Battery Storage winter SOC Share
-        xlim: ['2013-08-01', '2013-09-01']
+        title: Short duration storage SOC Share
         ylabel: "%"
     All_short_duration_storage_winter_SOC_share:
       extract: SOC
@@ -611,14 +610,6 @@ kpi:
         title: Short duration storage winter SOC Share
         xlim: ['2013-02-01', '2013-03-01']
         ylabel: "%"
-    All_li-ion_summer_SOC_share:
-      extract: SOC
-      carrier_filter: Li-Ion Battery Storage
-      group_carrier: pretty
-      plot_kw:
-        title: Li-Ion Battery Storage summer SOC Share
-        xlim: ['2013-08-01', '2013-09-01']
-        ylabel: "%"
     All_short_duration_storage_summer_SOC_share:
       extract: SOC
       carrier_filter: [Li-Ion Battery Storage, lair, pair, vanadium]
@@ -627,44 +618,39 @@ kpi:
         title: Short duration storage summer SOC Share
         xlim: ['2013-02-01', '2013-03-01']
         ylabel: "%"
-  # multi day storage SOC Share
-    All_H2_SOC_share:
+    DE_short_duration_storage_SOC_share:
       extract: SOC
-      carrier_filter: H2 Store
+      include: ["DE"]
+      carrier_filter: [Li-Ion Battery Storage, lair, pair, vanadium]
       group_carrier: pretty
       plot_kw:
-        title: H2 Store SOC Share
+        title: Germany short duration storage SOC Share
         ylabel: "%"
-    All_iron-air_SOC_share:
+    DE_short_duration_storage_winter_SOC_share:
       extract: SOC
-      carrier_filter: Iron-Air Battery Storage
+      include: ["DE"]
+      carrier_filter: [Li-Ion Battery Storage, lair, pair, vanadium]
       group_carrier: pretty
       plot_kw:
-        title: Iron-Air Battery Storage SOC Share
+        title: Germany short duration storage winter SOC Share
+        xlim: ['2013-02-01', '2013-03-01']
         ylabel: "%"
+    DE_short_duration_storage_summer_SOC_share:
+      extract: SOC
+      include: ["DE"]
+      carrier_filter: [Li-Ion Battery Storage, lair, pair, vanadium]
+      group_carrier: pretty
+      plot_kw:
+        title: Germany short duration storage summer SOC Share
+        xlim: ['2013-02-01', '2013-03-01']
+        ylabel: "%"
+  # Multi day duration SOC Share
     All_multi_day_storage_SOC_share:
       extract: SOC
       carrier_filter: [H2 Store, Iron-Air Battery Storage]
       group_carrier: pretty
       plot_kw:
         title: Multi day storage SOC Share
-        ylabel: "%"
-  # Multi day seasonal SOC share
-    All_H2_winter_SOC_share:
-      extract: SOC
-      carrier_filter: H2 Store
-      group_carrier: pretty
-      plot_kw:
-        title: H2 Store winter SOC Share
-        xlim: ['2013-02-01', '2013-03-01']
-        ylabel: "%"
-    All_iron-air_winter_SOC_share:
-      extract: SOC
-      carrier_filter: Iron-Air Battery Storage
-      group_carrier: pretty
-      plot_kw:
-        title: Iron-Air Battery Storage winter SOC Share
-        xlim: ['2013-02-01', '2013-03-01']
         ylabel: "%"
     All_multi_day_storage_winter_SOC_share:
       extract: SOC
@@ -674,22 +660,6 @@ kpi:
         title: Multi day storage winter SOC Share
         xlim: ['2013-02-01', '2013-03-01']
         ylabel: "%"
-    All_H2_summer_SOC_share:
-      extract: SOC
-      carrier_filter: H2 Store
-      group_carrier: pretty
-      plot_kw:
-        title: H2 Store summer SOC Share
-        xlim: ['2013-08-01', '2013-09-01']
-        ylabel: "%"
-    All_iron-air_summer_SOC_share:
-      extract: SOC
-      carrier_filter: Iron-Air Battery Storage
-      group_carrier: pretty
-      plot_kw:
-        title: Iron-Air Battery Storage summer SOC Share
-        xlim: ['2013-08-01', '2013-09-01']
-        ylabel: "%"
     All_multi_day_storage_summer_SOC_share:
       extract: SOC
       carrier_filter: [H2 Store, Iron-Air Battery Storage]
@@ -698,14 +668,39 @@ kpi:
         title: Multi day storage summer SOC Share
         xlim: ['2013-08-01', '2013-09-01']
         ylabel: "%"
-  # short duration SOC total
-    All_li-ion_winter_SOC_total:
+    DE_multi_day_storage_SOC_share:
       extract: SOC
-      carrier_filter: Li-Ion Battery Storage
+      include: ["DE"]
+      carrier_filter: [H2 Store, Iron-Air Battery Storage]
       group_carrier: pretty
       plot_kw:
-        title: Li-Ion Battery Storage winter SOC Total
+        title: Germany multi day storage SOC Share
+        ylabel: "%"
+    DE_multi_day_storage_winter_SOC_share:
+      extract: SOC
+      include: ["DE"]
+      carrier_filter: [H2 Store, Iron-Air Battery Storage]
+      group_carrier: pretty
+      plot_kw:
+        title: Germany multi day storage winter SOC Share
         xlim: ['2013-02-01', '2013-03-01']
+        ylabel: "%"
+    DE_multi_day_storage_summer_SOC_share:
+      extract: SOC
+      include: ["DE"]
+      carrier_filter: [H2 Store, Iron-Air Battery Storage]
+      group_carrier: pretty
+      plot_kw:
+        title: Germany multi day storage summer SOC Share
+        xlim: ['2013-08-01', '2013-09-01']
+        ylabel: "%"
+  # Short duration SOC total
+    All_short_duration_storage_SOC_total:
+      extract: SOC
+      carrier_filter: [Li-Ion Battery Storage, lair, pair, vanadium]
+      group_carrier: pretty
+      plot_kw:
+        title: Short duration storage SOC Total
         ylabel: GWh
     All_short_duration_storage_winter_SOC_total:
       extract: SOC
@@ -715,14 +710,6 @@ kpi:
         title: Short duration storage winter SOC Total
         xlim: ['2013-02-01', '2013-03-01']
         ylabel: GWh
-    All_li-ion_summer_SOC_total:
-      extract: SOC
-      carrier_filter: Li-Ion Battery Storage
-      group_carrier: pretty
-      plot_kw:
-        title: Li-Ion Battery Storage summer SOC Total
-        xlim: ['2013-08-01', '2013-09-01']
-        ylabel: GWh
     All_short_duration_storage_summer_SOC_total:
       extract: SOC
       carrier_filter: [Li-Ion Battery Storage, lair, pair, vanadium]
@@ -731,44 +718,39 @@ kpi:
         title: Short duration storage summer SOC Total
         xlim: ['2013-08-01', '2013-09-01']
         ylabel: GWh
-  # multi day storage SOC total
-    All_H2_SOC_total:
+    DE_short_duration_storage_SOC_total:
       extract: SOC
-      carrier_filter: H2 Store
+      include: ["DE"]
+      carrier_filter: [Li-Ion Battery Storage, lair, pair, vanadium]
       group_carrier: pretty
       plot_kw:
-        title: H2 Store SOC Total
+        title: Germany short duration storage SOC Total
         ylabel: GWh
-    All_iron-air_SOC_total:
+    DE_short_duration_storage_winter_SOC_total:
       extract: SOC
-      carrier_filter: Iron-Air Battery Storage
+      include: ["DE"]
+      carrier_filter: [Li-Ion Battery Storage, lair, pair, vanadium]
       group_carrier: pretty
       plot_kw:
-        title: Iron-Air Battery Storage SOC Total
+        title: Germany short duration storage winter SOC Total
+        xlim: ['2013-02-01', '2013-03-01']
         ylabel: GWh
+    DE_short_duration_storage_summer_SOC_total:
+      extract: SOC
+      include: ["DE"]
+      carrier_filter: [Li-Ion Battery Storage, lair, pair, vanadium]
+      group_carrier: pretty
+      plot_kw:
+        title: Germany short duration storage summer SOC Total
+        xlim: ['2013-08-01', '2013-09-01']
+        ylabel: GWh
+  # Multi day duration SOC Total
     All_multi_day_storage_SOC_total:
       extract: SOC
       carrier_filter: [H2 Store, Iron-Air Battery Storage]
       group_carrier: pretty
       plot_kw:
         title: Multi day storage SOC Total
-        ylabel: GWh
-  # multi day duration seasonal SOC total
-    All_H2_winter_SOC_total:
-      extract: SOC
-      carrier_filter: H2 Store
-      group_carrier: pretty
-      plot_kw:
-        title: H2 Store winter SOC Total
-        xlim: ['2013-02-01', '2013-03-01']
-        ylabel: GWh
-    All_iron-air_winter_SOC_total:
-      extract: SOC
-      carrier_filter: Iron-Air Battery Storage
-      group_carrier: pretty
-      plot_kw:
-        title: Iron-Air Battery Storage winter SOC Total
-        xlim: ['2013-02-01', '2013-03-01']
         ylabel: GWh
     All_multi_day_storage_winter_SOC_total:
       extract: SOC
@@ -778,27 +760,37 @@ kpi:
         title: Multi day storage winter SOC Total
         xlim: ['2013-02-01', '2013-03-01']
         ylabel: GWh
-    All_H2_summer_SOC_total:
-      extract: SOC
-      carrier_filter: H2 Store
-      group_carrier: pretty
-      plot_kw:
-        title: H2 Store summer SOC Total
-        xlim: ['2013-08-01', '2013-09-01']
-        ylabel: GWh
-    All_iron-air_summer_SOC_total:
-      extract: SOC
-      carrier_filter: Iron-Air Battery Storage
-      group_carrier: pretty
-      plot_kw:
-        title: Iron-Air Battery Storage summer SOC Total
-        xlim: ['2013-08-01', '2013-09-01']
-        ylabel: GWh
     All_multi_day_storage_summer_SOC_total:
       extract: SOC
       carrier_filter: [H2 Store, Iron-Air Battery Storage]
       group_carrier: pretty
       plot_kw:
         title: Multi day storage summer SOC Total
+        xlim: ['2013-08-01', '2013-09-01']
+        ylabel: GWh
+    DE_multi_day_storage_SOC_total:
+      extract: SOC
+      include: ["DE"]
+      carrier_filter: [H2 Store, Iron-Air Battery Storage]
+      group_carrier: pretty
+      plot_kw:
+        title: Multi day storage SOC Total
+        ylabel: GWh
+    DE_multi_day_storage_winter_SOC_total:
+      extract: SOC
+      include: ["DE"]
+      carrier_filter: [H2 Store, Iron-Air Battery Storage]
+      group_carrier: pretty
+      plot_kw:
+        title: Germany multi day storage winter SOC Total
+        xlim: ['2013-02-01', '2013-03-01']
+        ylabel: GWh
+    DE_multi_day_storage_summer_SOC_total:
+      extract: SOC
+      include: ["DE"]
+      carrier_filter: [H2 Store, Iron-Air Battery Storage]
+      group_carrier: pretty
+      plot_kw:
+        title: Germany multi day storage summer SOC Total
         xlim: ['2013-08-01', '2013-09-01']
         ylabel: GWh

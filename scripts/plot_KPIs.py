@@ -710,6 +710,7 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
         df = df[~df.index.get_level_values("bus").isin(exclude)]
 
     if isinstance(carrier_filter, list):
+        print(carrier_filter)
         df = df[df.index.get_level_values("carrier").isin(carrier_filter)]
     elif isinstance(carrier_filter, str):
         df = df[df.index.get_level_values("carrier").isin([carrier_filter])]
@@ -793,7 +794,7 @@ def calculate_emission(network, countries):
 
     return df
 
-def calculate_system_cost_csv(network, csv_path, countries, dagg_gen=True, group_carrier=""):
+def calculate_system_cost_csv(network, csv_path, countries, dagg_gen=True):
     n = network.copy()
     
     df = pd.read_csv(csv_path, index_col=list(range(3)), header=list(range(4)))
@@ -805,7 +806,7 @@ def calculate_system_cost_csv(network, csv_path, countries, dagg_gen=True, group
           .groupby(['component','carrier','country']).sum()
     )
 
-    # Heuristic to get the Opex from generators
+    # Heuristic to disaggregate the marginal price by country
     if dagg_gen:
         df_gen = df[(df.index.get_level_values('country') == "") & (df.index.get_level_values('component') == "generators")]
         to_drop = df_gen.index
@@ -818,17 +819,10 @@ def calculate_system_cost_csv(network, csv_path, countries, dagg_gen=True, group
             series = df_factor.loc[(df_factor.index.get_level_values('carrier').isin(carrier)) & (df_factor.index.get_level_values("component") == "Link") & (df_factor.index.get_level_values("bus_carrier") == "AC")].copy()
             df_new = ((series/series.sum())
                       .to_frame("factor")
-                      .droplevel("component")
+                      .droplevel(["component","carrier"])
                       .assign(cost=lambda x: x.factor * gen_carrier.loc[c_gen,"cost"],
-                              component="link")
-                     )
-            if group_carrier == "sector":
-                df_new = (df_new
-                          .droplevel("carrier")
-                          .assign(carrier=c_gen)
-                         )
-            
-            df_new = (df_new
+                              component="link",
+                              carrier=c_gen)
                       .drop(columns="factor")
                       .groupby(['component','carrier','country'])
                       .sum()
@@ -1012,13 +1006,13 @@ def plot_by_country(df, plot_kw, path, plot_figsize=(12,9)):
     fig, ax = plt.subplots(figsize=plot_figsize)
 
     plot_kw["width"] = plot_kw.get("width",0.9)
+    plot_kw["rot"] = plot_kw.get("rot",90)
     
     df.drop(columns={"color"}).T.plot(
         kind="bar",
         ax=ax,
         stacked=True,
         color=df["color"],
-        rot=90,
         legend=False,
         **plot_kw,
     )
@@ -1448,6 +1442,7 @@ if __name__ == "__main__":
                       )
     
     # Preparing iterative data with aggregated Li-Ion Battery
+    df_cost = calculate_system_cost_csv(n, snakemake.input.nodal_costs, countries, dagg_gen=True)
     df_capacity_csv = calculate_capacity_csv(n, snakemake.input.nodal_capacity, countries)
     df_SOC = prepare_SOC(n)
 
@@ -1497,12 +1492,7 @@ if __name__ == "__main__":
 
                 if extract_param == "system cost":
                     logger.info("extracting system cost")
-                    df = calculate_system_cost_csv(n, 
-                                                   snakemake.input.nodal_costs, 
-                                                   countries,
-                                                   dagg_gen=True,
-                                                   group_carrier = kpi_param.get("group_carrier",None)
-                                                   )
+                    df = df_cost.copy(deep=True)
                 elif extract_param == "capacity":
                     logger.info("extracting capacity")
                     df = df_capacity_csv.copy(deep=True)
@@ -1520,16 +1510,19 @@ if __name__ == "__main__":
                     df = df_cur.copy(deep=True)
 
                 #time series plots have their own route
-                elif extract_param == "energy balance":
-                    df = df_eql.copy(deep=True)
-                    df = filter_plot_energy_balance(n, df, kpi_param, filter_scheme, snakemake.output[fn])
+                elif extract_param == "energy balance" or extract_param == "SOC":
+                    if extract_param == "energy balance":
+                        df = df_eql.copy(deep=True)
+                        df = filter_plot_energy_balance(n, df, kpi_param, filter_scheme, snakemake.output[fn])
+
+                    elif extract_param == "SOC":
+                        df = df_SOC.copy(deep=True)
+                        df = filter_plot_SOC(n, df, kpi_param, snakemake.output[fn])
+                    
                     if include_csvs:
-                        df.to_csv(snakemake.output[fn + "_csv"])
-                    continue
-                elif extract_param == "SOC":
-                    df = df_SOC.copy(deep=True)
-                    df = filter_plot_SOC(n, df, kpi_param, snakemake.output[fn])
-                    if include_csvs:
+                        plot_kw = kpi_param.get("plot_kw",{})
+                        plot_unit = plot_kw.get("ylabel", "")
+                        df.index.name = f"{extract_param} [{plot_unit}]"
                         df.to_csv(snakemake.output[fn + "_csv"])
                     continue
 
@@ -1560,9 +1553,10 @@ if __name__ == "__main__":
                     df = df.loc[:,df.columns.difference(exclude)]
                 
                 plot_kw = kpi_param.get("plot_kw",{})
-                if "TW" in plot_kw.get("ylabel", ""):
+                plot_unit = plot_kw.get("ylabel", "")
+                if "TW" in plot_unit:
                     df *= 1e-3
-                elif plot_kw.get("ylabel", "") == "%":
+                elif plot_unit == "%":
                     plot_kw["ylabel"] = "\%"
 
                 df = filter_and_rename(n, df, 
@@ -1588,6 +1582,7 @@ if __name__ == "__main__":
                     df = df.drop(columns={"color"})
 
                 if include_csvs:
+                    df.index.name = f"{extract_param} [{plot_unit}]"
                     df.to_csv(snakemake.output[fn + "_csv"])
 
             except (TypeError):
