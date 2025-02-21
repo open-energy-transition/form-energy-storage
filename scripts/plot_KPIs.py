@@ -91,17 +91,20 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legen
 
     # curtailment = n.statistics.curtailment(groupby=n.statistics.groupers.get_bus_and_carrier).droplevel(0).loc[regions.index,:,:]
     elec_generation = n.generators.carrier.replace(pretty_gen).to_frame().query("not carrier.str.contains('solar thermal')").carrier.unique()
-    curtailment = n.statistics.curtailment(groupby=["bus", "carrier"]).droplevel(0)
-    elec_i = pd.Index(set(curtailment.index.get_level_values(1)).intersection(elec_generation))
-    curtailment_elec = curtailment.loc[:, elec_i, :].reset_index()
+    curtailment = n.statistics.curtailment(groupby=["bus", "country", "carrier"], aggregate_time=False).droplevel(0)
+    elec_i = pd.Index(set(curtailment.index.get_level_values(2)).intersection(elec_generation))
+    curtailment_elec = curtailment.loc[:, :, elec_i, :].reset_index()
     curtailment_elec = curtailment_elec.rename(index=curtailment_elec.bus.map(n.buses.location))
     curtailment_elec["bus"] = curtailment_elec.index
     curtailment_elec = curtailment_elec.replace({"carrier":pretty_names})
-    curtailment_elec = curtailment_elec.groupby(["bus", "carrier"]).sum()
-    curtailment_elec = curtailment_elec.loc[regions.index, 0].div(1e3)  # GWh
-    electricity_price = n.buses_t.marginal_price.loc[:, regions.index].mean(axis=0)
+    curtailment_elec = curtailment_elec.groupby(["bus", "country", "carrier"]).sum()
+    curtailment_elec = curtailment_elec.loc[regions.index, :].mul(n.snapshot_weightings.generators).div(1e3)  # GWh
+    curtailment_elec_csv = curtailment_elec.T.copy()
+    curtailment_elec = curtailment_elec.groupby(["bus", "carrier"]).sum().sum(axis=1)
+    electricity_price = n.buses_t.marginal_price.loc[:, regions.index]
+    electricity_price_csv = electricity_price.copy()
     regions["elec_price"] = (
-        electricity_price
+        electricity_price.mean(axis=0)
     )
 
     bus_size_factor = float(bus_size_factor_)
@@ -110,6 +113,8 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legen
 
     if focus_de:
         curtailment_elec = curtailment_elec.filter(like="DE", axis=0)
+        curtailment_elec_csv = curtailment_elec_csv.filter(like="DE", axis=1)
+        electricity_price_csv = electricity_price_csv.filter(like="DE", axis=1)
         regions = regions.filter(like="DE", axis=0)
         for c in n.iterate_components(n.branch_components):
             c.df.drop(c.df.index[~((c.df.bus0.str.startswith("DE")) | (c.df.bus1.str.startswith("DE")))], inplace=True)
@@ -117,8 +122,10 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legen
         bus_size_factor = float(bus_size_factor_)
 
     if include_csvs:
-        curtailment_elec.rename("Curtailment [GWh]").to_csv(csv_path(path))
-        regions.elec_price.rename("Avg. Electricity price [EUR/MWh]").to_csv(csv_path(path.replace("curtailment_map", "avg_electricity_prices")))
+        curtailment_elec_csv.index.name = "Curtailment [GWh]"
+        electricity_price_csv.index.name = "Avg. Electricity price [EUR/MWh]"
+        curtailment_elec_csv.to_csv(csv_path(path))
+        electricity_price_csv.to_csv(csv_path(path.replace("curtailment_map", "avg_electricity_prices")))
 
 
     # calculate total curtailment
