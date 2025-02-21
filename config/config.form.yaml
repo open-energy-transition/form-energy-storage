@@ -12,8 +12,8 @@ logging:
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: "validation_runs"
-  name: "2023-validation-run-1H"
+  prefix: "scenarios"
+  name: "baseline-mds"
   scenarios:
     enable: true
     file: config/scenarios.form.yaml
@@ -178,7 +178,7 @@ sector:
     2035: 0.30 # FE input
   land_transport_ice_share:
     2035: 0.70
-  include_transport_emissions: true
+  include_transport_emissions: false
   reduce_space_heat_exogenously: true
   reduce_space_heat_exogenously_factor:
     2035: 0.21

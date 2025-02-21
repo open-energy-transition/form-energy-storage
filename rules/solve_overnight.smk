@@ -3,23 +3,25 @@
 # SPDX-License-Identifier: MIT
 
 
-rule final_adjustment_overnight:
-    params:
-        transmission_projects=config_provider("transmission_projects"),
-    input:
-        network=RESULTS
-        + "prenetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
-        ntc="data/TYNDP_NTC.csv",
-    output:
-        network=RESULTS
-        + "prenetworks-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
-    log:
-        logs(RESULTS
-        + "logs/final_adjustment_overnight_base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.log")
-    conda:
-        "../envs/environment.yaml"
-    script:
-        "../scripts/final_adjustment.py"
+if config["enable"].get("final_adjustment",False):
+
+    rule final_adjustment_overnight:
+        params:
+            transmission_projects=config_provider("transmission_projects"),
+        input:
+            network=RESULTS
+            + "prenetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
+            ntc="data/TYNDP_NTC.csv",
+        output:
+            network=RESULTS
+            + "prenetworks-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
+        log:
+            logs(RESULTS
+            + "logs/final_adjustment_overnight_base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.log")
+        conda:
+            "../envs/environment.yaml"
+        script:
+            "../scripts/final_adjustment.py"
 
 rule solve_sector_network:
     params:
