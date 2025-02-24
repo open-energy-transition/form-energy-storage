@@ -76,7 +76,6 @@ if config["foresight"] == "perfect":
 rule all:
     input:
         expand(RESULTS + "graphs/costs.svg", run=config["run"]["name"]),
-        "report/report.pdf",
         expand(
             RESULTS
             + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-storage_capacity_DE_{planning_horizons}.pdf",

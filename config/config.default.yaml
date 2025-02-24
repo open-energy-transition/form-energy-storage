@@ -329,6 +329,7 @@ transmission_projects:
     #- planned_not_yet_permitted
     #- under_consideration
   new_link_capacity: zero #keep or zero
+  filter_year: 2050
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#transformers
 transformers:
@@ -1287,6 +1288,7 @@ plotting:
     urban central resistive heater: '#8cdf85'
     retrofitting: '#8487e8'
     building retrofitting: '#8487e8'
+    heating flexibility: '#06402B'
     # hydrogen
     H2 for industry: "#f073da"
     H2 for shipping: "#ebaee0"

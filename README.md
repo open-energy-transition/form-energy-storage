@@ -49,9 +49,9 @@ You need [mamba](https://mamba.readthedocs.io/en/latest/) to run the analysis. U
 
     mamba env create -f environment.yaml
 
-Activate the newly created `fe-storage` environment:
+Activate the newly created `pypsa-eur` environment:
 
-    mamba activate fe-storage
+    mamba activate pypsa-eur
 
 ## 2. Run the analysis
 

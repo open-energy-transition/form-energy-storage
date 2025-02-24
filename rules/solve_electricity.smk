@@ -6,6 +6,8 @@
 if config["enable"].get("final_adjustment",False):
 
     rule final_adjustment:
+        params:
+            chp_extendable_DE=config_provider("sector","chp_extendable_DE"),
         input:
             network=resources("networks/base_s_{clusters}_elec_l{ll}_{opts}.nc"),
             ntc="data/TYNDP_NTC.csv",

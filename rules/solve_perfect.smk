@@ -93,6 +93,8 @@ rule prepare_perfect_foresight:
 if config["enable"].get("final_adjustment",False):
 
     rule final_adjustment_perfect:
+        params:
+            chp_extendable_DE=config_provider("sector","chp_extendable_DE"),
         input:
             network=RESULTS
             + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_brownfield_all_years.nc",

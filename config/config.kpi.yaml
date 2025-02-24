@@ -11,7 +11,7 @@ kpi:
     storage: [
       "Iron-Air Battery Storage","Li-Ion Battery Storage","Li-Ion Battery Storage 1h", 
       "Li-Ion Battery Storage 2h","Li-Ion Battery Storage 4h","Li-Ion Battery Storage 8h",
-      "lair","vanadium","pair","H2 Fuel Cell","H2 Store","H2 Electrolysis","Pumped Hydro Storage",
+      "lair","vanadium","pair","Adiabatic CAES", "H2 Fuel Cell","H2 Store","H2 Electrolysis","Pumped Hydro Storage",
       "BEV charger","EV battery","V2G",'residential rural water tanks',
       'urban central water tanks','residential urban decentral water tanks',
       ]
@@ -459,45 +459,6 @@ kpi:
         title: Country emission
         #ylim: [-100,400]
         ylabel: MtCO2
-  # Electricity energy balance
-    All_electricity_summer_energy_balance:
-      extract: energy balance
-      carrier_filter: electricity
-      group_carrier: pretty
-      plot_kw:
-        title: Total summer high voltage energy balance
-        xlim: ['2013-08-01', '2013-09-01']
-        #ylim: [-150,600]
-        ylabel: GW
-    All_electricity_winter_energy_balance:
-      extract: energy balance
-      carrier_filter: electricity
-      group_carrier: pretty
-      plot_kw:
-        title: Total winter high voltage energy balance
-        xlim: ['2013-02-01', '2013-03-01']
-        #ylim: [-150,600]
-        ylabel: GW
-    DE_electricity_summer_energy_balance:
-      extract: energy balance
-      include: ["DE"]
-      carrier_filter: electricity
-      group_carrier: pretty
-      plot_kw:
-        title: Germany summer high voltage energy balance
-        xlim: ['2013-08-01', '2013-09-01']
-        #ylim: [-50,150]
-        ylabel: GW
-    DE_electricity_winter_energy_balance:
-      extract: energy balance
-      include: ["DE"]
-      carrier_filter: electricity
-      group_carrier: pretty
-      plot_kw:
-        title: Germany winter high voltage energy balance
-        xlim: ['2013-02-01', '2013-03-01']
-        #ylim: [-50,150]
-        ylabel: GW
   # Storage energy balance
     All_storage_summer_energy_balance:
       extract: energy balance
@@ -538,7 +499,7 @@ kpi:
         #ylim: [-50,150]
         ylabel: GW
   # Electricity (with some low voltage tech) energy balance
-    All_electricity_plus_summer_energy_balance:
+    All_electricity_summer_energy_balance:
       extract: energy balance
       carrier_filter: electricity+
       group_carrier: pretty
@@ -547,7 +508,7 @@ kpi:
         xlim: ['2013-08-01', '2013-09-01']
         #ylim: [-150,800]
         ylabel: GW
-    All_electricity_plus_winter_energy_balance:
+    All_electricity_winter_energy_balance:
       extract: energy balance
       carrier_filter: electricity+
       group_carrier: pretty
@@ -556,7 +517,7 @@ kpi:
         xlim: ['2013-02-01', '2013-03-01']
         #ylim: [-150,800]
         ylabel: GW
-    DE_electricity_plus_summer_energy_balance:
+    DE_electricity_summer_energy_balance:
       extract: energy balance
       include: ["DE"]
       carrier_filter: electricity+
@@ -566,7 +527,7 @@ kpi:
         xlim: ['2013-08-01', '2013-09-01']
         #ylim: [-50,200]
         ylabel: GW
-    DE_electricity_plus_winter_energy_balance:
+    DE_electricity_winter_energy_balance:
       extract: energy balance
       include: ["DE"]
       carrier_filter: electricity+

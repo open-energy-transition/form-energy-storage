@@ -2439,8 +2439,8 @@ def add_heat(
             heat_dsm_profile = pd.read_csv(
                 snakemake.input.heat_dsm_profile, header=[1], index_col=[0]
             )[nodes]
-            heat_dsm_profile.index = n.snapshots
-
+            heat_dsm_profile.index = pd.DatetimeIndex(heat_dsm_profile.index)
+            heat_dsm_profile = heat_dsm_profile.reindex(n.snapshots)
             e_nom = (
                 heat_demand[["residential space"]]
                 .T.groupby(level=1)

@@ -79,6 +79,8 @@ def expanded_pretty_names(n, pretty_names):
             dict_index[i] = "Gas boiler"
         elif "oil boiler" in i:
             dict_index[i] = "Oil boiler"
+        elif "heating flexibility" in i:
+            dict_index[i] = "Heating flexibility"
         elif "heat" in i:
             dict_index[i] = "heat"
         
@@ -187,10 +189,12 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legen
         legend_kw=legend_kw,
     )
 
-    ax.set_title(f'Total annual curtailment: \n {round(total_curtailment/1e3, 3)} TWh',
+    ax.set_title(f'Total annual curtailment: \n {round(total_curtailment/1e3, 3)} TWh'
+                 f'\n \n'
+                 f'Avg. Electricity Price: \n {round(regions.elec_price.mean(), 2)} EUR/MWh',
                 loc='left',
                 x=legend_x + 0.03,
-                y=legend_y + 0.05,
+                y=legend_y - 0.1,
                 fontsize=12
                 )
 
@@ -200,7 +204,7 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legen
 
     legend_kw = dict(
         loc="upper left",
-        bbox_to_anchor=(legend_x, legend_y),
+        bbox_to_anchor=(legend_x, legend_y - 0.15),
         frameon=False,
         title=r"\textbf{Curtailment}",
         alignment="left",
@@ -296,7 +300,7 @@ def plot_storage_map(network, regions, path=None, focus_de=True, legend_circles=
         vmax=storage_cap.max(),
         vmin=0,
         legend_kwds={
-            "label": f"{tech.title()} Capacity [GWe]",
+            "label": f"{pretty_names[tech]} Capacity [GWe]",
             "shrink": 0.7,
             "extend": "max",
         },
@@ -950,7 +954,7 @@ def calculate_curtailment(network, countries):
     
     return df
 
-def filter_and_rename(network, dataframe, countries, filter_scheme = {}, carrier_filter = None, group_carrier = None):
+def filter_and_rename(network, dataframe, countries, filter_scheme = {}, carrier_filter = None, group_carrier = None, threshold=1):
     n = network.copy()
     df = dataframe.copy(deep=True)
 
@@ -985,7 +989,7 @@ def filter_and_rename(network, dataframe, countries, filter_scheme = {}, carrier
     elif group_carrier == "sector": 
         df = df.rename(index=sector_names).groupby(["nice_name"]).sum()
 
-    to_drop = df.loc[abs(df.T.sum()) < 1,:].index
+    to_drop = df.loc[abs(df.T.sum()) < threshold,:].index
     # An exception if Iron Air Battery Storage is still in
     if 'Iron-Air Battery Storage' in to_drop:
         to_drop = to_drop.drop('Iron-Air Battery Storage')
@@ -1258,6 +1262,7 @@ if __name__ == "__main__":
         "electricity distribution grid": "Electricity distribution grid",
         "transmission lines": "Transmission lines",
         "V2G": "Vehicle-to-Grid",
+        "PHS": "Pumped Hydro Storage",
     }
 
     sector_colors = {
@@ -1586,12 +1591,14 @@ if __name__ == "__main__":
                 elif plot_unit == "%":
                     plot_kw["ylabel"] = "\%"
 
+                threshold = 1e-3 if extract_param in ["emission","system cost"] else 1
                 df, df_color = filter_and_rename(n, 
                                                  df,
                                                  countries,
                                                  filter_scheme = filter_scheme,
                                                  carrier_filter = kpi_param.get("carrier_filter",None),
-                                                 group_carrier = kpi_param.get("group_carrier",None), 
+                                                 group_carrier = kpi_param.get("group_carrier",None),
+                                                 threshold = threshold,
                                                  )
                 
                 plot_param = kpi_param.get("plot",None)
