@@ -877,10 +877,10 @@ def calculate_capacity_csv(network, csv_path, countries):
     )
     
     # convert links power gen techs capacity from MWth to MWel by multiplying by efficiency
-    links_i = df.query("component == 'links' and carrier in @power_generation_tech").index
+    links_i = df.query("component == 'links' and carrier in @power_generation_tech").index.get_level_values("carrier")
     power_ge_links_eff = n.links.query("carrier in @links_i").groupby("carrier").first().efficiency
-    df["efficiency"] = df.index.map(power_ge_links_eff)
-    df.loc[links_i, "capacity"] *= df.loc[links_i].efficiency
+    df["efficiency"] = df.index.get_level_values("carrier").map(power_ge_links_eff).fillna(1)
+    df.loc[:, "capacity"] *= df.loc[:,"efficiency"]
 
     df = df.reset_index(["country"])
     df.loc[~df.country.isin(countries),"country"] = "EU"
