@@ -77,6 +77,66 @@ kpi:
         title: Country system cost
         #ylim: [0,150]
         ylabel: Billion EUR/a
+  # Total Capital Cost
+    All_capital_cost:
+      extract: capital cost
+      carrier_filter: 
+      group_carrier: pretty
+      plot: detail
+      plot_kw:
+        title: Total capital cost
+        #ylim: [0,600]
+        ylabel: Billion EUR/a
+    DE_capital_cost:
+      extract: capital cost
+      include: ["DE"]
+      carrier_filter:
+      group_carrier: pretty
+      plot: detail
+      plot_kw:
+        title: Germany capital cost
+        #ylim: [0,70]
+        ylabel: Billion EUR/a
+    country_capital_cost:
+      extract: capital cost
+      exclude: ["EU"]
+      carrier_filter:
+      group_carrier: pretty
+      plot: overview
+      plot_kw:
+        title: Country capital cost
+        #ylim: [0,150]
+        ylabel: Billion EUR/a
+  # Total Marginal Cost
+    All_marginal_cost:
+      extract: marginal cost
+      carrier_filter: 
+      group_carrier: pretty
+      plot: detail
+      plot_kw:
+        title: Total marginal cost
+        #ylim: [0,600]
+        ylabel: Billion EUR/a
+    DE_marginal_cost:
+      extract: marginal cost
+      include: ["DE"]
+      carrier_filter:
+      group_carrier: pretty
+      plot: detail
+      plot_kw:
+        title: Germany marginal cost
+        #ylim: [0,70]
+        ylabel: Billion EUR/a
+    country_marginal_cost:
+      extract: marginal cost
+      exclude: ["EU"]
+      carrier_filter:
+      group_carrier: pretty
+      plot: overview
+      plot_kw:
+        title: Country marginal cost
+        #ylim: [0,150]
+        ylabel: Billion EUR/a
   # Electricity System Cost
     All_electricity_system_cost:
       extract: system cost

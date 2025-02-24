@@ -516,19 +516,18 @@ def plot_energy_trade(network, countries, path):
     df_new = df_new.T
     df_new = df_new.rename(index={link:link[5:] for link in df_new.index})
     df_new = df_new.groupby(lambda x: x).sum()
-    df_new["color"] = [color_country[country] for country in df_new.index]
+    df_color = pd.DataFrame({'color': [color_country[country] for country in df_new.index]}, index=df_new.index)
     df_new = df_new.rename(index={country:cc.convert(country, to="name_short") for country in df_new.index})
 
     if include_csvs:
-        df_new.drop(columns=["color"]).rename_axis("Traded electricity [GWh]").to_csv(csv_path(path))
+        df_new.rename_axis("Traded electricity [GWh]").to_csv(csv_path(path))
 
     plot_kw = {"title": "Total Energy Trade", "ylabel": "Import (-)/Export (+) [GWh]"}
 
-    plot_by_country(df_new, plot_kw, path)
+    plot_by_country(df_new, df_color, plot_kw, path)
 
 def prepare_energy_balance(n):
-    df = n.statistics.energy_balance(groupby=["bus", "carrier", "bus_carrier"], aggregate_time=False)
-    df = df.rename(index=n.buses.country, level="bus")
+    df = n.statistics.energy_balance(groupby=["country", "bus", "carrier", "bus_carrier"], aggregate_time=False)
 
     return df
 
@@ -550,10 +549,10 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, filter_scheme, pat
 
     if include:
         logger.info(f"include only {include}")
-        df = df[df.index.get_level_values("bus").isin(include)]
+        df = df[df.index.get_level_values("country").isin(include)]
     if exclude:
         logger.info(f"exclude {exclude}")
-        df = df[~df.index.get_level_values("bus").isin(exclude)]
+        df = df[~df.index.get_level_values("country").isin(exclude)]
 
     # Model 1: Electricity system with generators and batteries out
     if carrier_filter == "electricity+":
@@ -565,7 +564,7 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, filter_scheme, pat
         df_low = df_low.rename(index={i:'electricity distribution grid' for i in extract_carrier}, level="carrier")
         
         df = pd.concat([df,df_low])
-        df = df.groupby(["bus","carrier"]).sum()
+        df = df.groupby(["country", "bus", "carrier"]).sum()
         df.loc[df.index.get_level_values("carrier").isin(['electricity distribution grid']),:] *= -1
     
         line_carrier = "electricity distribution grid"
@@ -574,7 +573,7 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, filter_scheme, pat
     if carrier_filter == "electricity":
         df = df[df.index.get_level_values("bus_carrier").isin(["AC","DC"])]
         df = df.rename(index={i:'Electricity trade' for i in ["AC","DC"]}, level="carrier")
-        df = df.groupby(["bus","carrier"]).sum()
+        df = df.groupby(["country", "bus", "carrier"]).sum()
         df.loc[df.index.get_level_values("carrier").isin(['electricity distribution grid']),:] *= -1
     
         line_carrier = "electricity distribution grid"
@@ -582,7 +581,7 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, filter_scheme, pat
     # Model 3: Just low voltage system
     if carrier_filter == "low voltage":
         df = df[df.index.get_level_values("bus_carrier").isin(["low voltage"])]
-        df = df.groupby(["bus","carrier"]).sum()
+        df = df.groupby(["country", "bus", "carrier"]).sum()
         df.loc[df.index.get_level_values("carrier").isin(['electricity distribution grid']),:] *= -1
     
         line_carrier = "electricity distribution grid"
@@ -592,7 +591,7 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, filter_scheme, pat
         extract_carrier = ['residential rural heat', 'urban central heat','residential urban decentral heat']
         df = df[df.index.get_level_values("bus_carrier").isin(extract_carrier)]
         df = df.rename(index={i:'heat' for i in extract_carrier}, level="carrier")
-        df = df.groupby(["bus","carrier"]).sum()
+        df = df.groupby(["country", "bus", "carrier"]).sum()
         df.loc[df.index.get_level_values("carrier").isin(['heat']),:] *= -1
         
         line_carrier = "heat"
@@ -600,7 +599,7 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, filter_scheme, pat
     # Model 5: Hydrogen input and output
     if carrier_filter == "hydrogen":
         df = df[df.index.get_level_values("bus_carrier").isin(['Hydrogen Storage'])]
-        df = df.groupby(["bus","carrier"]).sum()
+        df = df.groupby(["country", "bus", "carrier"]).sum()
         df = df[~df.index.get_level_values("carrier").isin(['H2 Store'])]
 
         line_carrier = 'H2 Store'
@@ -610,10 +609,12 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, filter_scheme, pat
         storage_cap = filter_scheme["storage-cap"]
         df = df[df.index.get_level_values("carrier").isin(storage_cap)]
         df = df.query("not (carrier.str.contains('V2G') and bus_carrier.str.contains('EV battery'))")
-        df = df.groupby(["bus","carrier"]).sum()
+        df = df.groupby(["country", "bus", "carrier"]).sum()
 
         line_carrier = ""
     
+    df_csv = df.copy(deep=True)
+
     df = df.groupby(["carrier"]).sum()
     
     #Set color
@@ -679,16 +680,16 @@ def filter_plot_energy_balance(network, dataframe, kpi_param, filter_scheme, pat
 
     fig.savefig(path, bbox_inches="tight")
 
-    return df
+    return df_csv
 
 def prepare_SOC(network):
     n = network.copy()
-    n.storage_units["bus"] = n.storage_units.bus.map(n.buses.country)
+    n.storage_units["country"] = n.storage_units.bus.map(n.buses.country)
     n.storage_units["carrier"] = n.storage_units.carrier.map(n.carriers.nice_name)
     df = n.storage_units_t.state_of_charge.T
-    df.index = pd.MultiIndex.from_frame(n.storage_units[["bus","carrier"]])
+    df.index = pd.MultiIndex.from_frame(n.storage_units[["country","bus","carrier"]])
     
-    return df.groupby(["bus","carrier"]).sum()
+    return df.groupby(["country","bus","carrier"]).sum()
 
 def filter_plot_SOC(network, dataframe, kpi_param, path):
 
@@ -711,16 +712,17 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
 
     if include:
         logger.info(f"include only {include}")
-        df = df[df.index.get_level_values("bus").isin(include)]
+        df = df[df.index.get_level_values("country").isin(include)]
     if exclude:
         logger.info(f"exclude {exclude}")
-        df = df[~df.index.get_level_values("bus").isin(exclude)]
+        df = df[~df.index.get_level_values("country").isin(exclude)]
 
     if isinstance(carrier_filter, list):
-        print(carrier_filter)
         df = df[df.index.get_level_values("carrier").isin(carrier_filter)]
     elif isinstance(carrier_filter, str):
         df = df[df.index.get_level_values("carrier").isin([carrier_filter])]
+
+    df_csv = df.copy(deep=True)
 
     df = df.groupby(["carrier"]).sum()
 
@@ -766,7 +768,7 @@ def filter_plot_SOC(network, dataframe, kpi_param, path):
 
     fig.savefig(path, bbox_inches="tight")
 
-    return df
+    return df_csv
 
 def calculate_emission(network, countries):
     n = network.copy()
@@ -790,9 +792,9 @@ def calculate_emission(network, countries):
         df_links.loc[index_with_country,"country"] = country
     
     df_links.loc[~df_links.country.isin(countries),"country"] = "EU"
+    df_links["bus"] = df_links["bus0"]
     
-    df = pd.DataFrame(df_links.groupby(["country","carrier"])["p_co2"].sum()).unstack("country")
-    df.columns = df.columns.get_level_values("country")
+    df = pd.DataFrame(df_links.groupby(["bus","country","carrier"])["p_co2"].sum()).unstack(["country","bus"])
     df = df.replace(0, np.nan)
     df = df.dropna(axis = 0, how = "all")
 
@@ -801,25 +803,33 @@ def calculate_emission(network, countries):
 
     return df
 
-def calculate_system_cost_csv(network, csv_path, countries, dagg_gen=True):
+def calculate_system_cost_csv(network, csv_path, countries, dagg_gen=True, expense=["capital","marginal"]):
     n = network.copy()
+
+    if isinstance(expense,str):
+        expense_query = [expense]
+    elif isinstance(expense,list):
+        expense_query = expense
     
     df = pd.read_csv(csv_path, index_col=list(range(3)), header=list(range(4)))
     df.index = df.index.set_names(["component","type","bus"])
     df = (df
-          .set_axis(['carrier', 'cost'], axis=1)
-          .assign(country=lambda x: x.index.get_level_values("bus").map(n.buses.country))
-          .fillna("")
-          .groupby(['component','carrier','country']).sum()
+        .set_axis(['carrier', 'cost'], axis=1)
+        .query("type.isin(@expense_query)")
+        .reset_index()
+        .assign(country=lambda x: x.bus.map(n.buses.country))
+        .fillna("")
+        .drop(["type"], axis=1)
+        .groupby(['component',"bus",'carrier','country']).sum()
     )
 
-    # Heuristic to disaggregate the marginal price by country
+    # Heuristic to disaggregate the operational price by country
     if dagg_gen:
         df_gen = df[(df.index.get_level_values('country') == "") & (df.index.get_level_values('component') == "generators")]
         to_drop = df_gen.index
         gen_carrier = df_gen.groupby("carrier").sum()
     
-        df_factor = n.statistics.energy_balance(groupby=["country","carrier","bus_carrier"], nice_names=False)
+        df_factor = n.statistics.energy_balance(groupby=["country","bus","carrier","bus_carrier"], nice_names=False)
     
         for c_gen in gen_carrier.index:
             carrier = df_factor[(df_factor.index.get_level_values("component") == "Link") & (df_factor.index.get_level_values("bus_carrier") == c_gen)].index.get_level_values("carrier")
@@ -831,7 +841,7 @@ def calculate_system_cost_csv(network, csv_path, countries, dagg_gen=True):
                               component="link",
                               carrier=c_gen)
                       .drop(columns="factor")
-                      .groupby(['component','carrier','country'])
+                      .groupby(['component',"bus",'carrier','country'])
                       .sum()
              )
             if df_new.empty:
@@ -844,8 +854,7 @@ def calculate_system_cost_csv(network, csv_path, countries, dagg_gen=True):
     df = df.reset_index(["country"])
     df.loc[~df.country.isin(countries),"country"] = "EU"
     
-    df = pd.DataFrame(df.groupby(["country","carrier"])["cost"].sum()).unstack("country")
-    df.columns = df.columns.get_level_values("country")
+    df = pd.DataFrame(df.groupby(["country","bus","carrier"])["cost"].sum()).unstack(["country","bus"])
     
     # convert to billions
     df = df / 1e9
@@ -856,21 +865,24 @@ def calculate_capacity_csv(network, csv_path, countries):
     n = network.copy()
     
     df = pd.read_csv(csv_path, index_col=list(range(2)), header=list(range(3)))
-    df = df.set_axis(['carrier', 'capacity'], axis=1)
-    df.index = df.index.rename(["component","country"], level=[0,1])
-    df = df.rename(index=n.buses.country, level=1)
-    df = df.reset_index(["country","component"])
-    df.loc[~df.country.isin(countries),"country"] = "EU"
+    df.index = df.index.rename(["component","bus"], level=[0,1])
+    df = (df
+        .set_axis(['carrier', 'capacity'], axis=1)
+        .assign(country=lambda x: x.index.get_level_values("bus").map(n.buses.country))
+        .fillna("")
+        .groupby(['component',"bus",'carrier','country']).sum()
+    )
     
     # convert links power gen techs capacity from MWth to MWel by multiplying by efficiency
-    df = df.set_index(["carrier"])
     links_i = df.query("component == 'links' and carrier in @power_generation_tech").index
     power_ge_links_eff = n.links.query("carrier in @links_i").groupby("carrier").first().efficiency
     df["efficiency"] = df.index.map(power_ge_links_eff)
     df.loc[links_i, "capacity"] *= df.loc[links_i].efficiency
 
-    df = pd.DataFrame(df.groupby(["country","carrier"])["capacity"].sum()).unstack("country")
-    df.columns = df.columns.get_level_values("country")
+    df = df.reset_index(["country"])
+    df.loc[~df.country.isin(countries),"country"] = "EU"
+
+    df = pd.DataFrame(df.groupby(["country","bus","carrier"])["capacity"].sum()).unstack(["country","bus"])
 
     # convert from MW to GW
     df = df / 1e3
@@ -885,15 +897,14 @@ def calculate_capacity(network, countries, kpi_param):
     storage = kpi_param.get("storage",None)
 
     if stats == "install":
-        df = pd.DataFrame(n.statistics.installed_capacity(groupby=["country", "carrier"], storage = storage))
+        df = pd.DataFrame(n.statistics.installed_capacity(groupby=["bus","country", "carrier"], storage = storage))
     elif stats == "optimal":
-        df = pd.DataFrame(n.statistics.optimal_capacity(groupby=["country", "carrier"], storage = storage))
+        df = pd.DataFrame(n.statistics.optimal_capacity(groupby=["bus","country", "carrier"], storage = storage))
     elif stats == "expand":
         if storage == True:
-            df = pd.DataFrame(n.statistics.optimal_capacity(groupby=["country", "carrier"], storage = True)).subtract(pd.DataFrame(n.statistics.installed_capacity(groupby=["country", "carrier"], storage = True)), fill_value=0)
+            df = pd.DataFrame(n.statistics.optimal_capacity(groupby=["bus","country", "carrier"], storage = True)).subtract(pd.DataFrame(n.statistics.installed_capacity(groupby=["country", "carrier"], storage = True)), fill_value=0)
         else:
-            df = pd.DataFrame(n.statistics.expanded_capacity(groupby=["country", "carrier"]))
-    df = df.reset_index(["country","component"])
+            df = pd.DataFrame(n.statistics.expanded_capacity(groupby=["bus","country", "carrier"]))
         
     # convert links power gen techs capacity from MWth to MWel by multiplying by efficiency
     links_i = df.query("component == 'links' and carrier in @power_generation_tech").index
@@ -901,10 +912,10 @@ def calculate_capacity(network, countries, kpi_param):
     df["efficiency"] = df.index.map(power_ge_links_eff)
     df.loc[links_i, 0] *= df.loc[links_i].efficiency
     
+    df = df.reset_index(["country"])
     df.loc[~df.country.isin(countries),"country"] = "EU"
-    
-    df = pd.DataFrame(df.groupby(["country","carrier"])[0].sum()).unstack("country")
-    df.columns = df.columns.get_level_values("country")
+
+    df = pd.DataFrame(df.groupby(["country","bus","carrier"])[0].sum()).unstack(["country","bus"])
 
     # convert from MWh to GWh
     df = df / 1e3
@@ -914,12 +925,11 @@ def calculate_capacity(network, countries, kpi_param):
 def calculate_generation(network, countries):
     n = network.copy()
     
-    df = pd.DataFrame(n.statistics.energy_balance(groupby=["country", "carrier"]))
-    df = df.reset_index(["country","component"])
+    df = pd.DataFrame(n.statistics.energy_balance(groupby=["bus","country", "carrier"]))
+    df = df.reset_index(["country"])
     df.loc[~df.country.isin(countries),"country"] = "EU"
 
-    df = pd.DataFrame(df.groupby(["country","carrier"])[0].sum()).unstack("country")
-    df.columns = df.columns.get_level_values("country")
+    df = pd.DataFrame(df.groupby(["country","bus","carrier"])[0].sum()).unstack(["country","bus"])
 
     # convert from MW to GW
     df = df / 1e3
@@ -929,27 +939,25 @@ def calculate_generation(network, countries):
 def calculate_curtailment(network, countries):
     n = network.copy()
     
-    df = pd.DataFrame(n.statistics.curtailment(groupby=["country", "carrier"]))
-    df = df.reset_index(["country","component"])
+    df = pd.DataFrame(n.statistics.curtailment(groupby=["bus","country", "carrier"]))
+    df = df.reset_index(["country"])
     df.loc[~df.country.isin(countries),"country"] = "EU"
 
-    df = pd.DataFrame(df.groupby(["country","carrier"])[0].sum()).unstack("country")
-    df.columns = df.columns.get_level_values("country")
+    df = pd.DataFrame(df.groupby(["country","bus","carrier"])[0].sum()).unstack(["country","bus"])
 
     # convert from MW to GW
     df = df / 1e3
     
     return df
 
-def filter_and_rename(network, df, filter_scheme = {}, carrier_filter = None, group_carrier = None):
+def filter_and_rename(network, dataframe, countries, filter_scheme = {}, carrier_filter = None, group_carrier = None):
     n = network.copy()
+    df = dataframe.copy(deep=True)
 
     # Replace countries with short country names
-    short_name = cc.convert(names = df.columns, src = 'ISO2', to = 'name_short', not_found=None)
-    if len(df.columns) == 1:
-        df.columns = [short_name]
-    else:
-        df.columns = short_name
+    country_list = countries
+    country_dict = {country: cc.convert(names = country, src = 'ISO2', to = 'name_short', not_found=None) if country != "EU" else "EU" for country in country_list}
+    df = df.rename(columns=country_dict, level="country")
 
     # convert to nice name
     df["nice_name"] = list(pd.Series(df.index).replace(n.carriers.nice_name))
@@ -959,7 +967,7 @@ def filter_and_rename(network, df, filter_scheme = {}, carrier_filter = None, gr
     stats = pd.DataFrame(n.statistics.energy_balance(groupby=["bus", "carrier", "bus_carrier"]))
 
     if carrier_filter == "electricity":
-        carrier = stats[stats.index.get_level_values("bus_carrier").isin(["AC"])].index.get_level_values("carrier").unique()
+        carrier = [k for k,v in sector_names.items() if v == "Power Sector"]
         df = df.loc[df.index.isin(carrier),:]
 
     elif carrier_filter == "electricity+":
@@ -1004,22 +1012,27 @@ def filter_and_rename(network, df, filter_scheme = {}, carrier_filter = None, gr
             df.index.difference(preferred_order)
         )
 
-    df["color"] = [colors[i] for i in df.index]
+    df = df.loc[new_index,:]
 
-    return df.loc[new_index,:]
+    df_color = pd.DataFrame({'color': [colors[i] for i in df.index]}, index=df.index)
+
+    return df, df_color
         
-def plot_by_country(df, plot_kw, path, plot_figsize=(12,9)):
+def plot_by_country(df, df_color, plot_kw, path, plot_figsize=(12,9)):
+
+    if "country" in list(df.columns.names):
+        df = df.T.groupby(["country"]).sum().T
 
     fig, ax = plt.subplots(figsize=plot_figsize)
 
     plot_kw["width"] = plot_kw.get("width",0.9)
     plot_kw["rot"] = plot_kw.get("rot",90)
     
-    df.drop(columns={"color"}).T.plot(
+    df.T.plot(
         kind="bar",
         ax=ax,
         stacked=True,
-        color=df["color"],
+        color=df_color["color"],
         legend=False,
         **plot_kw,
     )
@@ -1046,18 +1059,17 @@ def plot_by_country(df, plot_kw, path, plot_figsize=(12,9)):
 
     fig.savefig(path, bbox_inches="tight")
 
-def plot_in_detail(df, plot_kw, path, plot_figsize=(6, 8)):
-    
-    c = df.columns.difference(["color"])
-    df = df[["color"]].assign(Total=df[c].sum(axis=1))
+def plot_in_detail(df, df_color, plot_kw, path, plot_figsize=(6, 8)):
+
+    df = pd.DataFrame(df.T.sum(),columns=["Total"])
 
     fig, ax = plt.subplots(figsize=plot_figsize)
 
-    df.drop(columns={"color"}).T.plot(
+    df.T.plot(
         kind="bar",
         ax=ax,
         stacked=True,
-        color=df["color"],
+        color=df_color["color"],
         **plot_kw,
     )
 
@@ -1080,7 +1092,7 @@ def plot_in_detail(df, plot_kw, path, plot_figsize=(6, 8)):
 
     ax.legend(
         handles, labels, ncol=1, loc="center left", bbox_to_anchor=[1, 0.5], frameon=False,
-        title=f"Total: \n{round(df.drop(columns={'color'}).sum().iloc[0],2)}", alignment="left"
+        title=f"Total: \n{round(df.sum().iloc[0],2)}", alignment="left"
     )
 
     ax.set_facecolor("white")
@@ -1450,6 +1462,8 @@ if __name__ == "__main__":
     
     # Preparing iterative data with aggregated Li-Ion Battery
     df_cost = calculate_system_cost_csv(n, snakemake.input.nodal_costs, countries, dagg_gen=True)
+    df_capex = calculate_system_cost_csv(n, snakemake.input.nodal_costs, countries, dagg_gen=True, expense="capital")
+    df_opex = calculate_system_cost_csv(n, snakemake.input.nodal_costs, countries, dagg_gen=True, expense="marginal")
     df_capacity_csv = calculate_capacity_csv(n, snakemake.input.nodal_capacity, countries)
     df_SOC = prepare_SOC(n)
 
@@ -1500,6 +1514,12 @@ if __name__ == "__main__":
                 if extract_param == "system cost":
                     logger.info("extracting system cost")
                     df = df_cost.copy(deep=True)
+                elif extract_param == "capital cost":
+                    logger.info("extracting capital cost")
+                    df = df_capex.copy(deep=True)
+                elif extract_param == "operational cost":
+                    logger.info("extracting operational cost")
+                    df = df_opex.copy(deep=True)
                 elif extract_param == "capacity":
                     logger.info("extracting capacity")
                     df = df_capacity_csv.copy(deep=True)
@@ -1536,17 +1556,17 @@ if __name__ == "__main__":
                 #curtailment plots have their own route
                 elif extract_param == "curtailment_DE":
                     plot_curtailment(n, regions, path=snakemake.output[fn], focus_de=True,
-                                     show_fig=False, legend_circles=kpi_param.get("legend_cirlces", [12, 6, 3]),
-                                     bus_size_factor_=kpi_param.get("bus_size_factor", 8e4),
-                                     vmax_price=kpi_param.get("vmax_price", 115),
-                                     vmin_price=kpi_param.get("vmin_price", 80))
+                                        show_fig=False, legend_circles=kpi_param.get("legend_cirlces", [12, 6, 3]),
+                                        bus_size_factor_=kpi_param.get("bus_size_factor", 8e4),
+                                        vmax_price=kpi_param.get("vmax_price", 115),
+                                        vmin_price=kpi_param.get("vmin_price", 80))
                     continue
                 elif extract_param == "curtailment_All":
                     plot_curtailment(n, regions, path=snakemake.output[fn], focus_de=False,
-                                     show_fig=False, legend_circles=kpi_param.get("legend_cirlces", [20, 10, 5]),
-                                     bus_size_factor_=kpi_param.get("bus_size_factor", 8e4),
-                                     vmax_price=kpi_param.get("vmax_price", 115),
-                                     vmin_price=kpi_param.get("vmin_price", 60))
+                                        show_fig=False, legend_circles=kpi_param.get("legend_cirlces", [20, 10, 5]),
+                                        bus_size_factor_=kpi_param.get("bus_size_factor", 8e4),
+                                        vmax_price=kpi_param.get("vmax_price", 115),
+                                        vmin_price=kpi_param.get("vmin_price", 60))
                     continue
 
                 include = kpi_param.get("include",False)
@@ -1554,10 +1574,10 @@ if __name__ == "__main__":
 
                 if include:
                     logger.info(f"include only {include}")
-                    df = df[include]
+                    df = df.loc[:,df.columns.get_level_values("country").isin(include)]
                 if exclude:
                     logger.info(f"exclude {exclude}")
-                    df = df.loc[:,df.columns.difference(exclude)]
+                    df = df.loc[:,~df.columns.get_level_values("country").isin(exclude)]
                 
                 plot_kw = kpi_param.get("plot_kw",{})
                 plot_unit = plot_kw.get("ylabel", "")
@@ -1566,27 +1586,30 @@ if __name__ == "__main__":
                 elif plot_unit == "%":
                     plot_kw["ylabel"] = "\%"
 
-                df = filter_and_rename(n, df, 
-                                       filter_scheme = filter_scheme,
-                                       carrier_filter = kpi_param.get("carrier_filter",None), 
-                                       group_carrier = kpi_param.get("group_carrier",None), 
-                                       )
-
+                df, df_color = filter_and_rename(n, 
+                                                 df,
+                                                 countries,
+                                                 filter_scheme = filter_scheme,
+                                                 carrier_filter = kpi_param.get("carrier_filter",None),
+                                                 group_carrier = kpi_param.get("group_carrier",None), 
+                                                 )
+                
                 plot_param = kpi_param.get("plot",None)
                 if plot_param == "detail":
-                    plot_in_detail(df, 
-                                   plot_kw, 
-                                   snakemake.output[fn],
-                                   plot_figsize = tuple(kpi_param.get("figsize",(6,8)))
-                                   )
-                    df = df.drop(columns={"color"}).T.sum()
+                    plot_in_detail(df,
+                                    df_color,
+                                    plot_kw,
+                                    snakemake.output[fn],
+                                    plot_figsize = tuple(kpi_param.get("figsize",(6,8)))
+                                    )
+                    df = df.T.sum()
                 elif plot_param == "overview":
                     plot_by_country(df, 
+                                    df_color,
                                     plot_kw, 
                                     snakemake.output[fn],
                                     plot_figsize = tuple(kpi_param.get("figsize",(12,9)))
                                     )
-                    df = df.drop(columns={"color"})
 
                 if include_csvs:
                     df.index.name = f"{extract_param} [{plot_unit}]"
