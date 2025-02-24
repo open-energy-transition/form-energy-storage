@@ -948,6 +948,10 @@ def calculate_curtailment(network, countries):
     df.loc[~df.country.isin(countries),"country"] = "EU"
 
     df = pd.DataFrame(df.groupby(["country","bus","carrier"])[0].sum()).unstack(["country","bus"])
+    elec_generation = n.generators.carrier.replace(pretty_gen).to_frame().query(
+        "not carrier.str.contains('solar thermal')").carrier.unique()
+    elec_i = pd.Index(set(df.index.intersection(elec_generation)))
+    df = df.loc[elec_i, :]
 
     # convert from MW to GW
     df = df / 1e3
