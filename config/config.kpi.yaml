@@ -107,34 +107,34 @@ kpi:
         title: Country capital cost
         #ylim: [0,150]
         ylabel: Billion EUR/a
-  # Total Marginal Cost
-    All_marginal_cost:
-      extract: marginal cost
+  # Total Operational Cost
+    All_operational_cost:
+      extract: operational cost
       carrier_filter: 
       group_carrier: pretty
       plot: detail
       plot_kw:
-        title: Total marginal cost
+        title: Total operational cost
         #ylim: [0,600]
         ylabel: Billion EUR/a
-    DE_marginal_cost:
-      extract: marginal cost
+    DE_operational_cost:
+      extract: operational cost
       include: ["DE"]
       carrier_filter:
       group_carrier: pretty
       plot: detail
       plot_kw:
-        title: Germany marginal cost
+        title: Germany operational cost
         #ylim: [0,70]
         ylabel: Billion EUR/a
-    country_marginal_cost:
-      extract: marginal cost
+    country_operational_cost:
+      extract: operational cost
       exclude: ["EU"]
       carrier_filter:
       group_carrier: pretty
       plot: overview
       plot_kw:
-        title: Country marginal cost
+        title: Country operational cost
         #ylim: [0,150]
         ylabel: Billion EUR/a
   # Electricity System Cost
