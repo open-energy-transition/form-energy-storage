@@ -906,7 +906,7 @@ def calculate_capacity(network, countries, kpi_param):
         df = pd.DataFrame(n.statistics.optimal_capacity(groupby=["bus","country", "carrier"], storage = storage))
     elif stats == "expand":
         if storage == True:
-            df = pd.DataFrame(n.statistics.optimal_capacity(groupby=["bus","country", "carrier"], storage = True)).subtract(pd.DataFrame(n.statistics.installed_capacity(groupby=["country", "carrier"], storage = True)), fill_value=0)
+            df = pd.DataFrame(n.statistics.optimal_capacity(groupby=["bus","country", "carrier"], storage = True)).subtract(pd.DataFrame(n.statistics.installed_capacity(groupby=["bus", "country", "carrier"], storage = True)), fill_value=0)
         else:
             df = pd.DataFrame(n.statistics.expanded_capacity(groupby=["bus","country", "carrier"]))
         
