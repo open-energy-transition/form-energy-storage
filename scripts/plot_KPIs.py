@@ -91,7 +91,6 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legen
     n = network.copy()
     map_opts = map_opts_params.copy()
 
-    # curtailment = n.statistics.curtailment(groupby=n.statistics.groupers.get_bus_and_carrier).droplevel(0).loc[regions.index,:,:]
     elec_generation = n.generators.carrier.replace(pretty_gen).to_frame().query("not carrier.str.contains('solar thermal')").carrier.unique()
     curtailment = n.statistics.curtailment(groupby=["bus", "country", "carrier"], aggregate_time=False).droplevel(0)
     elec_i = pd.Index(set(curtailment.index.get_level_values(2)).intersection(elec_generation))
@@ -125,9 +124,9 @@ def plot_curtailment(network, regions, path, show_fig=True, focus_de=True, legen
 
     if include_csvs:
         curtailment_elec_csv.index.name = "Curtailment [GWh]"
-        electricity_price_csv.index.name = "Avg. Electricity price [EUR/MWh]"
+        electricity_price_csv.index.name = "Electricity price [EUR/MWh]"
         curtailment_elec_csv.to_csv(csv_path(path))
-        electricity_price_csv.to_csv(csv_path(path.replace("curtailment_map", "avg_electricity_prices")))
+        electricity_price_csv.to_csv(csv_path(path.replace("curtailment_map", "electricity_prices")))
 
 
     # calculate total curtailment
