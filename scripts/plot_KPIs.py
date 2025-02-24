@@ -1056,6 +1056,9 @@ def plot_by_country(df, df_color, plot_kw, path, plot_figsize=(12,9)):
     
     handles.reverse()
     labels.reverse()
+    if not "Energy Trade" in plot_kw["title"]:
+        handles = [handles[i] for i, label in enumerate(labels) if round(df.loc[label,:].sum(), 2) >= 0.1]
+        labels = [label for label in labels if round(df.loc[label,:].sum(), 2) >= 0.1]
     labels = [label.replace(' &', '').replace(' and', '') for label in labels] #NOTE: Latex hates '&' strings because its their seperator
     
     ax.legend(handles, labels, loc = "upper center", bbox_to_anchor = (0.5, -0.20), frameon = False, ncol = 3, 
@@ -1091,7 +1094,8 @@ def plot_in_detail(df, df_color, plot_kw, path, plot_figsize=(6, 8)):
 
     ax.grid(axis="x")
 
-    labels = [label + ": \n " + str(round(df.loc[label,"Total"],2)) for label in labels]
+    handles = [handles[i] for i, label in enumerate(labels) if round(df.loc[label,"Total"],2) >= 0.1]
+    labels = [label + ": \n " + str(round(df.loc[label,"Total"],2)) for label in labels if round(df.loc[label,"Total"],2) >= 0.1]
     labels = [label.replace(' &', '').replace(' and', '') for label in labels] #NOTE: Latex hates '&' strings because its their seperator
 
     ax.legend(
@@ -1591,7 +1595,7 @@ if __name__ == "__main__":
                 elif plot_unit == "%":
                     plot_kw["ylabel"] = "\%"
 
-                threshold = 1e-3 if extract_param in ["emission","system cost"] else 1
+                threshold = 1e-3 if extract_param in ["emission","system cost", "capital cost", "operational cost"] else 1
                 df, df_color = filter_and_rename(n, 
                                                  df,
                                                  countries,
