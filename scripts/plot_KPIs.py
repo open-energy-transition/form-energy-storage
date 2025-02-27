@@ -47,8 +47,9 @@ def csv_path(path):
     return csv_path
 
 def expanded_sector_names(n, sector_names):
-    index = n.statistics().index.get_level_values(1)
-    index_missing = index.difference(sector_names.keys())
+    index = []
+    [index.extend(getattr(n, component).carrier.map(n.carriers.nice_name).unique()) for component in ["generators", "links", "stores", "storage_units", "loads"]]  
+    index_missing = set(index).difference(sector_names.keys())
     dict_index = {i : "other" for i in index_missing}
     
     for i in dict_index:
@@ -58,8 +59,9 @@ def expanded_sector_names(n, sector_names):
     return sector_names | dict_index
 
 def expanded_pretty_names(n, pretty_names):
-    index = n.statistics().index.get_level_values(1)
-    index_missing = index.difference(pretty_names.keys())
+    index = []
+    [index.extend(getattr(n, component).carrier.map(n.carriers.nice_name).unique()) for component in ["generators", "links", "stores", "storage_units", "loads"]]   
+    index_missing = set(index).difference(pretty_names.keys())
     dict_index = {i : i for i in index_missing}
 
     for i in dict_index:
