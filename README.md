@@ -14,9 +14,7 @@ SPDX-License-Identifier: CC-BY-4.0
 [![Stack Exchange questions](https://img.shields.io/stackexchange/stackoverflow/t/pypsa)](https://stackoverflow.com/questions/tagged/pypsa)
 
 # The Role of Energy Storage in Germany
-<img src="https://raw.githubusercontent.com/open-energy-transition/oet-website/main/assets/img/oet-logo-red-n-subtitle.png" alt="Open Energy Transition Logo" width="260" height="100" align="right">
-<img src="https://github.com/user-attachments/assets/e3ce9977-6ef9-446c-898d-299986d8f70d" alt="Form Logo" width="120" height="100" align="right">
-
+<img src="https://raw.githubusercontent.com/open-energy-transition/form-energy-storage/refs/heads/master/documentation/logo_FE_OET.png" alt="Open Energy Transition Logo" width="200" height="234" align="right">
 
 This repository is a soft-fork of [OET/PyPSA-Eur](https://github.com/open-energy-transition/pypsa-eur) and contains the entire project **The Role of Energy Storage in Germany** supported by [Open Energy Transition (OET)](https://openenergytransition.org/)<sup>*</sup>, including code and visualization. The philosophy behind this repository is that no intermediary results are included, but all results are computed from raw data and code.
 
