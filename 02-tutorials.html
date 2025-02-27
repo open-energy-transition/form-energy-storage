@@ -427,7 +427,7 @@ Unlike the original PyPSA-Eur repository, this version comes pre-configured with
 </pre></div>
 </div>
 <p>as you can see, <code class="docutils literal notranslate"><span class="pre">baseline-mds</span></code> is the name of the scenario that is chosen.
-The content of <code class="docutils literal notranslate"><span class="pre">baseline-mds</span></code> as well as a comprehensive list of all studied scenarios is defined in <code class="docutils literal notranslate"><span class="pre">scenarios.form.yaml</span></code> as described in [Scenarios Configuration](<a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/12-scenarios.html">https://open-energy-transition.github.io/form-energy-storage/12-scenarios.html</a>).</p>
+The content of <code class="docutils literal notranslate"><span class="pre">baseline-mds</span></code> as well as a comprehensive list of all studied scenarios is defined in <code class="docutils literal notranslate"><span class="pre">scenarios.form.yaml</span></code> as described in <a class="reference external" href="https://open-energy-transition.github.io/form-energy-storage/12-scenarios.html">Scenarios Configuration</a>.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">baseline-mds</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">stores</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;H2&quot;</span><span class="p p-Indicator">]</span>
@@ -544,9 +544,10 @@ See <a class="reference external" href="https://open-energy-transition.github.io
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">retrieve_databundle</span></code>: set this to true if a file in <code class="docutils literal notranslate"><span class="pre">data/</span></code> is missing</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">retrieve_cost_data</span></code>: set this to true if <code class="docutils literal notranslate"><span class="pre">resources/{run}/cost_2035.csv</span></code> is missing</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">retrieve_cutout</span></code>: set this to true if <code class="docutils literal notranslate"><span class="pre">cutouts/europe-2013-sarah3-era5.nc</span></code> is missing</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">retrieve_cutout</span></code>: set this to true if <code class="docutils literal notranslate"><span class="pre">cutouts/europe-{weather</span> <span class="pre">year}-sarah3-era5.nc</span></code> is missing</p></li>
 </ul>
-<p>For cutouts of the years 1996, 2010 and 2012, you can download them from xx and place into the cutouts folder of the repository.</p>
+<p>The <a class="reference external" href="https://zenodo.org/records/14936211">weather data cutouts for PyPSA-Eur</a> are available for all the weather years included in the scenarios.
+If the weather year you’ve selected is not on that list, you’ll need to set <code class="docutils literal notranslate"><span class="pre">build_cutout</span></code> to true.</p>
 </div>
 <p>To create and solve the model, run the snakemake command:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">snakemake solve_sector_networks --configfile config/config.form.yaml</span>
@@ -562,6 +563,7 @@ To create and solve the model and automatically generate all KPI plots of the st
 <h2>Analyze the model<a class="headerlink" href="#analyze-the-model" title="Link to this heading">#</a></h2>
 <p>There are several ways to analyze the results of the Snakemake run:</p>
 <ul class="simple">
+<li><p>By analyzing the PyPSA network directly, see <a class="reference external" href="https://github.com/open-energy-transition/form-energy-storage/tree/master/notebooks/Package_unpackage_networks.ipynb">Package_unpackage_networks.ipynb</a> for more details.</p></li>
 <li><p>By using the CSV files and graphs located in <code class="docutils literal notranslate"><span class="pre">results/{run}/csvs/</span></code> and <code class="docutils literal notranslate"><span class="pre">results/{run}/graphs/</span></code></p></li>
 <li><p>By using a pre-configured Jupyter Notebook in <code class="docutils literal notranslate"><span class="pre">notebooks/</span></code> or any Jupyter Notebook of your choice.</p></li>
 <li><p>By utilizing the customizable KPIs in <code class="docutils literal notranslate"><span class="pre">results/{run}/maps/</span></code></p></li>

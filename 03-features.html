@@ -411,6 +411,8 @@ document.write(`
 <li><p>Add option for <code class="docutils literal notranslate"><span class="pre">final_adjustment</span></code> before solving the network. This script is used to limit the electricity grid interconnecting capacity for each country (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/33">open-energy-transition/form-energy-storage#33</a>)</p></li>
 <li><p>Add a constraint to limit the use of Direct Air Capture (DAC) (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/42">open-energy-transition/form-energy-storage#42</a>)</p></li>
 <li><p>Include heat DSM implementation and configuration (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/47">open-energy-transition/form-energy-storage#47</a>)</p></li>
+<li><p>Add option to disable CHP capacity extendability for Germany in <code class="docutils literal notranslate"><span class="pre">final_adjustment</span></code> (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/62">open-energy-transition/form-energy-storage#62</a>)</p></li>
+<li><p>Add a <code class="docutils literal notranslate"><span class="pre">filter_year</span></code> configuration option that is used to filter out projects that have a build_year until and including the given filter_year (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/65">open-energy-transition/form-energy-storage#65</a>)</p></li>
 </ul>
 <p><strong>Model Visualization Features</strong></p>
 <ul class="simple">
@@ -418,6 +420,8 @@ document.write(`
 <li><p>Add new battery techs to nice names and plotting for cost map (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/31">open-energy-transition/form-energy-storage#31</a>)</p></li>
 <li><p>Add plotting script for FE KPIs (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/37">open-energy-transition/form-energy-storage#37</a>)</p></li>
 <li><p>Include optional use of Latex for plotting (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/59">open-energy-transition/form-energy-storage#59</a>)</p></li>
+<li><p>Create notebook with scenarios comparison. All plots and PyPSA networks can be exported to csvs (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/61">open-energy-transition/form-energy-storage#61</a>)</p></li>
+<li><p>Add csvs to all map plots and fixes in line loading plots (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/68">open-energy-transition/form-energy-storage#68</a>)</p></li>
 </ul>
 <p><strong>Model Documentation Features</strong></p>
 <ul class="simple">
@@ -426,7 +430,6 @@ document.write(`
 <p><strong>Model Calibration Runs</strong></p>
 <ul class="simple">
 <li><p>Calibration run 2023/2024 (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/45">open-energy-transition/form-energy-storage#45</a>)</p></li>
-<li><p>Update calibrated run branch with the recent addition in <code class="docutils literal notranslate"><span class="pre">form_energy_storage_dev</span></code> (<a class="github reference external" href="https://github.com/open-energy-transition/form-energy-storage/pull/48">open-energy-transition/form-energy-storage#48</a>)</p></li>
 </ul>
 <p><strong>Bugfixes</strong></p>
 <ul class="simple">

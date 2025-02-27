@@ -16,7 +16,7 @@ First, open the base configuration file for this study, called ``config.form.yam
    :end-before: # docs
 
 as you can see, ``baseline-mds`` is the name of the scenario that is chosen. 
-The content of ``baseline-mds`` as well as a comprehensive list of all studied scenarios is defined in ``scenarios.form.yaml`` as described in [Scenarios Configuration](https://open-energy-transition.github.io/form-energy-storage/12-scenarios.html).
+The content of ``baseline-mds`` as well as a comprehensive list of all studied scenarios is defined in ``scenarios.form.yaml`` as described in `Scenarios Configuration <https://open-energy-transition.github.io/form-energy-storage/12-scenarios.html>`_.
 
 .. literalinclude:: ../config/scenarios.form.yaml
    :language: yaml
@@ -129,9 +129,10 @@ The ``-n`` at the end indicates a dry run. If no errors occur, it will list the 
 
     * ``retrieve_databundle``: set this to true if a file in ``data/`` is missing
     * ``retrieve_cost_data``: set this to true if ``resources/{run}/cost_2035.csv`` is missing
-    * ``retrieve_cutout``: set this to true if ``cutouts/europe-2013-sarah3-era5.nc`` is missing
+    * ``retrieve_cutout``: set this to true if ``cutouts/europe-{weather year}-sarah3-era5.nc`` is missing
 
-    For cutouts of the years 1996, 2010 and 2012, you can download them from xx and place into the cutouts folder of the repository.
+    The `weather data cutouts for PyPSA-Eur <https://zenodo.org/records/14936211>`_ are available for all the weather years included in the scenarios.
+    If the weather year you've selected is not on that list, you'll need to set ``build_cutout`` to true.
 
 To create and solve the model, run the snakemake command:
 
@@ -151,6 +152,7 @@ Analyze the model
 
 There are several ways to analyze the results of the Snakemake run:
 
+* By analyzing the PyPSA network directly, see `Package_unpackage_networks.ipynb <https://github.com/open-energy-transition/form-energy-storage/tree/master/notebooks/Package_unpackage_networks.ipynb>`_ for more details.
 * By using the CSV files and graphs located in ``results/{run}/csvs/`` and ``results/{run}/graphs/``
 * By using a pre-configured Jupyter Notebook in ``notebooks/`` or any Jupyter Notebook of your choice.
 * By utilizing the customizable KPIs in ``results/{run}/maps/``
