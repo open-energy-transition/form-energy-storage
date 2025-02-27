@@ -105,6 +105,14 @@ if config["foresight"] != "perfect":
 
 KPIS = {
     **{
+        f"{kpi_fn}_csv": RESULTS
+        + "csvs/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-"
+        + f"{kpi_fn}"
+        + "_{planning_horizons}.csv"
+        for kpi_fn in config["kpi"]["custom_plots"]
+        if config["kpi"]["include_csvs"]
+    },
+    **{
         f"{kpi_fn}": RESULTS
         + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-"
         + f"{kpi_fn}"
@@ -116,8 +124,10 @@ KPIS = {
                            + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-storage_capacity_DE_{planning_horizons}.pdf",
         "storage_map_All": RESULTS
                            + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-storage_capacity_All_{planning_horizons}.pdf",
-        "line_loading_map": RESULTS
-                            + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-line_loading_{planning_horizons}.pdf",
+        "line_loading_map_mean": RESULTS
+                            + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-line_loading_mean_{planning_horizons}.pdf",
+        "line_loading_map_max": RESULTS
+                            + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-line_loading_max_{planning_horizons}.pdf",
         "energy_trade": RESULTS
                             + "maps/base_s_{clusters}_l{ll}_{opts}_{sector_opts}-electricity_trade_{planning_horizons}.pdf",
         "storage_capacities": RESULTS
