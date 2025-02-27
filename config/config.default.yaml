@@ -100,13 +100,18 @@ electricity:
     contingency: 4000
 
   max_hours:
-    battery: 6
-    H2: 168
+    li-ion battery: [6]
+    lfp: [6]
+    vanadium: [10]
+    lair: [12]
+    pair: [24]
+    H2: [168]
+    iron-air battery: [100]
 
   extendable_carriers:
     Generator: [solar, solar-hsat, onwind, offwind-ac, offwind-dc, offwind-float, OCGT, CCGT]
-    StorageUnit: [] # battery, H2
-    Store: [battery, H2]
+    StorageUnit: [] # li-ion battery, H2, lfp, vanadium, lair, pair
+    Store: [li-ion battery, H2]
     Link: [] # H2 pipeline
 
   powerplants_filter: (DateOut >= 2023 or DateOut != DateOut) and not (Country == 'Germany' and Fueltype == 'Nuclear')
@@ -274,6 +279,7 @@ conventional:
   dynamic_fuel_price: false
   nuclear:
     p_max_pu: "data/nuclear_p_max_pu.csv" # float of file name
+    p_min_pu: 0.2
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#lines
 lines:
@@ -323,6 +329,7 @@ transmission_projects:
     #- planned_not_yet_permitted
     #- under_consideration
   new_link_capacity: zero #keep or zero
+  filter_year: 2050
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#transformers
 transformers:
@@ -500,6 +507,9 @@ sector:
     rural:
     - air
     - ground
+  residential_heat_dsm: false
+  residential_heat_restriction_value: 0.27
+  residential_heat_restriction_time: [10, 22] # 9am and 9pm
   cluster_heat_buses: true
   heat_demand_cutout: default
   bev_dsm_restriction_value: 0.75
@@ -619,9 +629,18 @@ sector:
   solar_thermal: true
   solar_cf_correction: 0.788457  # =  >>> 1/1.2683
   marginal_cost_storage: 0. #1e-4
+  stores: ["H2", "li-ion battery"]
+  storage_units: ["iron-air battery"]
   methanation: true
   coal_cc: false
   dac: true
+  dac_limit:  # limit in MtCO2, default pathway is based on EC Industrial Carbon Management (COM/2024/62) https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52024DC0062
+    enable: false
+    2030: 0
+    2035: 20  # interpolated value for DAC share and total captured carbon
+    2040: 70
+    2045: 137  # interpolated value for DAC share and total captured carbon
+    2050: 180
   co2_vent: false
   central_heat_vent: false
   allam_cycle_gas: false
@@ -862,7 +881,7 @@ costs:
     H2: 0.
     electrolysis: 0.
     fuel cell: 0.
-    battery: 0.
+    li-ion battery: 0.
     battery inverter: 0.
   emission_prices:
     enable: false
@@ -1050,7 +1069,12 @@ plotting:
     solar: "Solar"
     PHS: "Pumped Hydro Storage"
     hydro: "Reservoir & Dam"
-    battery: "Battery Storage"
+    li-ion battery: "Li-Ion Battery Storage"
+    li-ion home battery: "Li-Ion Home Battery Storage"
+    iron-air battery: "Iron-Air Battery Storage"
+    pair: "Adiabatic CAES"
+    lair: "Liquid Air Energy Storage"
+    vanadium: "Vanadium Redox Flow Battery Storage"
     H2: "Hydrogen Storage"
     lines: "Transmission Lines"
     ror: "Run of River"
@@ -1183,14 +1207,14 @@ plotting:
     industry new electricity: '#2d2a66'
     agriculture electricity: '#494778'
     # battery + EVs
-    battery: '#ace37f'
+    li-ion battery: '#ace37f'
     battery storage: '#ace37f'
-    battery charger: '#88a75b'
-    battery discharger: '#5d4e29'
-    home battery: '#80c944'
+    li-ion battery charger: '#88a75b'
+    li-ion battery discharger: '#5d4e29'
+    li-ion home battery: '#80c944'
     home battery storage: '#80c944'
-    home battery charger: '#5e8032'
-    home battery discharger: '#3c5221'
+    li-ion home battery charger: '#5e8032'
+    li-ion home battery discharger: '#3c5221'
     BEV charger: '#baf238'
     V2G: '#e5ffa8'
     land transport EV: '#baf238'
@@ -1264,6 +1288,7 @@ plotting:
     urban central resistive heater: '#8cdf85'
     retrofitting: '#8487e8'
     building retrofitting: '#8487e8'
+    heating flexibility: '#06402B'
     # hydrogen
     H2 for industry: "#f073da"
     H2 for shipping: "#ebaee0"

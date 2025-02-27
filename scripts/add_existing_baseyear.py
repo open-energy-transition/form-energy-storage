@@ -232,6 +232,8 @@ def add_power_capacities_installed_before_baseyear(n, grouping_years, costs, bas
         "urban central solid biomass CHP": "biomass",
     }
 
+    cf_conventional = snakemake.params.conventional
+
     for grouping_year, generator in df.index:
         # capacity is the capacity in MW at each node for this
         capacity = df.loc[grouping_year, generator]
@@ -327,11 +329,15 @@ def add_power_capacities_installed_before_baseyear(n, grouping_years, costs, bas
                         capital_cost=costs.at[generator, "efficiency"]
                         * costs.at[generator, "fixed"],  # NB: fixed cost is per MWel
                         p_nom=new_capacity / costs.at[generator, "efficiency"],
+                        p_max_pu=0.7 if generator == "nuclear" else 1,  # be conservative for nuclear (maintance or unplanned shut downs)
                         efficiency=costs.at[generator, "efficiency"],
                         efficiency2=costs.at[carrier[generator], "CO2 intensity"],
                         build_year=grouping_year,
                         lifetime=lifetime_assets.loc[new_capacity.index],
-                    )
+                        p_min_pu=cf_conventional.get(generator,{}).get("p_min_pu",0),
+                        ramp_limit_up=cf_conventional.get(generator,{}).get("ramp_limit_up",np.nan),
+                        ramp_limit_down=cf_conventional.get(generator,{}).get("ramp_limit_down",np.nan),
+            )
                 else:
                     key = "central solid biomass CHP"
                     central_heat = n.buses.query(
@@ -672,7 +678,7 @@ if __name__ == "__main__":
     Nyears = n.snapshot_weightings.generators.sum() / 8760.0
     costs = prepare_costs(
         snakemake.input.costs,
-        snakemake.params.costs,
+        snakemake.params,
         Nyears,
     )
 

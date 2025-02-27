@@ -9,8 +9,10 @@ rule add_existing_baseyear:
         sector=config_provider("sector"),
         existing_capacities=config_provider("existing_capacities"),
         costs=config_provider("costs"),
+        max_hours=config_provider("electricity", "max_hours"),
         heat_pump_sources=config_provider("sector", "heat_pump_sources"),
         energy_totals_year=config_provider("energy", "energy_totals_year"),
+        conventional=config_provider("conventional"),
     input:
         network=RESULTS
         + "prenetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
@@ -104,6 +106,24 @@ rule add_brownfield:
 ruleorder: add_existing_baseyear > add_brownfield
 
 
+rule final_adjustment_myopic:
+    params:
+        chp_extendable_DE=config_provider("sector","chp_extendable_DE"),
+    input:
+        network=RESULTS
+        + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
+        ntc="data/TYNDP_NTC.csv",
+    output:
+        network=RESULTS
+        + "prenetworks-brownfield-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
+    log:
+        RESULTS
+        + "logs/final_adjustment_myopic_base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.log"
+    conda:
+        "../envs/environment.yaml"
+    script:
+        "../scripts/final_adjustment.py"
+
 rule solve_sector_network_myopic:
     params:
         solving=config_provider("solving"),
@@ -114,8 +134,13 @@ rule solve_sector_network_myopic:
         ),
         custom_extra_functionality=input_custom_extra_functionality,
     input:
-        network=RESULTS
-        + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
+        network=lambda w: ( 
+            RESULTS
+            + "prenetworks-brownfield-adjusted/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc"
+            if config_provider("enable", "final_adjustment")(w)
+            else RESULTS
+            + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc"
+        ),
         costs=resources("costs_{planning_horizons}.csv"),
     output:
         network=RESULTS

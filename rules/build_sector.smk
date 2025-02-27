@@ -170,11 +170,15 @@ rule build_hourly_heat_demand:
     params:
         snapshots=config_provider("snapshots"),
         drop_leap_day=config_provider("enable", "drop_leap_day"),
+        sector=config_provider("sector"),
     input:
         heat_profile="data/heat_load_profile_BDEW.csv",
         heat_demand=resources("daily_heat_demand_total_base_s_{clusters}.nc"),
     output:
         heat_demand=resources("hourly_heat_demand_total_base_s_{clusters}.nc"),
+        heat_dsm_profile=resources(
+            "residential_heat_dsm_profile_total_base_s_{clusters}.csv"
+        ),
     resources:
         mem_mb=2000,
     threads: 8
@@ -1085,6 +1089,7 @@ rule prepare_sector_network:
         ),
         foresight=config_provider("foresight"),
         costs=config_provider("costs"),
+        max_hours=config_provider("electricity", "max_hours"),
         sector=config_provider("sector"),
         industry=config_provider("industry"),
         renewable=config_provider("renewable"),
@@ -1101,6 +1106,7 @@ rule prepare_sector_network:
         heat_pump_sources=config_provider("sector", "heat_pump_sources"),
         heat_systems=config_provider("sector", "heat_systems"),
         energy_totals_year=config_provider("energy", "energy_totals_year"),
+        conventional=config_provider("conventional"),
         heat_utilisation_potentials=config_provider(
             "sector", "district_heating", "heat_utilisation_potentials"
         ),
@@ -1149,6 +1155,9 @@ rule prepare_sector_network:
         transport_data=resources("transport_data_s_{clusters}.csv"),
         avail_profile=resources("avail_profile_s_{clusters}.csv"),
         dsm_profile=resources("dsm_profile_s_{clusters}.csv"),
+        heat_dsm_profile=resources(
+            "residential_heat_dsm_profile_total_base_s_{clusters}.csv"
+        ),
         co2_totals_name=resources("co2_totals.csv"),
         co2="data/bundle/eea/UNFCCC_v23.csv",
         biomass_potentials=resources(

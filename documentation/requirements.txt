@@ -1,0 +1,6 @@
+jupyter-book
+ghp-import
+pre-commit
+pandas
+numpy
+pypsa
