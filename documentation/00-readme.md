@@ -21,13 +21,14 @@ This repository is maintained using [OET's soft-fork strategy](https://open-ener
 ## The Role of Energy Storage in Germany
 
 Energy storage technologies hold significant promise for reducing carbon emissions. While short-duration storage is popular today, the system benefits for
-long duration storage were rather hidden and require more effort to receive policy attention. This project reveals the hidden benefits of multi-day energy storage through the analysis of
+long duration storage are rather hidden and require more effort to receive policy attention. This project reveals the hidden benefits of multi-day energy storage through the analysis of
 energy system models.
 
 The primary objectives were to develop a policy relevant validated energy system model with a focus on Germany, and integrate various representations of short to long-duration energy storage
 into the model. Optimization runs were conducted to explore various scenarios to inform policy-makers about the benefits of various types of energy storage. The project culminates
-in a collection of comprehensive result plots and csv files that are based on open-source software and fully reproducible. OET, an international non-profit organization specializing in open energy modeling software
+in a collection of comprehensive result plots and csv files that are based on open-source software and fully reproducible. 
 
+OET, an international non-profit organization specializing in open energy modeling software
 development and support, will bring its expertise to this project. The organization has a proven track record in promoting transparent, data-driven decision-making in energy policy and
 planning, with its software products (including PyPSA-Eur and PyPSA-Earth) used in more than 50 research and industry-related projects.
 
@@ -51,7 +52,7 @@ To strike a good balance between the spatial and temporal resolution of the mode
   - The analysis targets the near-term application of iron-air storage technologies, focusing on the year 2035.
   - The temporal resolution is segmented into 4380 snapshots, equivalent to an average temporal clustering of 2 hourly resolution. See [Segmentation Temporal Clustering](https://open-energy-transition.github.io/form-energy-storage/21-segmentation.html) for more details.
 - **Sectoral Scope**: 
-  - The model includes only sectors with energy storage technologies, specifically the power, heating, and transport sectors, excluding the industrial sector.
+  - The model includes only sectors with energy storage technologies, specifically the power, heating, and electric transport sectors, while excluding the industrial and fossil transport sector.
 
 To view all the changes in detail, refer to:
 
@@ -95,9 +96,9 @@ Each of these sectors is built up on the transmission network nodes from [PyPSA-
 * `envs`: includes all the `mamba` environment specifications to run the workflow
 * `logs`: will store log files (does not exist initially)
 * `notebooks`: includes all the `notebooks` used for ad-hoc analysis
-* `rules`: includes all the `snakemake`rules loaded in the `Snakefile`
 * `resources`: will store intermediate results of the workflow which can be picked up again by subsequent rules (does not exist initially)
 * `results`: will store the solved PyPSA network data, summary files and plots (does not exist initially)
+* `rules`: includes all the `snakemake`rules loaded in the `Snakefile`
 * `scripts`: includes all the Python scripts executed by the `snakemake` rules to build the model
 
 <!--* `report`: contains all files necessary to build the report; plots and result files are generated automatically-->
