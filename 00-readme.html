@@ -427,12 +427,13 @@ SPDX-License-Identifier: CC-BY-4.0
 <section id="the-role-of-energy-storage-in-germany">
 <h2>The Role of Energy Storage in Germany<a class="headerlink" href="#the-role-of-energy-storage-in-germany" title="Link to this heading">#</a></h2>
 <p>Energy storage technologies hold significant promise for reducing carbon emissions. While short-duration storage is popular today, the system benefits for
-long duration storage were rather hidden and require more effort to receive policy attention. This project reveals the hidden benefits of multi-day energy storage through the analysis of
+long duration storage are rather hidden and require more effort to receive policy attention. This project reveals the hidden benefits of multi-day energy storage through the analysis of
 energy system models.</p>
 <p>The primary objectives were to develop a policy relevant validated energy system model with a focus on Germany, and integrate various representations of short to long-duration energy storage
 into the model. Optimization runs were conducted to explore various scenarios to inform policy-makers about the benefits of various types of energy storage. The project culminates
-in a collection of comprehensive result plots and csv files that are based on open-source software and fully reproducible. OET, an international non-profit organization specializing in open energy modeling software</p>
-<p>development and support, will bring its expertise to this project. The organization has a proven track record in promoting transparent, data-driven decision-making in energy policy and
+in a collection of comprehensive result plots and csv files that are based on open-source software and fully reproducible.</p>
+<p>OET, an international non-profit organization specializing in open energy modeling software
+development and support, will bring its expertise to this project. The organization has a proven track record in promoting transparent, data-driven decision-making in energy policy and
 planning, with its software products (including PyPSA-Eur and PyPSA-Earth) used in more than 50 research and industry-related projects.</p>
 <p>For further readings of PyPSA and PyPSA-Eur, check out:</p>
 <ul class="simple">
@@ -460,7 +461,7 @@ planning, with its software products (including PyPSA-Eur and PyPSA-Earth) used 
 </li>
 <li><p><strong>Sectoral Scope</strong>:</p>
 <ul>
-<li><p>The model includes only sectors with energy storage technologies, specifically the power, heating, and transport sectors, excluding the industrial sector.</p></li>
+<li><p>The model includes only sectors with energy storage technologies, specifically the power, heating, and electric transport sectors, while excluding the industrial and fossil transport sector.</p></li>
 </ul>
 </li>
 </ul>
@@ -504,9 +505,9 @@ and in the paper <a class="reference external" href="https://arxiv.org/abs/1806.
 <li><p><code class="docutils literal notranslate"><span class="pre">envs</span></code>: includes all the <code class="docutils literal notranslate"><span class="pre">mamba</span></code> environment specifications to run the workflow</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">logs</span></code>: will store log files (does not exist initially)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">notebooks</span></code>: includes all the <code class="docutils literal notranslate"><span class="pre">notebooks</span></code> used for ad-hoc analysis</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rules</span></code>: includes all the <code class="docutils literal notranslate"><span class="pre">snakemake</span></code>rules loaded in the <code class="docutils literal notranslate"><span class="pre">Snakefile</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">resources</span></code>: will store intermediate results of the workflow which can be picked up again by subsequent rules (does not exist initially)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">results</span></code>: will store the solved PyPSA network data, summary files and plots (does not exist initially)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rules</span></code>: includes all the <code class="docutils literal notranslate"><span class="pre">snakemake</span></code>rules loaded in the <code class="docutils literal notranslate"><span class="pre">Snakefile</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">scripts</span></code>: includes all the Python scripts executed by the <code class="docutils literal notranslate"><span class="pre">snakemake</span></code> rules to build the model</p></li>
 </ul>
 <!--* `report`: contains all files necessary to build the report; plots and result files are generated automatically--></section>
