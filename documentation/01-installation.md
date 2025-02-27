@@ -13,7 +13,7 @@ To make modifications to the existing code base, it is necessary to create your 
 
 :::
 
-The repository consists of two additional branches outside of the `master` branch which contains the main code base for the study: `gh-pages`, which is necessary for rebuilding this documentation website, and `feature/calibrated-run`, which is required for generating the calibrated runs for the year 2023.
+The repository consists of two additional branches outside of the `master` branch which contains the main code base for the study: `gh-pages`, which is necessary for rebuilding this documentation website, and `calibration-run`, which is required for generating the calibrated runs for the year 2023.
 
 Then, clone your newly created repository using the version control system `git` in the command line.
 
@@ -41,7 +41,7 @@ PyPSA-Eur relies on a set of other Python packages to function. We recommend usi
 The package requirements are curated in the `envs/environment.yaml` file. There are also regularly updated pinned environment files for each operating system to ensure reproducibility (`envs/windows-pinned.yaml`, `envs/linux-pinned.yaml`, `envs/macos-pinned.yaml`). We recommend to use the pinned files for a stable environment, but you could also use the unpinned file.
 
 ```
-mamba env create -f envs/linux-pinned.yaml # replace for your os
+mamba env create -f envs/environment.yaml # replace for your os
 mamba activate pypsa-eur
 ```
 :::{admonition} Note
@@ -50,7 +50,7 @@ mamba activate pypsa-eur
 The equivalent commands for `conda` would be
 
 ```
-conda env create -f envs/linux-pinned.yaml # replace for your os
+conda env create -f envs/environment.yaml # replace for your os
 conda activate pypsa-eur
 ```
 

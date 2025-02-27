@@ -48,6 +48,7 @@ Components
 * **capacity**: Extract data from ``csvs/nodal_capacities.csv``.
 * **capacity stats**: Extract capacity data from ``n.statistics``. See notes for more detail.
 * **generation**: Extract power generation data from ``n.statistics.energy_balance``.
+* **curtailment**: Extract power generation data from ``n.statistics.curtailment``.
 * **emission**: Extract emissions data based on emission links to the atmosphere.
 * **energy balance**: Extract energy balance data from ``n.statistics.energy_balance``.
 * **SOC**: Extract state of charge from the ``storage_units`` component.

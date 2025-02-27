@@ -26,6 +26,10 @@ Here is a list of changes made to this repository specifically for this work, wi
 
 * Include heat DSM implementation and configuration (https://github.com/open-energy-transition/form-energy-storage/pull/47)
 
+* Add option to disable CHP capacity extendability for Germany in ``final_adjustment`` (https://github.com/open-energy-transition/form-energy-storage/pull/62)
+
+* Add a ``filter_year`` configuration option that is used to filter out projects that have a build_year until and including the given filter_year (https://github.com/open-energy-transition/form-energy-storage/pull/65)
+
 **Model Visualization Features**
 
 * Add KPI visualization script and functions. (https://github.com/open-energy-transition/form-energy-storage/pull/30)
@@ -36,6 +40,10 @@ Here is a list of changes made to this repository specifically for this work, wi
 
 * Include optional use of Latex for plotting (https://github.com/open-energy-transition/form-energy-storage/pull/59)
 
+* Create notebook with scenarios comparison. All plots and PyPSA networks can be exported to csvs (https://github.com/open-energy-transition/form-energy-storage/pull/61)
+
+* Add csvs to all map plots and fixes in line loading plots (https://github.com/open-energy-transition/form-energy-storage/pull/68)
+
 **Model Documentation Features**
 
 * Provide documentation using github pages (https://github.com/open-energy-transition/form-energy-storage/pull/57)
@@ -43,8 +51,6 @@ Here is a list of changes made to this repository specifically for this work, wi
 **Model Calibration Runs**
 
 * Calibration run 2023/2024 (https://github.com/open-energy-transition/form-energy-storage/pull/45)
-
-* Update calibrated run branch with the recent addition in ``form_energy_storage_dev`` (https://github.com/open-energy-transition/form-energy-storage/pull/48)
 
 **Bugfixes**
 
