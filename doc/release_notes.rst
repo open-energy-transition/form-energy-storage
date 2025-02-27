@@ -11,6 +11,10 @@ Release Notes
 Upcoming Release
 ================
 
+* Extended pre-built `weather data cutouts
+  <https://zenodo.org/records/14936211>`__. Cutouts are now available for the
+  years 1996, 2010, 2012, 2013, 2019, 2020 and 2023.
+  (https://github.com/PyPSA/pypsa-eur/pull/1559)
 
 * Improve transmission_projects by adding a configuration parameter ``filter_year`` that lets you filter for projects with a build year up until and including a given year.
 
@@ -494,11 +498,6 @@ PyPSA-Eur 0.12.0 (30th August 2024)
 
 * Address various deprecations.
 
-
-* Allow running the sector model for isolated non-EU28 countries, by filling missing sectoral
-  data with defaults, average EU values or zeros, if not available.
-
-* Enable retaining exisiting conventional capacities added in the power only model for sector coupeled applications.
 
 PyPSA-Eur 0.11.0 (25th May 2024)
 =====================================
